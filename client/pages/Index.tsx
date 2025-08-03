@@ -30,6 +30,13 @@ interface PresentationData {
   thumbnail: File | null;
 }
 
+interface FeaturedPresentationData {
+  title: string;
+  description: string;
+  presenter: string;
+  file: File | null;
+}
+
 const mockPresentations: Presentation[] = [
   {
     id: "1",
