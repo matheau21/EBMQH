@@ -1,62 +1,307 @@
-import { DemoResponse } from "@shared/api";
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
+import { PresentationCard } from "@/components/PresentationCard";
+import { SearchAndFilter } from "@/components/SearchAndFilter";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { BookOpen, Plus, TrendingUp, Users, Award } from "lucide-react";
+
+interface Presentation {
+  id: string;
+  title: string;
+  specialty: string;
+  summary: string;
+  authors?: string;
+  journal?: string;
+  year?: string;
+  thumbnail?: string;
+}
+
+const mockPresentations: Presentation[] = [
+  {
+    id: "1",
+    title: "SPRINT Trial: Intensive vs Standard Blood Pressure Control",
+    specialty: "Cardiology",
+    summary: "Landmark randomized trial demonstrating that intensive blood pressure control (target <120 mmHg) significantly reduces cardiovascular events and mortality compared to standard treatment (<140 mmHg).",
+    authors: "SPRINT Research Group",
+    journal: "N Engl J Med",
+    year: "2015",
+  },
+  {
+    id: "2",
+    title: "KEYNOTE-189: Pembrolizumab in Metastatic NSCLC",
+    specialty: "Oncology",
+    summary: "Phase 3 trial showing significant improvement in overall survival with pembrolizumab plus chemotherapy versus chemotherapy alone in previously untreated metastatic non-squamous NSCLC.",
+    authors: "Gandhi L, et al.",
+    journal: "N Engl J Med",
+    year: "2018",
+  },
+  {
+    id: "3",
+    title: "COMPASS Trial: Rivaroxaban in Stable CAD",
+    specialty: "Cardiology",
+    summary: "Demonstrated that low-dose rivaroxaban plus aspirin reduces major adverse cardiovascular events in patients with stable coronary artery disease or peripheral artery disease.",
+    authors: "Eikelboom JW, et al.",
+    journal: "N Engl J Med",
+    year: "2017",
+  },
+  {
+    id: "4",
+    title: "CLARITY-AD: Lecanemab in Early Alzheimer's Disease",
+    specialty: "Neurology",
+    summary: "Phase 3 trial showing that lecanemab significantly slowed cognitive decline in patients with early Alzheimer's disease, marking a breakthrough in amyloid-targeting therapy.",
+    authors: "van Dyck CH, et al.",
+    journal: "N Engl J Med",
+    year: "2023",
+  },
+  {
+    id: "5",
+    title: "EMPA-REG OUTCOME: Empagliflozin in Type 2 Diabetes",
+    specialty: "Endocrinology",
+    summary: "Groundbreaking cardiovascular outcome trial demonstrating that empagliflozin reduces cardiovascular death and heart failure hospitalization in patients with type 2 diabetes.",
+    authors: "Zinman B, et al.",
+    journal: "N Engl J Med",
+    year: "2015",
+  },
+  {
+    id: "6",
+    title: "STAR*D: Treatment-Resistant Depression Strategies",
+    specialty: "Psychiatry",
+    summary: "Large-scale effectiveness trial evaluating sequential treatment strategies for major depressive disorder, providing evidence-based approaches for treatment-resistant depression.",
+    authors: "Rush AJ, et al.",
+    journal: "Am J Psychiatry",
+    year: "2006",
+  },
+];
+
+const specialties = [
+  "Cardiology",
+  "Oncology", 
+  "Neurology",
+  "Endocrinology",
+  "Psychiatry",
+  "Surgery",
+  "Emergency Medicine",
+  "Internal Medicine",
+];
 
 export default function Index() {
-  const [exampleFromServer, setExampleFromServer] = useState("");
-  // Fetch users on component mount
-  useEffect(() => {
-    fetchDemo();
-  }, []);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
 
-  // Example of how to fetch data from the server (if needed)
-  const fetchDemo = async () => {
-    try {
-      const response = await fetch("/api/demo");
-      const data = (await response.json()) as DemoResponse;
-      setExampleFromServer(data.message);
-    } catch (error) {
-      console.error("Error fetching hello:", error);
-    }
+  const filteredPresentations = useMemo(() => {
+    return mockPresentations.filter((presentation) => {
+      const matchesSearch = searchQuery === "" || 
+        presentation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        presentation.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        presentation.authors?.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesSpecialty = selectedSpecialties.length === 0 || 
+        selectedSpecialties.includes(presentation.specialty);
+      
+      return matchesSearch && matchesSpecialty;
+    });
+  }, [searchQuery, selectedSpecialties]);
+
+  const handleSpecialtyToggle = (specialty: string) => {
+    setSelectedSpecialties(prev => 
+      prev.includes(specialty) 
+        ? prev.filter(s => s !== specialty)
+        : [...prev, specialty]
+    );
+  };
+
+  const handleViewSummary = (presentationId: string) => {
+    // TODO: Navigate to detailed view or open modal
+    console.log("View presentation:", presentationId);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-      <div className="text-center">
-        {/* TODO: FUSION_GENERATION_APP_PLACEHOLDER replace everything here with the actual app! */}
-        <h1 className="text-2xl font-semibold text-slate-800 flex items-center justify-center gap-3">
-          <svg
-            className="animate-spin h-8 w-8 text-slate-400"
-            viewBox="0 0 50 50"
-          >
-            <circle
-              className="opacity-30"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-            />
-            <circle
-              className="text-slate-600"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-              strokeDasharray="100"
-              strokeDashoffset="75"
-            />
-          </svg>
-          Generating your app...
-        </h1>
-        <p className="mt-4 text-slate-600 max-w-md">
-          Watch the chat on the left for updates that might need your attention
-          to finish generating
-        </p>
-        <p className="mt-4 hidden max-w-md">{exampleFromServer}</p>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-ucla-blue rounded-lg flex items-center justify-center">
+                <BookOpen className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">UCLA Medical Pearls</h1>
+                <p className="text-xs text-gray-500">Clinical Trial Summaries</p>
+              </div>
+            </div>
+            <Button className="bg-ucla-blue hover:bg-ucla-blue/90 text-white">
+              <Plus className="h-4 w-4 mr-2" />
+              Upload Presentation
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-ucla-blue to-ucla-blue/80 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Clinical Pearls from Landmark Trials
+            </h1>
+            <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              Curated for Residents — Visual, digestible summaries of important clinical trials to enhance your medical education
+            </p>
+            
+            <div className="flex flex-wrap justify-center gap-6 text-sm">
+              <div className="flex items-center space-x-2">
+                <TrendingUp className="h-5 w-5 text-ucla-gold" />
+                <span>Latest Research</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Users className="h-5 w-5 text-ucla-gold" />
+                <span>Peer Reviewed</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Award className="h-5 w-5 text-ucla-gold" />
+                <span>UCLA Curated</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-12 bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-3xl font-bold text-ucla-blue mb-2">{mockPresentations.length}</div>
+              <div className="text-gray-600">Trial Summaries</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-ucla-blue mb-2">{specialties.length}</div>
+              <div className="text-gray-600">Medical Specialties</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-ucla-blue mb-2">1000+</div>
+              <div className="text-gray-600">Medical Students & Residents</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Featured Presentations</h2>
+          <p className="text-gray-600">
+            Explore our curated collection of landmark clinical trials and their key findings
+          </p>
+        </div>
+
+        {/* Search and Filter */}
+        <div className="mb-8">
+          <SearchAndFilter
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            selectedSpecialties={selectedSpecialties}
+            onSpecialtyToggle={handleSpecialtyToggle}
+            availableSpecialties={specialties}
+          />
+        </div>
+
+        {/* Results Summary */}
+        <div className="mb-6 flex items-center justify-between">
+          <p className="text-gray-600">
+            Showing {filteredPresentations.length} of {mockPresentations.length} presentations
+          </p>
+          {(searchQuery || selectedSpecialties.length > 0) && (
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedSpecialties([]);
+              }}
+              className="text-sm"
+            >
+              Clear Filters
+            </Button>
+          )}
+        </div>
+
+        {/* Presentations Grid */}
+        {filteredPresentations.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPresentations.map((presentation) => (
+              <PresentationCard
+                key={presentation.id}
+                title={presentation.title}
+                specialty={presentation.specialty}
+                summary={presentation.summary}
+                authors={presentation.authors}
+                journal={presentation.journal}
+                year={presentation.year}
+                thumbnail={presentation.thumbnail}
+                onViewSummary={() => handleViewSummary(presentation.id)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <BookOpen className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No presentations found</h3>
+            <p className="text-gray-600 mb-4">
+              Try adjusting your search criteria or browse all presentations
+            </p>
+            <Button 
+              variant="outline"
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedSpecialties([]);
+              }}
+            >
+              Show All Presentations
+            </Button>
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-ucla-blue text-white py-12 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-ucla-gold rounded-lg flex items-center justify-center">
+                  <BookOpen className="h-5 w-5 text-gray-900" />
+                </div>
+                <span className="text-xl font-bold">UCLA Medical Pearls</span>
+              </div>
+              <p className="text-blue-100">
+                Curated clinical trial summaries for medical education at UCLA
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Quick Links</h3>
+              <ul className="space-y-2 text-blue-100">
+                <li><a href="#" className="hover:text-white transition-colors">All Presentations</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Browse by Specialty</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Recent Additions</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Upload Guidelines</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Support</h3>
+              <ul className="space-y-2 text-blue-100">
+                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Technical Support</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Feedback</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-blue-600 mt-8 pt-8 text-center text-blue-100">
+            <p>&copy; 2024 UCLA Medical Pearls. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
