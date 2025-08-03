@@ -1,17 +1,14 @@
 import { Badge } from "@/components/ui/badge";
-import { 
-  Heart, 
-  Zap, 
-  Brain, 
-  Syringe, 
-  Users, 
-  Scissors, 
+import {
+  Heart,
+  Zap,
+  Syringe,
   Stethoscope,
-  Baby,
-  ShieldCheck,
-  Bone,
-  ScanLine,
-  Microscope
+  Wind,
+  Shield,
+  Activity,
+  Droplets,
+  Utensils
 } from "lucide-react";
 
 interface SpecialtyFiltersProps {
