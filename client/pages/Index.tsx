@@ -264,7 +264,7 @@ export default function Index() {
 
             {/* Subtitle */}
             <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-              High-yield, digestible summaries of landmark trials — curated for med students & residents to enhance learning and clinical practice
+              High-yield, digestible summaries of landmark trials — curated for Medicine Residents to enhance learning and clinical practice.
             </p>
 
             {/* Feature Badges */}
