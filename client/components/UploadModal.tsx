@@ -44,7 +44,7 @@ const subspecialties = [
   "Infectious Disease",
   "Rheumatology",
   "Nephrology",
-  "Gastroenterology",
+  "Gastroenterology/Hepatology",
 ];
 
 const journalSources = [
