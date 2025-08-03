@@ -292,24 +292,7 @@ export default function Index() {
           />
         </div>
 
-        {/* Results Summary */}
-        <div className="mb-6 flex items-center justify-between">
-          <p className="text-gray-600">
-            Showing {filteredPresentations.length} of {presentations.length} presentations
-          </p>
-          {(searchQuery || selectedSpecialties.length > 0) && (
-            <Button
-              variant="outline"
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedSpecialties([]);
-              }}
-              className="text-sm border-ucla-blue text-ucla-blue hover:bg-blue-50"
-            >
-              Clear Filters
-            </Button>
-          )}
-        </div>
+
 
         {/* Presentations Grid */}
         {filteredPresentations.length > 0 ? (
