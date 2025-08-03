@@ -42,7 +42,7 @@ const mockPresentations: Presentation[] = [
   {
     id: "2",
     title: "KEYNOTE-189: Pembrolizumab in Metastatic NSCLC",
-    specialty: "Oncology",
+    specialty: "Heme/Onc",
     summary: "Phase 3 trial showing significant improvement in overall survival with pembrolizumab plus chemotherapy versus chemotherapy alone in previously untreated metastatic non-squamous NSCLC.",
     authors: "Gandhi L, et al.",
     journal: "N Engl J Med",
