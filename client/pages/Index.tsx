@@ -292,13 +292,13 @@ export default function Index() {
             Showing {filteredPresentations.length} of {presentations.length} presentations
           </p>
           {(searchQuery || selectedSpecialties.length > 0) && (
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => {
                 setSearchQuery("");
                 setSelectedSpecialties([]);
               }}
-              className="text-sm border-olive-500 text-olive-600 hover:bg-olive-50"
+              className="text-sm border-ucla-blue text-ucla-blue hover:bg-blue-50"
             >
               Clear Filters
             </Button>
