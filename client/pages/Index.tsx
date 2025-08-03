@@ -312,6 +312,11 @@ export default function Index() {
           <FeaturedPresentation />
         </div>
 
+        {/* Test Yourself Section */}
+        <div className="mb-16">
+          <TestYourself />
+        </div>
+
         {/* Specialty Filter Tags - Moved to Bottom */}
         <div className="mt-16 pt-12 border-t border-gray-200">
           <SpecialtyFilters
