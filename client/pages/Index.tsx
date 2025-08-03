@@ -348,7 +348,6 @@ export default function Index() {
                 <li><a href="#" className="hover:text-white transition-colors">Browse by Specialty</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Recent Additions</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">EBM Reference Card</a></li>
-                <li><a href="#" className="hover:text-ucla-gold transition-colors font-medium">Test Yourself</a></li>
               </ul>
             </div>
             <div>
