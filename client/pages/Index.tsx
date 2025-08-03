@@ -245,7 +245,7 @@ export default function Index() {
               <span className="text-sm font-medium text-ucla-gold">Evidence-Based Medicine Platform</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-ucla-gold/90 bg-clip-text text-transparent">
-              Rapid Review of Landmark Trials
+              Landmark Trials Quick Hits
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-4xl mx-auto leading-relaxed">
               High-yield, digestible summaries of landmark trials — curated for med students & residents to enhance learning and clinical practice
