@@ -75,9 +75,9 @@ const specialtyConfig = [
 
 export function SpecialtyFilters({ selectedSpecialties, onSpecialtyToggle }: SpecialtyFiltersProps) {
   return (
-    <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-8 shadow-lg">
-      <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Filter by Specialty</h3>
-      <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto">
+    <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-6 shadow-lg">
+      <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">Explore Trial by Subspecialty</h3>
+      <div className="grid grid-cols-3 gap-3 max-w-4xl mx-auto">
         {specialtyConfig.map((specialty) => {
           const Icon = specialty.icon;
           const isSelected = selectedSpecialties.includes(specialty.name);
@@ -86,7 +86,7 @@ export function SpecialtyFilters({ selectedSpecialties, onSpecialtyToggle }: Spe
             <div
               key={specialty.name}
               className={`
-                aspect-[4/3] flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-300 text-center p-4 rounded-xl border-2
+                aspect-[5/3] flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 text-center p-3 rounded-xl border-2
                 ${isSelected
                   ? `${specialty.activeColor} shadow-lg transform scale-105`
                   : `${specialty.color} hover:shadow-md hover:scale-102`
@@ -94,7 +94,7 @@ export function SpecialtyFilters({ selectedSpecialties, onSpecialtyToggle }: Spe
               `}
               onClick={() => onSpecialtyToggle(specialty.name)}
             >
-              <div className="w-14 h-14">
+              <div className="w-12 h-12">
                 <Icon />
               </div>
               <span className="text-xs font-medium leading-tight">{specialty.name}</span>
