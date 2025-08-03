@@ -234,35 +234,54 @@ export default function Index() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-ucla-blue via-blue-700 to-blue-800 text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/5"></div>
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-ucla-gold/10 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-1/4 h-full bg-gradient-to-r from-ucla-gold/5 to-transparent"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center">
-            <div className="inline-flex items-center bg-ucla-gold/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
-              <Zap className="h-4 w-4 text-ucla-gold mr-2" />
-              <span className="text-sm font-medium text-ucla-gold">Evidence-Based Medicine Platform</span>
+      <section className="relative py-24 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-ucla-blue via-blue-600 to-blue-800"></div>
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD100' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}></div>
+        </div>
+
+        {/* Floating Elements */}
+        <div className="absolute top-10 left-10 w-20 h-20 bg-ucla-gold/10 rounded-full blur-xl"></div>
+        <div className="absolute top-20 right-20 w-32 h-32 bg-ucla-gold/5 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-10 left-1/4 w-16 h-16 bg-white/5 rounded-full blur-lg"></div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center text-white">
+            {/* Main Title */}
+            <div className="mb-8">
+              <h1 className="text-6xl md:text-7xl font-black mb-4 tracking-tight">
+                <span className="block text-white">Landmark Trial</span>
+                <span className="block bg-gradient-to-r from-ucla-gold to-yellow-300 bg-clip-text text-transparent">
+                  Quick Hits
+                </span>
+              </h1>
+              <div className="w-24 h-1 bg-ucla-gold mx-auto rounded-full"></div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-ucla-gold/90 bg-clip-text text-transparent">
-              Landmark Trial Quick Hits
-            </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-4xl mx-auto leading-relaxed">
+
+            {/* Subtitle */}
+            <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
               High-yield, digestible summaries of landmark trials — curated for med students & residents to enhance learning and clinical practice
             </p>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <div className="flex items-center space-x-2 bg-ucla-gold/20 border border-ucla-gold/30 px-6 py-3 rounded-full backdrop-blur-sm hover:bg-ucla-gold/30 transition-all duration-300">
-                <TrendingUp className="h-5 w-5 text-ucla-gold" />
-                <span className="font-medium">Landmark Research</span>
+            {/* Feature Badges */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300">
+                <TrendingUp className="h-8 w-8 text-ucla-gold mx-auto mb-3" />
+                <h3 className="font-semibold mb-2">Landmark Research</h3>
+                <p className="text-sm text-blue-200">Breakthrough clinical trials that changed medicine</p>
               </div>
-              <div className="flex items-center space-x-2 bg-ucla-gold/20 border border-ucla-gold/30 px-6 py-3 rounded-full backdrop-blur-sm hover:bg-ucla-gold/30 transition-all duration-300">
-                <Users className="h-5 w-5 text-ucla-gold" />
-                <span className="font-medium">Guideline Origins</span>
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300">
+                <Users className="h-8 w-8 text-ucla-gold mx-auto mb-3" />
+                <h3 className="font-semibold mb-2">Guideline Origins</h3>
+                <p className="text-sm text-blue-200">Studies that shaped current medical guidelines</p>
               </div>
-              <div className="flex items-center space-x-2 bg-ucla-gold/20 border border-ucla-gold/30 px-6 py-3 rounded-full backdrop-blur-sm hover:bg-ucla-gold/30 transition-all duration-300">
-                <Award className="h-5 w-5 text-ucla-gold" />
-                <span className="font-medium">Evidence-Based Practice</span>
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300">
+                <Award className="h-8 w-8 text-ucla-gold mx-auto mb-3" />
+                <h3 className="font-semibold mb-2">Evidence-Based Practice</h3>
+                <p className="text-sm text-blue-200">Research-backed clinical decision making</p>
               </div>
             </div>
           </div>
