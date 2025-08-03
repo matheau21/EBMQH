@@ -1,15 +1,15 @@
 import { Badge } from "@/components/ui/badge";
 import {
-  CardiologyIcon,
-  HemeOncIcon,
-  EndocrinologyIcon,
-  GeneralInternalIcon,
-  PulmonaryCriticalIcon,
-  InfectiousIcon,
-  RheumatologyIcon,
-  NephrologyIcon,
-  GastroenterologyIcon,
-} from "./MedicalIcons";
+  CardiologySpecificIcon,
+  HemeOncSpecificIcon,
+  EndocrinologySpecificIcon,
+  GeneralInternalSpecificIcon,
+  PulmonaryCriticalSpecificIcon,
+  InfectiousSpecificIcon,
+  RheumatologySpecificIcon,
+  NephrologySpecificIcon,
+  GastroenterologySpecificIcon,
+} from "./SpecificMedicalIcons";
 
 interface SpecialtyFiltersProps {
   selectedSpecialties: string[];
