@@ -352,32 +352,32 @@ export default function Index() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-olive-800 text-white py-12 mt-16">
+      <footer className="bg-ucla-blue text-white py-12 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-olive-600 rounded-lg flex items-center justify-center">
-                  <Zap className="h-5 w-5 text-white" />
+                <div className="w-8 h-8 bg-ucla-gold rounded-lg flex items-center justify-center">
+                  <Zap className="h-5 w-5 text-gray-900" />
                 </div>
                 <span className="text-xl font-bold">EBM Quick Hits</span>
               </div>
-              <p className="text-olive-200">
+              <p className="text-blue-200">
                 Evidence-based medicine summaries for medical education and clinical practice
               </p>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-olive-200">
+              <ul className="space-y-2 text-blue-200">
                 <li><a href="#" className="hover:text-white transition-colors">All Presentations</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Browse by Specialty</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Recent Additions</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Upload Guidelines</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">EBM Reference Card</a></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-olive-200">
+              <ul className="space-y-2 text-blue-200">
                 <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Technical Support</a></li>
@@ -385,7 +385,7 @@ export default function Index() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-olive-600 mt-8 pt-8 text-center text-olive-200">
+          <div className="border-t border-blue-600 mt-8 pt-8 text-center text-blue-200">
             <p>&copy; 2024 EBM Quick Hits. All rights reserved.</p>
           </div>
         </div>
