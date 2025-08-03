@@ -238,18 +238,18 @@ export default function Index() {
               High-yield, digestible summaries of landmark trials — curated for med students & residents to enhance learning and clinical practice
             </p>
 
-            <div className="flex flex-wrap justify-center gap-6 text-sm">
-              <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <div className="flex items-center space-x-2 bg-ucla-gold/20 border border-ucla-gold/30 px-6 py-3 rounded-full backdrop-blur-sm hover:bg-ucla-gold/30 transition-all duration-300">
                 <TrendingUp className="h-5 w-5 text-ucla-gold" />
-                <span>Landmark Research</span>
+                <span className="font-medium">Landmark Research</span>
               </div>
-              <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+              <div className="flex items-center space-x-2 bg-ucla-gold/20 border border-ucla-gold/30 px-6 py-3 rounded-full backdrop-blur-sm hover:bg-ucla-gold/30 transition-all duration-300">
                 <Users className="h-5 w-5 text-ucla-gold" />
-                <span>Guideline Origins</span>
+                <span className="font-medium">Guideline Origins</span>
               </div>
-              <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+              <div className="flex items-center space-x-2 bg-ucla-gold/20 border border-ucla-gold/30 px-6 py-3 rounded-full backdrop-blur-sm hover:bg-ucla-gold/30 transition-all duration-300">
                 <Award className="h-5 w-5 text-ucla-gold" />
-                <span>Evidence-Based Practice</span>
+                <span className="font-medium">Evidence-Based Practice</span>
               </div>
             </div>
           </div>
