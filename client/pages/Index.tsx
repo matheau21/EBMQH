@@ -213,7 +213,7 @@ export default function Index() {
               Clinical Pearls from Landmark Trials
             </h1>
             <p className="text-xl md:text-2xl text-olive-100 mb-8 max-w-3xl mx-auto">
-              Curated for Residents — Visual, digestible summaries of important clinical trials to enhance your medical education
+              Curated for Residents — Visual, digestible summaries of landmark clinical trials to enhance your medical education
             </p>
             
             <div className="flex flex-wrap justify-center gap-6 text-sm">
