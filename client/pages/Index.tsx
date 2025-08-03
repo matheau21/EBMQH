@@ -226,7 +226,7 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Clinical Pearls from Landmark Trials
+              Rapid Review of Landmark Trials
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
               Curated for Residents — Visual, digestible summaries of landmark clinical trials to enhance your medical education
