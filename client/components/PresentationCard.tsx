@@ -25,14 +25,18 @@ export function PresentationCard({
   onViewSummary,
 }: PresentationCardProps) {
   const specialtyColors: Record<string, string> = {
-    "Cardiology": "bg-red-100 text-red-800 border-red-200",
-    "Oncology": "bg-purple-100 text-purple-800 border-purple-200",
-    "Neurology": "bg-blue-100 text-blue-800 border-blue-200",
-    "Endocrinology": "bg-green-100 text-green-800 border-green-200",
-    "Psychiatry": "bg-indigo-100 text-indigo-800 border-indigo-200",
-    "Surgery": "bg-orange-100 text-orange-800 border-orange-200",
-    "Emergency Medicine": "bg-yellow-100 text-yellow-800 border-yellow-200",
-    "Internal Medicine": "bg-gray-100 text-gray-800 border-gray-200",
+    "Cardiology": "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20",
+    "Oncology": "bg-specialty-oncology/10 text-specialty-oncology border-specialty-oncology/20",
+    "Neurology": "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20",
+    "Endocrinology": "bg-specialty-endocrinology/10 text-specialty-endocrinology border-specialty-endocrinology/20",
+    "Psychiatry": "bg-specialty-psychiatry/10 text-specialty-psychiatry border-specialty-psychiatry/20",
+    "Surgery": "bg-specialty-surgery/10 text-specialty-surgery border-specialty-surgery/20",
+    "Emergency Medicine": "bg-specialty-emergency/10 text-specialty-emergency border-specialty-emergency/20",
+    "Internal Medicine": "bg-specialty-internal/10 text-specialty-internal border-specialty-internal/20",
+    "Pediatrics": "bg-specialty-pediatrics/10 text-specialty-pediatrics border-specialty-pediatrics/20",
+    "Dermatology": "bg-specialty-dermatology/10 text-specialty-dermatology border-specialty-dermatology/20",
+    "Orthopedics": "bg-specialty-orthopedics/10 text-specialty-orthopedics border-specialty-orthopedics/20",
+    "Radiology": "bg-specialty-radiology/10 text-specialty-radiology border-specialty-radiology/20",
   };
 
   return (
