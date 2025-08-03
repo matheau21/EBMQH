@@ -275,14 +275,6 @@ export default function Index() {
           </p>
         </div>
 
-        {/* Specialty Filter Tags */}
-        <div className="mb-8">
-          <SpecialtyFilters
-            selectedSpecialties={selectedSpecialties}
-            onSpecialtyToggle={handleSpecialtyToggle}
-          />
-        </div>
-
         {/* Search and Filter */}
         <div className="mb-8">
           <SearchAndFilter
