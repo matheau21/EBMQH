@@ -1,9 +1,12 @@
 import { useState, useMemo } from "react";
 import { PresentationCard } from "@/components/PresentationCard";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
+import { SpecialtyFilters } from "@/components/SpecialtyFilters";
+import { AuthModal } from "@/components/AuthModal";
+import { UploadModal } from "@/components/UploadModal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Plus, TrendingUp, Users, Award } from "lucide-react";
+import { BookOpen, Plus, TrendingUp, Users, Award, Zap } from "lucide-react";
 
 interface Presentation {
   id: string;
@@ -14,6 +17,15 @@ interface Presentation {
   journal?: string;
   year?: string;
   thumbnail?: string;
+}
+
+interface PresentationData {
+  trialName: string;
+  briefDescription: string;
+  subspecialty: string;
+  journalSource: string;
+  file: File | null;
+  thumbnail: File | null;
 }
 
 const mockPresentations: Presentation[] = [
@@ -71,6 +83,24 @@ const mockPresentations: Presentation[] = [
     journal: "Am J Psychiatry",
     year: "2006",
   },
+  {
+    id: "7",
+    title: "RECOVERY: Dexamethasone in COVID-19",
+    specialty: "Emergency Medicine",
+    summary: "Randomized trial demonstrating that dexamethasone reduces 28-day mortality in hospitalized patients with COVID-19 requiring respiratory support.",
+    authors: "RECOVERY Collaborative Group",
+    journal: "N Engl J Med",
+    year: "2020",
+  },
+  {
+    id: "8",
+    title: "CRASH-3: Tranexamic Acid in Traumatic Brain Injury",
+    specialty: "Surgery",
+    summary: "Large-scale trial showing that tranexamic acid safely reduces head injury-related death when given within 3 hours of injury in patients with mild-to-moderate traumatic brain injury.",
+    authors: "CRASH-3 Trial Collaborators",
+    journal: "The Lancet",
+    year: "2019",
+  },
 ];
 
 const specialties = [
@@ -82,14 +112,22 @@ const specialties = [
   "Surgery",
   "Emergency Medicine",
   "Internal Medicine",
+  "Pediatrics",
+  "Dermatology",
+  "Orthopedics",
+  "Radiology",
 ];
 
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [presentations, setPresentations] = useState(mockPresentations);
 
   const filteredPresentations = useMemo(() => {
-    return mockPresentations.filter((presentation) => {
+    return presentations.filter((presentation) => {
       const matchesSearch = searchQuery === "" || 
         presentation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         presentation.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -100,7 +138,7 @@ export default function Index() {
       
       return matchesSearch && matchesSpecialty;
     });
-  }, [searchQuery, selectedSpecialties]);
+  }, [searchQuery, selectedSpecialties, presentations]);
 
   const handleSpecialtyToggle = (specialty: string) => {
     setSelectedSpecialties(prev => 
@@ -111,26 +149,54 @@ export default function Index() {
   };
 
   const handleViewSummary = (presentationId: string) => {
-    // TODO: Navigate to detailed view or open modal
     console.log("View presentation:", presentationId);
+  };
+
+  const handleUploadClick = () => {
+    if (isAuthenticated) {
+      setShowUploadModal(true);
+    } else {
+      setShowAuthModal(true);
+    }
+  };
+
+  const handleAuthenticated = () => {
+    setIsAuthenticated(true);
+    setShowUploadModal(true);
+  };
+
+  const handlePresentationSubmit = (data: PresentationData) => {
+    const newPresentation: Presentation = {
+      id: String(presentations.length + 1),
+      title: data.trialName,
+      specialty: data.subspecialty,
+      summary: data.briefDescription,
+      journal: data.journalSource,
+      year: new Date().getFullYear().toString(),
+    };
+    
+    setPresentations(prev => [newPresentation, ...prev]);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-ucla-blue rounded-lg flex items-center justify-center">
-                <BookOpen className="h-5 w-5 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-br from-olive-600 to-olive-700 rounded-lg flex items-center justify-center shadow-lg">
+                <Zap className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">UCLA Medical Pearls</h1>
-                <p className="text-xs text-gray-500">Clinical Trial Summaries</p>
+                <h1 className="text-xl font-bold text-olive-800">EBM Quick Hits</h1>
+                <p className="text-xs text-olive-600">Evidence-Based Medicine Made Simple</p>
               </div>
             </div>
-            <Button className="bg-ucla-blue hover:bg-ucla-blue/90 text-white">
+            <Button 
+              onClick={handleUploadClick}
+              className="bg-olive-600 hover:bg-olive-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+            >
               <Plus className="h-4 w-4 mr-2" />
               Upload Presentation
             </Button>
@@ -139,28 +205,29 @@ export default function Index() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-ucla-blue to-ucla-blue/80 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-br from-olive-600 via-olive-700 to-olive-800 text-white py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Clinical Pearls from Landmark Trials
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-olive-100 mb-8 max-w-3xl mx-auto">
               Curated for Residents — Visual, digestible summaries of important clinical trials to enhance your medical education
             </p>
             
             <div className="flex flex-wrap justify-center gap-6 text-sm">
-              <div className="flex items-center space-x-2">
-                <TrendingUp className="h-5 w-5 text-ucla-gold" />
+              <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+                <TrendingUp className="h-5 w-5 text-olive-200" />
                 <span>Latest Research</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Users className="h-5 w-5 text-ucla-gold" />
+              <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+                <Users className="h-5 w-5 text-olive-200" />
                 <span>Peer Reviewed</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Award className="h-5 w-5 text-ucla-gold" />
-                <span>UCLA Curated</span>
+              <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
+                <Award className="h-5 w-5 text-olive-200" />
+                <span>Evidence-Based</span>
               </div>
             </div>
           </div>
@@ -171,17 +238,17 @@ export default function Index() {
       <section className="py-12 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-ucla-blue mb-2">{mockPresentations.length}</div>
-              <div className="text-gray-600">Trial Summaries</div>
+            <div className="bg-olive-50 p-6 rounded-lg">
+              <div className="text-3xl font-bold text-olive-800 mb-2">{presentations.length}</div>
+              <div className="text-olive-600">Trial Summaries</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-ucla-blue mb-2">{specialties.length}</div>
-              <div className="text-gray-600">Medical Specialties</div>
+            <div className="bg-olive-50 p-6 rounded-lg">
+              <div className="text-3xl font-bold text-olive-800 mb-2">{specialties.length}</div>
+              <div className="text-olive-600">Medical Specialties</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-ucla-blue mb-2">1000+</div>
-              <div className="text-gray-600">Medical Students & Residents</div>
+            <div className="bg-olive-50 p-6 rounded-lg">
+              <div className="text-3xl font-bold text-olive-800 mb-2">1000+</div>
+              <div className="text-olive-600">Medical Students & Residents</div>
             </div>
           </div>
         </div>
@@ -194,6 +261,14 @@ export default function Index() {
           <p className="text-gray-600">
             Explore our curated collection of landmark clinical trials and their key findings
           </p>
+        </div>
+
+        {/* Specialty Filter Tags */}
+        <div className="mb-8">
+          <SpecialtyFilters
+            selectedSpecialties={selectedSpecialties}
+            onSpecialtyToggle={handleSpecialtyToggle}
+          />
         </div>
 
         {/* Search and Filter */}
@@ -210,7 +285,7 @@ export default function Index() {
         {/* Results Summary */}
         <div className="mb-6 flex items-center justify-between">
           <p className="text-gray-600">
-            Showing {filteredPresentations.length} of {mockPresentations.length} presentations
+            Showing {filteredPresentations.length} of {presentations.length} presentations
           </p>
           {(searchQuery || selectedSpecialties.length > 0) && (
             <Button 
@@ -219,7 +294,7 @@ export default function Index() {
                 setSearchQuery("");
                 setSelectedSpecialties([]);
               }}
-              className="text-sm"
+              className="text-sm border-olive-500 text-olive-600 hover:bg-olive-50"
             >
               Clear Filters
             </Button>
@@ -256,6 +331,7 @@ export default function Index() {
                 setSearchQuery("");
                 setSelectedSpecialties([]);
               }}
+              className="border-olive-500 text-olive-600 hover:bg-olive-50"
             >
               Show All Presentations
             </Button>
@@ -264,23 +340,23 @@ export default function Index() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-ucla-blue text-white py-12 mt-16">
+      <footer className="bg-olive-800 text-white py-12 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-ucla-gold rounded-lg flex items-center justify-center">
-                  <BookOpen className="h-5 w-5 text-gray-900" />
+                <div className="w-8 h-8 bg-olive-600 rounded-lg flex items-center justify-center">
+                  <Zap className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xl font-bold">UCLA Medical Pearls</span>
+                <span className="text-xl font-bold">EBM Quick Hits</span>
               </div>
-              <p className="text-blue-100">
-                Curated clinical trial summaries for medical education at UCLA
+              <p className="text-olive-200">
+                Evidence-based medicine summaries for medical education and clinical practice
               </p>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-blue-100">
+              <ul className="space-y-2 text-olive-200">
                 <li><a href="#" className="hover:text-white transition-colors">All Presentations</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Browse by Specialty</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Recent Additions</a></li>
@@ -289,7 +365,7 @@ export default function Index() {
             </div>
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-blue-100">
+              <ul className="space-y-2 text-olive-200">
                 <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Technical Support</a></li>
@@ -297,11 +373,24 @@ export default function Index() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-blue-600 mt-8 pt-8 text-center text-blue-100">
-            <p>&copy; 2024 UCLA Medical Pearls. All rights reserved.</p>
+          <div className="border-t border-olive-600 mt-8 pt-8 text-center text-olive-200">
+            <p>&copy; 2024 EBM Quick Hits. All rights reserved.</p>
           </div>
         </div>
       </footer>
+
+      {/* Modals */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthenticated={handleAuthenticated}
+      />
+      
+      <UploadModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onSubmit={handlePresentationSubmit}
+      />
     </div>
   );
 }
