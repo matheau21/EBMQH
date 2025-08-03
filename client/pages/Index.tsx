@@ -350,7 +350,7 @@ export default function Index() {
             <div>
               <h3 className="font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2 text-blue-200">
-                <li><a href="#" className="hover:text-white transition-colors">All Presentations</a></li>
+                <li><Link to="/presentations" className="hover:text-white transition-colors">All Presentations</Link></li>
                 <li><a href="#" className="hover:text-white transition-colors">Browse by Specialty</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">EBM Reference Card</a></li>
               </ul>
