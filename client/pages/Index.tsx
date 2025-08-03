@@ -201,17 +201,17 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-olive-600 to-olive-700 rounded-lg flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 bg-gradient-to-br from-ucla-blue to-blue-700 rounded-lg flex items-center justify-center shadow-lg">
                 <Zap className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-olive-800">EBM Quick Hits</h1>
-                <p className="text-xs text-olive-600">Evidence-Based Medicine Made Simple</p>
+                <h1 className="text-xl font-bold text-ucla-blue">EBM Quick Hits</h1>
+                <p className="text-xs text-blue-600">Evidence-Based Medicine Made Simple</p>
               </div>
             </div>
-            <Button 
+            <Button
               onClick={handleUploadClick}
-              className="bg-olive-600 hover:bg-olive-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+              className="bg-ucla-blue hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
             >
               <Plus className="h-4 w-4 mr-2" />
               Upload Presentation
