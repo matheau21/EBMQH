@@ -1,15 +1,15 @@
 import { Badge } from "@/components/ui/badge";
 import {
-  Heart,
-  Zap,
-  Syringe,
-  Stethoscope,
-  Wind,
-  Shield,
-  Activity,
-  Droplets,
-  Utensils
-} from "lucide-react";
+  CardiologyIcon,
+  HemeOncIcon,
+  EndocrinologyIcon,
+  GeneralInternalIcon,
+  PulmonaryCriticalIcon,
+  InfectiousIcon,
+  RheumatologyIcon,
+  NephrologyIcon,
+  GastroenterologyIcon,
+} from "./MedicalIcons";
 
 interface SpecialtyFiltersProps {
   selectedSpecialties: string[];
