@@ -253,18 +253,14 @@ export default function Index() {
       {/* Stats Section */}
       <section className="py-12 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="bg-olive-50 p-6 rounded-lg">
-              <div className="text-3xl font-bold text-olive-800 mb-2">{presentations.length}</div>
-              <div className="text-olive-600">Trial Summaries</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center max-w-4xl mx-auto">
+            <div className="bg-blue-50 p-6 rounded-lg">
+              <div className="text-3xl font-bold text-ucla-blue mb-2">{presentations.length}</div>
+              <div className="text-blue-600">Trial Summaries</div>
             </div>
-            <div className="bg-olive-50 p-6 rounded-lg">
-              <div className="text-3xl font-bold text-olive-800 mb-2">{specialties.length}</div>
-              <div className="text-olive-600">Medical Specialties</div>
-            </div>
-            <div className="bg-olive-50 p-6 rounded-lg">
-              <div className="text-3xl font-bold text-olive-800 mb-2">1000+</div>
-              <div className="text-olive-600">Medical Students & Residents</div>
+            <div className="bg-blue-50 p-6 rounded-lg">
+              <div className="text-3xl font-bold text-ucla-blue mb-2">{specialties.length}</div>
+              <div className="text-blue-600">Medical Specialties</div>
             </div>
           </div>
         </div>
