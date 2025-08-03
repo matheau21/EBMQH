@@ -115,6 +115,13 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
     }
   };
 
+  const handleOriginalArticleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type === "application/pdf") {
+      setFormData(prev => ({ ...prev, originalArticle: file }));
+    }
+  };
+
   const handleThumbnailSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
