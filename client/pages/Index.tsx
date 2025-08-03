@@ -235,15 +235,15 @@ export default function Index() {
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
                 <TrendingUp className="h-5 w-5 text-ucla-gold" />
-                <span>Latest Research</span>
+                <span>Landmark Research</span>
               </div>
               <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
                 <Users className="h-5 w-5 text-ucla-gold" />
-                <span>Peer Reviewed</span>
+                <span>Guideline Origins</span>
               </div>
               <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
                 <Award className="h-5 w-5 text-ucla-gold" />
-                <span>Evidence-Based</span>
+                <span>Evidence-Based Practice</span>
               </div>
             </div>
           </div>
