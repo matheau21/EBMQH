@@ -80,7 +80,7 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
-                className="focus:border-olive-500 focus:ring-olive-500 pr-10"
+                className="focus:border-ucla-blue focus:ring-ucla-blue pr-10"
               />
               <Button
                 type="button"
