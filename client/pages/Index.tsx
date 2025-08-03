@@ -229,7 +229,7 @@ export default function Index() {
               Rapid Review of Landmark Trials
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Curated for Medicine Residents & Students — High yield, digestible summaries of landmark clinical trials to enhance your medical education and practice
+              High-yield, digestible summaries of landmark trials — curated for med students & residents to enhance learning and clinical practice
             </p>
 
             <div className="flex flex-wrap justify-center gap-6 text-sm">
