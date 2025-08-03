@@ -37,17 +37,14 @@ interface PresentationData {
 
 const subspecialties = [
   "Cardiology",
-  "Oncology", 
-  "Neurology",
+  "Heme/Onc",
   "Endocrinology",
-  "Psychiatry",
-  "Surgery",
-  "Emergency Medicine",
-  "Internal Medicine",
-  "Pediatrics",
-  "Dermatology",
-  "Orthopedics",
-  "Radiology",
+  "General Internal Medicine",
+  "Pulmonary/Critical Care",
+  "Infectious Disease",
+  "Rheumatology",
+  "Nephrology",
+  "Gastroenterology",
 ];
 
 const journalSources = [
