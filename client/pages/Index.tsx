@@ -156,15 +156,18 @@ export default function Index() {
   const [presentations, setPresentations] = useState(mockPresentations);
 
   const filteredPresentations = useMemo(() => {
+    if (selectedSpecialties.length === 0) {
+      return []; // Show no presentations when no specialty is selected on main page
+    }
+
     return presentations.filter((presentation) => {
-      const matchesSearch = searchQuery === "" || 
+      const matchesSearch = searchQuery === "" ||
         presentation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         presentation.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
         presentation.authors?.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesSpecialty = selectedSpecialties.length === 0 || 
-        selectedSpecialties.includes(presentation.specialty);
-      
+
+      const matchesSpecialty = selectedSpecialties.includes(presentation.specialty);
+
       return matchesSearch && matchesSpecialty;
     });
   }, [searchQuery, selectedSpecialties, presentations]);
