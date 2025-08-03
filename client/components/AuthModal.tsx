@@ -48,7 +48,7 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Lock className="h-5 w-5 text-olive-600" />
+            <Lock className="h-5 w-5 text-ucla-blue" />
             Secure Access Required
           </DialogTitle>
           <DialogDescription>
