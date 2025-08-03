@@ -66,7 +66,7 @@ const specialtyConfig = [
     activeColor: "bg-specialty-nephrology text-white border-specialty-nephrology"
   },
   {
-    name: "Gastroenterology",
+    name: "Gastroenterology/Hepatology",
     icon: GastroenterologySpecificIcon,
     color: "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20 hover:bg-specialty-gastroenterology/20",
     activeColor: "bg-specialty-gastroenterology text-white border-specialty-gastroenterology"
