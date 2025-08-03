@@ -221,7 +221,7 @@ export default function Index() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-olive-600 via-olive-700 to-olive-800 text-white py-16 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-ucla-blue via-blue-700 to-blue-800 text-white py-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
