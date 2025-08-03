@@ -221,14 +221,20 @@ export default function Index() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-ucla-blue via-blue-700 to-blue-800 text-white py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
+      <section className="bg-gradient-to-br from-ucla-blue via-blue-700 to-blue-800 text-white py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/5"></div>
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-ucla-gold/10 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-1/4 h-full bg-gradient-to-r from-ucla-gold/5 to-transparent"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            <div className="inline-flex items-center bg-ucla-gold/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+              <Zap className="h-4 w-4 text-ucla-gold mr-2" />
+              <span className="text-sm font-medium text-ucla-gold">Evidence-Based Medicine Platform</span>
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-ucla-gold/90 bg-clip-text text-transparent">
               Rapid Review of Landmark Trials
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-4xl mx-auto leading-relaxed">
               High-yield, digestible summaries of landmark trials — curated for med students & residents to enhance learning and clinical practice
             </p>
 
