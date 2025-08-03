@@ -25,6 +25,7 @@ interface PresentationData {
   subspecialty: string;
   journalSource: string;
   file: File | null;
+  originalArticle: File | null;
   thumbnail: File | null;
 }
 
