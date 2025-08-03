@@ -161,6 +161,13 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
     }
   };
 
+  const removeOriginalArticle = () => {
+    setFormData(prev => ({ ...prev, originalArticle: null }));
+    if (originalArticleInputRef.current) {
+      originalArticleInputRef.current.value = "";
+    }
+  };
+
   const removeThumbnail = () => {
     setFormData(prev => ({ ...prev, thumbnail: null }));
     if (thumbnailInputRef.current) {
