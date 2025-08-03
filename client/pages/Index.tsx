@@ -331,7 +331,7 @@ export default function Index() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-ucla-blue text-white py-12 mt-16">
+      <footer className="bg-ucla-blue text-white py-12 mt-16 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
@@ -350,7 +350,6 @@ export default function Index() {
               <ul className="space-y-2 text-blue-200">
                 <li><a href="#" className="hover:text-white transition-colors">All Presentations</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Browse by Specialty</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Recent Additions</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">EBM Reference Card</a></li>
               </ul>
             </div>
@@ -358,8 +357,6 @@ export default function Index() {
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-blue-200">
                 <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Technical Support</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Feedback</a></li>
               </ul>
             </div>
@@ -368,6 +365,9 @@ export default function Index() {
             <p>&copy; 2024 EBM Quick Hits. All rights reserved.</p>
           </div>
         </div>
+
+        {/* Admin Toggle Button */}
+        <AdminToggleButton />
       </footer>
 
       {/* Modals */}
