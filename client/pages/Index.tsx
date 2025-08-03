@@ -329,6 +329,53 @@ export default function Index() {
           />
         </div>
 
+        {/* Filtered Presentations Section */}
+        {selectedSpecialties.length > 0 && (
+          <div className="mb-16">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                {selectedSpecialties.join(", ")} Presentations
+              </h2>
+              <p className="text-gray-600">
+                Showing {filteredPresentations.length} presentations for selected specialties
+              </p>
+            </div>
+
+            {filteredPresentations.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPresentations.map((presentation) => (
+                  <PresentationCard
+                    key={presentation.id}
+                    title={presentation.title}
+                    specialty={presentation.specialty}
+                    summary={presentation.summary}
+                    authors={presentation.authors}
+                    journal={presentation.journal}
+                    year={presentation.year}
+                    thumbnail={presentation.thumbnail}
+                    onViewSummary={() => handleViewSummary(presentation.id)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-gray-50 rounded-lg">
+                <BookOpen className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No presentations found</h3>
+                <p className="text-gray-600 mb-4">
+                  No presentations available for the selected specialty. Check back later for updates.
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedSpecialties([])}
+                  className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
+                >
+                  Clear Selection
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Test Yourself Section - Moved to Bottom */}
         <div className="mt-16 pt-12 border-t border-gray-200">
           <TestYourself />
