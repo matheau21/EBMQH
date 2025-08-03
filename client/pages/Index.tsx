@@ -6,6 +6,7 @@ import { FeaturedPresentation } from "@/components/FeaturedPresentation";
 import { TestYourself } from "@/components/TestYourself";
 import { AuthModal } from "@/components/AuthModal";
 import { UploadModal } from "@/components/UploadModal";
+import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Plus, TrendingUp, Users, Award, Zap } from "lucide-react";
