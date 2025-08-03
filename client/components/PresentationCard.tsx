@@ -26,17 +26,14 @@ export function PresentationCard({
 }: PresentationCardProps) {
   const specialtyColors: Record<string, string> = {
     "Cardiology": "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20",
-    "Oncology": "bg-specialty-oncology/10 text-specialty-oncology border-specialty-oncology/20",
-    "Neurology": "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20",
+    "Heme/Onc": "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20",
     "Endocrinology": "bg-specialty-endocrinology/10 text-specialty-endocrinology border-specialty-endocrinology/20",
-    "Psychiatry": "bg-specialty-psychiatry/10 text-specialty-psychiatry border-specialty-psychiatry/20",
-    "Surgery": "bg-specialty-surgery/10 text-specialty-surgery border-specialty-surgery/20",
-    "Emergency Medicine": "bg-specialty-emergency/10 text-specialty-emergency border-specialty-emergency/20",
-    "Internal Medicine": "bg-specialty-internal/10 text-specialty-internal border-specialty-internal/20",
-    "Pediatrics": "bg-specialty-pediatrics/10 text-specialty-pediatrics border-specialty-pediatrics/20",
-    "Dermatology": "bg-specialty-dermatology/10 text-specialty-dermatology border-specialty-dermatology/20",
-    "Orthopedics": "bg-specialty-orthopedics/10 text-specialty-orthopedics border-specialty-orthopedics/20",
-    "Radiology": "bg-specialty-radiology/10 text-specialty-radiology border-specialty-radiology/20",
+    "General Internal Medicine": "bg-specialty-generalinternal/10 text-specialty-generalinternal border-specialty-generalinternal/20",
+    "Pulmonary/Critical Care": "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20",
+    "Infectious Disease": "bg-specialty-infectious/10 text-specialty-infectious border-specialty-infectious/20",
+    "Rheumatology": "bg-specialty-rheumatology/10 text-specialty-rheumatology border-specialty-rheumatology/20",
+    "Nephrology": "bg-specialty-nephrology/10 text-specialty-nephrology border-specialty-nephrology/20",
+    "Gastroenterology": "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20",
   };
 
   return (
