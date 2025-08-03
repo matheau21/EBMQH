@@ -140,7 +140,7 @@ const specialties = [
   "Infectious Disease",
   "Rheumatology",
   "Nephrology",
-  "Gastroenterology & Hepatology",
+  "Gastroenterology/Hepatology",
 ];
 
 export default function Index() {
