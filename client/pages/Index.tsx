@@ -257,16 +257,16 @@ export default function Index() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 bg-white border-b border-gray-200">
+      <section className="py-12 bg-gradient-to-r from-gray-50 to-ucla-gold/5 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center max-w-4xl mx-auto">
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <div className="text-3xl font-bold text-ucla-blue mb-2">{presentations.length}</div>
-              <div className="text-blue-600">Trial Summaries</div>
+            <div className="bg-white border-2 border-ucla-gold/20 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:border-ucla-gold/40">
+              <div className="text-4xl font-bold text-ucla-blue mb-2">{presentations.length}</div>
+              <div className="text-ucla-gold font-semibold">Trial Summaries</div>
             </div>
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <div className="text-3xl font-bold text-ucla-blue mb-2">{specialties.length}</div>
-              <div className="text-blue-600">Medical Specialties</div>
+            <div className="bg-white border-2 border-ucla-gold/20 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:border-ucla-gold/40">
+              <div className="text-4xl font-bold text-ucla-blue mb-2">{specialties.length}</div>
+              <div className="text-ucla-gold font-semibold">Medical Specialties</div>
             </div>
           </div>
         </div>
