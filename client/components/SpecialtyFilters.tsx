@@ -75,26 +75,30 @@ const specialtyConfig = [
 
 export function SpecialtyFilters({ selectedSpecialties, onSpecialtyToggle }: SpecialtyFiltersProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter by Specialty</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+    <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-8 shadow-lg">
+      <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Filter by Specialty</h3>
+      <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
         {specialtyConfig.map((specialty) => {
           const Icon = specialty.icon;
           const isSelected = selectedSpecialties.includes(specialty.name);
-          
+
           return (
-            <Badge
+            <div
               key={specialty.name}
-              variant="outline"
               className={`
-                h-20 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-200 text-center p-3
-                ${isSelected ? specialty.activeColor : specialty.color}
+                aspect-square flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-300 text-center p-4 rounded-xl border-2
+                ${isSelected
+                  ? `${specialty.activeColor} shadow-lg transform scale-105`
+                  : `${specialty.color} hover:shadow-md hover:scale-102`
+                }
               `}
               onClick={() => onSpecialtyToggle(specialty.name)}
             >
-              <Icon className="h-6 w-6" />
+              <div className="w-12 h-12">
+                <Icon />
+              </div>
               <span className="text-xs font-medium leading-tight">{specialty.name}</span>
-            </Badge>
+            </div>
           );
         })}
       </div>
