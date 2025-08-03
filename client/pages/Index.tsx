@@ -198,8 +198,13 @@ export default function Index() {
       journal: data.journalSource,
       year: new Date().getFullYear().toString(),
     };
-    
+
     setPresentations(prev => [newPresentation, ...prev]);
+  };
+
+  const handleFeaturedUpload = (data: FeaturedPresentationData) => {
+    console.log("Featured presentation uploaded:", data);
+    // Handle featured presentation upload logic here
   };
 
   return (
