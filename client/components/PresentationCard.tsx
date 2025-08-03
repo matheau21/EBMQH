@@ -84,7 +84,7 @@ export function PresentationCard({
 
         <Button
           onClick={onViewSummary}
-          className="w-full bg-olive-600 hover:bg-olive-700 text-white group-hover:bg-olive-700 transition-all duration-300"
+          className="w-full bg-ucla-blue hover:bg-blue-700 text-white group-hover:bg-blue-700 transition-all duration-300"
         >
           <Eye className="h-4 w-4 mr-2" />
           View Summary
