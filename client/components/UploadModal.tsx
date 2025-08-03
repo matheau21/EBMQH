@@ -330,6 +330,46 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
             />
           </div>
 
+          {/* Original Article PDF */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Original Article PDF
+            </Label>
+            <div className="flex items-center gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => originalArticleInputRef.current?.click()}
+                className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                Choose Article PDF
+              </Button>
+              {formData.originalArticle && (
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span className="text-sm text-green-800">{formData.originalArticle.name}</span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={removeOriginalArticle}
+                    className="h-6 w-6 text-gray-500 hover:text-red-600"
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              )}
+            </div>
+            <input
+              ref={originalArticleInputRef}
+              type="file"
+              accept=".pdf"
+              onChange={handleOriginalArticleSelect}
+              className="hidden"
+            />
+          </div>
+
           {/* Optional Thumbnail */}
           <div className="space-y-2">
             <Label className="text-sm font-medium">
@@ -340,7 +380,7 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
                 type="button"
                 variant="outline"
                 onClick={() => thumbnailInputRef.current?.click()}
-                className="border-olive-500 text-olive-600 hover:bg-olive-50"
+                className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
               >
                 <Image className="h-4 w-4 mr-2" />
                 Choose Thumbnail
