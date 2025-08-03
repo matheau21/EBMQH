@@ -70,7 +70,7 @@ export function PresentationCard({
           )}
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-ucla-blue transition-colors">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-olive-700 transition-colors">
           {title}
         </h3>
         
