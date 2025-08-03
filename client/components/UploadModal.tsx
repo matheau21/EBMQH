@@ -76,6 +76,7 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const originalArticleInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
