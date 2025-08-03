@@ -24,16 +24,10 @@ const specialtyConfig = [
     activeColor: "bg-specialty-cardiology text-white border-specialty-cardiology"
   },
   {
-    name: "Oncology", 
+    name: "Heme/Onc",
     icon: Zap,
-    color: "bg-specialty-oncology/10 text-specialty-oncology border-specialty-oncology/20 hover:bg-specialty-oncology/20",
-    activeColor: "bg-specialty-oncology text-white border-specialty-oncology"
-  },
-  {
-    name: "Neurology",
-    icon: Brain,
-    color: "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20 hover:bg-specialty-neurology/20",
-    activeColor: "bg-specialty-neurology text-white border-specialty-neurology"
+    color: "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20 hover:bg-specialty-hemeonc/20",
+    activeColor: "bg-specialty-hemeonc text-white border-specialty-hemeonc"
   },
   {
     name: "Endocrinology",
@@ -42,52 +36,40 @@ const specialtyConfig = [
     activeColor: "bg-specialty-endocrinology text-white border-specialty-endocrinology"
   },
   {
-    name: "Psychiatry",
-    icon: Users,
-    color: "bg-specialty-psychiatry/10 text-specialty-psychiatry border-specialty-psychiatry/20 hover:bg-specialty-psychiatry/20",
-    activeColor: "bg-specialty-psychiatry text-white border-specialty-psychiatry"
-  },
-  {
-    name: "Surgery",
-    icon: Scissors,
-    color: "bg-specialty-surgery/10 text-specialty-surgery border-specialty-surgery/20 hover:bg-specialty-surgery/20",
-    activeColor: "bg-specialty-surgery text-white border-specialty-surgery"
-  },
-  {
-    name: "Emergency Medicine",
-    icon: Zap,
-    color: "bg-specialty-emergency/10 text-specialty-emergency border-specialty-emergency/20 hover:bg-specialty-emergency/20",
-    activeColor: "bg-specialty-emergency text-white border-specialty-emergency"
-  },
-  {
-    name: "Internal Medicine",
+    name: "General Internal Medicine",
     icon: Stethoscope,
-    color: "bg-specialty-internal/10 text-specialty-internal border-specialty-internal/20 hover:bg-specialty-internal/20",
-    activeColor: "bg-specialty-internal text-white border-specialty-internal"
+    color: "bg-specialty-generalinternal/10 text-specialty-generalinternal border-specialty-generalinternal/20 hover:bg-specialty-generalinternal/20",
+    activeColor: "bg-specialty-generalinternal text-white border-specialty-generalinternal"
   },
   {
-    name: "Pediatrics",
-    icon: Baby,
-    color: "bg-specialty-pediatrics/10 text-specialty-pediatrics border-specialty-pediatrics/20 hover:bg-specialty-pediatrics/20",
-    activeColor: "bg-specialty-pediatrics text-white border-specialty-pediatrics"
+    name: "Pulmonary/Critical Care",
+    icon: Wind,
+    color: "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20 hover:bg-specialty-pulmonarycritical/20",
+    activeColor: "bg-specialty-pulmonarycritical text-white border-specialty-pulmonarycritical"
   },
   {
-    name: "Dermatology",
-    icon: ShieldCheck,
-    color: "bg-specialty-dermatology/10 text-specialty-dermatology border-specialty-dermatology/20 hover:bg-specialty-dermatology/20",
-    activeColor: "bg-specialty-dermatology text-white border-specialty-dermatology"
+    name: "Infectious Disease",
+    icon: Shield,
+    color: "bg-specialty-infectious/10 text-specialty-infectious border-specialty-infectious/20 hover:bg-specialty-infectious/20",
+    activeColor: "bg-specialty-infectious text-white border-specialty-infectious"
   },
   {
-    name: "Orthopedics",
-    icon: Bone,
-    color: "bg-specialty-orthopedics/10 text-specialty-orthopedics border-specialty-orthopedics/20 hover:bg-specialty-orthopedics/20",
-    activeColor: "bg-specialty-orthopedics text-white border-specialty-orthopedics"
+    name: "Rheumatology",
+    icon: Activity,
+    color: "bg-specialty-rheumatology/10 text-specialty-rheumatology border-specialty-rheumatology/20 hover:bg-specialty-rheumatology/20",
+    activeColor: "bg-specialty-rheumatology text-white border-specialty-rheumatology"
   },
   {
-    name: "Radiology",
-    icon: ScanLine,
-    color: "bg-specialty-radiology/10 text-specialty-radiology border-specialty-radiology/20 hover:bg-specialty-radiology/20",
-    activeColor: "bg-specialty-radiology text-white border-specialty-radiology"
+    name: "Nephrology",
+    icon: Droplets,
+    color: "bg-specialty-nephrology/10 text-specialty-nephrology border-specialty-nephrology/20 hover:bg-specialty-nephrology/20",
+    activeColor: "bg-specialty-nephrology text-white border-specialty-nephrology"
+  },
+  {
+    name: "Gastroenterology",
+    icon: Utensils,
+    color: "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20 hover:bg-specialty-gastroenterology/20",
+    activeColor: "bg-specialty-gastroenterology text-white border-specialty-gastroenterology"
   },
 ];
 
