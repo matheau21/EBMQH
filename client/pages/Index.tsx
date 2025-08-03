@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { PresentationCard } from "@/components/PresentationCard";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
 import { SpecialtyFilters } from "@/components/SpecialtyFilters";
+import { FeaturedUpload } from "@/components/FeaturedUpload";
 import { AuthModal } from "@/components/AuthModal";
 import { UploadModal } from "@/components/UploadModal";
 import { Button } from "@/components/ui/button";
