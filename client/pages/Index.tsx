@@ -3,6 +3,7 @@ import { PresentationCard } from "@/components/PresentationCard";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
 import { SpecialtyFilters } from "@/components/SpecialtyFilters";
 import { FeaturedPresentation } from "@/components/FeaturedPresentation";
+import { TestYourself } from "@/components/TestYourself";
 import { AuthModal } from "@/components/AuthModal";
 import { UploadModal } from "@/components/UploadModal";
 import { Button } from "@/components/ui/button";
