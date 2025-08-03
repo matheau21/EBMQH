@@ -64,8 +64,8 @@ export function PresentationCard({
               />
             </div>
           ) : (
-            <div className="w-full h-32 bg-gradient-to-br from-ucla-blue/10 to-ucla-gold/10 rounded-lg flex items-center justify-center mb-4">
-              <FileText className="h-12 w-12 text-ucla-blue/40" />
+            <div className="w-full h-32 bg-gradient-to-br from-olive-100 to-olive-200 rounded-lg flex items-center justify-center mb-4">
+              <FileText className="h-12 w-12 text-olive-600/60" />
             </div>
           )}
         </div>
