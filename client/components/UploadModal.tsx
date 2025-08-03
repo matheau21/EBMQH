@@ -70,6 +70,7 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
     subspecialty: "",
     journalSource: "",
     file: null,
+    originalArticle: null,
     thumbnail: null,
   });
   const [isDragOver, setIsDragOver] = useState(false);
