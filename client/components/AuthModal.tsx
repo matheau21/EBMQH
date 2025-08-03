@@ -66,7 +66,7 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
               required
-              className="focus:border-olive-500 focus:ring-olive-500"
+              className="focus:border-ucla-blue focus:ring-ucla-blue"
             />
           </div>
           
