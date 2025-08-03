@@ -329,18 +329,26 @@ export default function Index() {
             <p className="text-gray-600 mb-4">
               Try adjusting your search criteria or browse all presentations
             </p>
-            <Button 
+            <Button
               variant="outline"
               onClick={() => {
                 setSearchQuery("");
                 setSelectedSpecialties([]);
               }}
-              className="border-olive-500 text-olive-600 hover:bg-olive-50"
+              className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
             >
               Show All Presentations
             </Button>
           </div>
         )}
+
+        {/* Specialty Filter Tags - Moved to Bottom */}
+        <div className="mt-16 pt-12 border-t border-gray-200">
+          <SpecialtyFilters
+            selectedSpecialties={selectedSpecialties}
+            onSpecialtyToggle={handleSpecialtyToggle}
+          />
+        </div>
       </main>
 
       {/* Footer */}
