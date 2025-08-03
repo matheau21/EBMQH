@@ -42,7 +42,7 @@ export function PresentationCard({
         <div className="flex items-start justify-between mb-4">
           <Badge 
             variant="outline" 
-            className={`${specialtyColors[specialty] || specialtyColors["Internal Medicine"]} font-medium`}
+            className={`${specialtyColors[specialty] || specialtyColors["General Internal Medicine"]} font-medium`}
           >
             {specialty}
           </Badge>
