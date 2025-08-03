@@ -115,7 +115,7 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
             </Button>
             <Button
               type="submit"
-              className="bg-olive-600 hover:bg-olive-700"
+              className="bg-ucla-blue hover:bg-blue-700"
               disabled={isLoading}
             >
               {isLoading ? "Authenticating..." : "Sign In"}
