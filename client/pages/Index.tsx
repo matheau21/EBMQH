@@ -228,21 +228,21 @@ export default function Index() {
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Clinical Pearls from Landmark Trials
             </h1>
-            <p className="text-xl md:text-2xl text-olive-100 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
               Curated for Residents — Visual, digestible summaries of landmark clinical trials to enhance your medical education
             </p>
-            
+
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <TrendingUp className="h-5 w-5 text-olive-200" />
+                <TrendingUp className="h-5 w-5 text-ucla-gold" />
                 <span>Latest Research</span>
               </div>
               <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <Users className="h-5 w-5 text-olive-200" />
+                <Users className="h-5 w-5 text-ucla-gold" />
                 <span>Peer Reviewed</span>
               </div>
               <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <Award className="h-5 w-5 text-olive-200" />
+                <Award className="h-5 w-5 text-ucla-gold" />
                 <span>Evidence-Based</span>
               </div>
             </div>
