@@ -107,7 +107,7 @@ export function SpecialtyFilters({
       <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
         Explore Trial by Subspecialty
       </h3>
-      <div className="grid grid-cols-3 gap-3 max-w-4xl mx-auto">
+      <div className="grid grid-cols-5 gap-3 max-w-6xl mx-auto">
         {specialtyConfig.map((specialty) => {
           const Icon = specialty.icon;
           const isSelected = selectedSpecialties.includes(specialty.name);
