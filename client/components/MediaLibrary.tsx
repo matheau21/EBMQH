@@ -36,7 +36,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface MediaFile {
+export interface MediaFile {
   id: string;
   filename: string;
   originalName: string;
