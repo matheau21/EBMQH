@@ -74,6 +74,8 @@ const getSpecialtyIcon = (specialty: string) => {
       return ModernNephrologyIcon;
     case "Gastroenterology/Hepatology":
       return ModernGastroenterologyIcon;
+    case "Neurology":
+      return ModernNeurologyIcon;
     default:
       return null;
   }
