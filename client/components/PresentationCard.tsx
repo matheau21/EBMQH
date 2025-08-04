@@ -86,13 +86,32 @@ export function PresentationCard({
           </div>
         )}
 
-        <Button
-          onClick={onViewSummary}
-          className="w-full bg-ucla-blue hover:bg-blue-700 text-white group-hover:bg-blue-700 transition-all duration-300"
-        >
-          <Eye className="h-4 w-4 mr-2" />
-          View Summary
-        </Button>
+        <div className="flex flex-col gap-2">
+          <Button
+            onClick={() => {
+              if (presentationFileUrl) {
+                window.open(presentationFileUrl, '_blank');
+              } else {
+                onViewSummary();
+              }
+            }}
+            className="w-full bg-ucla-blue hover:bg-blue-700 text-white group-hover:bg-blue-700 transition-all duration-300"
+          >
+            <Eye className="h-4 w-4 mr-2" />
+            View Summary
+          </Button>
+
+          {originalArticleUrl && (
+            <Button
+              onClick={() => window.open(originalArticleUrl, '_blank')}
+              variant="outline"
+              className="w-full border-ucla-blue text-ucla-blue hover:bg-blue-50 transition-all duration-300"
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              Original Article
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
