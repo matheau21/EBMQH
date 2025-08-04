@@ -10,6 +10,7 @@ import { usePublish } from "@/contexts/PublishContext";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { EBMLogo } from "@/components/EBMLogo";
+import { addPresentationFilesToMediaLibrary } from "@/lib/mediaLibraryUtils";
 import { Link } from "react-router-dom";
 
 interface Presentation {
