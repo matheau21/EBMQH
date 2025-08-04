@@ -190,7 +190,7 @@ export function MediaLibrary({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={!!isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-6xl w-[95vw] h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="flex items-center gap-2">
