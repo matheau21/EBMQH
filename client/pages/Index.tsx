@@ -164,13 +164,11 @@ const specialties = [
   "Heme/Onc",
   "Endocrinology",
   "General Internal Medicine",
-  "Pulmonary 
-  Critical Care",
+  "Pulmonary Critical Care",
   "Infectious Disease",
   "Rheumatology",
   "Nephrology",
-  "Gastroenterology
-  Hepatology",
+  "Gastroenterology Hepatology",
   "Neurology",
 ];
 
