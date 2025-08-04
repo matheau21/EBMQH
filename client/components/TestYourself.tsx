@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Brain, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function TestYourself() {
+  const navigate = useNavigate();
+
   const handleQuizClick = () => {
-    console.log("Quick Quiz clicked");
-    // Navigate to quiz page
+    navigate("/coming-soon");
   };
 
   return (
