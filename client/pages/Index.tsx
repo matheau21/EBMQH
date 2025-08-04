@@ -479,14 +479,14 @@ export default function Index() {
       </section>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Featured Presentation Section */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16">
           <FeaturedPresentation />
         </div>
 
         {/* Specialty Filter Tags */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16">
           <SpecialtyFilters
             selectedSpecialties={selectedSpecialties}
             onSpecialtyToggle={handleSpecialtyToggle}
