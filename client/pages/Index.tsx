@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { PresentationCard } from "@/components/PresentationCard";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
 import { SpecialtyFilters } from "@/components/SpecialtyFilters";
@@ -24,6 +24,8 @@ interface Presentation {
   year?: string;
   thumbnail?: string;
   viewerCount?: number;
+  presentationFileUrl?: string;
+  originalArticleUrl?: string;
 }
 
 interface PresentationData {
@@ -175,7 +177,33 @@ export default function Index() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [presentations, setPresentations] = useState(mockPresentations);
+  const [presentations, setPresentations] = useState<Presentation[]>([]);
+
+  // Load presentations from localStorage on mount
+  useEffect(() => {
+    const savedPresentations = localStorage.getItem('ebm-presentations');
+    if (savedPresentations) {
+      try {
+        const parsed = JSON.parse(savedPresentations);
+        setPresentations([...mockPresentations, ...parsed]);
+      } catch (error) {
+        console.error('Error loading presentations:', error);
+        setPresentations(mockPresentations);
+      }
+    } else {
+      setPresentations(mockPresentations);
+    }
+  }, []);
+
+  // Save presentations to localStorage whenever presentations change
+  useEffect(() => {
+    const customPresentations = presentations.filter(p =>
+      !mockPresentations.find(mock => mock.id === p.id)
+    );
+    if (customPresentations.length > 0) {
+      localStorage.setItem('ebm-presentations', JSON.stringify(customPresentations));
+    }
+  }, [presentations]);
 
   const filteredPresentations = useMemo(() => {
     if (selectedSpecialties.length === 0) {
@@ -255,13 +283,22 @@ export default function Index() {
   };
 
   const handlePresentationSubmit = (data: PresentationData) => {
+    // Create file URLs for uploaded files
+    const presentationFileUrl = data.file ? URL.createObjectURL(data.file) : undefined;
+    const originalArticleUrl = data.originalArticle ? URL.createObjectURL(data.originalArticle) : undefined;
+    const thumbnailUrl = data.thumbnail ? URL.createObjectURL(data.thumbnail) : undefined;
+
     const newPresentation: Presentation = {
-      id: String(presentations.length + 1),
+      id: String(Date.now()),
       title: data.trialName,
       specialty: data.subspecialty[0] || "General Internal Medicine", // Use first specialty as primary
       summary: data.briefDescription,
       journal: data.journalSource,
       year: new Date().getFullYear().toString(),
+      viewerCount: 0,
+      thumbnail: thumbnailUrl,
+      presentationFileUrl,
+      originalArticleUrl,
     };
 
     setPresentations((prev) => [newPresentation, ...prev]);
