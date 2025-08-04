@@ -343,14 +343,10 @@ export default function Index() {
       {/* Stats Section */}
       <section className="py-12 bg-gradient-to-r from-gray-50 to-ucla-gold/5 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center max-w-4xl mx-auto">
-            <div className="bg-white border-2 border-ucla-gold/20 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:border-ucla-gold/40">
-              <div className="text-4xl font-bold text-ucla-blue mb-2">{presentations.length}</div>
-              <div className="text-ucla-gold font-semibold">Trial Summaries</div>
-            </div>
-            <div className="bg-white border-2 border-ucla-gold/20 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:border-ucla-gold/40">
-              <div className="text-4xl font-bold text-ucla-blue mb-2">{specialties.length}</div>
-              <div className="text-ucla-gold font-semibold">Medical Specialties</div>
+          <div className="flex justify-center">
+            <div className="bg-white border-2 border-ucla-gold/20 p-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:border-ucla-gold/40 w-full max-w-2xl text-center">
+              <div className="text-6xl font-bold text-ucla-blue mb-4">{presentations.length}</div>
+              <div className="text-ucla-gold font-semibold text-xl">Trial Summaries</div>
             </div>
           </div>
         </div>
