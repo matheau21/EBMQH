@@ -10,7 +10,8 @@ import { AdminToggleButton } from "@/components/AdminToggleButton";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Plus, Users, Award, Zap } from "lucide-react";
+import { BookOpen, Plus, Users, Award } from "lucide-react";
+import { EBMLogo } from "@/components/EBMLogo";
 import { Link } from "react-router-dom";
 
 interface Presentation {
@@ -263,9 +264,7 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-ucla-blue to-blue-700 rounded-lg flex items-center justify-center shadow-lg">
-                <Zap className="h-6 w-6 text-white" />
-              </div>
+              <EBMLogo size="md" className="shadow-lg" />
               <div>
                 <h1 className="text-xl font-bold text-ucla-blue">EBM Quick Hits</h1>
                 <p className="text-xs text-blue-600">Evidence-Based Medicine Made Simple</p>
