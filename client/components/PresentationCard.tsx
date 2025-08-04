@@ -1,7 +1,15 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, Eye } from "lucide-react";
+import { FileText, Eye, Edit3, Trash2, Copy, Star, MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { useAdmin } from "@/contexts/AdminContext";
 import {
   ModernCardiologyIcon,
   ModernHemeOncIcon,
