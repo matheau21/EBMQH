@@ -62,12 +62,12 @@ interface MediaLibraryProps {
 
 const categories = [
   'Medical Articles',
-  'Presentations', 
+  'Presentations',
   'Guidelines',
   'Research Papers',
   'Training Materials',
   'Other'
-];
+].filter(Boolean); // Ensure no null/undefined values
 
 export function MediaLibrary({ 
   isOpen, 
