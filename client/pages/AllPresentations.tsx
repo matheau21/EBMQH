@@ -259,6 +259,43 @@ export default function AllPresentations() {
     console.log("Toggle featured status:", id);
   };
 
+  const handleUploadSubmit = (data: PresentationData) => {
+    if (editingPresentation) {
+      // Update existing presentation
+      const updatedPresentation: Presentation = {
+        ...editingPresentation,
+        title: data.trialName,
+        specialty: data.subspecialty[0] || editingPresentation.specialty,
+        summary: data.briefDescription,
+        journal: data.journalSource,
+        // Convert files to URLs if needed
+        presentationFileUrl: data.file ? URL.createObjectURL(data.file) : editingPresentation.presentationFileUrl,
+        originalArticleUrl: data.originalArticle ? URL.createObjectURL(data.originalArticle) : editingPresentation.originalArticleUrl,
+      };
+
+      setPresentations((prev) =>
+        prev.map((p) => p.id === editingPresentation.id ? updatedPresentation : p)
+      );
+      setEditingPresentation(null);
+    } else {
+      // Add new presentation
+      const newPresentation: Presentation = {
+        id: Date.now().toString(),
+        title: data.trialName,
+        specialty: data.subspecialty[0] || "General Internal Medicine",
+        summary: data.briefDescription,
+        journal: data.journalSource,
+        year: new Date().getFullYear().toString(),
+        viewerCount: 0,
+        presentationFileUrl: data.file ? URL.createObjectURL(data.file) : undefined,
+        originalArticleUrl: data.originalArticle ? URL.createObjectURL(data.originalArticle) : undefined,
+      };
+
+      setPresentations((prev) => [newPresentation, ...prev]);
+    }
+    setShowUploadModal(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
