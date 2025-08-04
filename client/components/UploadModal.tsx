@@ -430,8 +430,25 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
                 className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
               >
                 <FileText className="h-4 w-4 mr-2" />
-                Choose Article PDF
+                Upload PDF
               </Button>
+              <MediaLibraryButton
+                mode="select"
+                allowedTypes={['pdf']}
+                variant="outline"
+                size="default"
+                onSelectFile={(file) => {
+                  // Create a mock File object from the selected media file
+                  fetch(file.url)
+                    .then(res => res.blob())
+                    .then(blob => {
+                      const mockFile = new File([blob], file.originalName, { type: 'application/pdf' });
+                      setFormData(prev => ({ ...prev, originalArticle: mockFile }));
+                    })
+                    .catch(console.error);
+                }}
+                className="border-ucla-gold text-ucla-gold hover:bg-yellow-50"
+              />
               {formData.originalArticle && (
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600" />
