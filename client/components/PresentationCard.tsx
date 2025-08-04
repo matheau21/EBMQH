@@ -23,6 +23,7 @@ import {
 } from "./ModernMedicalIcons";
 
 interface PresentationCardProps {
+  id: string;
   title: string;
   specialty: string;
   thumbnail?: string;
@@ -33,6 +34,10 @@ interface PresentationCardProps {
   presentationFileUrl?: string;
   originalArticleUrl?: string;
   onViewSummary: () => void;
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
+  onDuplicate?: (id: string) => void;
+  onToggleFeatured?: (id: string) => void;
 }
 
 const getSpecialtyIcon = (specialty: string) => {
