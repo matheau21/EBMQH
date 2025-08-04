@@ -376,6 +376,7 @@ export default function Index() {
                 {filteredPresentations.map((presentation) => (
                   <PresentationCard
                     key={presentation.id}
+                    id={presentation.id}
                     title={presentation.title}
                     specialty={presentation.specialty}
                     summary={presentation.summary}
@@ -384,6 +385,10 @@ export default function Index() {
                     year={presentation.year}
                     thumbnail={presentation.thumbnail}
                     onViewSummary={() => handleViewSummary(presentation.id)}
+                    onEdit={handleEditPresentation}
+                    onDelete={handleDeletePresentation}
+                    onDuplicate={handleDuplicatePresentation}
+                    onToggleFeatured={handleToggleFeatured}
                   />
                 ))}
               </div>
