@@ -69,6 +69,38 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
     }
   };
 
+  const handleOriginalArticleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOriginalArticleDragOver(true);
+  }, []);
+
+  const handleOriginalArticleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOriginalArticleDragOver(false);
+  }, []);
+
+  const handleOriginalArticleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOriginalArticleDragOver(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    const validFile = files.find((file) => file.type === "application/pdf");
+
+    if (validFile) {
+      setFormData((prev) => ({ ...prev, originalArticleFile: validFile }));
+    }
+  }, []);
+
+  const handleOriginalArticleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, originalArticleFile: file }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
