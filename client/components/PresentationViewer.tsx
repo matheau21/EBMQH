@@ -30,6 +30,11 @@ export function PresentationViewer({
   };
 
   const getEmbedUrl = (url: string) => {
+    // Check if it's a blob URL (locally uploaded file)
+    if (url.startsWith('blob:')) {
+      return url; // Use directly for local files
+    }
+
     if (type === "presentation") {
       // For PowerPoint files, we'll use Microsoft Office Online viewer
       return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
