@@ -268,24 +268,38 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
           {/* Subspecialty */}
           <div className="space-y-2">
             <Label className="text-sm font-medium">
-              Subspecialty *
+              Subspecialties * (Select all that apply)
             </Label>
-            <Select
-              value={formData.subspecialty}
-              onValueChange={(value) => setFormData(prev => ({ ...prev, subspecialty: value }))}
-              required
-            >
-              <SelectTrigger className="focus:border-olive-500 focus:ring-olive-500">
-                <SelectValue placeholder="Select a medical subspecialty" />
-              </SelectTrigger>
-              <SelectContent>
-                {subspecialties.map((specialty) => (
-                  <SelectItem key={specialty} value={specialty}>
-                    {specialty}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="grid grid-cols-2 gap-2 p-4 border rounded-lg">
+              {subspecialties.map((specialty) => (
+                <label key={specialty} className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.subspecialty.includes(specialty)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setFormData(prev => ({
+                          ...prev,
+                          subspecialty: [...prev.subspecialty, specialty]
+                        }));
+                      } else {
+                        setFormData(prev => ({
+                          ...prev,
+                          subspecialty: prev.subspecialty.filter(s => s !== specialty)
+                        }));
+                      }
+                    }}
+                    className="rounded border-ucla-blue text-ucla-blue focus:ring-ucla-blue"
+                  />
+                  <span className="text-sm">{specialty}</span>
+                </label>
+              ))}
+            </div>
+            {formData.subspecialty.length > 0 && (
+              <p className="text-sm text-ucla-blue">
+                Selected: {formData.subspecialty.join(", ")}
+              </p>
+            )}
           </div>
 
           {/* Journal Source */}
