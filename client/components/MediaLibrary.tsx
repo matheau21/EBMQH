@@ -353,13 +353,13 @@ export function MediaLibrary({
 
               <div>
                 <Label htmlFor="category">Category</Label>
-                <Select value={uploadCategory} onValueChange={setUploadCategory}>
+                <Select value={uploadCategory || ""} onValueChange={setUploadCategory}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map(category => (
-                      <SelectItem key={category} value={category}>
+                    {categories.filter(Boolean).map((category, index) => (
+                      <SelectItem key={`upload-category-${index}-${category}`} value={category}>
                         {category}
                       </SelectItem>
                     ))}
