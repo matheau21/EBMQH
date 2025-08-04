@@ -27,6 +27,31 @@ interface PresentationCardProps {
   onViewSummary: () => void;
 }
 
+const getSpecialtyIcon = (specialty: string) => {
+  switch (specialty) {
+    case "Cardiology":
+      return ModernCardiologyIcon;
+    case "Heme/Onc":
+      return ModernHemeOncIcon;
+    case "Endocrinology":
+      return ModernEndocrinologyIcon;
+    case "General Internal Medicine":
+      return ModernGeneralInternalIcon;
+    case "Pulmonary/Critical Care":
+      return ModernPulmonaryCriticalIcon;
+    case "Infectious Disease":
+      return ModernInfectiousIcon;
+    case "Rheumatology":
+      return ModernRheumatologyIcon;
+    case "Nephrology":
+      return ModernNephrologyIcon;
+    case "Gastroenterology/Hepatology":
+      return ModernGastroenterologyIcon;
+    default:
+      return null;
+  }
+};
+
 export function PresentationCard({
   title,
   specialty,
