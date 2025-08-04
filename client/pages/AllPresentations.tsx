@@ -3,6 +3,7 @@ import { PresentationCard } from "@/components/PresentationCard";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
 import { SpecialtyFilters } from "@/components/SpecialtyFilters";
 import { AdminToggleButton } from "@/components/AdminToggleButton";
+import { UploadModal } from "@/components/UploadModal";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
