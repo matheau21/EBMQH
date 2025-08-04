@@ -57,16 +57,20 @@ export const ModernEndocrinologyIcon = () => (
 
 export const ModernGeneralInternalIcon = () => (
   <svg viewBox="0 0 60 60" className="w-full h-full">
-    {/* Modern stethoscope design */}
-    <circle cx="25" cy="20" r="6" fill="none" stroke="currentColor" strokeWidth="2.5"/>
-    <circle cx="35" cy="20" r="6" fill="none" stroke="currentColor" strokeWidth="2.5"/>
-    
-    {/* Simplified tubes */}
-    <path d="M25 26 Q20 35 25 45" stroke="currentColor" strokeWidth="2.5" fill="none"/>
-    <path d="M35 26 Q40 35 35 45" stroke="currentColor" strokeWidth="2.5" fill="none"/>
-    
-    {/* Modern chest piece */}
-    <circle cx="30" cy="45" r="6" fill="currentColor" opacity="0.8"/>
+    {/* Stethoscope earpieces */}
+    <circle cx="20" cy="15" r="4" fill="currentColor" opacity="0.8"/>
+    <circle cx="40" cy="15" r="4" fill="currentColor" opacity="0.8"/>
+
+    {/* Stethoscope tubing */}
+    <path d="M20 19 Q15 25 15 35 Q15 45 25 50" stroke="currentColor" strokeWidth="3" fill="none"/>
+    <path d="M40 19 Q45 25 45 35 Q45 45 35 50" stroke="currentColor" strokeWidth="3" fill="none"/>
+
+    {/* Chest piece (diaphragm) */}
+    <circle cx="30" cy="50" r="8" fill="currentColor" opacity="0.9"/>
+    <circle cx="30" cy="50" r="5" fill="none" stroke="white" strokeWidth="1.5"/>
+
+    {/* Binaurals (headset connector) */}
+    <path d="M20 15 Q30 10 40 15" stroke="currentColor" strokeWidth="2" fill="none"/>
   </svg>
 );
 
