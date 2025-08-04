@@ -56,33 +56,53 @@ export const ModernHemeOncIcon = () => (
 
 export const ModernEndocrinologyIcon = () => (
   <svg viewBox="0 0 60 60" className="w-full h-full">
-    {/* Abstract endocrine gland */}
-    <ellipse cx="30" cy="25" rx="10" ry="8" fill="currentColor" opacity="0.7" />
+    {/* Thyroid right lobe */}
+    <ellipse
+      cx="35"
+      cy="28"
+      rx="8"
+      ry="12"
+      fill="currentColor"
+      opacity="0.7"
+    />
 
-    {/* Hormone flow visualization */}
-    <circle cx="20" cy="40" r="2" fill="currentColor" opacity="0.5" />
-    <circle cx="30" cy="45" r="2" fill="currentColor" opacity="0.5" />
-    <circle cx="40" cy="40" r="2" fill="currentColor" opacity="0.5" />
+    {/* Thyroid left lobe */}
+    <ellipse
+      cx="25"
+      cy="28"
+      rx="8"
+      ry="12"
+      fill="currentColor"
+      opacity="0.7"
+    />
 
-    {/* Flow lines */}
+    {/* Thyroid isthmus (connecting bridge) */}
+    <rect
+      x="25"
+      y="26"
+      width="10"
+      height="4"
+      rx="2"
+      fill="currentColor"
+      opacity="0.8"
+    />
+
+    {/* Thyroid cartilage outline */}
     <path
-      d="M30 33 L20 40"
+      d="M22 15 Q30 12 38 15 Q40 18 38 22 Q35 20 30 20 Q25 20 22 22 Q20 18 22 15"
       stroke="currentColor"
       strokeWidth="1.5"
+      fill="none"
       opacity="0.6"
     />
-    <path
-      d="M30 33 L30 43"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      opacity="0.6"
-    />
-    <path
-      d="M30 33 L40 40"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      opacity="0.6"
-    />
+
+    {/* Hormone release points */}
+    <circle cx="25" cy="42" r="1.5" fill="currentColor" opacity="0.9"/>
+    <circle cx="35" cy="42" r="1.5" fill="currentColor" opacity="0.9"/>
+    <circle cx="30" cy="45" r="1" fill="currentColor" opacity="0.8"/>
+
+    {/* Hormone flow lines */}
+    <path d="M25 42 Q30 47 35 42" stroke="currentColor" strokeWidth="1" opacity="0.6" fill="none"/>
   </svg>
 );
 
