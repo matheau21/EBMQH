@@ -156,13 +156,13 @@ export default function AllPresentations() {
 
   // Load presentations from localStorage on mount
   useEffect(() => {
-    const savedPresentations = localStorage.getItem('ebm-presentations');
+    const savedPresentations = localStorage.getItem("ebm-presentations");
     if (savedPresentations) {
       try {
         const parsed = JSON.parse(savedPresentations);
         setPresentations([...mockPresentations, ...parsed]);
       } catch (error) {
-        console.error('Error loading presentations:', error);
+        console.error("Error loading presentations:", error);
         setPresentations(mockPresentations);
       }
     } else {
@@ -172,11 +172,14 @@ export default function AllPresentations() {
 
   // Save presentations to localStorage whenever presentations change
   useEffect(() => {
-    const customPresentations = presentations.filter(p =>
-      !mockPresentations.find(mock => mock.id === p.id)
+    const customPresentations = presentations.filter(
+      (p) => !mockPresentations.find((mock) => mock.id === p.id),
     );
     if (customPresentations.length > 0) {
-      localStorage.setItem('ebm-presentations', JSON.stringify(customPresentations));
+      localStorage.setItem(
+        "ebm-presentations",
+        JSON.stringify(customPresentations),
+      );
     }
   }, [presentations]);
 

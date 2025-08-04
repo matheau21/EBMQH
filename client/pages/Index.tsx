@@ -181,13 +181,13 @@ export default function Index() {
 
   // Load presentations from localStorage on mount
   useEffect(() => {
-    const savedPresentations = localStorage.getItem('ebm-presentations');
+    const savedPresentations = localStorage.getItem("ebm-presentations");
     if (savedPresentations) {
       try {
         const parsed = JSON.parse(savedPresentations);
         setPresentations([...mockPresentations, ...parsed]);
       } catch (error) {
-        console.error('Error loading presentations:', error);
+        console.error("Error loading presentations:", error);
         setPresentations(mockPresentations);
       }
     } else {
@@ -197,11 +197,14 @@ export default function Index() {
 
   // Save presentations to localStorage whenever presentations change
   useEffect(() => {
-    const customPresentations = presentations.filter(p =>
-      !mockPresentations.find(mock => mock.id === p.id)
+    const customPresentations = presentations.filter(
+      (p) => !mockPresentations.find((mock) => mock.id === p.id),
     );
     if (customPresentations.length > 0) {
-      localStorage.setItem('ebm-presentations', JSON.stringify(customPresentations));
+      localStorage.setItem(
+        "ebm-presentations",
+        JSON.stringify(customPresentations),
+      );
     }
   }, [presentations]);
 
@@ -265,7 +268,7 @@ export default function Index() {
   };
 
   const handleToggleFeatured = (id: string) => {
-    const presentation = presentations.find(p => p.id === id);
+    const presentation = presentations.find((p) => p.id === id);
     if (presentation && presentation.presentationFileUrl) {
       // Convert the presentation to featured format
       const featuredData = {
@@ -277,13 +280,18 @@ export default function Index() {
       };
 
       // Save to featured presentation localStorage
-      localStorage.setItem('ebm-featured-presentation', JSON.stringify({
-        ...featuredData,
-        fileUrl: presentation.presentationFileUrl,
-      }));
+      localStorage.setItem(
+        "ebm-featured-presentation",
+        JSON.stringify({
+          ...featuredData,
+          fileUrl: presentation.presentationFileUrl,
+        }),
+      );
 
       console.log("Featured presentation set:", presentation.title);
-      alert(`"${presentation.title}" has been set as the featured presentation!`);
+      alert(
+        `"${presentation.title}" has been set as the featured presentation!`,
+      );
     } else {
       alert("This presentation doesn't have a file to feature.");
     }
@@ -304,9 +312,15 @@ export default function Index() {
 
   const handlePresentationSubmit = (data: PresentationData) => {
     // Create file URLs for uploaded files
-    const presentationFileUrl = data.file ? URL.createObjectURL(data.file) : undefined;
-    const originalArticleUrl = data.originalArticle ? URL.createObjectURL(data.originalArticle) : undefined;
-    const thumbnailUrl = data.thumbnail ? URL.createObjectURL(data.thumbnail) : undefined;
+    const presentationFileUrl = data.file
+      ? URL.createObjectURL(data.file)
+      : undefined;
+    const originalArticleUrl = data.originalArticle
+      ? URL.createObjectURL(data.originalArticle)
+      : undefined;
+    const thumbnailUrl = data.thumbnail
+      ? URL.createObjectURL(data.thumbnail)
+      : undefined;
 
     const newPresentation: Presentation = {
       id: String(Date.now()),

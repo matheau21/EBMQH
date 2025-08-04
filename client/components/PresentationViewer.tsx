@@ -31,7 +31,7 @@ export function PresentationViewer({
 
   const getEmbedUrl = (url: string) => {
     // Check if it's a blob URL (locally uploaded file)
-    if (url.startsWith('blob:')) {
+    if (url.startsWith("blob:")) {
       return url; // Use directly for local files
     }
 
@@ -93,16 +93,19 @@ export function PresentationViewer({
         <div className="flex-1 bg-gray-100 relative">
           {fileUrl ? (
             // Check if it's a blob URL for PowerPoint - show download option instead
-            (fileUrl.startsWith('blob:') && type === "presentation") ? (
+            fileUrl.startsWith("blob:") && type === "presentation" ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center text-gray-700">
                   <Icon className="h-16 w-16 mx-auto mb-4 text-ucla-blue" />
-                  <h3 className="text-lg font-semibold mb-2">PowerPoint Presentation</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    PowerPoint Presentation
+                  </h3>
                   <p className="text-sm mb-6">
-                    Click the button below to download and view the presentation file.
+                    Click the button below to download and view the presentation
+                    file.
                   </p>
                   <Button
-                    onClick={() => window.open(fileUrl, '_blank')}
+                    onClick={() => window.open(fileUrl, "_blank")}
                     className="bg-ucla-blue hover:bg-blue-700 text-white"
                   >
                     <FileText className="h-4 w-4 mr-2" />
