@@ -35,7 +35,7 @@ export function MediaLibraryButton({
         variant={variant}
         size={size}
         onClick={() => setShowMediaLibrary(true)}
-        className={`${className}`}
+        className={className}
       >
         <FolderOpen className="h-4 w-4 mr-2" />
         Media Library
