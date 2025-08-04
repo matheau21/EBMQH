@@ -365,6 +365,8 @@ export default function Index() {
             {isAdminMode && (
               <div className="flex gap-3">
                 <MediaLibraryButton
+                  allowedTypes={["pdf"]}
+                  mode="manage"
                   variant="outline"
                   className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
                 />
