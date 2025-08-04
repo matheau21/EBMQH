@@ -24,6 +24,8 @@ export function PresentationCard({
   authors,
   journal,
   year,
+  presentationFileUrl,
+  originalArticleUrl,
   onViewSummary,
 }: PresentationCardProps) {
   const specialtyColors: Record<string, string> = {
