@@ -9,6 +9,7 @@ import {
   ModernRheumatologyIcon,
   ModernNephrologyIcon,
   ModernGastroenterologyIcon,
+  ModernNeurologyIcon,
 } from "./ModernMedicalIcons";
 
 interface SpecialtyFiltersProps {
@@ -86,6 +87,14 @@ const specialtyConfig = [
       "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20 hover:bg-specialty-gastroenterology/20",
     activeColor:
       "bg-specialty-gastroenterology text-white border-specialty-gastroenterology",
+  },
+  {
+    name: "Neurology",
+    icon: ModernNeurologyIcon,
+    color:
+      "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20 hover:bg-specialty-neurology/20",
+    activeColor:
+      "bg-specialty-neurology text-white border-specialty-neurology",
   },
 ];
 
