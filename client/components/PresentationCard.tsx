@@ -32,7 +32,7 @@ export function PresentationCard({
     "Pulmonary/Critical Care": "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20",
     "Infectious Disease": "bg-specialty-infectious/10 text-specialty-infectious border-specialty-infectious/20",
     "Rheumatology": "bg-specialty-rheumatology/10 text-specialty-rheumatology border-specialty-rheumatology/20",
-    "Nephrology": "bg-specialty-nephrology/10 text-specialty-nephrology border-specialty-nephrology/20",
+    "Nephrology": "bg-yellow-100 text-yellow-800 border-yellow-200",
     "Gastroenterology/Hepatology": "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20",
   };
 
