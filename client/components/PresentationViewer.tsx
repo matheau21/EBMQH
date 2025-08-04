@@ -52,7 +52,7 @@ export function PresentationViewer({
         className={`${
           isFullscreen
             ? "w-screen h-screen max-w-screen max-h-screen rounded-none p-0"
-            : "sm:max-w-4xl w-full h-[80vh] p-0"
+            : "sm:max-w-5xl w-[95vw] h-[85vh] p-0"
         } overflow-hidden`}
       >
         {/* Header */}
