@@ -394,6 +394,7 @@ export default function Index() {
                     authors={presentation.authors}
                     journal={presentation.journal}
                     year={presentation.year}
+                    viewerCount={presentation.viewerCount}
                     thumbnail={presentation.thumbnail}
                     onViewSummary={() => handleViewSummary(presentation.id)}
                     onEdit={handleEditPresentation}
