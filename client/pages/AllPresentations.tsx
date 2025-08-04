@@ -156,6 +156,24 @@ export default function AllPresentations() {
     console.log("View presentation:", presentationId);
   };
 
+  const handleEditPresentation = (id: string) => {
+    console.log("Edit presentation:", id);
+  };
+
+  const handleDeletePresentation = (id: string) => {
+    if (window.confirm("Are you sure you want to delete this presentation?")) {
+      console.log("Deleted presentation:", id);
+    }
+  };
+
+  const handleDuplicatePresentation = (id: string) => {
+    console.log("Duplicated presentation:", id);
+  };
+
+  const handleToggleFeatured = (id: string) => {
+    console.log("Toggle featured status:", id);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
