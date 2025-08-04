@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "@/contexts/AdminContext";
+import { PublishProvider } from "@/contexts/PublishContext";
 import Index from "./pages/Index";
 import AllPresentations from "./pages/AllPresentations";
 import ComingSoon from "./pages/ComingSoon";
