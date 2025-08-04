@@ -99,13 +99,44 @@ export function PresentationCard({
     <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white border-gray-200">
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
-          <Badge 
-            variant="outline" 
+          <Badge
+            variant="outline"
             className={`${specialtyColors[specialty] || specialtyColors["General Internal Medicine"]} font-medium`}
           >
             {specialty}
           </Badge>
-          <div className="flex items-center text-gray-400">
+          <div className="flex items-center gap-2 text-gray-400">
+            {isAdminMode && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-gray-100">
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={() => onEdit?.(id)}>
+                    <Edit3 className="h-4 w-4 mr-2" />
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onDuplicate?.(id)}>
+                    <Copy className="h-4 w-4 mr-2" />
+                    Duplicate
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onToggleFeatured?.(id)}>
+                    <Star className="h-4 w-4 mr-2" />
+                    Feature
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => onDelete?.(id)}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
             <FileText className="h-4 w-4" />
           </div>
         </div>
