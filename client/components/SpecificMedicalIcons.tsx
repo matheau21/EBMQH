@@ -147,28 +147,29 @@ export const RheumatologySpecificIcon = () => (
 
 export const NephrologySpecificIcon = () => (
   <svg viewBox="0 0 80 80" className="w-full h-full">
-    {/* Kidney shape */}
-    <path d="M30 20 Q20 25 20 40 Q20 55 30 60 Q40 55 45 50 Q50 45 45 40 Q50 35 45 30 Q40 25 30 20" 
-          fill="currentColor" opacity="0.7"/>
-    
-    {/* Kidney detail */}
-    <path d="M30 25 Q35 30 35 40 Q35 50 30 55" 
+    {/* Left Kidney - Bean shape */}
+    <path d="M30 20 Q22 25 22 40 Q22 55 30 60 Q38 55 42 50 Q46 45 42 40 Q46 35 42 30 Q38 25 30 20"
+          fill="currentColor" opacity="0.8"/>
+
+    {/* Right Kidney - Bean shape */}
+    <path d="M50 20 Q58 25 58 40 Q58 55 50 60 Q42 55 38 50 Q34 45 38 40 Q34 35 38 30 Q42 25 50 20"
+          fill="currentColor" opacity="0.8"/>
+
+    {/* Kidney indentations (hilum) */}
+    <path d="M42 35 Q44 38 42 40 Q44 42 42 45"
           stroke="currentColor" strokeWidth="2" fill="none" opacity="0.9"/>
-    
-    {/* Nephron representation */}
-    <circle cx="35" cy="35" r="3" fill="currentColor" opacity="0.9"/>
-    <circle cx="35" cy="45" r="2" fill="currentColor" opacity="0.7"/>
-    
-    {/* Filtration drops */}
-    <circle cx="55" cy="25" r="1.5" fill="currentColor" opacity="0.6"/>
-    <circle cx="58" cy="35" r="1.5" fill="currentColor" opacity="0.6"/>
-    <circle cx="55" cy="45" r="1.5" fill="currentColor" opacity="0.6"/>
-    <circle cx="52" cy="55" r="1.5" fill="currentColor" opacity="0.6"/>
-    
-    {/* Flow lines */}
-    <path d="M45 30 Q50 25 55 25" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.5"/>
-    <path d="M45 40 Q52 35 58 35" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.5"/>
-    <path d="M45 50 Q50 45 55 45" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.5"/>
+    <path d="M38 35 Q36 38 38 40 Q36 42 38 45"
+          stroke="currentColor" strokeWidth="2" fill="none" opacity="0.9"/>
+
+    {/* Nephron structures */}
+    <circle cx="30" cy="35" r="2" fill="currentColor" opacity="0.6"/>
+    <circle cx="50" cy="35" r="2" fill="currentColor" opacity="0.6"/>
+    <circle cx="30" cy="45" r="1.5" fill="currentColor" opacity="0.6"/>
+    <circle cx="50" cy="45" r="1.5" fill="currentColor" opacity="0.6"/>
+
+    {/* Ureter tubes */}
+    <path d="M40 60 L40 70" stroke="currentColor" strokeWidth="3" opacity="0.7"/>
+    <circle cx="40" cy="72" r="2" fill="currentColor" opacity="0.6"/>
   </svg>
 );
 
