@@ -139,7 +139,7 @@ export function FeaturedPresentation() {
             <Button
               onClick={handleUploadFeatured}
               variant="outline"
-              className="border-ucla-blue text-ucla-blue hover:bg-blue-50 px-8 py-3 text-lg font-medium"
+              className="border-ucla-blue text-ucla-blue hover:bg-blue-50 px-6 sm:px-8 py-3 text-base sm:text-lg font-medium"
             >
               <Upload className="h-5 w-5 mr-2" />
               Upload to Featured
