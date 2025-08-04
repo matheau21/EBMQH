@@ -21,27 +21,7 @@ export default function ComingSoon() {
           Stay tuned! We're working hard to bring you this feature.
         </p>
 
-        {/* Coming Soon Features */}
-        <div className="bg-white rounded-xl p-6 shadow-lg mb-8 border-2 border-ucla-gold/20">
-          <div className="flex items-center justify-center mb-4">
-            <Star className="h-6 w-6 text-ucla-gold mr-2" />
-            <h3 className="text-lg font-semibold text-gray-900">What's Coming</h3>
-          </div>
-          <ul className="text-left space-y-2 text-gray-600">
-            <li className="flex items-center">
-              <div className="w-2 h-2 bg-ucla-blue rounded-full mr-3"></div>
-              Interactive quiz questions
-            </li>
-            <li className="flex items-center">
-              <div className="w-2 h-2 bg-ucla-blue rounded-full mr-3"></div>
-              Contact form and feedback system
-            </li>
-            <li className="flex items-center">
-              <div className="w-2 h-2 bg-ucla-blue rounded-full mr-3"></div>
-              Enhanced user experience
-            </li>
-          </ul>
-        </div>
+
 
         {/* Back Button */}
         <Link to="/">
