@@ -343,6 +343,13 @@ export default function Index() {
 
     setPresentations((prev) => [newPresentation, ...prev]);
     markAsChanged(); // Mark that changes have been made
+
+    // Add files to media library
+    addPresentationFilesToMediaLibrary(
+      data.file,
+      data.originalArticle,
+      data.trialName
+    );
   };
 
   const handleFeaturedUpload = (data: FeaturedPresentationData) => {
