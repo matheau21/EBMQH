@@ -442,13 +442,13 @@ export default function Index() {
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-blue-200">
-                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Feedback</a></li>
+                <li><Link to="/coming-soon" className="hover:text-white transition-colors">Contact Us</Link></li>
+                <li><Link to="/coming-soon" className="hover:text-white transition-colors">Feedback</Link></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-blue-600 mt-8 pt-8 text-center text-blue-200">
-            <p>&copy; 2024 EBM Quick Hits. All rights reserved.</p>
+            <p>&copy; 2025 EBM Quick Hits. All rights reserved.</p>
           </div>
         </div>
 
