@@ -128,7 +128,7 @@ export default function AllPresentations() {
   const { isAdminMode } = useAdmin();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
-  const [presentations] = useState(mockPresentations);
+  const [presentations, setPresentations] = useState(mockPresentations);
 
   const filteredPresentations = useMemo(() => {
     return presentations.filter((presentation) => {
