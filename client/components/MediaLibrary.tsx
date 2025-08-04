@@ -121,8 +121,14 @@ export function MediaLibrary({
 
   // Save files to localStorage with error handling
   const saveFiles = (updatedFiles: MediaFile[]) => {
-    setFiles(updatedFiles);
-    localStorage.setItem("ebm-media-library", JSON.stringify(updatedFiles));
+    try {
+      setFiles(updatedFiles);
+      localStorage.setItem("ebm-media-library", JSON.stringify(updatedFiles));
+    } catch (error) {
+      console.error("Failed to save files to localStorage:", error);
+      // Keep state updated even if localStorage fails
+      setFiles(updatedFiles);
+    }
   };
 
   const handleFileUpload = async () => {
