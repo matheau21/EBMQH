@@ -408,7 +408,7 @@ export default function Index() {
           <div className="text-center text-white">
             {/* Main Title */}
             <div className="mb-6">
-              <h1 className="text-5xl md:text-6xl font-black mb-4 tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 tracking-tight">
                 <span className="block text-white animate-slide-down">
                   Landmark Medical Trial
                 </span>
@@ -416,11 +416,11 @@ export default function Index() {
                   Quick Hits
                 </span>
               </h1>
-              <div className="w-24 h-1 bg-ucla-gold mx-auto rounded-full animate-expand"></div>
+              <div className="w-16 sm:w-24 h-1 bg-ucla-gold mx-auto rounded-full animate-expand"></div>
             </div>
 
             {/* Subtitle */}
-            <p className="text-lg md:text-xl text-blue-100 mb-10 max-w-4xl mx-auto leading-relaxed font-light animate-fade-in">
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed font-light animate-fade-in px-4">
               High-yield, digestible summaries of landmark trials — curated for
               Medicine Residents to enhance learning and clinical practice.
             </p>
