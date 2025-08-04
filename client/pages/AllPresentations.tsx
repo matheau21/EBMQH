@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { PresentationCard } from "@/components/PresentationCard";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
 import { SpecialtyFilters } from "@/components/SpecialtyFilters";
@@ -19,6 +19,8 @@ interface Presentation {
   year?: string;
   thumbnail?: string;
   viewerCount?: number;
+  presentationFileUrl?: string;
+  originalArticleUrl?: string;
 }
 
 const mockPresentations: Presentation[] = [
@@ -150,7 +152,33 @@ export default function AllPresentations() {
   const { isAdminMode } = useAdmin();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
-  const [presentations, setPresentations] = useState(mockPresentations);
+  const [presentations, setPresentations] = useState<Presentation[]>([]);
+
+  // Load presentations from localStorage on mount
+  useEffect(() => {
+    const savedPresentations = localStorage.getItem('ebm-presentations');
+    if (savedPresentations) {
+      try {
+        const parsed = JSON.parse(savedPresentations);
+        setPresentations([...mockPresentations, ...parsed]);
+      } catch (error) {
+        console.error('Error loading presentations:', error);
+        setPresentations(mockPresentations);
+      }
+    } else {
+      setPresentations(mockPresentations);
+    }
+  }, []);
+
+  // Save presentations to localStorage whenever presentations change
+  useEffect(() => {
+    const customPresentations = presentations.filter(p =>
+      !mockPresentations.find(mock => mock.id === p.id)
+    );
+    if (customPresentations.length > 0) {
+      localStorage.setItem('ebm-presentations', JSON.stringify(customPresentations));
+    }
+  }, [presentations]);
 
   const filteredPresentations = useMemo(() => {
     return presentations.filter((presentation) => {
