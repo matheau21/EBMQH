@@ -79,10 +79,10 @@ export function PresentationCard({
           {summary}
         </p>
 
-        {(authors || journal || year) && (
+        {(authors || journal) && (
           <div className="text-xs text-gray-500 mb-4 space-y-1">
             {authors && <p className="font-medium">{authors}</p>}
-            {journal && year && <p>{journal} ({year})</p>}
+            {journal && <p>{journal}</p>}
           </div>
         )}
 
