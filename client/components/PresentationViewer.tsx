@@ -115,10 +115,11 @@ export function PresentationViewer({
               </div>
             ) : (
               <iframe
-                src={type === "presentation" ? getEmbedUrl(fileUrl) : fileUrl}
-                className="w-full h-full border-0"
+                src={type === "presentation" ? getEmbedUrl(fileUrl) : `${fileUrl}#toolbar=1&navpanes=0&scrollbar=1`}
+                className="w-full h-full border-0 bg-white"
                 title={title}
                 allow="fullscreen"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
               />
             )
           ) : (
