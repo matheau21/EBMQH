@@ -159,14 +159,16 @@ export function MediaLibrary({
     }
   };
 
-  const filteredFiles = files.filter(file => {
+  const filteredFiles = (files || []).filter(file => {
+    if (!file || !file.type) return false;
+
     const matchesCategory = !selectedCategory || file.category === selectedCategory;
-    const matchesSearch = !searchTerm || 
-      file.originalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      file.metadata?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      file.metadata?.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = allowedTypes.includes(file.type);
-    
+    const matchesSearch = !searchTerm ||
+      (file.originalName && file.originalName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (file.metadata?.title && file.metadata.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (file.metadata?.description && file.metadata.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesType = allowedTypes && allowedTypes.includes(file.type);
+
     return matchesCategory && matchesSearch && matchesType;
   });
 
