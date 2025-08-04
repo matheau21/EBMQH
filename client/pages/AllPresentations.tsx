@@ -256,6 +256,7 @@ export default function AllPresentations() {
         title: `${presentation.title} (Copy)`,
       };
       setPresentations((prev) => [duplicated, ...prev]);
+      markAsChanged();
       console.log("Duplicated presentation:", id);
     }
   };
