@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload, FileText, CheckCircle, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { addPresentationFilesToMediaLibrary } from "@/lib/mediaLibraryUtils";
 
 interface FeaturedUploadProps {
   onUpload: (data: FeaturedPresentationData) => void;
