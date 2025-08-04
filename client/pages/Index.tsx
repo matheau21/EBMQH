@@ -431,9 +431,7 @@ export default function Index() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-ucla-gold rounded-lg flex items-center justify-center">
-                  <Zap className="h-5 w-5 text-gray-900" />
-                </div>
+                <EBMLogo size="sm" />
                 <span className="text-xl font-bold">EBM Quick Hits</span>
               </div>
               <p className="text-blue-200">
