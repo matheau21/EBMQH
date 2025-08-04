@@ -396,14 +396,32 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
                   <p className="text-gray-600 mb-2">
                     Drag and drop your presentation file here, or
                   </p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="border-olive-500 text-olive-600 hover:bg-olive-50"
-                  >
-                    Choose File
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="border-olive-500 text-olive-600 hover:bg-olive-50"
+                    >
+                      Upload File
+                    </Button>
+                    <MediaLibraryButton
+                      mode="select"
+                      allowedTypes={['pdf', 'document']}
+                      variant="outline"
+                      size="default"
+                      onSelectFile={(file) => {
+                        fetch(file.url)
+                          .then(res => res.blob())
+                          .then(blob => {
+                            const mockFile = new File([blob], file.originalName, { type: blob.type });
+                            setFormData(prev => ({ ...prev, file: mockFile }));
+                          })
+                          .catch(console.error);
+                      }}
+                      className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
+                    />
+                  </div>
                   <p className="text-sm text-gray-500 mt-2">
                     Supports PDF and PowerPoint files (max 50MB)
                   </p>
