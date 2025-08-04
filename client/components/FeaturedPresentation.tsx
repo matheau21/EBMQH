@@ -15,8 +15,10 @@ interface FeaturedPresentationData {
   description: string;
   presenter: string;
   file: File | null;
+  originalArticleFile?: File | null;
   uploadedAt?: string;
   fileUrl?: string; // For presentations set from existing cards
+  originalArticleUrl?: string; // For original articles
 }
 
 export function FeaturedPresentation() {
