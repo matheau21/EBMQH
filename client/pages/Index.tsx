@@ -398,7 +398,7 @@ export default function Index() {
             <div className="mb-6">
               <h1 className="text-5xl md:text-6xl font-black mb-4 tracking-tight">
                 <span className="block text-white animate-slide-down">
-                  Landmark Trial
+                  Landmark Medical Trial
                 </span>
                 <span className="block bg-gradient-to-r from-ucla-gold to-yellow-300 bg-clip-text text-transparent animate-slide-up">
                   Quick Hits
