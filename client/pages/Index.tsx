@@ -184,6 +184,36 @@ export default function Index() {
     console.log("View presentation:", presentationId);
   };
 
+  const handleEditPresentation = (id: string) => {
+    console.log("Edit presentation:", id);
+    // Open edit modal or navigate to edit page
+  };
+
+  const handleDeletePresentation = (id: string) => {
+    if (window.confirm("Are you sure you want to delete this presentation?")) {
+      setPresentations(prev => prev.filter(p => p.id !== id));
+      console.log("Deleted presentation:", id);
+    }
+  };
+
+  const handleDuplicatePresentation = (id: string) => {
+    const presentation = presentations.find(p => p.id === id);
+    if (presentation) {
+      const duplicated = {
+        ...presentation,
+        id: String(Date.now()),
+        title: `${presentation.title} (Copy)`,
+      };
+      setPresentations(prev => [duplicated, ...prev]);
+      console.log("Duplicated presentation:", id);
+    }
+  };
+
+  const handleToggleFeatured = (id: string) => {
+    console.log("Toggle featured status:", id);
+    // Implement featured toggle logic
+  };
+
   const handleUploadClick = () => {
     if (isAuthenticated) {
       setShowUploadModal(true);
