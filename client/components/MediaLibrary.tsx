@@ -337,7 +337,7 @@ export function MediaLibrary({
         </div>
 
         {/* Upload Dialog */}
-        <Dialog open={showUpload} onOpenChange={setShowUpload}>
+        <Dialog open={!!showUpload} onOpenChange={setShowUpload}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>Upload File</DialogTitle>
