@@ -291,6 +291,13 @@ export default function AllPresentations() {
       );
       markAsChanged();
       setEditingPresentation(null);
+
+      // Add files to media library
+      addPresentationFilesToMediaLibrary(
+        data.file,
+        data.originalArticle,
+        data.trialName
+      );
     } else {
       // Add new presentation
       const newPresentation: Presentation = {
