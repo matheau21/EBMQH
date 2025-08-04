@@ -92,12 +92,32 @@ export function PresentationViewer({
         {/* Content */}
         <div className="flex-1 bg-gray-100 relative">
           {fileUrl ? (
-            <iframe
-              src={type === "presentation" ? getEmbedUrl(fileUrl) : fileUrl}
-              className="w-full h-full border-0"
-              title={title}
-              allow="fullscreen"
-            />
+            // Check if it's a blob URL for PowerPoint - show download option instead
+            (fileUrl.startsWith('blob:') && type === "presentation") ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center text-gray-700">
+                  <Icon className="h-16 w-16 mx-auto mb-4 text-ucla-blue" />
+                  <h3 className="text-lg font-semibold mb-2">PowerPoint Presentation</h3>
+                  <p className="text-sm mb-6">
+                    Click the button below to download and view the presentation file.
+                  </p>
+                  <Button
+                    onClick={() => window.open(fileUrl, '_blank')}
+                    className="bg-ucla-blue hover:bg-blue-700 text-white"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Download & View Presentation
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <iframe
+                src={type === "presentation" ? getEmbedUrl(fileUrl) : fileUrl}
+                className="w-full h-full border-0"
+                title={title}
+                allow="fullscreen"
+              />
+            )
           ) : (
             <div className="flex items-center justify-center h-full">
               <div className="text-center text-gray-500">
