@@ -198,14 +198,14 @@ export function MediaLibrary({
                 className="w-full"
               />
             </div>
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select value={selectedCategory || ""} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-[200px]">
                 <SelectValue placeholder="All categories" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">All categories</SelectItem>
-                {categories.map(category => (
-                  <SelectItem key={category} value={category}>
+                {categories.filter(Boolean).map((category, index) => (
+                  <SelectItem key={`category-${index}-${category}`} value={category}>
                     {category}
                   </SelectItem>
                 ))}
