@@ -198,6 +198,31 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
     }
   };
 
+  const handleSaveDraft = () => {
+    if (!formData.trialName) {
+      console.log('Trial name is required to save draft');
+      return;
+    }
+
+    try {
+      const drafts = JSON.parse(localStorage.getItem('ebm-drafts') || '[]');
+      const draftData = {
+        id: Date.now().toString(),
+        ...formData,
+        savedAt: new Date().toISOString(),
+        isDraft: true,
+      };
+
+      drafts.push(draftData);
+      localStorage.setItem('ebm-drafts', JSON.stringify(drafts));
+
+      console.log('Draft saved successfully!');
+      onClose();
+    } catch (error) {
+      console.error('Error saving draft:', error);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
