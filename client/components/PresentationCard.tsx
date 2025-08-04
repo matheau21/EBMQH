@@ -2,6 +2,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, Eye } from "lucide-react";
+import {
+  ModernCardiologyIcon,
+  ModernHemeOncIcon,
+  ModernEndocrinologyIcon,
+  ModernGeneralInternalIcon,
+  ModernPulmonaryCriticalIcon,
+  ModernInfectiousIcon,
+  ModernRheumatologyIcon,
+  ModernNephrologyIcon,
+  ModernGastroenterologyIcon,
+} from "./ModernMedicalIcons";
 
 interface PresentationCardProps {
   title: string;
