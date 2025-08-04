@@ -363,13 +363,19 @@ export default function Index() {
               </div>
             </div>
             {isAdminMode && (
-              <Button
-                onClick={handleUploadClick}
-                className="bg-ucla-blue hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-2 border-ucla-gold/20 hover:border-ucla-gold/40"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Upload Presentation
-              </Button>
+              <div className="flex gap-3">
+                <MediaLibraryButton
+                  variant="outline"
+                  className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
+                />
+                <Button
+                  onClick={handleUploadClick}
+                  className="bg-ucla-blue hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-2 border-ucla-gold/20 hover:border-ucla-gold/40"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Upload Presentation
+                </Button>
+              </div>
             )}
           </div>
         </div>
