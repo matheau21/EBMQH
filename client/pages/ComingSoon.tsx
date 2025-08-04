@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Zap, Clock, Star } from "lucide-react";
+import { ArrowLeft, Zap, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function ComingSoon() {
