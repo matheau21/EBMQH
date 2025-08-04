@@ -156,7 +156,7 @@ export function PresentationCard({
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white border-gray-200">
-      <CardContent className="p-6">
+      <CardContent className="p-4 sm:p-6">
         <div className="flex items-start justify-between mb-4">
           <Badge
             variant="outline"
