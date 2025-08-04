@@ -24,15 +24,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { 
-  Upload, 
-  FileText, 
-  Trash2, 
-  Eye, 
+import {
+  Upload,
+  FileText,
+  Trash2,
+  Eye,
   Calendar,
   Tag,
   Download,
-  ExternalLink
+  ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -40,7 +40,7 @@ interface MediaFile {
   id: string;
   filename: string;
   originalName: string;
-  type: 'pdf' | 'image' | 'document';
+  type: "pdf" | "image" | "document";
   url: string;
   size: number;
   uploadDate: string;
@@ -56,53 +56,54 @@ interface MediaLibraryProps {
   isOpen: boolean;
   onClose: () => void;
   onSelectFile?: (file: MediaFile) => void;
-  allowedTypes?: ('pdf' | 'image' | 'document')[];
-  mode?: 'select' | 'manage';
+  allowedTypes?: ("pdf" | "image" | "document")[];
+  mode?: "select" | "manage";
 }
 
 const categories = [
-  'Medical Articles',
-  'Presentations',
-  'Guidelines',
-  'Research Papers',
-  'Training Materials',
-  'Other'
-].filter((category): category is string =>
-  typeof category === 'string' && category.trim().length > 0
+  "Medical Articles",
+  "Presentations",
+  "Guidelines",
+  "Research Papers",
+  "Training Materials",
+  "Other",
+].filter(
+  (category): category is string =>
+    typeof category === "string" && category.trim().length > 0,
 ); // Ensure no null/undefined values and all are valid strings
 
-export function MediaLibrary({ 
-  isOpen, 
-  onClose, 
+export function MediaLibrary({
+  isOpen,
+  onClose,
   onSelectFile,
-  allowedTypes = ['pdf', 'image', 'document'],
-  mode = 'manage'
+  allowedTypes = ["pdf", "image", "document"],
+  mode = "manage",
 }: MediaLibraryProps) {
   const [files, setFiles] = useState<MediaFile[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [showUpload, setShowUpload] = useState(false);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [uploadCategory, setUploadCategory] = useState<string>('');
-  const [uploadTitle, setUploadTitle] = useState('');
-  const [uploadDescription, setUploadDescription] = useState('');
-  const [uploadTags, setUploadTags] = useState('');
+  const [uploadCategory, setUploadCategory] = useState<string>("");
+  const [uploadTitle, setUploadTitle] = useState("");
+  const [uploadDescription, setUploadDescription] = useState("");
+  const [uploadTags, setUploadTags] = useState("");
 
   // Load files from localStorage on mount
   useEffect(() => {
     try {
-      const savedFiles = localStorage.getItem('ebm-media-library');
-      if (savedFiles && savedFiles !== 'undefined' && savedFiles !== 'null') {
+      const savedFiles = localStorage.getItem("ebm-media-library");
+      if (savedFiles && savedFiles !== "undefined" && savedFiles !== "null") {
         const parsedFiles = JSON.parse(savedFiles);
         if (Array.isArray(parsedFiles)) {
           setFiles(parsedFiles);
         } else {
-          console.warn('Invalid media library data format, resetting');
+          console.warn("Invalid media library data format, resetting");
           setFiles([]);
         }
       }
     } catch (error) {
-      console.error('Error loading media library:', error);
+      console.error("Error loading media library:", error);
       setFiles([]);
     }
   }, []);
@@ -110,15 +111,18 @@ export function MediaLibrary({
   // Save files to localStorage
   const saveFiles = (updatedFiles: MediaFile[]) => {
     setFiles(updatedFiles);
-    localStorage.setItem('ebm-media-library', JSON.stringify(updatedFiles));
+    localStorage.setItem("ebm-media-library", JSON.stringify(updatedFiles));
   };
 
   const handleFileUpload = async () => {
     if (!uploadFile || !uploadCategory) return;
 
     try {
-      const fileType = uploadFile.type.includes('pdf') ? 'pdf' :
-                      uploadFile.type.includes('image') ? 'image' : 'document';
+      const fileType = uploadFile.type.includes("pdf")
+        ? "pdf"
+        : uploadFile.type.includes("image")
+          ? "image"
+          : "document";
 
       const newFile: MediaFile = {
         id: Date.now().toString(),
@@ -129,64 +133,74 @@ export function MediaLibrary({
         size: uploadFile.size,
         uploadDate: new Date().toISOString(),
         category: uploadCategory,
-        tags: uploadTags.split(',').map(tag => tag.trim()).filter(Boolean),
+        tags: uploadTags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
         metadata: {
           title: uploadTitle || uploadFile.name,
           description: uploadDescription,
-        }
+        },
       };
 
       saveFiles([...files, newFile]);
 
       // Reset upload form
       setUploadFile(null);
-      setUploadCategory('');
-      setUploadTitle('');
-      setUploadDescription('');
-      setUploadTags('');
+      setUploadCategory("");
+      setUploadTitle("");
+      setUploadDescription("");
+      setUploadTags("");
       setShowUpload(false);
     } catch (error) {
-      console.error('Error uploading file:', error);
-      alert('Error uploading file. Please try again.');
+      console.error("Error uploading file:", error);
+      alert("Error uploading file. Please try again.");
     }
   };
 
   const handleDeleteFile = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this file?')) {
-      const fileToDelete = files.find(f => f.id === id);
-      if (fileToDelete?.url.startsWith('blob:')) {
+    if (window.confirm("Are you sure you want to delete this file?")) {
+      const fileToDelete = files.find((f) => f.id === id);
+      if (fileToDelete?.url.startsWith("blob:")) {
         URL.revokeObjectURL(fileToDelete.url);
       }
-      saveFiles(files.filter(f => f.id !== id));
+      saveFiles(files.filter((f) => f.id !== id));
     }
   };
 
-  const filteredFiles = (files || []).filter(file => {
+  const filteredFiles = (files || []).filter((file) => {
     if (!file || !file.type) return false;
 
-    const matchesCategory = !selectedCategory || file.category === selectedCategory;
-    const matchesSearch = !searchTerm ||
-      (file.originalName && file.originalName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (file.metadata?.title && file.metadata.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (file.metadata?.description && file.metadata.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesCategory =
+      !selectedCategory || file.category === selectedCategory;
+    const matchesSearch =
+      !searchTerm ||
+      (file.originalName &&
+        file.originalName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (file.metadata?.title &&
+        file.metadata.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (file.metadata?.description &&
+        file.metadata.description
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()));
     const matchesType = allowedTypes && allowedTypes.includes(file.type);
 
     return matchesCategory && matchesSearch && matchesType;
   });
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   const getFileIcon = (type: string) => {
     switch (type) {
-      case 'pdf':
+      case "pdf":
         return <FileText className="h-8 w-8 text-red-500" />;
-      case 'image':
+      case "image":
         return <FileText className="h-8 w-8 text-blue-500" />;
       default:
         return <FileText className="h-8 w-8 text-gray-500" />;
@@ -224,13 +238,16 @@ export function MediaLibrary({
               <SelectContent>
                 <SelectItem value="">All categories</SelectItem>
                 {categories.filter(Boolean).map((category, index) => (
-                  <SelectItem key={`category-${index}-${category}`} value={category}>
+                  <SelectItem
+                    key={`category-${index}-${category}`}
+                    value={category}
+                  >
                     {category}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <Button 
+            <Button
               onClick={() => setShowUpload(true)}
               className="bg-ucla-blue hover:bg-blue-700"
             >
@@ -243,7 +260,10 @@ export function MediaLibrary({
           <div className="flex-1 overflow-y-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredFiles.map((file) => (
-                <Card key={file.id} className="hover:shadow-lg transition-shadow">
+                <Card
+                  key={file.id}
+                  className="hover:shadow-lg transition-shadow"
+                >
                   <CardHeader className="pb-2">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-2">
@@ -273,7 +293,7 @@ export function MediaLibrary({
                         {file.metadata.description}
                       </p>
                     )}
-                    
+
                     <div className="flex items-center gap-1 mb-2 text-xs text-gray-500">
                       <Calendar className="h-3 w-3" />
                       {new Date(file.uploadDate).toLocaleDateString()}
@@ -287,8 +307,12 @@ export function MediaLibrary({
 
                     {file.tags && file.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1 mb-3">
-                        {file.tags.slice(0, 2).map(tag => (
-                          <Badge key={tag} variant="secondary" className="text-xs">
+                        {file.tags.slice(0, 2).map((tag) => (
+                          <Badge
+                            key={tag}
+                            variant="secondary"
+                            className="text-xs"
+                          >
                             <Tag className="h-2 w-2 mr-1" />
                             {tag}
                           </Badge>
@@ -305,13 +329,13 @@ export function MediaLibrary({
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => window.open(file.url, '_blank')}
+                        onClick={() => window.open(file.url, "_blank")}
                         className="flex-1"
                       >
                         <Eye className="h-3 w-3 mr-1" />
                         View
                       </Button>
-                      {mode === 'select' && onSelectFile && (
+                      {mode === "select" && onSelectFile && (
                         <Button
                           size="sm"
                           onClick={() => {
@@ -359,7 +383,7 @@ export function MediaLibrary({
                   onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="title">Title (optional)</Label>
                 <Input
@@ -381,7 +405,10 @@ export function MediaLibrary({
                   </SelectTrigger>
                   <SelectContent>
                     {categories.filter(Boolean).map((category, index) => (
-                      <SelectItem key={`upload-category-${index}-${category}`} value={category}>
+                      <SelectItem
+                        key={`upload-category-${index}-${category}`}
+                        value={category}
+                      >
                         {category}
                       </SelectItem>
                     ))}

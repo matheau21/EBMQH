@@ -7,20 +7,20 @@ import { ErrorBoundary, MediaLibraryErrorFallback } from "./ErrorBoundary";
 
 interface MediaLibraryButtonProps {
   onSelectFile?: (file: any) => void;
-  allowedTypes?: ('pdf' | 'image' | 'document')[];
-  mode?: 'select' | 'manage';
-  variant?: 'default' | 'outline' | 'ghost';
-  size?: 'default' | 'sm' | 'lg';
+  allowedTypes?: ("pdf" | "image" | "document")[];
+  mode?: "select" | "manage";
+  variant?: "default" | "outline" | "ghost";
+  size?: "default" | "sm" | "lg";
   className?: string;
 }
 
 export function MediaLibraryButton({
   onSelectFile,
-  allowedTypes = ['pdf', 'image', 'document'],
-  mode = 'manage',
-  variant = 'outline',
-  size = 'default',
-  className = '',
+  allowedTypes = ["pdf", "image", "document"],
+  mode = "manage",
+  variant = "outline",
+  size = "default",
+  className = "",
 }: MediaLibraryButtonProps) {
   const { isAdminMode } = useAdmin();
   const [showMediaLibrary, setShowMediaLibrary] = useState(false);

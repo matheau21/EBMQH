@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -10,7 +10,10 @@ interface ErrorBoundaryProps {
   fallback?: React.ComponentType<{ error?: Error; resetError: () => void }>;
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
@@ -21,7 +24,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
   }
 
   resetError = () => {
@@ -32,14 +35,21 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     if (this.state.hasError) {
       if (this.props.fallback) {
         const FallbackComponent = this.props.fallback;
-        return <FallbackComponent error={this.state.error} resetError={this.resetError} />;
+        return (
+          <FallbackComponent
+            error={this.state.error}
+            resetError={this.resetError}
+          />
+        );
       }
 
       return (
         <div className="flex flex-col items-center justify-center p-8 bg-red-50 border border-red-200 rounded-lg">
-          <h2 className="text-lg font-semibold text-red-800 mb-2">Something went wrong</h2>
+          <h2 className="text-lg font-semibold text-red-800 mb-2">
+            Something went wrong
+          </h2>
           <p className="text-red-600 mb-4 text-center">
-            {this.state.error?.message || 'An unexpected error occurred'}
+            {this.state.error?.message || "An unexpected error occurred"}
           </p>
           <button
             onClick={this.resetError}
@@ -56,23 +66,26 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 }
 
 // Simple fallback component for media library errors
-export function MediaLibraryErrorFallback({ 
-  error, 
-  resetError 
-}: { 
-  error?: Error; 
+export function MediaLibraryErrorFallback({
+  error,
+  resetError,
+}: {
+  error?: Error;
   resetError: () => void;
 }) {
   return (
     <div className="flex flex-col items-center justify-center p-8 bg-gray-50 border border-gray-200 rounded-lg">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">Media Library Error</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">
+        Media Library Error
+      </h3>
       <p className="text-gray-600 mb-4 text-center">
-        There was an issue loading the media library. This might be due to corrupted data.
+        There was an issue loading the media library. This might be due to
+        corrupted data.
       </p>
       <div className="flex gap-2">
         <button
           onClick={() => {
-            localStorage.removeItem('ebm-media-library');
+            localStorage.removeItem("ebm-media-library");
             resetError();
           }}
           className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
