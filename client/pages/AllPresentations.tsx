@@ -309,6 +309,7 @@ export default function AllPresentations() {
       };
 
       setPresentations((prev) => [newPresentation, ...prev]);
+      markAsChanged();
     }
     setShowUploadModal(false);
   };
