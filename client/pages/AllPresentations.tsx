@@ -313,18 +313,18 @@ export default function AllPresentations() {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
               <Link to="/">
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="flex-shrink-0">
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
-              <EBMLogo size="md" className="shadow-lg" />
-              <div>
-                <h1 className="text-xl font-bold text-ucla-blue">
+              <EBMLogo size="md" className="shadow-lg flex-shrink-0" />
+              <div className="min-w-0">
+                <h1 className="text-lg sm:text-xl font-bold text-ucla-blue truncate">
                   All Presentations
                 </h1>
-                <p className="text-xs text-blue-600">
+                <p className="text-xs text-blue-600 hidden sm:block">
                   Browse all landmark trial summaries
                 </p>
               </div>
