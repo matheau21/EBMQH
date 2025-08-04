@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Upload, FileText, Image, X, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MediaLibraryButton } from "./MediaLibraryButton";
 
 interface UploadModalProps {
   isOpen: boolean;
