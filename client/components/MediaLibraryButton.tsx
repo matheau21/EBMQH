@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { MediaLibrary } from "./MediaLibrary";
 import { FolderOpen } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
+import { ErrorBoundary, MediaLibraryErrorFallback } from "./ErrorBoundary";
 
 interface MediaLibraryButtonProps {
   onSelectFile?: (file: any) => void;
