@@ -208,34 +208,49 @@ export const ModernInfectiousIcon = () => (
 
 export const ModernRheumatologyIcon = () => (
   <svg viewBox="0 0 60 60" className="w-full h-full">
-    {/* Abstract joint representation */}
+    {/* Femur (upper leg bone) */}
     <rect
-      x="20"
-      y="15"
-      width="6"
-      height="15"
-      rx="3"
+      x="25"
+      y="10"
+      width="5"
+      height="20"
+      rx="2"
       fill="currentColor"
-      opacity="0.7"
-    />
-    <rect
-      x="34"
-      y="15"
-      width="6"
-      height="15"
-      rx="3"
-      fill="currentColor"
-      opacity="0.7"
+      opacity="0.8"
     />
 
-    {/* Joint space */}
-    <ellipse cx="30" cy="25" rx="8" ry="4" fill="currentColor" opacity="0.4" />
+    {/* Tibia (lower leg bone) */}
+    <rect
+      x="25"
+      y="35"
+      width="5"
+      height="18"
+      rx="2"
+      fill="currentColor"
+      opacity="0.8"
+    />
 
-    {/* Modern bone ends */}
-    <circle cx="23" cy="18" r="4" fill="currentColor" opacity="0.8" />
-    <circle cx="37" cy="18" r="4" fill="currentColor" opacity="0.8" />
-    <circle cx="23" cy="32" r="4" fill="currentColor" opacity="0.8" />
-    <circle cx="37" cy="32" r="4" fill="currentColor" opacity="0.8" />
+    {/* Femur head (top) */}
+    <circle cx="27.5" cy="12" r="3" fill="currentColor" opacity="0.9" />
+
+    {/* Femur condyles (bottom of femur) */}
+    <ellipse cx="24" cy="29" rx="3" ry="2" fill="currentColor" opacity="0.9" />
+    <ellipse cx="31" cy="29" rx="3" ry="2" fill="currentColor" opacity="0.9" />
+
+    {/* Tibia plateau (top of tibia) */}
+    <ellipse cx="27.5" cy="36" rx="5" ry="2" fill="currentColor" opacity="0.9" />
+
+    {/* Knee joint space */}
+    <ellipse cx="27.5" cy="32" rx="6" ry="2" fill="currentColor" opacity="0.4" />
+
+    {/* Patella (kneecap) */}
+    <ellipse cx="27.5" cy="28" rx="2.5" ry="3" fill="currentColor" opacity="0.9" />
+
+    {/* Joint lines to show articulation */}
+    <path d="M21 32 Q27.5 34 34 32" stroke="currentColor" strokeWidth="1" opacity="0.6" fill="none"/>
+
+    {/* Ankle representation */}
+    <circle cx="27.5" cy="51" r="2" fill="currentColor" opacity="0.8" />
   </svg>
 );
 
