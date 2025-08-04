@@ -116,7 +116,7 @@ export function SpecialtyFilters({
             <div
               key={specialty.name}
               className={`
-                aspect-[2/1] flex items-center gap-3 cursor-pointer transition-all duration-300 p-3 rounded-xl border-2
+                aspect-square flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 p-3 rounded-xl border-2
                 ${
                   isSelected
                     ? `${specialty.activeColor} shadow-lg transform scale-105`
@@ -125,10 +125,10 @@ export function SpecialtyFilters({
               `}
               onClick={() => onSpecialtyToggle(specialty.name)}
             >
-              <div className="w-12 h-12 flex-shrink-0">
+              <div className="w-8 h-8 flex-shrink-0">
                 <Icon />
               </div>
-              <span className="text-sm font-semibold leading-tight text-left flex-1">
+              <span className="text-xs font-semibold leading-tight text-center">
                 {specialty.name}
               </span>
             </div>
