@@ -125,7 +125,7 @@ export function FeaturedPresentation() {
               (!featuredPresentation.originalArticleFile &&
                 !featuredPresentation.originalArticleUrl)
             }
-            className="border-ucla-blue text-ucla-blue hover:bg-blue-50 px-8 py-3 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="border-ucla-blue text-ucla-blue hover:bg-blue-50 px-6 sm:px-8 py-3 text-base sm:text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ExternalLink className="h-5 w-5 mr-2" />
             {featuredPresentation &&
