@@ -266,24 +266,70 @@ export const ModernGastroenterologyIcon = () => (
 
 export const ModernNeurologyIcon = () => (
   <svg viewBox="0 0 60 60" className="w-full h-full">
-    {/* Brain outline */}
+    {/* Left brain hemisphere */}
     <path
-      d="M20 25 Q15 20 15 15 Q18 12 22 15 Q25 10 30 10 Q35 10 38 15 Q42 12 45 15 Q45 20 40 25 Q45 30 45 40 Q40 45 35 40 Q30 45 25 40 Q20 45 15 40 Q15 30 20 25"
+      d="M15 30 C15 20, 20 12, 30 12 C30 12, 30 48, 30 48 C20 48, 15 40, 15 30 Z"
       fill="currentColor"
+      opacity="0.7"
+    />
+
+    {/* Right brain hemisphere */}
+    <path
+      d="M45 30 C45 20, 40 12, 30 12 C30 12, 30 48, 30 48 C40 48, 45 40, 45 30 Z"
+      fill="currentColor"
+      opacity="0.5"
+    />
+
+    {/* Brain folds/sulci */}
+    <path
+      d="M18 20 Q22 18, 26 20 Q24 22, 20 22"
+      stroke="currentColor"
+      strokeWidth="1"
+      fill="none"
+      opacity="0.8"
+    />
+    <path
+      d="M34 20 Q38 18, 42 20 Q40 22, 36 22"
+      stroke="currentColor"
+      strokeWidth="1"
+      fill="none"
+      opacity="0.8"
+    />
+    <path
+      d="M18 28 Q24 26, 28 28"
+      stroke="currentColor"
+      strokeWidth="1"
+      fill="none"
+      opacity="0.8"
+    />
+    <path
+      d="M32 28 Q36 26, 42 28"
+      stroke="currentColor"
+      strokeWidth="1"
+      fill="none"
+      opacity="0.8"
+    />
+
+    {/* Central fissure */}
+    <line
+      x1="30"
+      y1="15"
+      x2="30"
+      y2="45"
+      stroke="currentColor"
+      strokeWidth="1.5"
       opacity="0.6"
     />
 
-    {/* Neural pathways */}
-    <path d="M25 20 Q30 22 35 20" stroke="currentColor" strokeWidth="1.5" opacity="0.8"/>
-    <path d="M22 28 Q30 30 38 28" stroke="currentColor" strokeWidth="1.5" opacity="0.8"/>
-    <path d="M25 35 Q30 37 35 35" stroke="currentColor" strokeWidth="1.5" opacity="0.8"/>
-
-    {/* Synapses */}
-    <circle cx="25" cy="20" r="1" fill="currentColor" opacity="0.9"/>
-    <circle cx="35" cy="20" r="1" fill="currentColor" opacity="0.9"/>
-    <circle cx="22" cy="28" r="1" fill="currentColor" opacity="0.9"/>
-    <circle cx="38" cy="28" r="1" fill="currentColor" opacity="0.9"/>
-    <circle cx="25" cy="35" r="1" fill="currentColor" opacity="0.9"/>
-    <circle cx="35" cy="35" r="1" fill="currentColor" opacity="0.9"/>
+    {/* Brain stem */}
+    <rect
+      x="27"
+      y="44"
+      width="6"
+      height="8"
+      rx="3"
+      fill="currentColor"
+      opacity="0.8"
+    />
   </svg>
 );
