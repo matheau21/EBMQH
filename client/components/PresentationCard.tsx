@@ -11,6 +11,8 @@ interface PresentationCardProps {
   authors?: string;
   journal?: string;
   year?: string;
+  presentationFileUrl?: string;
+  originalArticleUrl?: string;
   onViewSummary: () => void;
 }
 
