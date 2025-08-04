@@ -120,6 +120,14 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
 
     // Submit immediately
     onUpload(formData);
+
+    // Add files to media library
+    addPresentationFilesToMediaLibrary(
+      formData.file,
+      formData.originalArticleFile,
+      formData.title
+    );
+
     setFormData({
       title: "",
       description: "",
