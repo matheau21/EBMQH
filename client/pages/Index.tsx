@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Plus, Users, Award } from "lucide-react";
 import { EBMLogo } from "@/components/EBMLogo";
+import { MediaLibraryButton } from "@/components/MediaLibraryButton";
 import { Link } from "react-router-dom";
 
 interface Presentation {
