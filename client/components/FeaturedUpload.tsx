@@ -27,8 +27,10 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
     originalArticleFile: null,
   });
   const [isDragOver, setIsDragOver] = useState(false);
+  const [isOriginalArticleDragOver, setIsOriginalArticleDragOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const originalArticleInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
