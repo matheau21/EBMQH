@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { 
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -16,12 +16,12 @@ interface PresentationViewerProps {
   type: "presentation" | "article";
 }
 
-export function PresentationViewer({ 
-  isOpen, 
-  onClose, 
-  title, 
-  fileUrl, 
-  type 
+export function PresentationViewer({
+  isOpen,
+  onClose,
+  title,
+  fileUrl,
+  type,
 }: PresentationViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -43,15 +43,15 @@ export function PresentationViewer({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
+      <DialogContent
         className={`${
-          isFullscreen 
-            ? "w-screen h-screen max-w-screen max-h-screen rounded-none p-0" 
+          isFullscreen
+            ? "w-screen h-screen max-w-screen max-h-screen rounded-none p-0"
             : "sm:max-w-4xl w-full h-[80vh] p-0"
         } overflow-hidden`}
       >
         {/* Header */}
-        <DialogHeader 
+        <DialogHeader
           className={`bg-ucla-blue text-white px-6 py-4 flex flex-row items-center justify-between space-y-0 ${
             isFullscreen ? "rounded-none" : "rounded-t-lg"
           }`}
@@ -97,12 +97,13 @@ export function PresentationViewer({
             <div className="flex items-center justify-center h-full">
               <div className="text-center text-gray-500">
                 <Icon className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-                <h3 className="text-lg font-semibold mb-2">No File Available</h3>
+                <h3 className="text-lg font-semibold mb-2">
+                  No File Available
+                </h3>
                 <p className="text-sm">
-                  {type === "presentation" 
+                  {type === "presentation"
                     ? "No presentation file has been uploaded for this trial."
-                    : "No original article has been uploaded for this trial."
-                  }
+                    : "No original article has been uploaded for this trial."}
                 </p>
               </div>
             </div>
@@ -114,12 +115,14 @@ export function PresentationViewer({
           <div className="bg-gray-50 px-6 py-3 border-t">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-600">
-                {type === "presentation" ? "Presentation File" : "Original Article"}
+                {type === "presentation"
+                  ? "Presentation File"
+                  : "Original Article"}
               </div>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => window.open(fileUrl, '_blank')}
+                onClick={() => window.open(fileUrl, "_blank")}
                 className="text-ucla-blue border-ucla-blue hover:bg-blue-50"
               >
                 Open in New Tab

@@ -26,7 +26,8 @@ const mockPresentations: Presentation[] = [
     id: "1",
     title: "SPRINT Trial: Intensive vs Standard Blood Pressure Control",
     specialty: "Cardiology",
-    summary: "Landmark randomized trial demonstrating that intensive blood pressure control (target <120 mmHg) significantly reduces cardiovascular events and mortality compared to standard treatment (<140 mmHg).",
+    summary:
+      "Landmark randomized trial demonstrating that intensive blood pressure control (target <120 mmHg) significantly reduces cardiovascular events and mortality compared to standard treatment (<140 mmHg).",
     authors: "SPRINT Research Group",
     journal: "N Engl J Med",
     year: "2015",
@@ -36,7 +37,8 @@ const mockPresentations: Presentation[] = [
     id: "2",
     title: "KEYNOTE-189: Pembrolizumab in Metastatic NSCLC",
     specialty: "Heme/Onc",
-    summary: "Phase 3 trial showing significant improvement in overall survival with pembrolizumab plus chemotherapy versus chemotherapy alone in previously untreated metastatic non-squamous NSCLC.",
+    summary:
+      "Phase 3 trial showing significant improvement in overall survival with pembrolizumab plus chemotherapy versus chemotherapy alone in previously untreated metastatic non-squamous NSCLC.",
     authors: "Gandhi L, et al.",
     journal: "N Engl J Med",
     year: "2018",
@@ -46,7 +48,8 @@ const mockPresentations: Presentation[] = [
     id: "3",
     title: "COMPASS Trial: Rivaroxaban in Stable CAD",
     specialty: "Cardiology",
-    summary: "Demonstrated that low-dose rivaroxaban plus aspirin reduces major adverse cardiovascular events in patients with stable coronary artery disease or peripheral artery disease.",
+    summary:
+      "Demonstrated that low-dose rivaroxaban plus aspirin reduces major adverse cardiovascular events in patients with stable coronary artery disease or peripheral artery disease.",
     authors: "Eikelboom JW, et al.",
     journal: "N Engl J Med",
     year: "2017",
@@ -56,7 +59,8 @@ const mockPresentations: Presentation[] = [
     id: "4",
     title: "CLARITY-AD: Lecanemab in Early Alzheimer's Disease",
     specialty: "Neurology",
-    summary: "Phase 3 trial showing that lecanemab significantly slowed cognitive decline in patients with early Alzheimer's disease, marking a breakthrough in amyloid-targeting therapy.",
+    summary:
+      "Phase 3 trial showing that lecanemab significantly slowed cognitive decline in patients with early Alzheimer's disease, marking a breakthrough in amyloid-targeting therapy.",
     authors: "van Dyck CH, et al.",
     journal: "N Engl J Med",
     year: "2023",
@@ -66,7 +70,8 @@ const mockPresentations: Presentation[] = [
     id: "5",
     title: "EMPA-REG OUTCOME: Empagliflozin in Type 2 Diabetes",
     specialty: "Endocrinology",
-    summary: "Groundbreaking cardiovascular outcome trial demonstrating that empagliflozin reduces cardiovascular death and heart failure hospitalization in patients with type 2 diabetes.",
+    summary:
+      "Groundbreaking cardiovascular outcome trial demonstrating that empagliflozin reduces cardiovascular death and heart failure hospitalization in patients with type 2 diabetes.",
     authors: "Zinman B, et al.",
     journal: "N Engl J Med",
     year: "2015",
@@ -76,7 +81,8 @@ const mockPresentations: Presentation[] = [
     id: "6",
     title: "STAR*D: Treatment-Resistant Depression Strategies",
     specialty: "Psychiatry",
-    summary: "Large-scale effectiveness trial evaluating sequential treatment strategies for major depressive disorder, providing evidence-based approaches for treatment-resistant depression.",
+    summary:
+      "Large-scale effectiveness trial evaluating sequential treatment strategies for major depressive disorder, providing evidence-based approaches for treatment-resistant depression.",
     authors: "Rush AJ, et al.",
     journal: "Am J Psychiatry",
     year: "2006",
@@ -86,7 +92,8 @@ const mockPresentations: Presentation[] = [
     id: "7",
     title: "ARDS Network: Low Tidal Volume Ventilation",
     specialty: "Pulmonary/Critical Care",
-    summary: "Landmark trial demonstrating that mechanical ventilation with lower tidal volumes reduces mortality in patients with acute lung injury and ARDS.",
+    summary:
+      "Landmark trial demonstrating that mechanical ventilation with lower tidal volumes reduces mortality in patients with acute lung injury and ARDS.",
     authors: "ARDS Network",
     journal: "N Engl J Med",
     year: "2000",
@@ -96,7 +103,8 @@ const mockPresentations: Presentation[] = [
     id: "8",
     title: "STOP-IT: Duration of Antibiotic Treatment",
     specialty: "Infectious Disease",
-    summary: "Randomized trial showing that fixed-duration antibiotic therapy is as effective as symptom-guided therapy for complicated intra-abdominal infections.",
+    summary:
+      "Randomized trial showing that fixed-duration antibiotic therapy is as effective as symptom-guided therapy for complicated intra-abdominal infections.",
     authors: "Sawyer RG, et al.",
     journal: "N Engl J Med",
     year: "2015",
@@ -106,7 +114,8 @@ const mockPresentations: Presentation[] = [
     id: "9",
     title: "RA-BEAM: Baricitinib in Rheumatoid Arthritis",
     specialty: "Rheumatology",
-    summary: "Phase 3 trial demonstrating superior efficacy of baricitinib compared to placebo and adalimumab in patients with active rheumatoid arthritis.",
+    summary:
+      "Phase 3 trial demonstrating superior efficacy of baricitinib compared to placebo and adalimumab in patients with active rheumatoid arthritis.",
     authors: "Taylor PC, et al.",
     journal: "N Engl J Med",
     year: "2017",
@@ -116,7 +125,8 @@ const mockPresentations: Presentation[] = [
     id: "10",
     title: "SHARP: Simvastatin and Ezetimibe in CKD",
     specialty: "Nephrology",
-    summary: "Large-scale trial showing that simvastatin plus ezetimibe safely reduces the incidence of major atherosclerotic events in patients with chronic kidney disease.",
+    summary:
+      "Large-scale trial showing that simvastatin plus ezetimibe safely reduces the incidence of major atherosclerotic events in patients with chronic kidney disease.",
     authors: "SHARP Collaborative Group",
     journal: "The Lancet",
     year: "2011",
@@ -144,23 +154,27 @@ export default function AllPresentations() {
 
   const filteredPresentations = useMemo(() => {
     return presentations.filter((presentation) => {
-      const matchesSearch = searchQuery === "" || 
+      const matchesSearch =
+        searchQuery === "" ||
         presentation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        presentation.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        presentation.summary
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
         presentation.authors?.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesSpecialty = selectedSpecialties.length === 0 || 
+
+      const matchesSpecialty =
+        selectedSpecialties.length === 0 ||
         selectedSpecialties.includes(presentation.specialty);
-      
+
       return matchesSearch && matchesSpecialty;
     });
   }, [searchQuery, selectedSpecialties, presentations]);
 
   const handleSpecialtyToggle = (specialty: string) => {
-    setSelectedSpecialties(prev => 
-      prev.includes(specialty) 
-        ? prev.filter(s => s !== specialty)
-        : [...prev, specialty]
+    setSelectedSpecialties((prev) =>
+      prev.includes(specialty)
+        ? prev.filter((s) => s !== specialty)
+        : [...prev, specialty],
     );
   };
 
@@ -174,20 +188,20 @@ export default function AllPresentations() {
 
   const handleDeletePresentation = (id: string) => {
     if (window.confirm("Are you sure you want to delete this presentation?")) {
-      setPresentations(prev => prev.filter(p => p.id !== id));
+      setPresentations((prev) => prev.filter((p) => p.id !== id));
       console.log("Deleted presentation:", id);
     }
   };
 
   const handleDuplicatePresentation = (id: string) => {
-    const presentation = presentations.find(p => p.id === id);
+    const presentation = presentations.find((p) => p.id === id);
     if (presentation) {
       const duplicated = {
         ...presentation,
         id: String(Date.now()),
         title: `${presentation.title} (Copy)`,
       };
-      setPresentations(prev => [duplicated, ...prev]);
+      setPresentations((prev) => [duplicated, ...prev]);
       console.log("Duplicated presentation:", id);
     }
   };
@@ -210,8 +224,12 @@ export default function AllPresentations() {
               </Link>
               <EBMLogo size="md" className="shadow-lg" />
               <div>
-                <h1 className="text-xl font-bold text-ucla-blue">All Presentations</h1>
-                <p className="text-xs text-blue-600">Browse all landmark trial summaries</p>
+                <h1 className="text-xl font-bold text-ucla-blue">
+                  All Presentations
+                </h1>
+                <p className="text-xs text-blue-600">
+                  Browse all landmark trial summaries
+                </p>
               </div>
             </div>
           </div>
@@ -242,11 +260,12 @@ export default function AllPresentations() {
         {/* Results Summary */}
         <div className="mb-6 flex items-center justify-between">
           <p className="text-gray-600">
-            Showing {filteredPresentations.length} of {presentations.length} presentations
+            Showing {filteredPresentations.length} of {presentations.length}{" "}
+            presentations
           </p>
           {(searchQuery || selectedSpecialties.length > 0) && (
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => {
                 setSearchQuery("");
                 setSelectedSpecialties([]);
@@ -284,11 +303,13 @@ export default function AllPresentations() {
         ) : (
           <div className="text-center py-12">
             <div className="h-16 w-16 text-gray-300 mx-auto mb-4">📚</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No presentations found</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              No presentations found
+            </h3>
             <p className="text-gray-600 mb-4">
               Try adjusting your search criteria or browse all presentations
             </p>
-            <Button 
+            <Button
               variant="outline"
               onClick={() => {
                 setSearchQuery("");

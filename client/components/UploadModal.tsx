@@ -97,41 +97,50 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
     setIsDragOver(false);
 
     const files = Array.from(e.dataTransfer.files);
-    const validFile = files.find(file => 
-      file.type === "application/pdf" || 
-      file.type === "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
-      file.type === "application/vnd.ms-powerpoint"
+    const validFile = files.find(
+      (file) =>
+        file.type === "application/pdf" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
+        file.type === "application/vnd.ms-powerpoint",
     );
 
     if (validFile) {
-      setFormData(prev => ({ ...prev, file: validFile }));
+      setFormData((prev) => ({ ...prev, file: validFile }));
     }
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData(prev => ({ ...prev, file }));
+      setFormData((prev) => ({ ...prev, file }));
     }
   };
 
-  const handleOriginalArticleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOriginalArticleSelect = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (file && file.type === "application/pdf") {
-      setFormData(prev => ({ ...prev, originalArticle: file }));
+      setFormData((prev) => ({ ...prev, originalArticle: file }));
     }
   };
 
   const handleThumbnailSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
-      setFormData(prev => ({ ...prev, thumbnail: file }));
+      setFormData((prev) => ({ ...prev, thumbnail: file }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.trialName || !formData.briefDescription || formData.subspecialty.length === 0 || !formData.journalSource) {
+    if (
+      !formData.trialName ||
+      !formData.briefDescription ||
+      formData.subspecialty.length === 0 ||
+      !formData.journalSource
+    ) {
       return;
     }
 
@@ -139,7 +148,9 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
 
     try {
       // Save to localStorage for persistence
-      const savedPresentations = JSON.parse(localStorage.getItem('ebm-presentations') || '[]');
+      const savedPresentations = JSON.parse(
+        localStorage.getItem("ebm-presentations") || "[]",
+      );
       const newPresentation = {
         id: Date.now().toString(),
         title: formData.trialName,
@@ -151,7 +162,10 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
       };
 
       savedPresentations.push(newPresentation);
-      localStorage.setItem('ebm-presentations', JSON.stringify(savedPresentations));
+      localStorage.setItem(
+        "ebm-presentations",
+        JSON.stringify(savedPresentations),
+      );
 
       // Submit immediately without delay
       onSubmit(formData);
@@ -168,29 +182,29 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
       onClose();
 
       // Show success message
-      console.log('Presentation saved successfully!');
+      console.log("Presentation saved successfully!");
     } catch (error) {
-      console.error('Error saving presentation:', error);
+      console.error("Error saving presentation:", error);
       setIsLoading(false);
     }
   };
 
   const removeFile = () => {
-    setFormData(prev => ({ ...prev, file: null }));
+    setFormData((prev) => ({ ...prev, file: null }));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
 
   const removeOriginalArticle = () => {
-    setFormData(prev => ({ ...prev, originalArticle: null }));
+    setFormData((prev) => ({ ...prev, originalArticle: null }));
     if (originalArticleInputRef.current) {
       originalArticleInputRef.current.value = "";
     }
   };
 
   const removeThumbnail = () => {
-    setFormData(prev => ({ ...prev, thumbnail: null }));
+    setFormData((prev) => ({ ...prev, thumbnail: null }));
     if (thumbnailInputRef.current) {
       thumbnailInputRef.current.value = "";
     }
@@ -198,12 +212,12 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
 
   const handleSaveDraft = () => {
     if (!formData.trialName) {
-      console.log('Trial name is required to save draft');
+      console.log("Trial name is required to save draft");
       return;
     }
 
     try {
-      const drafts = JSON.parse(localStorage.getItem('ebm-drafts') || '[]');
+      const drafts = JSON.parse(localStorage.getItem("ebm-drafts") || "[]");
       const draftData = {
         id: Date.now().toString(),
         ...formData,
@@ -212,12 +226,12 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
       };
 
       drafts.push(draftData);
-      localStorage.setItem('ebm-drafts', JSON.stringify(drafts));
+      localStorage.setItem("ebm-drafts", JSON.stringify(drafts));
 
-      console.log('Draft saved successfully!');
+      console.log("Draft saved successfully!");
       onClose();
     } catch (error) {
-      console.error('Error saving draft:', error);
+      console.error("Error saving draft:", error);
     }
   };
 
@@ -240,7 +254,9 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
             <Input
               id="trialName"
               value={formData.trialName}
-              onChange={(e) => setFormData(prev => ({ ...prev, trialName: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, trialName: e.target.value }))
+              }
               placeholder="e.g., SPRINT Trial: Intensive vs Standard Blood Pressure Control"
               required
               className="focus:border-olive-500 focus:ring-olive-500"
@@ -255,7 +271,12 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
             <Textarea
               id="briefDescription"
               value={formData.briefDescription}
-              onChange={(e) => setFormData(prev => ({ ...prev, briefDescription: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  briefDescription: e.target.value,
+                }))
+              }
               placeholder="Provide a concise summary of the trial's key findings and clinical significance..."
               rows={4}
               required
@@ -270,20 +291,25 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
             </Label>
             <div className="grid grid-cols-2 gap-2 p-4 border rounded-lg">
               {subspecialties.map((specialty) => (
-                <label key={specialty} className="flex items-center space-x-2 cursor-pointer">
+                <label
+                  key={specialty}
+                  className="flex items-center space-x-2 cursor-pointer"
+                >
                   <input
                     type="checkbox"
                     checked={formData.subspecialty.includes(specialty)}
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setFormData(prev => ({
+                        setFormData((prev) => ({
                           ...prev,
-                          subspecialty: [...prev.subspecialty, specialty]
+                          subspecialty: [...prev.subspecialty, specialty],
                         }));
                       } else {
-                        setFormData(prev => ({
+                        setFormData((prev) => ({
                           ...prev,
-                          subspecialty: prev.subspecialty.filter(s => s !== specialty)
+                          subspecialty: prev.subspecialty.filter(
+                            (s) => s !== specialty,
+                          ),
                         }));
                       }
                     }}
@@ -302,12 +328,12 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
 
           {/* Journal Source */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium">
-              Journal Source *
-            </Label>
+            <Label className="text-sm font-medium">Journal Source *</Label>
             <Select
               value={formData.journalSource}
-              onValueChange={(value) => setFormData(prev => ({ ...prev, journalSource: value }))}
+              onValueChange={(value) =>
+                setFormData((prev) => ({ ...prev, journalSource: value }))
+              }
               required
             >
               <SelectTrigger className="focus:border-olive-500 focus:ring-olive-500">
@@ -331,10 +357,10 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
             <div
               className={cn(
                 "border-2 border-dashed rounded-lg p-6 text-center transition-colors",
-                isDragOver 
-                  ? "border-olive-500 bg-olive-50" 
+                isDragOver
+                  ? "border-olive-500 bg-olive-50"
                   : "border-gray-300 hover:border-olive-400",
-                formData.file && "border-green-500 bg-green-50"
+                formData.file && "border-green-500 bg-green-50",
               )}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -345,7 +371,9 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
                   <div className="flex items-center gap-3">
                     <FileText className="h-8 w-8 text-green-600" />
                     <div className="text-left">
-                      <p className="font-medium text-green-800">{formData.file.name}</p>
+                      <p className="font-medium text-green-800">
+                        {formData.file.name}
+                      </p>
                       <p className="text-sm text-green-600">
                         {(formData.file.size / 1024 / 1024).toFixed(2)} MB
                       </p>
@@ -392,9 +420,7 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
 
           {/* Original Article PDF */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium">
-              Original Article PDF
-            </Label>
+            <Label className="text-sm font-medium">Original Article PDF</Label>
             <div className="flex items-center gap-4">
               <Button
                 type="button"
@@ -408,7 +434,9 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
               {formData.originalArticle && (
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600" />
-                  <span className="text-sm text-green-800">{formData.originalArticle.name}</span>
+                  <span className="text-sm text-green-800">
+                    {formData.originalArticle.name}
+                  </span>
                   <Button
                     type="button"
                     variant="ghost"
@@ -448,7 +476,9 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
               {formData.thumbnail && (
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600" />
-                  <span className="text-sm text-green-800">{formData.thumbnail.name}</span>
+                  <span className="text-sm text-green-800">
+                    {formData.thumbnail.name}
+                  </span>
                   <Button
                     type="button"
                     variant="ghost"
@@ -493,7 +523,13 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
               <Button
                 type="submit"
                 className="bg-ucla-blue hover:bg-blue-700"
-                disabled={isLoading || !formData.trialName || !formData.briefDescription || formData.subspecialty.length === 0 || !formData.journalSource}
+                disabled={
+                  isLoading ||
+                  !formData.trialName ||
+                  !formData.briefDescription ||
+                  formData.subspecialty.length === 0 ||
+                  !formData.journalSource
+                }
               >
                 {isLoading ? "Uploading..." : "Upload Presentation"}
               </Button>

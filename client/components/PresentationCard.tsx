@@ -2,7 +2,17 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, Eye, Edit3, Trash2, Copy, Star, MoreHorizontal, Presentation, BookOpen } from "lucide-react";
+import {
+  FileText,
+  Eye,
+  Edit3,
+  Trash2,
+  Copy,
+  Star,
+  MoreHorizontal,
+  Presentation,
+  BookOpen,
+} from "lucide-react";
 import { PresentationViewer } from "./PresentationViewer";
 import {
   DropdownMenu,
@@ -90,15 +100,24 @@ export function PresentationCard({
   const [showPresentationViewer, setShowPresentationViewer] = useState(false);
   const [showArticleViewer, setShowArticleViewer] = useState(false);
   const specialtyColors: Record<string, string> = {
-    "Cardiology": "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20",
-    "Heme/Onc": "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20",
-    "Endocrinology": "bg-specialty-endocrinology/10 text-specialty-endocrinology border-specialty-endocrinology/20",
-    "General Internal Medicine": "bg-specialty-generalinternal/10 text-specialty-generalinternal border-specialty-generalinternal/20",
-    "Pulmonary/Critical Care": "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20",
-    "Infectious Disease": "bg-specialty-infectious/10 text-specialty-infectious border-specialty-infectious/20",
-    "Rheumatology": "bg-specialty-rheumatology/10 text-specialty-rheumatology border-specialty-rheumatology/20",
-    "Nephrology": "bg-specialty-nephrology/10 text-specialty-nephrology border-specialty-nephrology/20",
-    "Gastroenterology/Hepatology": "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20",
+    Cardiology:
+      "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20",
+    "Heme/Onc":
+      "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20",
+    Endocrinology:
+      "bg-specialty-endocrinology/10 text-specialty-endocrinology border-specialty-endocrinology/20",
+    "General Internal Medicine":
+      "bg-specialty-generalinternal/10 text-specialty-generalinternal border-specialty-generalinternal/20",
+    "Pulmonary/Critical Care":
+      "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20",
+    "Infectious Disease":
+      "bg-specialty-infectious/10 text-specialty-infectious border-specialty-infectious/20",
+    Rheumatology:
+      "bg-specialty-rheumatology/10 text-specialty-rheumatology border-specialty-rheumatology/20",
+    Nephrology:
+      "bg-specialty-nephrology/10 text-specialty-nephrology border-specialty-nephrology/20",
+    "Gastroenterology/Hepatology":
+      "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20",
   };
 
   const getSpecialtyThumbnailColors = (specialty: string) => {
@@ -144,7 +163,11 @@ export function PresentationCard({
             {isAdminMode && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-gray-100">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 hover:bg-gray-100"
+                  >
                     <MoreHorizontal className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -175,7 +198,7 @@ export function PresentationCard({
             <FileText className="h-4 w-4" />
           </div>
         </div>
-        
+
         <div className="mb-4">
           {thumbnail ? (
             <div className="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
@@ -186,7 +209,9 @@ export function PresentationCard({
               />
             </div>
           ) : (
-            <div className={`w-full h-32 bg-gradient-to-br ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4`}>
+            <div
+              className={`w-full h-32 bg-gradient-to-br ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4`}
+            >
               {(() => {
                 const SpecialtyIcon = getSpecialtyIcon(specialty);
                 return SpecialtyIcon ? (
@@ -204,10 +229,8 @@ export function PresentationCard({
         <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-ucla-blue transition-colors">
           {title}
         </h3>
-        
-        <p className="text-sm text-gray-600 mb-3 line-clamp-3">
-          {summary}
-        </p>
+
+        <p className="text-sm text-gray-600 mb-3 line-clamp-3">{summary}</p>
 
         {(authors || journal) && (
           <div className="text-xs text-gray-500 mb-4 space-y-1">
@@ -220,7 +243,9 @@ export function PresentationCard({
         <div className="flex items-center justify-end mb-3">
           <div className="flex items-center gap-1 text-gray-500">
             <Eye className="h-4 w-4" />
-            <span className="text-sm font-medium">{viewerCount.toLocaleString()}</span>
+            <span className="text-sm font-medium">
+              {viewerCount.toLocaleString()}
+            </span>
           </div>
         </div>
 

@@ -21,17 +21,18 @@ interface FeaturedPresentationData {
 export function FeaturedPresentation() {
   const { isAdminMode } = useAdmin();
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [featuredPresentation, setFeaturedPresentation] = useState<FeaturedPresentationData | null>(() => {
-    const saved = localStorage.getItem('ebm-featured-presentation');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [featuredPresentation, setFeaturedPresentation] =
+    useState<FeaturedPresentationData | null>(() => {
+      const saved = localStorage.getItem("ebm-featured-presentation");
+      return saved ? JSON.parse(saved) : null;
+    });
 
   const handleFeaturedClick = () => {
     if (featuredPresentation?.file) {
       const url = URL.createObjectURL(featuredPresentation.file);
-      window.open(url, '_blank');
+      window.open(url, "_blank");
     } else {
-      alert('No featured presentation available');
+      alert("No featured presentation available");
     }
   };
 
@@ -46,11 +47,14 @@ export function FeaturedPresentation() {
     };
 
     // Save to localStorage for persistence
-    localStorage.setItem('ebm-featured-presentation', JSON.stringify(presentationWithDate));
+    localStorage.setItem(
+      "ebm-featured-presentation",
+      JSON.stringify(presentationWithDate),
+    );
     setFeaturedPresentation(presentationWithDate);
     setShowUploadModal(false);
 
-    console.log('Featured presentation uploaded:', presentationWithDate);
+    console.log("Featured presentation uploaded:", presentationWithDate);
   };
 
   return (
@@ -61,24 +65,24 @@ export function FeaturedPresentation() {
         </div>
 
         <h3 className="text-2xl font-bold text-gray-900 mb-3">
-          {featuredPresentation ? featuredPresentation.title : "Featured Presentation"}
+          {featuredPresentation
+            ? featuredPresentation.title
+            : "Featured Presentation"}
         </h3>
 
         <div className="flex items-center justify-center mb-4 text-ucla-blue">
           <Calendar className="h-4 w-4 mr-2" />
           <p className="text-sm font-medium">
             {featuredPresentation
-              ? `Presented by ${featuredPresentation.presenter} - ${new Date(featuredPresentation.uploadedAt || '').toLocaleDateString()}`
-              : "Recently Presented in Noon Conference at Olive View Medical Center"
-            }
+              ? `Presented by ${featuredPresentation.presenter} - ${new Date(featuredPresentation.uploadedAt || "").toLocaleDateString()}`
+              : "Recently Presented in Noon Conference at Olive View Medical Center"}
           </p>
         </div>
 
         <p className="text-gray-600 mb-6 max-w-md mx-auto">
           {featuredPresentation
             ? featuredPresentation.description
-            : "Access the latest landmark trial presentation from our noon conference"
-          }
+            : "Access the latest landmark trial presentation from our noon conference"}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -88,7 +92,9 @@ export function FeaturedPresentation() {
             className="bg-ucla-blue hover:bg-blue-700 text-white px-8 py-3 text-lg font-medium border-2 border-ucla-gold/20 hover:border-ucla-gold/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ExternalLink className="h-5 w-5 mr-2" />
-            {featuredPresentation ? "View Featured Presentation" : "No Presentation Available"}
+            {featuredPresentation
+              ? "View Featured Presentation"
+              : "No Presentation Available"}
           </Button>
 
           {isAdminMode && (

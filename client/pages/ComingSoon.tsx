@@ -16,13 +16,11 @@ export default function ComingSoon() {
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
           Feature Coming Soon
         </h1>
-        
+
         {/* Subheading */}
         <p className="text-lg text-gray-600 mb-8">
           Stay tuned! We're working hard to bring you this feature.
         </p>
-
-
 
         {/* Back Button */}
         <Link to="/">

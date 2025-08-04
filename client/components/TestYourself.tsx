@@ -16,7 +16,8 @@ export function TestYourself() {
       </div>
       <h3 className="text-xl font-bold text-gray-900 mb-2">Test Yourself</h3>
       <p className="text-gray-600 mb-6 text-sm">
-        Challenge your knowledge with multiple choice questions based on landmark trials
+        Challenge your knowledge with multiple choice questions based on
+        landmark trials
       </p>
       <Button
         onClick={handleQuizClick}

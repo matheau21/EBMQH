@@ -46,26 +46,33 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
     setIsDragOver(false);
 
     const files = Array.from(e.dataTransfer.files);
-    const validFile = files.find(file => 
-      file.type === "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
-      file.type === "application/vnd.ms-powerpoint"
+    const validFile = files.find(
+      (file) =>
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
+        file.type === "application/vnd.ms-powerpoint",
     );
 
     if (validFile) {
-      setFormData(prev => ({ ...prev, file: validFile }));
+      setFormData((prev) => ({ ...prev, file: validFile }));
     }
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData(prev => ({ ...prev, file }));
+      setFormData((prev) => ({ ...prev, file }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.description || !formData.presenter || !formData.file) {
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.presenter ||
+      !formData.file
+    ) {
       return;
     }
 
@@ -83,7 +90,7 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
   };
 
   const removeFile = () => {
-    setFormData(prev => ({ ...prev, file: null }));
+    setFormData((prev) => ({ ...prev, file: null }));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -95,7 +102,9 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
         <div className="w-16 h-16 bg-ucla-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
           <Plus className="h-8 w-8 text-ucla-blue" />
         </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">Submit Featured Presentation</h3>
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+          Submit Featured Presentation
+        </h3>
         <p className="text-gray-600">
           Share your landmark trial presentation with the community
         </p>
@@ -110,7 +119,9 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
             <Input
               id="title"
               value={formData.title}
-              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, title: e.target.value }))
+              }
               placeholder="e.g., SPRINT Trial: Intensive Blood Pressure Control"
               required
               className="focus:border-ucla-blue focus:ring-ucla-blue"
@@ -124,7 +135,9 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
             <Input
               id="presenter"
               value={formData.presenter}
-              onChange={(e) => setFormData(prev => ({ ...prev, presenter: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, presenter: e.target.value }))
+              }
               placeholder="Dr. John Smith"
               required
               className="focus:border-ucla-blue focus:ring-ucla-blue"
@@ -139,7 +152,9 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
           <Textarea
             id="description"
             value={formData.description}
-            onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, description: e.target.value }))
+            }
             placeholder="Provide a concise summary of the trial's key findings and clinical significance..."
             rows={3}
             required
@@ -154,10 +169,10 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
           <div
             className={cn(
               "border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300",
-              isDragOver 
-                ? "border-ucla-blue bg-blue-50" 
+              isDragOver
+                ? "border-ucla-blue bg-blue-50"
                 : "border-gray-300 hover:border-ucla-blue hover:bg-gray-50",
-              formData.file && "border-ucla-gold bg-ucla-gold/5"
+              formData.file && "border-ucla-gold bg-ucla-gold/5",
             )}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -170,7 +185,9 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
                     <FileText className="h-6 w-6 text-ucla-blue" />
                   </div>
                   <div className="text-left">
-                    <p className="font-medium text-gray-900">{formData.file.name}</p>
+                    <p className="font-medium text-gray-900">
+                      {formData.file.name}
+                    </p>
                     <p className="text-sm text-gray-600">
                       {(formData.file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
@@ -219,7 +236,13 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
         <div className="flex justify-center pt-4">
           <Button
             type="submit"
-            disabled={isLoading || !formData.title || !formData.description || !formData.presenter || !formData.file}
+            disabled={
+              isLoading ||
+              !formData.title ||
+              !formData.description ||
+              !formData.presenter ||
+              !formData.file
+            }
             className="bg-ucla-blue hover:bg-blue-700 text-white px-8 py-3 text-lg font-medium"
           >
             {isLoading ? "Uploading..." : "Submit Presentation"}

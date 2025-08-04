@@ -48,7 +48,8 @@ const mockPresentations: Presentation[] = [
     id: "1",
     title: "SPRINT Trial: Intensive vs Standard Blood Pressure Control",
     specialty: "Cardiology",
-    summary: "Landmark randomized trial demonstrating that intensive blood pressure control (target <120 mmHg) significantly reduces cardiovascular events and mortality compared to standard treatment (<140 mmHg).",
+    summary:
+      "Landmark randomized trial demonstrating that intensive blood pressure control (target <120 mmHg) significantly reduces cardiovascular events and mortality compared to standard treatment (<140 mmHg).",
     authors: "SPRINT Research Group",
     journal: "N Engl J Med",
     year: "2015",
@@ -58,7 +59,8 @@ const mockPresentations: Presentation[] = [
     id: "2",
     title: "KEYNOTE-189: Pembrolizumab in Metastatic NSCLC",
     specialty: "Heme/Onc",
-    summary: "Phase 3 trial showing significant improvement in overall survival with pembrolizumab plus chemotherapy versus chemotherapy alone in previously untreated metastatic non-squamous NSCLC.",
+    summary:
+      "Phase 3 trial showing significant improvement in overall survival with pembrolizumab plus chemotherapy versus chemotherapy alone in previously untreated metastatic non-squamous NSCLC.",
     authors: "Gandhi L, et al.",
     journal: "N Engl J Med",
     year: "2018",
@@ -68,7 +70,8 @@ const mockPresentations: Presentation[] = [
     id: "3",
     title: "COMPASS Trial: Rivaroxaban in Stable CAD",
     specialty: "Cardiology",
-    summary: "Demonstrated that low-dose rivaroxaban plus aspirin reduces major adverse cardiovascular events in patients with stable coronary artery disease or peripheral artery disease.",
+    summary:
+      "Demonstrated that low-dose rivaroxaban plus aspirin reduces major adverse cardiovascular events in patients with stable coronary artery disease or peripheral artery disease.",
     authors: "Eikelboom JW, et al.",
     journal: "N Engl J Med",
     year: "2017",
@@ -78,7 +81,8 @@ const mockPresentations: Presentation[] = [
     id: "4",
     title: "CLARITY-AD: Lecanemab in Early Alzheimer's Disease",
     specialty: "Neurology",
-    summary: "Phase 3 trial showing that lecanemab significantly slowed cognitive decline in patients with early Alzheimer's disease, marking a breakthrough in amyloid-targeting therapy.",
+    summary:
+      "Phase 3 trial showing that lecanemab significantly slowed cognitive decline in patients with early Alzheimer's disease, marking a breakthrough in amyloid-targeting therapy.",
     authors: "van Dyck CH, et al.",
     journal: "N Engl J Med",
     year: "2023",
@@ -88,7 +92,8 @@ const mockPresentations: Presentation[] = [
     id: "5",
     title: "EMPA-REG OUTCOME: Empagliflozin in Type 2 Diabetes",
     specialty: "Endocrinology",
-    summary: "Groundbreaking cardiovascular outcome trial demonstrating that empagliflozin reduces cardiovascular death and heart failure hospitalization in patients with type 2 diabetes.",
+    summary:
+      "Groundbreaking cardiovascular outcome trial demonstrating that empagliflozin reduces cardiovascular death and heart failure hospitalization in patients with type 2 diabetes.",
     authors: "Zinman B, et al.",
     journal: "N Engl J Med",
     year: "2015",
@@ -98,7 +103,8 @@ const mockPresentations: Presentation[] = [
     id: "6",
     title: "STAR*D: Treatment-Resistant Depression Strategies",
     specialty: "Psychiatry",
-    summary: "Large-scale effectiveness trial evaluating sequential treatment strategies for major depressive disorder, providing evidence-based approaches for treatment-resistant depression.",
+    summary:
+      "Large-scale effectiveness trial evaluating sequential treatment strategies for major depressive disorder, providing evidence-based approaches for treatment-resistant depression.",
     authors: "Rush AJ, et al.",
     journal: "Am J Psychiatry",
     year: "2006",
@@ -108,7 +114,8 @@ const mockPresentations: Presentation[] = [
     id: "7",
     title: "ARDS Network: Low Tidal Volume Ventilation",
     specialty: "Pulmonary/Critical Care",
-    summary: "Landmark trial demonstrating that mechanical ventilation with lower tidal volumes reduces mortality in patients with acute lung injury and ARDS.",
+    summary:
+      "Landmark trial demonstrating that mechanical ventilation with lower tidal volumes reduces mortality in patients with acute lung injury and ARDS.",
     authors: "ARDS Network",
     journal: "N Engl J Med",
     year: "2000",
@@ -118,7 +125,8 @@ const mockPresentations: Presentation[] = [
     id: "8",
     title: "STOP-IT: Duration of Antibiotic Treatment",
     specialty: "Infectious Disease",
-    summary: "Randomized trial showing that fixed-duration antibiotic therapy is as effective as symptom-guided therapy for complicated intra-abdominal infections.",
+    summary:
+      "Randomized trial showing that fixed-duration antibiotic therapy is as effective as symptom-guided therapy for complicated intra-abdominal infections.",
     authors: "Sawyer RG, et al.",
     journal: "N Engl J Med",
     year: "2015",
@@ -128,7 +136,8 @@ const mockPresentations: Presentation[] = [
     id: "9",
     title: "RA-BEAM: Baricitinib in Rheumatoid Arthritis",
     specialty: "Rheumatology",
-    summary: "Phase 3 trial demonstrating superior efficacy of baricitinib compared to placebo and adalimumab in patients with active rheumatoid arthritis.",
+    summary:
+      "Phase 3 trial demonstrating superior efficacy of baricitinib compared to placebo and adalimumab in patients with active rheumatoid arthritis.",
     authors: "Taylor PC, et al.",
     journal: "N Engl J Med",
     year: "2017",
@@ -138,7 +147,8 @@ const mockPresentations: Presentation[] = [
     id: "10",
     title: "SHARP: Simvastatin and Ezetimibe in CKD",
     specialty: "Nephrology",
-    summary: "Large-scale trial showing that simvastatin plus ezetimibe safely reduces the incidence of major atherosclerotic events in patients with chronic kidney disease.",
+    summary:
+      "Large-scale trial showing that simvastatin plus ezetimibe safely reduces the incidence of major atherosclerotic events in patients with chronic kidney disease.",
     authors: "SHARP Collaborative Group",
     journal: "The Lancet",
     year: "2011",
@@ -173,22 +183,27 @@ export default function Index() {
     }
 
     return presentations.filter((presentation) => {
-      const matchesSearch = searchQuery === "" ||
+      const matchesSearch =
+        searchQuery === "" ||
         presentation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        presentation.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        presentation.summary
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
         presentation.authors?.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesSpecialty = selectedSpecialties.includes(presentation.specialty);
+      const matchesSpecialty = selectedSpecialties.includes(
+        presentation.specialty,
+      );
 
       return matchesSearch && matchesSpecialty;
     });
   }, [searchQuery, selectedSpecialties, presentations]);
 
   const handleSpecialtyToggle = (specialty: string) => {
-    setSelectedSpecialties(prev => 
-      prev.includes(specialty) 
-        ? prev.filter(s => s !== specialty)
-        : [...prev, specialty]
+    setSelectedSpecialties((prev) =>
+      prev.includes(specialty)
+        ? prev.filter((s) => s !== specialty)
+        : [...prev, specialty],
     );
   };
 
@@ -203,20 +218,20 @@ export default function Index() {
 
   const handleDeletePresentation = (id: string) => {
     if (window.confirm("Are you sure you want to delete this presentation?")) {
-      setPresentations(prev => prev.filter(p => p.id !== id));
+      setPresentations((prev) => prev.filter((p) => p.id !== id));
       console.log("Deleted presentation:", id);
     }
   };
 
   const handleDuplicatePresentation = (id: string) => {
-    const presentation = presentations.find(p => p.id === id);
+    const presentation = presentations.find((p) => p.id === id);
     if (presentation) {
       const duplicated = {
         ...presentation,
         id: String(Date.now()),
         title: `${presentation.title} (Copy)`,
       };
-      setPresentations(prev => [duplicated, ...prev]);
+      setPresentations((prev) => [duplicated, ...prev]);
       console.log("Duplicated presentation:", id);
     }
   };
@@ -249,7 +264,7 @@ export default function Index() {
       year: new Date().getFullYear().toString(),
     };
 
-    setPresentations(prev => [newPresentation, ...prev]);
+    setPresentations((prev) => [newPresentation, ...prev]);
   };
 
   const handleFeaturedUpload = (data: FeaturedPresentationData) => {
@@ -266,8 +281,12 @@ export default function Index() {
             <div className="flex items-center space-x-3">
               <EBMLogo size="md" className="shadow-lg" />
               <div>
-                <h1 className="text-xl font-bold text-ucla-blue">EBM Quick Hits</h1>
-                <p className="text-xs text-blue-600">Evidence-Based Medicine Made Simple</p>
+                <h1 className="text-xl font-bold text-ucla-blue">
+                  EBM Quick Hits
+                </h1>
+                <p className="text-xs text-blue-600">
+                  Evidence-Based Medicine Made Simple
+                </p>
               </div>
             </div>
             {isAdminMode && (
@@ -288,9 +307,12 @@ export default function Index() {
         {/* Background Pattern with Dynamic Effects */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-ucla-blue via-blue-600 to-blue-800 animate-gradient-x"></div>
-          <div className="absolute inset-0 animate-pulse" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD100' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}></div>
+          <div
+            className="absolute inset-0 animate-pulse"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD100' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          ></div>
         </div>
 
         {/* Floating Elements with Animation */}
@@ -304,7 +326,9 @@ export default function Index() {
             {/* Main Title */}
             <div className="mb-6">
               <h1 className="text-5xl md:text-6xl font-black mb-4 tracking-tight">
-                <span className="block text-white animate-slide-down">Landmark Trial</span>
+                <span className="block text-white animate-slide-down">
+                  Landmark Trial
+                </span>
                 <span className="block bg-gradient-to-r from-ucla-gold to-yellow-300 bg-clip-text text-transparent animate-slide-up">
                   Quick Hits
                 </span>
@@ -314,25 +338,41 @@ export default function Index() {
 
             {/* Subtitle */}
             <p className="text-lg md:text-xl text-blue-100 mb-10 max-w-4xl mx-auto leading-relaxed font-light animate-fade-in">
-              High-yield, digestible summaries of landmark trials — curated for Medicine Residents to enhance learning and clinical practice.
+              High-yield, digestible summaries of landmark trials — curated for
+              Medicine Residents to enhance learning and clinical practice.
             </p>
 
             {/* Feature Badges */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+              <div
+                className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                style={{ animationDelay: "0.1s" }}
+              >
                 <BookOpen className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Landmark Research</h3>
-                <p className="text-sm text-blue-200">Breakthrough clinical trials that changed medicine</p>
+                <p className="text-sm text-blue-200">
+                  Breakthrough clinical trials that changed medicine
+                </p>
               </div>
-              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+              <div
+                className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                style={{ animationDelay: "0.2s" }}
+              >
                 <Users className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Guideline Origins</h3>
-                <p className="text-sm text-blue-200">Studies that shaped current medical guidelines</p>
+                <p className="text-sm text-blue-200">
+                  Studies that shaped current medical guidelines
+                </p>
               </div>
-              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+              <div
+                className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                style={{ animationDelay: "0.3s" }}
+              >
                 <Award className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Evidence-Based Practice</h3>
-                <p className="text-sm text-blue-200">Research-backed clinical decision making</p>
+                <p className="text-sm text-blue-200">
+                  Research-backed clinical decision making
+                </p>
               </div>
             </div>
           </div>
@@ -344,8 +384,12 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center">
             <div className="bg-white border-2 border-ucla-gold/20 p-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:border-ucla-gold/40 w-full max-w-2xl text-center">
-              <div className="text-6xl font-bold text-ucla-blue mb-4">{presentations.length}</div>
-              <div className="text-ucla-gold font-semibold text-xl">Trial Summaries</div>
+              <div className="text-6xl font-bold text-ucla-blue mb-4">
+                {presentations.length}
+              </div>
+              <div className="text-ucla-gold font-semibold text-xl">
+                Trial Summaries
+              </div>
             </div>
           </div>
         </div>
@@ -374,7 +418,8 @@ export default function Index() {
                 {selectedSpecialties.join(", ")} Presentations
               </h2>
               <p className="text-gray-600">
-                Showing {filteredPresentations.length} presentations for selected specialties
+                Showing {filteredPresentations.length} presentations for
+                selected specialties
               </p>
             </div>
 
@@ -403,9 +448,12 @@ export default function Index() {
             ) : (
               <div className="text-center py-12 bg-gray-50 rounded-lg">
                 <BookOpen className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">No presentations found</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  No presentations found
+                </h3>
                 <p className="text-gray-600 mb-4">
-                  No presentations available for the selected specialty. Check back later for updates.
+                  No presentations available for the selected specialty. Check
+                  back later for updates.
                 </p>
                 <Button
                   variant="outline"
@@ -435,21 +483,47 @@ export default function Index() {
                 <span className="text-xl font-bold">EBM Quick Hits</span>
               </div>
               <p className="text-blue-200">
-                Evidence-based medicine summaries for medical education and clinical practice
+                Evidence-based medicine summaries for medical education and
+                clinical practice
               </p>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2 text-blue-200">
-                <li><Link to="/presentations" className="hover:text-white transition-colors">All Presentations</Link></li>
-                <li><a href="#" className="hover:text-white transition-colors">EBM Reference Card</a></li>
+                <li>
+                  <Link
+                    to="/presentations"
+                    className="hover:text-white transition-colors"
+                  >
+                    All Presentations
+                  </Link>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    EBM Reference Card
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-blue-200">
-                <li><Link to="/coming-soon" className="hover:text-white transition-colors">Contact Us</Link></li>
-                <li><Link to="/coming-soon" className="hover:text-white transition-colors">Feedback</Link></li>
+                <li>
+                  <Link
+                    to="/coming-soon"
+                    className="hover:text-white transition-colors"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/coming-soon"
+                    className="hover:text-white transition-colors"
+                  >
+                    Feedback
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -468,7 +542,7 @@ export default function Index() {
         onClose={() => setShowAuthModal(false)}
         onAuthenticated={handleAuthenticated}
       />
-      
+
       <UploadModal
         isOpen={showUploadModal}
         onClose={() => setShowUploadModal(false)}
