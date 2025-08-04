@@ -320,6 +320,8 @@ export default function AllPresentations() {
                 year={presentation.year}
                 viewerCount={presentation.viewerCount}
                 thumbnail={presentation.thumbnail}
+                presentationFileUrl={presentation.presentationFileUrl}
+                originalArticleUrl={presentation.originalArticleUrl}
                 onViewSummary={() => handleViewSummary(presentation.id)}
                 onEdit={handleEditPresentation}
                 onDelete={handleDeletePresentation}
