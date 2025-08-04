@@ -136,22 +136,45 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
     }
 
     setIsLoading(true);
-    
-    // Simulate upload process
-    setTimeout(() => {
-      onSubmit(formData);
-      setFormData({
-        trialName: "",
-        briefDescription: "",
-        subspecialty: "",
-        journalSource: "",
-        file: null,
-        originalArticle: null,
-        thumbnail: null,
-      });
+
+    try {
+      // Save to localStorage for persistence
+      const savedPresentations = JSON.parse(localStorage.getItem('ebm-presentations') || '[]');
+      const newPresentation = {
+        id: Date.now().toString(),
+        title: formData.trialName,
+        specialty: formData.subspecialty,
+        summary: formData.briefDescription,
+        journal: formData.journalSource,
+        year: new Date().getFullYear().toString(),
+        savedAt: new Date().toISOString(),
+      };
+
+      savedPresentations.push(newPresentation);
+      localStorage.setItem('ebm-presentations', JSON.stringify(savedPresentations));
+
+      // Simulate upload process
+      setTimeout(() => {
+        onSubmit(formData);
+        setFormData({
+          trialName: "",
+          briefDescription: "",
+          subspecialty: "",
+          journalSource: "",
+          file: null,
+          originalArticle: null,
+          thumbnail: null,
+        });
+        setIsLoading(false);
+        onClose();
+
+        // Show success message
+        console.log('Presentation saved successfully!');
+      }, 2000);
+    } catch (error) {
+      console.error('Error saving presentation:', error);
       setIsLoading(false);
-      onClose();
-    }, 2000);
+    }
   };
 
   const removeFile = () => {
