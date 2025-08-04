@@ -372,7 +372,10 @@ export function MediaLibrary({
 
               <div>
                 <Label htmlFor="category">Category</Label>
-                <Select value={uploadCategory || ""} onValueChange={setUploadCategory}>
+                <Select
+                  value={uploadCategory || ""}
+                  onValueChange={(value) => setUploadCategory(value || "")}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
