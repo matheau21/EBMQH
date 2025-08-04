@@ -15,6 +15,7 @@ import { BookOpen, Plus, Users, Award } from "lucide-react";
 import { EBMLogo } from "@/components/EBMLogo";
 import { MediaLibraryButton } from "@/components/MediaLibraryButton";
 import { PublishButton } from "@/components/PublishButton";
+import { addPresentationFilesToMediaLibrary } from "@/lib/mediaLibraryUtils";
 import { Link } from "react-router-dom";
 
 interface Presentation {
