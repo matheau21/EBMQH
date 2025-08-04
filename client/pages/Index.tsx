@@ -365,6 +365,11 @@ export default function Index() {
             </div>
             {isAdminMode && (
               <div className="flex gap-2 sm:gap-3 flex-shrink-0">
+                <PublishButton
+                  variant="outline"
+                  size="sm"
+                  className="border-green-600 text-green-600 hover:bg-green-50"
+                />
                 <MediaLibraryButton
                   allowedTypes={["pdf"]}
                   mode="manage"
