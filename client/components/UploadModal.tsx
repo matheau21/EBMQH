@@ -434,22 +434,33 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
           </div>
 
           {/* Submit Buttons */}
-          <div className="flex justify-end gap-3 pt-6">
+          <div className="flex justify-between items-center pt-6">
             <Button
               type="button"
               variant="outline"
-              onClick={onClose}
-              disabled={isLoading}
+              onClick={() => handleSaveDraft()}
+              disabled={isLoading || !formData.trialName}
+              className="border-gray-300 text-gray-600 hover:bg-gray-50"
             >
-              Cancel
+              Save Draft
             </Button>
-            <Button
-              type="submit"
-              className="bg-olive-600 hover:bg-olive-700"
-              disabled={isLoading || !formData.trialName || !formData.briefDescription || !formData.subspecialty || !formData.journalSource}
-            >
-              {isLoading ? "Uploading..." : "Upload Presentation"}
-            </Button>
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onClose}
+                disabled={isLoading}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="bg-ucla-blue hover:bg-blue-700"
+                disabled={isLoading || !formData.trialName || !formData.briefDescription || !formData.subspecialty || !formData.journalSource}
+              >
+                {isLoading ? "Uploading..." : "Upload Presentation"}
+              </Button>
+            </div>
           </div>
         </form>
       </DialogContent>
