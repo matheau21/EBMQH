@@ -121,6 +121,8 @@ export function PresentationCard({
       "bg-specialty-nephrology/10 text-specialty-nephrology border-specialty-nephrology/20",
     "Gastroenterology/Hepatology":
       "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20",
+    Neurology:
+      "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20",
   };
 
   const getSpecialtyThumbnailColors = (specialty: string) => {
