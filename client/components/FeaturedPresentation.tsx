@@ -101,14 +101,14 @@ export function FeaturedPresentation() {
             : "Access the latest landmark trial presentation from our noon conference"}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <Button
             onClick={handleFeaturedClick}
             disabled={
               !featuredPresentation ||
               (!featuredPresentation.file && !featuredPresentation.fileUrl)
             }
-            className="bg-ucla-blue hover:bg-blue-700 text-white px-8 py-3 text-lg font-medium border-2 border-ucla-gold/20 hover:border-ucla-gold/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-ucla-blue hover:bg-blue-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg font-medium border-2 border-ucla-gold/20 hover:border-ucla-gold/40 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ExternalLink className="h-5 w-5 mr-2" />
             {featuredPresentation &&
