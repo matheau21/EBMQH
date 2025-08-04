@@ -70,18 +70,16 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
     }
 
     setIsLoading(true);
-    
-    // Simulate upload process
-    setTimeout(() => {
-      onUpload(formData);
-      setFormData({
-        title: "",
-        description: "",
-        presenter: "",
-        file: null,
-      });
-      setIsLoading(false);
-    }, 2000);
+
+    // Submit immediately
+    onUpload(formData);
+    setFormData({
+      title: "",
+      description: "",
+      presenter: "",
+      file: null,
+    });
+    setIsLoading(false);
   };
 
   const removeFile = () => {
