@@ -159,7 +159,7 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
         setFormData({
           trialName: "",
           briefDescription: "",
-          subspecialty: "",
+          subspecialty: [],
           journalSource: "",
           file: null,
           originalArticle: null,
