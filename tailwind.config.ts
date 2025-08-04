@@ -84,6 +84,7 @@ export default {
           rheumatology: "#a855f7",
           nephrology: "#8b5cf6",
           gastroenterology: "#84cc16",
+          neurology: "#4338ca",
         },
       },
       borderRadius: {
