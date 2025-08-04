@@ -288,6 +288,7 @@ export default function AllPresentations() {
           p.id === editingPresentation.id ? updatedPresentation : p,
         ),
       );
+      markAsChanged();
       setEditingPresentation(null);
     } else {
       // Add new presentation
