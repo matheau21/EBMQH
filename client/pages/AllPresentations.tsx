@@ -168,7 +168,16 @@ export default function AllPresentations() {
   };
 
   const handleDuplicatePresentation = (id: string) => {
-    console.log("Duplicated presentation:", id);
+    const presentation = presentations.find(p => p.id === id);
+    if (presentation) {
+      const duplicated = {
+        ...presentation,
+        id: String(Date.now()),
+        title: `${presentation.title} (Copy)`,
+      };
+      setPresentations(prev => [duplicated, ...prev]);
+      console.log("Duplicated presentation:", id);
+    }
   };
 
   const handleToggleFeatured = (id: string) => {
