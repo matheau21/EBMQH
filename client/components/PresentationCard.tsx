@@ -97,6 +97,35 @@ export function PresentationCard({
     "Gastroenterology/Hepatology": "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20",
   };
 
+  const getSpecialtyThumbnailColors = (specialty: string) => {
+    switch (specialty) {
+      case "Cardiology":
+        return "from-red-100 to-red-200 text-red-600";
+      case "Heme/Onc":
+        return "from-purple-100 to-purple-200 text-purple-600";
+      case "Endocrinology":
+        return "from-emerald-100 to-emerald-200 text-emerald-600";
+      case "General Internal Medicine":
+        return "from-gray-100 to-gray-200 text-gray-600";
+      case "Pulmonary/Critical Care":
+        return "from-sky-100 to-sky-200 text-sky-600";
+      case "Infectious Disease":
+        return "from-orange-100 to-orange-200 text-orange-600";
+      case "Rheumatology":
+        return "from-violet-100 to-violet-200 text-violet-600";
+      case "Nephrology":
+        return "from-purple-100 to-purple-200 text-purple-600";
+      case "Gastroenterology/Hepatology":
+        return "from-lime-100 to-lime-200 text-lime-600";
+      case "Neurology":
+        return "from-indigo-100 to-indigo-200 text-indigo-600";
+      case "Psychiatry":
+        return "from-pink-100 to-pink-200 text-pink-600";
+      default:
+        return "from-blue-100 to-blue-200 text-blue-600";
+    }
+  };
+
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white border-gray-200">
       <CardContent className="p-6">
