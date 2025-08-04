@@ -10,7 +10,7 @@ import { AdminToggleButton } from "@/components/AdminToggleButton";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Plus, TrendingUp, Users, Award, Zap } from "lucide-react";
+import { BookOpen, Plus, Users, Award, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface Presentation {
