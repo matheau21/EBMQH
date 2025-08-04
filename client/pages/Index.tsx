@@ -231,7 +231,7 @@ export default function Index() {
     const newPresentation: Presentation = {
       id: String(presentations.length + 1),
       title: data.trialName,
-      specialty: data.subspecialty,
+      specialty: data.subspecialty[0] || "General Internal Medicine", // Use first specialty as primary
       summary: data.briefDescription,
       journal: data.journalSource,
       year: new Date().getFullYear().toString(),
