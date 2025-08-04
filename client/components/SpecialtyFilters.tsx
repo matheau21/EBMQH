@@ -19,55 +19,55 @@ interface SpecialtyFiltersProps {
 const specialtyConfig = [
   {
     name: "Cardiology",
-    icon: CardiologySpecificIcon,
+    icon: ModernCardiologyIcon,
     color: "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20 hover:bg-specialty-cardiology/20",
     activeColor: "bg-specialty-cardiology text-white border-specialty-cardiology"
   },
   {
     name: "Heme/Onc",
-    icon: HemeOncSpecificIcon,
+    icon: ModernHemeOncIcon,
     color: "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20 hover:bg-specialty-hemeonc/20",
     activeColor: "bg-specialty-hemeonc text-white border-specialty-hemeonc"
   },
   {
     name: "Endocrinology",
-    icon: EndocrinologySpecificIcon,
+    icon: ModernEndocrinologyIcon,
     color: "bg-specialty-endocrinology/10 text-specialty-endocrinology border-specialty-endocrinology/20 hover:bg-specialty-endocrinology/20",
     activeColor: "bg-specialty-endocrinology text-white border-specialty-endocrinology"
   },
   {
     name: "General Internal Medicine",
-    icon: GeneralInternalSpecificIcon,
+    icon: ModernGeneralInternalIcon,
     color: "bg-specialty-generalinternal/10 text-specialty-generalinternal border-specialty-generalinternal/20 hover:bg-specialty-generalinternal/20",
     activeColor: "bg-specialty-generalinternal text-white border-specialty-generalinternal"
   },
   {
     name: "Pulmonary/Critical Care",
-    icon: PulmonaryCriticalSpecificIcon,
+    icon: ModernPulmonaryCriticalIcon,
     color: "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20 hover:bg-specialty-pulmonarycritical/20",
     activeColor: "bg-specialty-pulmonarycritical text-white border-specialty-pulmonarycritical"
   },
   {
     name: "Infectious Disease",
-    icon: InfectiousSpecificIcon,
+    icon: ModernInfectiousIcon,
     color: "bg-specialty-infectious/10 text-specialty-infectious border-specialty-infectious/20 hover:bg-specialty-infectious/20",
     activeColor: "bg-specialty-infectious text-white border-specialty-infectious"
   },
   {
     name: "Rheumatology",
-    icon: RheumatologySpecificIcon,
+    icon: ModernRheumatologyIcon,
     color: "bg-specialty-rheumatology/10 text-specialty-rheumatology border-specialty-rheumatology/20 hover:bg-specialty-rheumatology/20",
     activeColor: "bg-specialty-rheumatology text-white border-specialty-rheumatology"
   },
   {
     name: "Nephrology",
-    icon: NephrologySpecificIcon,
+    icon: ModernNephrologyIcon,
     color: "bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-200",
     activeColor: "bg-yellow-500 text-white border-yellow-500"
   },
   {
     name: "Gastroenterology/Hepatology",
-    icon: GastroenterologySpecificIcon,
+    icon: ModernGastroenterologyIcon,
     color: "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20 hover:bg-specialty-gastroenterology/20",
     activeColor: "bg-specialty-gastroenterology text-white border-specialty-gastroenterology"
   },
