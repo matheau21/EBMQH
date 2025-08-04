@@ -3,7 +3,7 @@ import { MediaFile } from "@/components/MediaLibrary";
 export const addFileToMediaLibrary = (
   file: File,
   category: string = "Presentations",
-  metadata?: { title?: string; description?: string }
+  metadata?: { title?: string; description?: string },
 ): void => {
   try {
     // Get existing files from localStorage
@@ -44,27 +44,19 @@ const getFileType = (file: File): "pdf" | "image" | "document" => {
 export const addPresentationFilesToMediaLibrary = (
   presentationFile?: File | null,
   originalArticleFile?: File | null,
-  title?: string
+  title?: string,
 ): void => {
   if (presentationFile) {
-    addFileToMediaLibrary(
-      presentationFile,
-      "Presentations",
-      {
-        title: title ? `${title} - Presentation` : "Presentation",
-        description: "Auto-uploaded presentation file",
-      }
-    );
+    addFileToMediaLibrary(presentationFile, "Presentations", {
+      title: title ? `${title} - Presentation` : "Presentation",
+      description: "Auto-uploaded presentation file",
+    });
   }
 
   if (originalArticleFile) {
-    addFileToMediaLibrary(
-      originalArticleFile,
-      "Medical Articles",
-      {
-        title: title ? `${title} - Original Article` : "Original Article",
-        description: "Auto-uploaded original article PDF",
-      }
-    );
+    addFileToMediaLibrary(originalArticleFile, "Medical Articles", {
+      title: title ? `${title} - Original Article` : "Original Article",
+      description: "Auto-uploaded original article PDF",
+    });
   }
 };

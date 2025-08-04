@@ -296,7 +296,7 @@ export default function AllPresentations() {
       addPresentationFilesToMediaLibrary(
         data.file,
         data.originalArticle,
-        data.trialName
+        data.trialName,
       );
     } else {
       // Add new presentation
@@ -323,7 +323,7 @@ export default function AllPresentations() {
       addPresentationFilesToMediaLibrary(
         data.file,
         data.originalArticle,
-        data.trialName
+        data.trialName,
       );
     }
     setShowUploadModal(false);

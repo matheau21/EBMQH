@@ -125,7 +125,7 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
     addPresentationFilesToMediaLibrary(
       formData.file,
       formData.originalArticleFile,
-      formData.title
+      formData.title,
     );
 
     setFormData({

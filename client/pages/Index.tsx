@@ -348,7 +348,7 @@ export default function Index() {
     addPresentationFilesToMediaLibrary(
       data.file,
       data.originalArticle,
-      data.trialName
+      data.trialName,
     );
   };
 

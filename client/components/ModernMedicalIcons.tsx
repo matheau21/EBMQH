@@ -57,24 +57,10 @@ export const ModernHemeOncIcon = () => (
 export const ModernEndocrinologyIcon = () => (
   <svg viewBox="0 0 60 60" className="w-full h-full">
     {/* Thyroid right lobe */}
-    <ellipse
-      cx="35"
-      cy="28"
-      rx="8"
-      ry="12"
-      fill="currentColor"
-      opacity="0.7"
-    />
+    <ellipse cx="35" cy="28" rx="8" ry="12" fill="currentColor" opacity="0.7" />
 
     {/* Thyroid left lobe */}
-    <ellipse
-      cx="25"
-      cy="28"
-      rx="8"
-      ry="12"
-      fill="currentColor"
-      opacity="0.7"
-    />
+    <ellipse cx="25" cy="28" rx="8" ry="12" fill="currentColor" opacity="0.7" />
 
     {/* Thyroid isthmus (connecting bridge) */}
     <rect
@@ -97,12 +83,18 @@ export const ModernEndocrinologyIcon = () => (
     />
 
     {/* Hormone release points */}
-    <circle cx="25" cy="42" r="1.5" fill="currentColor" opacity="0.9"/>
-    <circle cx="35" cy="42" r="1.5" fill="currentColor" opacity="0.9"/>
-    <circle cx="30" cy="45" r="1" fill="currentColor" opacity="0.8"/>
+    <circle cx="25" cy="42" r="1.5" fill="currentColor" opacity="0.9" />
+    <circle cx="35" cy="42" r="1.5" fill="currentColor" opacity="0.9" />
+    <circle cx="30" cy="45" r="1" fill="currentColor" opacity="0.8" />
 
     {/* Hormone flow lines */}
-    <path d="M25 42 Q30 47 35 42" stroke="currentColor" strokeWidth="1" opacity="0.6" fill="none"/>
+    <path
+      d="M25 42 Q30 47 35 42"
+      stroke="currentColor"
+      strokeWidth="1"
+      opacity="0.6"
+      fill="none"
+    />
   </svg>
 );
 
@@ -238,16 +230,43 @@ export const ModernRheumatologyIcon = () => (
     <ellipse cx="31" cy="29" rx="3" ry="2" fill="currentColor" opacity="0.9" />
 
     {/* Tibia plateau (top of tibia) */}
-    <ellipse cx="27.5" cy="36" rx="5" ry="2" fill="currentColor" opacity="0.9" />
+    <ellipse
+      cx="27.5"
+      cy="36"
+      rx="5"
+      ry="2"
+      fill="currentColor"
+      opacity="0.9"
+    />
 
     {/* Knee joint space */}
-    <ellipse cx="27.5" cy="32" rx="6" ry="2" fill="currentColor" opacity="0.4" />
+    <ellipse
+      cx="27.5"
+      cy="32"
+      rx="6"
+      ry="2"
+      fill="currentColor"
+      opacity="0.4"
+    />
 
     {/* Patella (kneecap) */}
-    <ellipse cx="27.5" cy="28" rx="2.5" ry="3" fill="currentColor" opacity="0.9" />
+    <ellipse
+      cx="27.5"
+      cy="28"
+      rx="2.5"
+      ry="3"
+      fill="currentColor"
+      opacity="0.9"
+    />
 
     {/* Joint lines to show articulation */}
-    <path d="M21 32 Q27.5 34 34 32" stroke="currentColor" strokeWidth="1" opacity="0.6" fill="none"/>
+    <path
+      d="M21 32 Q27.5 34 34 32"
+      stroke="currentColor"
+      strokeWidth="1"
+      opacity="0.6"
+      fill="none"
+    />
 
     {/* Ankle representation */}
     <circle cx="27.5" cy="51" r="2" fill="currentColor" opacity="0.8" />
@@ -274,7 +293,14 @@ export const ModernNephrologyIcon = () => (
 
     {/* Renal cortex and medulla structure */}
     <ellipse cx="22" cy="25" rx="3" ry="2" fill="currentColor" opacity="0.6" />
-    <ellipse cx="20" cy="32" rx="2.5" ry="1.5" fill="currentColor" opacity="0.6" />
+    <ellipse
+      cx="20"
+      cy="32"
+      rx="2.5"
+      ry="1.5"
+      fill="currentColor"
+      opacity="0.6"
+    />
     <ellipse cx="23" cy="38" rx="3" ry="2" fill="currentColor" opacity="0.6" />
 
     {/* Renal pelvis */}
@@ -290,9 +316,9 @@ export const ModernNephrologyIcon = () => (
     />
 
     {/* Filtration indicators */}
-    <circle cx="18" cy="28" r="1" fill="currentColor" opacity="0.7"/>
-    <circle cx="16" cy="35" r="0.8" fill="currentColor" opacity="0.7"/>
-    <circle cx="19" cy="42" r="0.9" fill="currentColor" opacity="0.7"/>
+    <circle cx="18" cy="28" r="1" fill="currentColor" opacity="0.7" />
+    <circle cx="16" cy="35" r="0.8" fill="currentColor" opacity="0.7" />
+    <circle cx="19" cy="42" r="0.9" fill="currentColor" opacity="0.7" />
   </svg>
 );
 
@@ -336,9 +362,9 @@ export const ModernGastroenterologyIcon = () => (
     />
 
     {/* Hepatic portal */}
-    <circle cx="30" cy="30" r="1.5" fill="currentColor" opacity="0.9"/>
-    <circle cx="25" cy="35" r="1" fill="currentColor" opacity="0.9"/>
-    <circle cx="32" cy="37" r="1" fill="currentColor" opacity="0.9"/>
+    <circle cx="30" cy="30" r="1.5" fill="currentColor" opacity="0.9" />
+    <circle cx="25" cy="35" r="1" fill="currentColor" opacity="0.9" />
+    <circle cx="32" cy="37" r="1" fill="currentColor" opacity="0.9" />
   </svg>
 );
 

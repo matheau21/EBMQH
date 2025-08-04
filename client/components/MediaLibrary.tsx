@@ -200,7 +200,9 @@ export function MediaLibrary({
         (file.originalName &&
           file.originalName.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (file.metadata?.title &&
-          file.metadata.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          file.metadata.title
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())) ||
         (file.metadata?.description &&
           file.metadata.description
             .toLowerCase()
