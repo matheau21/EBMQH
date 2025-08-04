@@ -94,15 +94,24 @@ export function PresentationCard({
         <div className="mb-4">
           {thumbnail ? (
             <div className="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
-              <img 
-                src={thumbnail} 
+              <img
+                src={thumbnail}
                 alt={title}
                 className="w-full h-full object-cover rounded-lg"
               />
             </div>
           ) : (
             <div className="w-full h-32 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg flex items-center justify-center mb-4">
-              <FileText className="h-12 w-12 text-ucla-blue/60" />
+              {(() => {
+                const SpecialtyIcon = getSpecialtyIcon(specialty);
+                return SpecialtyIcon ? (
+                  <div className="h-16 w-16 text-ucla-blue/80">
+                    <SpecialtyIcon />
+                  </div>
+                ) : (
+                  <FileText className="h-12 w-12 text-ucla-blue/60" />
+                );
+              })()}
             </div>
           )}
         </div>
