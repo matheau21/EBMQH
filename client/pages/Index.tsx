@@ -176,6 +176,7 @@ const specialties = [
 
 export default function Index() {
   const { isAdminMode } = useAdmin();
+  const { markAsChanged } = usePublish();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   const [showAuthModal, setShowAuthModal] = useState(false);
