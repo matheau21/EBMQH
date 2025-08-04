@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { MediaLibrary } from "./MediaLibrary";
+import { MediaLibrary, MediaFile } from "./MediaLibrary";
 import { FolderOpen } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { ErrorBoundary, MediaLibraryErrorFallback } from "./ErrorBoundary";
 
 interface MediaLibraryButtonProps {
-  onSelectFile?: (file: any) => void;
+  onSelectFile?: (file: MediaFile) => void;
   allowedTypes?: ("pdf" | "image" | "document")[];
   mode?: "select" | "manage";
   variant?: "default" | "outline" | "ghost";
