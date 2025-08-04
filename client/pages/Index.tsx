@@ -363,7 +363,7 @@ export default function Index() {
       <section className="relative py-20 overflow-hidden">
         {/* Background Pattern with Dynamic Effects */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-ucla-blue via-blue-600 to-blue-800 animate-gradient-x"></div>
+          <div className="absolute inset-0 bg-ucla-blue"></div>
           <div
             className="absolute inset-0 animate-pulse"
             style={{
