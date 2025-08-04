@@ -32,6 +32,7 @@ import {
   ModernRheumatologyIcon,
   ModernNephrologyIcon,
   ModernGastroenterologyIcon,
+  ModernNeurologyIcon,
 } from "./ModernMedicalIcons";
 
 interface PresentationCardProps {
