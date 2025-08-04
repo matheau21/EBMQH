@@ -277,6 +277,77 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
           />
         </div>
 
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">
+            Original Article (PDF) <span className="text-gray-500">(Optional)</span>
+          </Label>
+          <div
+            className={cn(
+              "border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300",
+              isOriginalArticleDragOver
+                ? "border-ucla-blue bg-blue-50"
+                : "border-gray-300 hover:border-ucla-blue hover:bg-gray-50",
+              formData.originalArticleFile && "border-ucla-gold bg-ucla-gold/5",
+            )}
+            onDragOver={handleOriginalArticleDragOver}
+            onDragLeave={handleOriginalArticleDragLeave}
+            onDrop={handleOriginalArticleDrop}
+          >
+            {formData.originalArticleFile ? (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-ucla-gold/20 rounded-lg flex items-center justify-center">
+                    <FileText className="h-6 w-6 text-ucla-blue" />
+                  </div>
+                  <div className="text-left">
+                    <p className="font-medium text-gray-900">
+                      {formData.originalArticleFile.name}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {(formData.originalArticleFile.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={removeOriginalArticleFile}
+                  className="text-gray-500 hover:text-red-600"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+            ) : (
+              <div>
+                <Upload className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                <p className="text-base font-medium text-gray-700 mb-2">
+                  Drag and drop your PDF file here
+                </p>
+                <p className="text-gray-500 mb-3">or</p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => originalArticleInputRef.current?.click()}
+                  className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
+                >
+                  Choose PDF File
+                </Button>
+                <p className="text-sm text-gray-500 mt-2">
+                  Supports PDF files (max 50MB)
+                </p>
+              </div>
+            )}
+          </div>
+          <input
+            ref={originalArticleInputRef}
+            type="file"
+            accept=".pdf"
+            onChange={handleOriginalArticleSelect}
+            className="hidden"
+          />
+        </div>
+
         <div className="flex justify-center pt-4">
           <Button
             type="submit"
