@@ -41,6 +41,17 @@ export function FeaturedPresentation() {
     }
   };
 
+  const handleOriginalArticleClick = () => {
+    if (featuredPresentation?.originalArticleFile) {
+      const url = URL.createObjectURL(featuredPresentation.originalArticleFile);
+      window.open(url, "_blank");
+    } else if (featuredPresentation?.originalArticleUrl) {
+      window.open(featuredPresentation.originalArticleUrl, "_blank");
+    } else {
+      alert("No original article available");
+    }
+  };
+
   const handleUploadFeatured = () => {
     setShowUploadModal(true);
   };
