@@ -114,34 +114,39 @@ export function MediaLibrary({
   const handleFileUpload = async () => {
     if (!uploadFile || !uploadCategory) return;
 
-    const fileType = uploadFile.type.includes('pdf') ? 'pdf' : 
-                    uploadFile.type.includes('image') ? 'image' : 'document';
+    try {
+      const fileType = uploadFile.type.includes('pdf') ? 'pdf' :
+                      uploadFile.type.includes('image') ? 'image' : 'document';
 
-    const newFile: MediaFile = {
-      id: Date.now().toString(),
-      filename: `${Date.now()}-${uploadFile.name}`,
-      originalName: uploadFile.name,
-      type: fileType,
-      url: URL.createObjectURL(uploadFile),
-      size: uploadFile.size,
-      uploadDate: new Date().toISOString(),
-      category: uploadCategory,
-      tags: uploadTags.split(',').map(tag => tag.trim()).filter(Boolean),
-      metadata: {
-        title: uploadTitle || uploadFile.name,
-        description: uploadDescription,
-      }
-    };
+      const newFile: MediaFile = {
+        id: Date.now().toString(),
+        filename: `${Date.now()}-${uploadFile.name}`,
+        originalName: uploadFile.name,
+        type: fileType,
+        url: URL.createObjectURL(uploadFile),
+        size: uploadFile.size,
+        uploadDate: new Date().toISOString(),
+        category: uploadCategory,
+        tags: uploadTags.split(',').map(tag => tag.trim()).filter(Boolean),
+        metadata: {
+          title: uploadTitle || uploadFile.name,
+          description: uploadDescription,
+        }
+      };
 
-    saveFiles([...files, newFile]);
-    
-    // Reset upload form
-    setUploadFile(null);
-    setUploadCategory('');
-    setUploadTitle('');
-    setUploadDescription('');
-    setUploadTags('');
-    setShowUpload(false);
+      saveFiles([...files, newFile]);
+
+      // Reset upload form
+      setUploadFile(null);
+      setUploadCategory('');
+      setUploadTitle('');
+      setUploadDescription('');
+      setUploadTags('');
+      setShowUpload(false);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Error uploading file. Please try again.');
+    }
   };
 
   const handleDeleteFile = (id: string) => {
