@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, Eye, Edit3, Trash2, Copy, Star, MoreHorizontal } from "lucide-react";
+import { FileText, Eye, Edit3, Trash2, Copy, Star, MoreHorizontal, Presentation, BookOpen } from "lucide-react";
+import { PresentationViewer } from "./PresentationViewer";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -85,6 +87,8 @@ export function PresentationCard({
   onToggleFeatured,
 }: PresentationCardProps) {
   const { isAdminMode } = useAdmin();
+  const [showPresentationViewer, setShowPresentationViewer] = useState(false);
+  const [showArticleViewer, setShowArticleViewer] = useState(false);
   const specialtyColors: Record<string, string> = {
     "Cardiology": "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20",
     "Heme/Onc": "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20",
@@ -221,30 +225,43 @@ export function PresentationCard({
         </div>
 
         <div className="flex flex-col gap-2">
+          {/* Quick Hits Button */}
           <Button
-            onClick={() => {
-              if (presentationFileUrl) {
-                window.open(presentationFileUrl, '_blank');
-              } else {
-                onViewSummary();
-              }
-            }}
+            onClick={() => setShowPresentationViewer(true)}
             className="w-full bg-ucla-blue hover:bg-blue-700 text-white group-hover:bg-blue-700 transition-all duration-300"
           >
-            View Summary
+            <Presentation className="h-4 w-4 mr-2" />
+            Quick Hits
           </Button>
 
-          {originalArticleUrl && (
-            <Button
-              onClick={() => window.open(originalArticleUrl, '_blank')}
-              variant="outline"
-              className="w-full border-ucla-blue text-ucla-blue hover:bg-blue-50 transition-all duration-300"
-            >
-              <FileText className="h-4 w-4 mr-2" />
-              Original Article
-            </Button>
-          )}
+          {/* Original Article Button */}
+          <Button
+            onClick={() => setShowArticleViewer(true)}
+            variant="outline"
+            className="w-full border-ucla-blue text-ucla-blue hover:bg-blue-50 transition-all duration-300"
+          >
+            <BookOpen className="h-4 w-4 mr-2" />
+            Original Article
+          </Button>
         </div>
+
+        {/* Presentation Viewer */}
+        <PresentationViewer
+          isOpen={showPresentationViewer}
+          onClose={() => setShowPresentationViewer(false)}
+          title={title}
+          fileUrl={presentationFileUrl}
+          type="presentation"
+        />
+
+        {/* Article Viewer */}
+        <PresentationViewer
+          isOpen={showArticleViewer}
+          onClose={() => setShowArticleViewer(false)}
+          title={`${title} - Original Article`}
+          fileUrl={originalArticleUrl}
+          type="article"
+        />
       </CardContent>
     </Card>
   );
