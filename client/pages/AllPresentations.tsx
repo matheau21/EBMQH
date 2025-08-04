@@ -228,7 +228,11 @@ export default function AllPresentations() {
   };
 
   const handleEditPresentation = (id: string) => {
-    console.log("Edit presentation:", id);
+    const presentation = presentations.find((p) => p.id === id);
+    if (presentation) {
+      setEditingPresentation(presentation);
+      setShowUploadModal(true);
+    }
   };
 
   const handleDeletePresentation = (id: string) => {
