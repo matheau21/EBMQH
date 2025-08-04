@@ -67,7 +67,9 @@ const categories = [
   'Research Papers',
   'Training Materials',
   'Other'
-].filter(Boolean); // Ensure no null/undefined values
+].filter((category): category is string =>
+  typeof category === 'string' && category.trim().length > 0
+); // Ensure no null/undefined values and all are valid strings
 
 export function MediaLibrary({ 
   isOpen, 
