@@ -256,21 +256,43 @@ export const ModernRheumatologyIcon = () => (
 
 export const ModernNephrologyIcon = () => (
   <svg viewBox="0 0 60 60" className="w-full h-full">
-    {/* Modern kidney design */}
+    {/* Kidney bean shape */}
     <path
-      d="M25 15 Q18 20 18 30 Q18 40 25 45 Q32 40 35 35 Q38 30 35 25 Q32 20 25 15"
+      d="M25 15 Q15 18 12 28 Q10 35 12 42 Q15 50 25 50 Q32 50 35 45 Q40 38 38 32 Q35 25 32 20 Q28 15 25 15"
       fill="currentColor"
       opacity="0.8"
     />
 
-    {/* Simplified filtration */}
-    <circle cx="25" cy="28" r="2" fill="currentColor" opacity="0.6" />
-    <circle cx="25" cy="35" r="1.5" fill="currentColor" opacity="0.6" />
+    {/* Renal hilum (indented area) */}
+    <path
+      d="M32 20 Q35 25 35 30 Q35 35 32 40"
+      stroke="currentColor"
+      strokeWidth="2"
+      fill="none"
+      opacity="0.9"
+    />
 
-    {/* Modern flow indicators */}
-    <circle cx="42" cy="20" r="1" fill="currentColor" opacity="0.5" />
-    <circle cx="45" cy="30" r="1" fill="currentColor" opacity="0.5" />
-    <circle cx="42" cy="40" r="1" fill="currentColor" opacity="0.5" />
+    {/* Renal cortex and medulla structure */}
+    <ellipse cx="22" cy="25" rx="3" ry="2" fill="currentColor" opacity="0.6" />
+    <ellipse cx="20" cy="32" rx="2.5" ry="1.5" fill="currentColor" opacity="0.6" />
+    <ellipse cx="23" cy="38" rx="3" ry="2" fill="currentColor" opacity="0.6" />
+
+    {/* Renal pelvis */}
+    <ellipse cx="32" cy="30" rx="2" ry="4" fill="currentColor" opacity="0.9" />
+
+    {/* Ureter */}
+    <path
+      d="M32 34 Q34 40 36 45 Q37 48 38 50"
+      stroke="currentColor"
+      strokeWidth="2"
+      fill="none"
+      opacity="0.8"
+    />
+
+    {/* Filtration indicators */}
+    <circle cx="18" cy="28" r="1" fill="currentColor" opacity="0.7"/>
+    <circle cx="16" cy="35" r="0.8" fill="currentColor" opacity="0.7"/>
+    <circle cx="19" cy="42" r="0.9" fill="currentColor" opacity="0.7"/>
   </svg>
 );
 
