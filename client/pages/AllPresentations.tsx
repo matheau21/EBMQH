@@ -166,7 +166,8 @@ export default function AllPresentations() {
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   const [presentations, setPresentations] = useState<Presentation[]>([]);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [editingPresentation, setEditingPresentation] = useState<Presentation | null>(null);
+  const [editingPresentation, setEditingPresentation] =
+    useState<Presentation | null>(null);
 
   // Load presentations from localStorage on mount
   useEffect(() => {
@@ -269,12 +270,18 @@ export default function AllPresentations() {
         summary: data.briefDescription,
         journal: data.journalSource,
         // Convert files to URLs if needed
-        presentationFileUrl: data.file ? URL.createObjectURL(data.file) : editingPresentation.presentationFileUrl,
-        originalArticleUrl: data.originalArticle ? URL.createObjectURL(data.originalArticle) : editingPresentation.originalArticleUrl,
+        presentationFileUrl: data.file
+          ? URL.createObjectURL(data.file)
+          : editingPresentation.presentationFileUrl,
+        originalArticleUrl: data.originalArticle
+          ? URL.createObjectURL(data.originalArticle)
+          : editingPresentation.originalArticleUrl,
       };
 
       setPresentations((prev) =>
-        prev.map((p) => p.id === editingPresentation.id ? updatedPresentation : p)
+        prev.map((p) =>
+          p.id === editingPresentation.id ? updatedPresentation : p,
+        ),
       );
       setEditingPresentation(null);
     } else {
@@ -287,8 +294,12 @@ export default function AllPresentations() {
         journal: data.journalSource,
         year: new Date().getFullYear().toString(),
         viewerCount: 0,
-        presentationFileUrl: data.file ? URL.createObjectURL(data.file) : undefined,
-        originalArticleUrl: data.originalArticle ? URL.createObjectURL(data.originalArticle) : undefined,
+        presentationFileUrl: data.file
+          ? URL.createObjectURL(data.file)
+          : undefined,
+        originalArticleUrl: data.originalArticle
+          ? URL.createObjectURL(data.originalArticle)
+          : undefined,
       };
 
       setPresentations((prev) => [newPresentation, ...prev]);
@@ -422,15 +433,19 @@ export default function AllPresentations() {
           setEditingPresentation(null);
         }}
         onSubmit={handleUploadSubmit}
-        initialData={editingPresentation ? {
-          trialName: editingPresentation.title,
-          briefDescription: editingPresentation.summary,
-          subspecialty: [editingPresentation.specialty],
-          journalSource: editingPresentation.journal || "",
-          file: null, // Files can't be reconstructed from URLs
-          originalArticle: null,
-          thumbnail: null,
-        } : undefined}
+        initialData={
+          editingPresentation
+            ? {
+                trialName: editingPresentation.title,
+                briefDescription: editingPresentation.summary,
+                subspecialty: [editingPresentation.specialty],
+                journalSource: editingPresentation.journal || "",
+                file: null, // Files can't be reconstructed from URLs
+                originalArticle: null,
+                thumbnail: null,
+              }
+            : undefined
+        }
       />
     </div>
   );

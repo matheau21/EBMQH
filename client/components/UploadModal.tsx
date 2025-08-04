@@ -65,7 +65,12 @@ const journalSources = [
   "Other",
 ];
 
-export function UploadModal({ isOpen, onClose, onSubmit, initialData }: UploadModalProps) {
+export function UploadModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  initialData,
+}: UploadModalProps) {
   const [formData, setFormData] = useState<PresentationData>({
     trialName: "",
     briefDescription: "",
@@ -434,15 +439,22 @@ export function UploadModal({ isOpen, onClose, onSubmit, initialData }: UploadMo
                     </Button>
                     <MediaLibraryButton
                       mode="select"
-                      allowedTypes={['pdf', 'document']}
+                      allowedTypes={["pdf", "document"]}
                       variant="outline"
                       size="default"
                       onSelectFile={(file) => {
                         fetch(file.url)
-                          .then(res => res.blob())
-                          .then(blob => {
-                            const mockFile = new File([blob], file.originalName, { type: blob.type });
-                            setFormData(prev => ({ ...prev, file: mockFile }));
+                          .then((res) => res.blob())
+                          .then((blob) => {
+                            const mockFile = new File(
+                              [blob],
+                              file.originalName,
+                              { type: blob.type },
+                            );
+                            setFormData((prev) => ({
+                              ...prev,
+                              file: mockFile,
+                            }));
                           })
                           .catch(console.error);
                       }}
@@ -479,16 +491,21 @@ export function UploadModal({ isOpen, onClose, onSubmit, initialData }: UploadMo
               </Button>
               <MediaLibraryButton
                 mode="select"
-                allowedTypes={['pdf']}
+                allowedTypes={["pdf"]}
                 variant="outline"
                 size="default"
                 onSelectFile={(file) => {
                   // Create a mock File object from the selected media file
                   fetch(file.url)
-                    .then(res => res.blob())
-                    .then(blob => {
-                      const mockFile = new File([blob], file.originalName, { type: 'application/pdf' });
-                      setFormData(prev => ({ ...prev, originalArticle: mockFile }));
+                    .then((res) => res.blob())
+                    .then((blob) => {
+                      const mockFile = new File([blob], file.originalName, {
+                        type: "application/pdf",
+                      });
+                      setFormData((prev) => ({
+                        ...prev,
+                        originalArticle: mockFile,
+                      }));
                     })
                     .catch(console.error);
                 }}

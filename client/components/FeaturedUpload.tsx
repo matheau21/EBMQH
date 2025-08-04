@@ -27,7 +27,8 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
     originalArticleFile: null,
   });
   const [isDragOver, setIsDragOver] = useState(false);
-  const [isOriginalArticleDragOver, setIsOriginalArticleDragOver] = useState(false);
+  const [isOriginalArticleDragOver, setIsOriginalArticleDragOver] =
+    useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const originalArticleInputRef = useRef<HTMLInputElement>(null);
@@ -94,7 +95,9 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
     }
   }, []);
 
-  const handleOriginalArticleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOriginalArticleSelect = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       setFormData((prev) => ({ ...prev, originalArticleFile: file }));
@@ -279,7 +282,8 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
 
         <div className="space-y-2">
           <Label className="text-sm font-medium">
-            Original Article (PDF) <span className="text-gray-500">(Optional)</span>
+            Original Article (PDF){" "}
+            <span className="text-gray-500">(Optional)</span>
           </Label>
           <div
             className={cn(
@@ -304,7 +308,12 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
                       {formData.originalArticleFile.name}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {(formData.originalArticleFile.size / 1024 / 1024).toFixed(2)} MB
+                      {(
+                        formData.originalArticleFile.size /
+                        1024 /
+                        1024
+                      ).toFixed(2)}{" "}
+                      MB
                     </p>
                   </div>
                 </div>

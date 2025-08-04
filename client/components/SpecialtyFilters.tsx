@@ -93,8 +93,7 @@ const specialtyConfig = [
     icon: ModernNeurologyIcon,
     color:
       "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20 hover:bg-specialty-neurology/20",
-    activeColor:
-      "bg-specialty-neurology text-white border-specialty-neurology",
+    activeColor: "bg-specialty-neurology text-white border-specialty-neurology",
   },
 ];
 
