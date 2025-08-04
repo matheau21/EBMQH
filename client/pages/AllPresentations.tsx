@@ -242,6 +242,7 @@ export default function AllPresentations() {
   const handleDeletePresentation = (id: string) => {
     if (window.confirm("Are you sure you want to delete this presentation?")) {
       setPresentations((prev) => prev.filter((p) => p.id !== id));
+      markAsChanged();
       console.log("Deleted presentation:", id);
     }
   };
