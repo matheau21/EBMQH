@@ -16,6 +16,7 @@ interface FeaturedPresentationData {
   presenter: string;
   file: File | null;
   uploadedAt?: string;
+  fileUrl?: string; // For presentations set from existing cards
 }
 
 export function FeaturedPresentation() {
