@@ -386,7 +386,7 @@ export default function Index() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden">
         {/* Background Pattern with Dynamic Effects */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-ucla-blue"></div>
