@@ -62,7 +62,7 @@ export default {
         },
         ucla: {
           blue: "#2774AE",
-          gold: "#FFD100",
+          gold: "#E6BC00",
         },
         specialty: {
           cardiology: "#dc2626",
