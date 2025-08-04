@@ -133,6 +133,13 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
     }
   };
 
+  const removeOriginalArticleFile = () => {
+    setFormData((prev) => ({ ...prev, originalArticleFile: null }));
+    if (originalArticleInputRef.current) {
+      originalArticleInputRef.current.value = "";
+    }
+  };
+
   return (
     <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-8 shadow-lg">
       <div className="text-center mb-8">
