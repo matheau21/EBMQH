@@ -32,6 +32,8 @@ export function FeaturedPresentation() {
     if (featuredPresentation?.file) {
       const url = URL.createObjectURL(featuredPresentation.file);
       window.open(url, "_blank");
+    } else if (featuredPresentation?.fileUrl) {
+      window.open(featuredPresentation.fileUrl, "_blank");
     } else {
       alert("No featured presentation available");
     }
