@@ -24,6 +24,16 @@ interface Presentation {
   originalArticleUrl?: string;
 }
 
+interface PresentationData {
+  trialName: string;
+  briefDescription: string;
+  subspecialty: string[];
+  journalSource: string;
+  file: File | null;
+  originalArticle: File | null;
+  thumbnail: File | null;
+}
+
 const mockPresentations: Presentation[] = [
   {
     id: "1",
