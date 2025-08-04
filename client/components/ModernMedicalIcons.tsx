@@ -263,3 +263,27 @@ export const ModernGastroenterologyIcon = () => (
     <circle cx="8" cy="10" r="2" fill="currentColor" opacity="0.8" />
   </svg>
 );
+
+export const ModernNeurologyIcon = () => (
+  <svg viewBox="0 0 60 60" className="w-full h-full">
+    {/* Brain outline */}
+    <path
+      d="M20 25 Q15 20 15 15 Q18 12 22 15 Q25 10 30 10 Q35 10 38 15 Q42 12 45 15 Q45 20 40 25 Q45 30 45 40 Q40 45 35 40 Q30 45 25 40 Q20 45 15 40 Q15 30 20 25"
+      fill="currentColor"
+      opacity="0.6"
+    />
+
+    {/* Neural pathways */}
+    <path d="M25 20 Q30 22 35 20" stroke="currentColor" strokeWidth="1.5" opacity="0.8"/>
+    <path d="M22 28 Q30 30 38 28" stroke="currentColor" strokeWidth="1.5" opacity="0.8"/>
+    <path d="M25 35 Q30 37 35 35" stroke="currentColor" strokeWidth="1.5" opacity="0.8"/>
+
+    {/* Synapses */}
+    <circle cx="25" cy="20" r="1" fill="currentColor" opacity="0.9"/>
+    <circle cx="35" cy="20" r="1" fill="currentColor" opacity="0.9"/>
+    <circle cx="22" cy="28" r="1" fill="currentColor" opacity="0.9"/>
+    <circle cx="38" cy="28" r="1" fill="currentColor" opacity="0.9"/>
+    <circle cx="25" cy="35" r="1" fill="currentColor" opacity="0.9"/>
+    <circle cx="35" cy="35" r="1" fill="currentColor" opacity="0.9"/>
+  </svg>
+);
