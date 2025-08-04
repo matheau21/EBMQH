@@ -65,7 +65,7 @@ const journalSources = [
   "Other",
 ];
 
-export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
+export function UploadModal({ isOpen, onClose, onSubmit, initialData }: UploadModalProps) {
   const [formData, setFormData] = useState<PresentationData>({
     trialName: "",
     briefDescription: "",
@@ -75,6 +75,32 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
     originalArticle: null,
     thumbnail: null,
   });
+
+  // Reset form data when modal opens with initial data
+  useEffect(() => {
+    if (isOpen && initialData) {
+      setFormData({
+        trialName: initialData.trialName || "",
+        briefDescription: initialData.briefDescription || "",
+        subspecialty: initialData.subspecialty || [],
+        journalSource: initialData.journalSource || "",
+        file: initialData.file || null,
+        originalArticle: initialData.originalArticle || null,
+        thumbnail: initialData.thumbnail || null,
+      });
+    } else if (isOpen && !initialData) {
+      // Reset form for new presentation
+      setFormData({
+        trialName: "",
+        briefDescription: "",
+        subspecialty: [],
+        journalSource: "",
+        file: null,
+        originalArticle: null,
+        thumbnail: null,
+      });
+    }
+  }, [isOpen, initialData]);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
