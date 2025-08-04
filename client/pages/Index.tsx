@@ -426,7 +426,7 @@ export default function Index() {
             </p>
 
             {/* Feature Badges */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-4xl mx-auto px-4">
               <div
                 className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up"
                 style={{ animationDelay: "0.1s" }}
