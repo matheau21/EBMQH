@@ -131,7 +131,7 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.trialName || !formData.briefDescription || !formData.subspecialty || !formData.journalSource) {
+    if (!formData.trialName || !formData.briefDescription || formData.subspecialty.length === 0 || !formData.journalSource) {
       return;
     }
 
