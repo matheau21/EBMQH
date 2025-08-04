@@ -241,26 +241,47 @@ export const ModernNephrologyIcon = () => (
 
 export const ModernGastroenterologyIcon = () => (
   <svg viewBox="0 0 60 60" className="w-full h-full">
-    {/* Abstract GI tract */}
+    {/* Liver shape - right lobe */}
     <path
-      d="M20 15 Q25 12 30 15 Q35 18 35 25 Q35 32 32 40 Q29 48 25 48 Q21 48 18 40 Q15 32 15 25 Q15 18 20 15"
+      d="M20 20 Q35 15 40 22 Q42 25 42 30 Q42 35 40 40 Q38 45 35 46 Q30 47 25 45 Q20 43 18 38 Q16 33 16 28 Q16 23 20 20"
+      fill="currentColor"
+      opacity="0.7"
+    />
+
+    {/* Liver shape - left lobe */}
+    <path
+      d="M16 28 Q14 25 12 22 Q10 20 8 22 Q6 25 6 30 Q6 35 8 38 Q10 40 13 41 Q16 42 18 40 Q18 35 16 28"
       fill="currentColor"
       opacity="0.6"
     />
 
-    {/* Modern digestive elements */}
-    <circle cx="25" cy="25" r="2" fill="currentColor" opacity="0.7" />
-    <circle cx="27" cy="35" r="1.5" fill="currentColor" opacity="0.7" />
-
-    {/* Abstract scope */}
+    {/* Liver vessels/hepatic structure */}
     <path
-      d="M10 12 Q15 15 22 20"
+      d="M25 25 Q30 27 35 25"
       stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
+      strokeWidth="1.5"
       opacity="0.8"
+      fill="none"
     />
-    <circle cx="8" cy="10" r="2" fill="currentColor" opacity="0.8" />
+    <path
+      d="M22 32 Q28 34 34 32"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      opacity="0.8"
+      fill="none"
+    />
+    <path
+      d="M24 38 Q30 40 36 38"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      opacity="0.8"
+      fill="none"
+    />
+
+    {/* Hepatic portal */}
+    <circle cx="30" cy="30" r="1.5" fill="currentColor" opacity="0.9"/>
+    <circle cx="25" cy="35" r="1" fill="currentColor" opacity="0.9"/>
+    <circle cx="32" cy="37" r="1" fill="currentColor" opacity="0.9"/>
   </svg>
 );
 
