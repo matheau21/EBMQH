@@ -413,6 +413,16 @@ export default function AllPresentations() {
 
       {/* Admin Toggle Button */}
       <AdminToggleButton />
+
+      {/* Upload Modal */}
+      <UploadModal
+        isOpen={showUploadModal}
+        onClose={() => {
+          setShowUploadModal(false);
+          setEditingPresentation(null);
+        }}
+        onSubmit={handleUploadSubmit}
+      />
     </div>
   );
 }
