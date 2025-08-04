@@ -24,6 +24,7 @@ interface UploadModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: PresentationData) => void;
+  initialData?: Partial<PresentationData>;
 }
 
 interface PresentationData {
