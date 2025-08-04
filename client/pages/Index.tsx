@@ -27,7 +27,7 @@ interface Presentation {
 interface PresentationData {
   trialName: string;
   briefDescription: string;
-  subspecialty: string;
+  subspecialty: string[];
   journalSource: string;
   file: File | null;
   originalArticle: File | null;
