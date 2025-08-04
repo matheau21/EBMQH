@@ -117,6 +117,22 @@ export function FeaturedPresentation() {
               : "No Presentation Available"}
           </Button>
 
+          <Button
+            onClick={handleOriginalArticleClick}
+            variant="outline"
+            disabled={
+              !featuredPresentation ||
+              (!featuredPresentation.originalArticleFile && !featuredPresentation.originalArticleUrl)
+            }
+            className="border-ucla-blue text-ucla-blue hover:bg-blue-50 px-8 py-3 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ExternalLink className="h-5 w-5 mr-2" />
+            {featuredPresentation &&
+            (featuredPresentation.originalArticleFile || featuredPresentation.originalArticleUrl)
+              ? "View Featured Original Article"
+              : "No Article Available"}
+          </Button>
+
           {isAdminMode && (
             <Button
               onClick={handleUploadFeatured}
