@@ -27,7 +27,7 @@ export function FeaturedPresentation() {
         <div className="flex items-center justify-center mb-4 text-ucla-blue">
           <Calendar className="h-4 w-4 mr-2" />
           <p className="text-sm font-medium">
-            Recently Presented at Noon Conference at Olive View Medical Center
+            Recently Presented in Noon Conference at Olive View Medical Center
           </p>
         </div>
 
