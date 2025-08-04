@@ -131,15 +131,19 @@ export function MediaLibrary({
     }
   };
 
+  // Improved file type detection
+  const getFileType = (file: File): "pdf" | "image" | "document" => {
+    const mimeType = file.type.toLowerCase();
+    if (mimeType === "application/pdf") return "pdf";
+    if (mimeType.startsWith("image/")) return "image";
+    return "document";
+  };
+
   const handleFileUpload = async () => {
     if (!uploadFile || !uploadCategory) return;
 
     try {
-      const fileType = uploadFile.type.includes("pdf")
-        ? "pdf"
-        : uploadFile.type.includes("image")
-          ? "image"
-          : "document";
+      const fileType = getFileType(uploadFile);
 
       const newFile: MediaFile = {
         id: Date.now().toString(),
