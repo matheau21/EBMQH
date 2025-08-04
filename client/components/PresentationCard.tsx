@@ -31,6 +31,7 @@ interface PresentationCardProps {
   authors?: string;
   journal?: string;
   year?: string;
+  viewerCount?: number;
   presentationFileUrl?: string;
   originalArticleUrl?: string;
   onViewSummary: () => void;
@@ -74,6 +75,7 @@ export function PresentationCard({
   authors,
   journal,
   year,
+  viewerCount = 0,
   presentationFileUrl,
   originalArticleUrl,
   onViewSummary,
@@ -181,6 +183,14 @@ export function PresentationCard({
           </div>
         )}
 
+        {/* Viewer Count */}
+        <div className="flex items-center justify-end mb-3">
+          <div className="flex items-center gap-1 text-gray-500">
+            <Eye className="h-4 w-4" />
+            <span className="text-sm font-medium">{viewerCount.toLocaleString()}</span>
+          </div>
+        </div>
+
         <div className="flex flex-col gap-2">
           <Button
             onClick={() => {
@@ -192,7 +202,6 @@ export function PresentationCard({
             }}
             className="w-full bg-ucla-blue hover:bg-blue-700 text-white group-hover:bg-blue-700 transition-all duration-300"
           >
-            <Eye className="h-4 w-4 mr-2" />
             View Summary
           </Button>
 
