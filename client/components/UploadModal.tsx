@@ -153,24 +153,22 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
       savedPresentations.push(newPresentation);
       localStorage.setItem('ebm-presentations', JSON.stringify(savedPresentations));
 
-      // Simulate upload process
-      setTimeout(() => {
-        onSubmit(formData);
-        setFormData({
-          trialName: "",
-          briefDescription: "",
-          subspecialty: [],
-          journalSource: "",
-          file: null,
-          originalArticle: null,
-          thumbnail: null,
-        });
-        setIsLoading(false);
-        onClose();
+      // Submit immediately without delay
+      onSubmit(formData);
+      setFormData({
+        trialName: "",
+        briefDescription: "",
+        subspecialty: [],
+        journalSource: "",
+        file: null,
+        originalArticle: null,
+        thumbnail: null,
+      });
+      setIsLoading(false);
+      onClose();
 
-        // Show success message
-        console.log('Presentation saved successfully!');
-      }, 2000);
+      // Show success message
+      console.log('Presentation saved successfully!');
     } catch (error) {
       console.error('Error saving presentation:', error);
       setIsLoading(false);
