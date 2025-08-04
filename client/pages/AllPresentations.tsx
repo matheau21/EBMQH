@@ -422,6 +422,15 @@ export default function AllPresentations() {
           setEditingPresentation(null);
         }}
         onSubmit={handleUploadSubmit}
+        initialData={editingPresentation ? {
+          trialName: editingPresentation.title,
+          briefDescription: editingPresentation.summary,
+          subspecialty: [editingPresentation.specialty],
+          journalSource: editingPresentation.journal || "",
+          file: null, // Files can't be reconstructed from URLs
+          originalArticle: null,
+          thumbnail: null,
+        } : undefined}
       />
     </div>
   );
