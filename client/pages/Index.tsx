@@ -351,31 +351,33 @@ export default function Index() {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3">
-              <EBMLogo size="md" className="shadow-lg" />
-              <div>
-                <h1 className="text-xl font-bold text-ucla-blue">
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+              <EBMLogo size="md" className="shadow-lg flex-shrink-0" />
+              <div className="min-w-0">
+                <h1 className="text-lg sm:text-xl font-bold text-ucla-blue truncate">
                   EBM Quick Hits
                 </h1>
-                <p className="text-xs text-blue-600">
+                <p className="text-xs text-blue-600 hidden sm:block">
                   Evidence-Based Medicine Made Simple
                 </p>
               </div>
             </div>
             {isAdminMode && (
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3 flex-shrink-0">
                 <MediaLibraryButton
                   allowedTypes={["pdf"]}
                   mode="manage"
                   variant="outline"
-                  className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
+                  size="sm"
+                  className="border-ucla-blue text-ucla-blue hover:bg-blue-50 hidden sm:flex"
                 />
                 <Button
                   onClick={handleUploadClick}
+                  size="sm"
                   className="bg-ucla-blue hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-2 border-ucla-gold/20 hover:border-ucla-gold/40"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Upload Presentation
+                  <Plus className="h-4 w-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Upload Presentation</span>
                 </Button>
               </div>
             )}
