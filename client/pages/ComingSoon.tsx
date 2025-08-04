@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Zap, Clock } from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
+import { EBMLogo } from "@/components/EBMLogo";
 import { Link } from "react-router-dom";
 
 export default function ComingSoon() {
@@ -34,9 +35,7 @@ export default function ComingSoon() {
         {/* Footer */}
         <div className="mt-12 pt-8 border-t border-gray-200">
           <div className="flex items-center justify-center text-gray-500">
-            <div className="w-8 h-8 bg-ucla-blue/10 rounded-lg flex items-center justify-center mr-3">
-              <Zap className="h-4 w-4 text-ucla-blue" />
-            </div>
+            <EBMLogo size="sm" className="mr-3" />
             <span className="text-sm">EBM Quick Hits</span>
           </div>
         </div>
