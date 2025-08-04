@@ -32,7 +32,7 @@ export function FeaturedPresentation() {
         </div>
 
         <p className="text-gray-600 mb-6 max-w-md mx-auto">
-          Access the latest landmark trial presentation from our noon conference series
+          Access the latest landmark trial presentation from our noon conference
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
