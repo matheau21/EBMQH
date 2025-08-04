@@ -17,6 +17,7 @@ interface Presentation {
   journal?: string;
   year?: string;
   thumbnail?: string;
+  viewerCount?: number;
 }
 
 const mockPresentations: Presentation[] = [
@@ -28,6 +29,7 @@ const mockPresentations: Presentation[] = [
     authors: "SPRINT Research Group",
     journal: "N Engl J Med",
     year: "2015",
+    viewerCount: 1234,
   },
   {
     id: "2",
@@ -37,6 +39,7 @@ const mockPresentations: Presentation[] = [
     authors: "Gandhi L, et al.",
     journal: "N Engl J Med",
     year: "2018",
+    viewerCount: 987,
   },
   {
     id: "3",
@@ -46,6 +49,7 @@ const mockPresentations: Presentation[] = [
     authors: "Eikelboom JW, et al.",
     journal: "N Engl J Med",
     year: "2017",
+    viewerCount: 756,
   },
   {
     id: "4",
@@ -55,6 +59,7 @@ const mockPresentations: Presentation[] = [
     authors: "van Dyck CH, et al.",
     journal: "N Engl J Med",
     year: "2023",
+    viewerCount: 2341,
   },
   {
     id: "5",
@@ -64,6 +69,7 @@ const mockPresentations: Presentation[] = [
     authors: "Zinman B, et al.",
     journal: "N Engl J Med",
     year: "2015",
+    viewerCount: 1456,
   },
   {
     id: "6",
@@ -73,6 +79,7 @@ const mockPresentations: Presentation[] = [
     authors: "Rush AJ, et al.",
     journal: "Am J Psychiatry",
     year: "2006",
+    viewerCount: 543,
   },
   {
     id: "7",
@@ -82,6 +89,7 @@ const mockPresentations: Presentation[] = [
     authors: "ARDS Network",
     journal: "N Engl J Med",
     year: "2000",
+    viewerCount: 1876,
   },
   {
     id: "8",
@@ -91,6 +99,7 @@ const mockPresentations: Presentation[] = [
     authors: "Sawyer RG, et al.",
     journal: "N Engl J Med",
     year: "2015",
+    viewerCount: 692,
   },
   {
     id: "9",
@@ -100,6 +109,7 @@ const mockPresentations: Presentation[] = [
     authors: "Taylor PC, et al.",
     journal: "N Engl J Med",
     year: "2017",
+    viewerCount: 834,
   },
   {
     id: "10",
@@ -109,6 +119,7 @@ const mockPresentations: Presentation[] = [
     authors: "SHARP Collaborative Group",
     journal: "The Lancet",
     year: "2011",
+    viewerCount: 1123,
   },
 ];
 
@@ -261,6 +272,7 @@ export default function AllPresentations() {
                 authors={presentation.authors}
                 journal={presentation.journal}
                 year={presentation.year}
+                viewerCount={presentation.viewerCount}
                 thumbnail={presentation.thumbnail}
                 onViewSummary={() => handleViewSummary(presentation.id)}
                 onEdit={handleEditPresentation}
