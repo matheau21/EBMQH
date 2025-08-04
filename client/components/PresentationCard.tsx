@@ -182,15 +182,15 @@ export function PresentationCard({
               />
             </div>
           ) : (
-            <div className="w-full h-32 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <div className={`w-full h-32 bg-gradient-to-br ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4`}>
               {(() => {
                 const SpecialtyIcon = getSpecialtyIcon(specialty);
                 return SpecialtyIcon ? (
-                  <div className="h-16 w-16 text-ucla-blue/80">
+                  <div className="h-16 w-16">
                     <SpecialtyIcon />
                   </div>
                 ) : (
-                  <FileText className="h-12 w-12 text-ucla-blue/60" />
+                  <FileText className="h-12 w-12 opacity-60" />
                 );
               })()}
             </div>
