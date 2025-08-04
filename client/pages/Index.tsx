@@ -265,8 +265,28 @@ export default function Index() {
   };
 
   const handleToggleFeatured = (id: string) => {
-    console.log("Toggle featured status:", id);
-    // Implement featured toggle logic
+    const presentation = presentations.find(p => p.id === id);
+    if (presentation && presentation.presentationFileUrl) {
+      // Convert the presentation to featured format
+      const featuredData = {
+        title: presentation.title,
+        description: presentation.summary,
+        presenter: presentation.authors || "Unknown",
+        file: null, // We'll use the URL instead
+        uploadedAt: new Date().toISOString(),
+      };
+
+      // Save to featured presentation localStorage
+      localStorage.setItem('ebm-featured-presentation', JSON.stringify({
+        ...featuredData,
+        fileUrl: presentation.presentationFileUrl,
+      }));
+
+      console.log("Featured presentation set:", presentation.title);
+      alert(`"${presentation.title}" has been set as the featured presentation!`);
+    } else {
+      alert("This presentation doesn't have a file to feature.");
+    }
   };
 
   const handleUploadClick = () => {
