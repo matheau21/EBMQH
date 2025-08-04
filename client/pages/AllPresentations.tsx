@@ -165,6 +165,8 @@ export default function AllPresentations() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   const [presentations, setPresentations] = useState<Presentation[]>([]);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [editingPresentation, setEditingPresentation] = useState<Presentation | null>(null);
 
   // Load presentations from localStorage on mount
   useEffect(() => {
