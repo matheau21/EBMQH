@@ -121,6 +121,7 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
       description: "",
       presenter: "",
       file: null,
+      originalArticleFile: null,
     });
     setIsLoading(false);
   };
