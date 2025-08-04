@@ -5,7 +5,8 @@ import { SpecialtyFilters } from "@/components/SpecialtyFilters";
 import { AdminToggleButton } from "@/components/AdminToggleButton";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Zap } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { EBMLogo } from "@/components/EBMLogo";
 import { Link } from "react-router-dom";
 
 interface Presentation {
@@ -207,9 +208,7 @@ export default function AllPresentations() {
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
-              <div className="w-10 h-10 bg-gradient-to-br from-ucla-blue to-blue-700 rounded-lg flex items-center justify-center shadow-lg">
-                <Zap className="h-6 w-6 text-white" />
-              </div>
+              <EBMLogo size="md" className="shadow-lg" />
               <div>
                 <h1 className="text-xl font-bold text-ucla-blue">All Presentations</h1>
                 <p className="text-xs text-blue-600">Browse all landmark trial summaries</p>
