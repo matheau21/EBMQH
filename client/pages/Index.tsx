@@ -459,7 +459,7 @@ export default function Index() {
                 {presentations.length}
               </div>
               <div className="text-ucla-gold font-semibold text-xl">
-                Trial Summaries
+                Posted Trial Summaries
               </div>
             </div>
           </div>
