@@ -214,7 +214,10 @@ export function MediaLibrary({
                 className="w-full"
               />
             </div>
-            <Select value={selectedCategory || ""} onValueChange={setSelectedCategory}>
+            <Select
+              value={selectedCategory || ""}
+              onValueChange={(value) => setSelectedCategory(value || "")}
+            >
               <SelectTrigger className="w-[200px]">
                 <SelectValue placeholder="All categories" />
               </SelectTrigger>
