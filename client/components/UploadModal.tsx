@@ -495,7 +495,7 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
               <Button
                 type="submit"
                 className="bg-ucla-blue hover:bg-blue-700"
-                disabled={isLoading || !formData.trialName || !formData.briefDescription || !formData.subspecialty || !formData.journalSource}
+                disabled={isLoading || !formData.trialName || !formData.briefDescription || formData.subspecialty.length === 0 || !formData.journalSource}
               >
                 {isLoading ? "Uploading..." : "Upload Presentation"}
               </Button>
