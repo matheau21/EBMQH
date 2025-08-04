@@ -74,7 +74,7 @@ export function FeaturedPresentation() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-8 shadow-lg">
+    <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-6 sm:p-8 shadow-lg">
       <div className="text-center">
         <div className="w-16 h-16 bg-ucla-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
           <Presentation className="h-8 w-8 text-ucla-blue" />
