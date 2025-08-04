@@ -94,7 +94,7 @@ export function SpecialtyFilters({ selectedSpecialties, onSpecialtyToggle }: Spe
               `}
               onClick={() => onSpecialtyToggle(specialty.name)}
             >
-              <div className="w-12 h-12">
+              <div className="w-18 h-18">
                 <Icon />
               </div>
               <span className="text-xs font-medium leading-tight">{specialty.name}</span>
