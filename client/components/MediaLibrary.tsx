@@ -108,7 +108,18 @@ export function MediaLibrary({
     }
   }, []);
 
-  // Save files to localStorage
+  // Cleanup blob URLs on unmount
+  useEffect(() => {
+    return () => {
+      files.forEach((file) => {
+        if (file.url.startsWith("blob:")) {
+          URL.revokeObjectURL(file.url);
+        }
+      });
+    };
+  }, [files]);
+
+  // Save files to localStorage with error handling
   const saveFiles = (updatedFiles: MediaFile[]) => {
     setFiles(updatedFiles);
     localStorage.setItem("ebm-media-library", JSON.stringify(updatedFiles));
