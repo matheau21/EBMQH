@@ -41,13 +41,15 @@ export function MediaLibraryButton({
         Media Library
       </Button>
 
-      <MediaLibrary
-        isOpen={showMediaLibrary}
-        onClose={() => setShowMediaLibrary(false)}
-        onSelectFile={onSelectFile}
-        allowedTypes={allowedTypes}
-        mode={mode}
-      />
+      <ErrorBoundary fallback={MediaLibraryErrorFallback}>
+        <MediaLibrary
+          isOpen={showMediaLibrary}
+          onClose={() => setShowMediaLibrary(false)}
+          onSelectFile={onSelectFile}
+          allowedTypes={allowedTypes}
+          mode={mode}
+        />
+      </ErrorBoundary>
     </>
   );
 }
