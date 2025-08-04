@@ -341,6 +341,7 @@ export default function Index() {
     };
 
     setPresentations((prev) => [newPresentation, ...prev]);
+    markAsChanged(); // Mark that changes have been made
   };
 
   const handleFeaturedUpload = (data: FeaturedPresentationData) => {
