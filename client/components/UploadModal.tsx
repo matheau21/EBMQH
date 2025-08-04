@@ -67,7 +67,7 @@ export function UploadModal({ isOpen, onClose, onSubmit }: UploadModalProps) {
   const [formData, setFormData] = useState<PresentationData>({
     trialName: "",
     briefDescription: "",
-    subspecialty: "",
+    subspecialty: [],
     journalSource: "",
     file: null,
     originalArticle: null,
