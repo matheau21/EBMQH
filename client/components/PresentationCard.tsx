@@ -66,6 +66,7 @@ const getSpecialtyIcon = (specialty: string) => {
 };
 
 export function PresentationCard({
+  id,
   title,
   specialty,
   thumbnail,
@@ -76,7 +77,12 @@ export function PresentationCard({
   presentationFileUrl,
   originalArticleUrl,
   onViewSummary,
+  onEdit,
+  onDelete,
+  onDuplicate,
+  onToggleFeatured,
 }: PresentationCardProps) {
+  const { isAdminMode } = useAdmin();
   const specialtyColors: Record<string, string> = {
     "Cardiology": "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20",
     "Heme/Onc": "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20",
