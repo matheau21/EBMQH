@@ -20,7 +20,7 @@ export function TestYourself() {
         onClick={handleQuizClick}
         className="bg-ucla-blue hover:bg-blue-700 text-white px-8 py-2 group"
       >
-        Quick Quiz
+        Questions
         <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
       </Button>
     </div>
