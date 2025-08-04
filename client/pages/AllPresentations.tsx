@@ -318,6 +318,13 @@ export default function AllPresentations() {
 
       setPresentations((prev) => [newPresentation, ...prev]);
       markAsChanged();
+
+      // Add files to media library
+      addPresentationFilesToMediaLibrary(
+        data.file,
+        data.originalArticle,
+        data.trialName
+      );
     }
     setShowUploadModal(false);
   };
