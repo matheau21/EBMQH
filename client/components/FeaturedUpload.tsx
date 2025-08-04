@@ -24,6 +24,7 @@ export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
     description: "",
     presenter: "",
     file: null,
+    originalArticleFile: null,
   });
   const [isDragOver, setIsDragOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
