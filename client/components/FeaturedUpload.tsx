@@ -15,6 +15,7 @@ interface FeaturedPresentationData {
   description: string;
   presenter: string;
   file: File | null;
+  originalArticleFile?: File | null;
 }
 
 export function FeaturedUpload({ onUpload }: FeaturedUploadProps) {
