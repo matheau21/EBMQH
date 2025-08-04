@@ -88,13 +88,20 @@ export function MediaLibrary({
 
   // Load files from localStorage on mount
   useEffect(() => {
-    const savedFiles = localStorage.getItem('ebm-media-library');
-    if (savedFiles) {
-      try {
-        setFiles(JSON.parse(savedFiles));
-      } catch (error) {
-        console.error('Error loading media library:', error);
+    try {
+      const savedFiles = localStorage.getItem('ebm-media-library');
+      if (savedFiles && savedFiles !== 'undefined' && savedFiles !== 'null') {
+        const parsedFiles = JSON.parse(savedFiles);
+        if (Array.isArray(parsedFiles)) {
+          setFiles(parsedFiles);
+        } else {
+          console.warn('Invalid media library data format, resetting');
+          setFiles([]);
+        }
       }
+    } catch (error) {
+      console.error('Error loading media library:', error);
+      setFiles([]);
     }
   }, []);
 
