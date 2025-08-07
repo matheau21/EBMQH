@@ -82,6 +82,8 @@ export const removeCurrentUser = (): void => {
 
 // Backend availability flag
 let isBackendAvailable: boolean | null = null;
+let lastBackendCheck: number = 0;
+const BACKEND_CHECK_INTERVAL = 30000; // 30 seconds
 
 // Check if backend is available
 const checkBackendAvailability = async (): Promise<boolean> => {
