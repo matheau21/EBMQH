@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { authAPI, getCurrentUser, setCurrentUser, removeCurrentUser, User } from '@/lib/api';
+import { authAPI, checkBackendAvailability, getCurrentUser, setCurrentUser, removeCurrentUser, User } from '@/lib/api';
 
 interface AdminContextType {
   isAdminMode: boolean;
