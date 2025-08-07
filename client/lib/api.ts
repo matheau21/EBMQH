@@ -87,9 +87,14 @@ const BACKEND_CHECK_INTERVAL = 30000; // 30 seconds
 
 // Check if backend is available
 const checkBackendAvailability = async (): Promise<boolean> => {
-  if (isBackendAvailable !== null) {
+  const now = Date.now();
+
+  // Re-check if enough time has passed
+  if (isBackendAvailable !== null && (now - lastBackendCheck) < BACKEND_CHECK_INTERVAL) {
     return isBackendAvailable;
   }
+
+  lastBackendCheck = now;
 
   try {
     console.log('Checking backend availability at:', `${API_BASE_URL}/health`);
