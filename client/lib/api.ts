@@ -80,13 +80,36 @@ export const removeCurrentUser = (): void => {
   localStorage.removeItem('currentUser');
 };
 
+// Backend availability flag
+let isBackendAvailable: boolean | null = null;
+
+// Check if backend is available
+const checkBackendAvailability = async (): Promise<boolean> => {
+  if (isBackendAvailable !== null) {
+    return isBackendAvailable;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/health`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    isBackendAvailable = response.ok;
+    return isBackendAvailable;
+  } catch (error) {
+    console.log('Backend not available, falling back to client-side data');
+    isBackendAvailable = false;
+    return false;
+  }
+};
+
 // API request helper
 const apiRequest = async <T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> => {
   const token = getToken();
-  
+
   const config: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
@@ -95,14 +118,22 @@ const apiRequest = async <T>(
     ...options,
   };
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-  
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Network error' }));
-    throw new Error(error.error || `HTTP ${response.status}`);
-  }
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
-  return response.json();
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Network error' }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    // Mark backend as unavailable on network errors
+    if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+      isBackendAvailable = false;
+    }
+    throw error;
+  }
 };
 
 // Auth API
