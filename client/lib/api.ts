@@ -223,11 +223,36 @@ export const presentationsAPI = {
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
   }): Promise<PaginatedResponse<Presentation>> {
-    // Check if backend is available first
-    const backendAvailable = await checkBackendAvailability();
+    try {
+      // Check if backend is available first
+      const backendAvailable = await checkBackendAvailability();
 
-    if (!backendAvailable) {
-      // Return empty response when backend is not available
+      if (!backendAvailable) {
+        // Return empty response when backend is not available
+        return {
+          presentations: [],
+          pagination: {
+            page: 1,
+            limit: 10,
+            total: 0,
+            pages: 0
+          }
+        };
+      }
+
+      const searchParams = new URLSearchParams();
+      if (params?.page) searchParams.append('page', params.page.toString());
+      if (params?.limit) searchParams.append('limit', params.limit.toString());
+      if (params?.specialty) searchParams.append('specialty', params.specialty);
+      if (params?.search) searchParams.append('search', params.search);
+      if (params?.sortBy) searchParams.append('sortBy', params.sortBy);
+      if (params?.sortOrder) searchParams.append('sortOrder', params.sortOrder);
+
+      const query = searchParams.toString();
+      return apiRequest<PaginatedResponse<Presentation>>(`/presentations${query ? `?${query}` : ''}`);
+    } catch (error) {
+      console.log('Error fetching presentations from API, returning empty result');
+      // Return empty response on any error
       return {
         presentations: [],
         pagination: {
@@ -238,17 +263,6 @@ export const presentationsAPI = {
         }
       };
     }
-
-    const searchParams = new URLSearchParams();
-    if (params?.page) searchParams.append('page', params.page.toString());
-    if (params?.limit) searchParams.append('limit', params.limit.toString());
-    if (params?.specialty) searchParams.append('specialty', params.specialty);
-    if (params?.search) searchParams.append('search', params.search);
-    if (params?.sortBy) searchParams.append('sortBy', params.sortBy);
-    if (params?.sortOrder) searchParams.append('sortOrder', params.sortOrder);
-
-    const query = searchParams.toString();
-    return apiRequest<PaginatedResponse<Presentation>>(`/presentations${query ? `?${query}` : ''}`);
   },
 
   async getPresentation(id: string): Promise<{ presentation: Presentation }> {
