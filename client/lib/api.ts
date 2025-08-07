@@ -90,13 +90,16 @@ const checkBackendAvailability = async (): Promise<boolean> => {
   }
 
   try {
+    console.log('Checking backend availability at:', `${API_BASE_URL}/health`);
     const response = await fetch(`${API_BASE_URL}/health`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
     isBackendAvailable = response.ok;
+    console.log('Backend availability check result:', isBackendAvailable);
     return isBackendAvailable;
   } catch (error) {
+    console.log('Backend health check failed:', error);
     console.log('Backend not available, falling back to client-side data');
     isBackendAvailable = false;
     return false;
