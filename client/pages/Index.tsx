@@ -9,7 +9,7 @@ import { UploadModal } from "@/components/UploadModal";
 import { AdminToggleButton } from "@/components/AdminToggleButton";
 import { useAdmin } from "@/contexts/AdminContext";
 import { usePublish } from "@/contexts/PublishContext";
-import { presentationsAPI, Presentation as APIPresentation } from "@/lib/api";
+import { presentationsAPI, checkBackendAvailability, Presentation as APIPresentation } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Plus, Users, Award } from "lucide-react";
