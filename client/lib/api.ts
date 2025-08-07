@@ -220,6 +220,22 @@ export const presentationsAPI = {
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
   }): Promise<PaginatedResponse<Presentation>> {
+    // Check if backend is available first
+    const backendAvailable = await checkBackendAvailability();
+
+    if (!backendAvailable) {
+      // Return empty response when backend is not available
+      return {
+        presentations: [],
+        pagination: {
+          page: 1,
+          limit: 10,
+          total: 0,
+          pages: 0
+        }
+      };
+    }
+
     const searchParams = new URLSearchParams();
     if (params?.page) searchParams.append('page', params.page.toString());
     if (params?.limit) searchParams.append('limit', params.limit.toString());
