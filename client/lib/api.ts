@@ -163,7 +163,18 @@ export const authAPI = {
   },
 
   async getProfile(): Promise<{ user: User }> {
-    return apiRequest<{ user: User }>('/users/me');
+    try {
+      const backendAvailable = await checkBackendAvailability();
+
+      if (!backendAvailable) {
+        throw new Error('Backend not available');
+      }
+
+      return apiRequest<{ user: User }>('/users/me');
+    } catch (error) {
+      console.log('Error getting user profile:', error);
+      throw error;
+    }
   },
 
   async updateProfile(data: Partial<User>): Promise<{ message: string; user: User }> {
