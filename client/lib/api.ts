@@ -1,7 +1,5 @@
 // API base configuration
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
-  : 'http://localhost:3000/api';
+const API_BASE_URL = '/api';
 
 // Types
 export interface User {
