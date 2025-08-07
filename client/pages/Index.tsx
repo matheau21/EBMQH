@@ -186,30 +186,38 @@ export default function Index() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [presentations, setPresentations] = useState<Presentation[]>([]);
 
-  // Load presentations from API
+  // Load presentations from API with fallback to mock data
   useEffect(() => {
     const loadPresentations = async () => {
       try {
-        const response = await presentationsAPI.getPresentations({ limit: 100 });
-        const apiPresentations = response.presentations?.map(p => ({
-          id: p.id,
-          title: p.title,
-          specialty: p.specialty,
-          summary: p.summary,
-          authors: p.authors,
-          journal: p.journal,
-          year: p.year,
-          thumbnail: p.thumbnail,
-          viewerCount: p.viewerCount,
-          presentationFileUrl: p.presentationFileUrl,
-          originalArticleUrl: p.originalArticleUrl,
-        })) || [];
+        // Check if backend is available
+        const backendAvailable = await checkBackendAvailability();
 
-        // Combine with mock presentations (for backward compatibility)
-        setPresentations([...apiPresentations, ...mockPresentations]);
+        if (backendAvailable) {
+          const response = await presentationsAPI.getPresentations({ limit: 100 });
+          const apiPresentations = response.presentations?.map(p => ({
+            id: p.id,
+            title: p.title,
+            specialty: p.specialty,
+            summary: p.summary,
+            authors: p.authors,
+            journal: p.journal,
+            year: p.year,
+            thumbnail: p.thumbnail,
+            viewerCount: p.viewerCount,
+            presentationFileUrl: p.presentationFileUrl,
+            originalArticleUrl: p.originalArticleUrl,
+          })) || [];
+
+          // Use API data if available, fallback to mock data
+          setPresentations(apiPresentations.length > 0 ? [...apiPresentations, ...mockPresentations] : mockPresentations);
+        } else {
+          console.log("Backend not available, using mock data");
+          setPresentations(mockPresentations);
+        }
       } catch (error) {
-        console.error("Error loading presentations from API:", error);
-        // Fallback to mock data
+        console.log("Backend not available, falling back to mock data");
+        // Fallback to mock data without logging error
         setPresentations(mockPresentations);
       }
     };
