@@ -186,20 +186,35 @@ export default function Index() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [presentations, setPresentations] = useState<Presentation[]>([]);
 
-  // Load presentations from localStorage on mount
+  // Load presentations from API
   useEffect(() => {
-    const savedPresentations = localStorage.getItem("ebm-presentations");
-    if (savedPresentations) {
+    const loadPresentations = async () => {
       try {
-        const parsed = JSON.parse(savedPresentations);
-        setPresentations([...mockPresentations, ...parsed]);
+        const response = await presentationsAPI.getPresentations({ limit: 100 });
+        const apiPresentations = response.presentations?.map(p => ({
+          id: p.id,
+          title: p.title,
+          specialty: p.specialty,
+          summary: p.summary,
+          authors: p.authors,
+          journal: p.journal,
+          year: p.year,
+          thumbnail: p.thumbnail,
+          viewerCount: p.viewerCount,
+          presentationFileUrl: p.presentationFileUrl,
+          originalArticleUrl: p.originalArticleUrl,
+        })) || [];
+
+        // Combine with mock presentations (for backward compatibility)
+        setPresentations([...apiPresentations, ...mockPresentations]);
       } catch (error) {
-        console.error("Error loading presentations:", error);
+        console.error("Error loading presentations from API:", error);
+        // Fallback to mock data
         setPresentations(mockPresentations);
       }
-    } else {
-      setPresentations(mockPresentations);
-    }
+    };
+
+    loadPresentations();
   }, []);
 
   // Save presentations to localStorage whenever presentations change
