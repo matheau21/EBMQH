@@ -53,9 +53,33 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const response = await authAPI.login(email, password);
-      setUser(response.user);
-      setCurrentUser(response.user);
+
+      // Check if backend is available
+      const backendAvailable = await checkBackendAvailability();
+
+      if (backendAvailable) {
+        const response = await authAPI.login(email, password);
+        setUser(response.user);
+        setCurrentUser(response.user);
+      } else {
+        // Demo login for when backend is not available
+        if (email === 'admin@ebmquickhits.com' && password === 'admin123') {
+          const demoUser = {
+            id: 'demo-admin',
+            email: 'admin@ebmquickhits.com',
+            username: 'admin',
+            firstName: 'Demo',
+            lastName: 'Admin',
+            userType: 'ADMIN' as const,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          setUser(demoUser);
+          setCurrentUser(demoUser);
+        } else {
+          throw new Error('Invalid credentials');
+        }
+      }
     } catch (error) {
       throw error;
     } finally {
