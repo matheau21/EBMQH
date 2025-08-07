@@ -305,6 +305,9 @@ export const healthAPI = {
   },
 };
 
+// Export backend availability check
+export { checkBackendAvailability };
+
 export default {
   auth: authAPI,
   users: usersAPI,
