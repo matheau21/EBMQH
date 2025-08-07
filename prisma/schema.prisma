@@ -31,7 +31,7 @@ model Presentation {
   id                   String   @id @default(cuid())
   title                String
   specialty            String
-  summary              String   @db.Text
+  summary              String
   authors              String?
   journal              String?
   year                 String?
