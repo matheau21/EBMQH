@@ -90,13 +90,13 @@ async function main() {
     },
   ];
 
+  // Clear existing presentations first
+  await prisma.presentation.deleteMany({});
+
+  // Create presentations
   for (const presentationData of presentations) {
-    await prisma.presentation.upsert({
-      where: { 
-        title: presentationData.title 
-      },
-      update: {},
-      create: presentationData,
+    await prisma.presentation.create({
+      data: presentationData,
     });
   }
 
