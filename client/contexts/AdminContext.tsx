@@ -23,14 +23,23 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       try {
         const savedUser = getCurrentUser();
         if (savedUser) {
-          // Verify the user is still valid by fetching current profile
-          const response = await authAPI.getProfile();
-          setUser(response.user);
-          setCurrentUser(response.user);
+          // Check if backend is available
+          const backendAvailable = await checkBackendAvailability();
+
+          if (backendAvailable) {
+            // Verify the user is still valid by fetching current profile
+            const response = await authAPI.getProfile();
+            setUser(response.user);
+            setCurrentUser(response.user);
+          } else {
+            // Backend not available, use saved user data
+            console.log('Backend not available, using cached user data');
+            setUser(savedUser);
+          }
         }
       } catch (error) {
-        console.error('Auth initialization error:', error);
-        // Token might be expired, clear it
+        console.log('Auth initialization failed, clearing user data');
+        // Token might be expired or backend unavailable, clear it
         removeCurrentUser();
         authAPI.logout();
       } finally {
