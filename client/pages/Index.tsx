@@ -332,40 +332,72 @@ export default function Index() {
     setShowUploadModal(true);
   };
 
-  const handlePresentationSubmit = (data: PresentationData) => {
-    // Create file URLs for uploaded files
-    const presentationFileUrl = data.file
-      ? URL.createObjectURL(data.file)
-      : undefined;
-    const originalArticleUrl = data.originalArticle
-      ? URL.createObjectURL(data.originalArticle)
-      : undefined;
-    const thumbnailUrl = data.thumbnail
-      ? URL.createObjectURL(data.thumbnail)
-      : undefined;
+  const handlePresentationSubmit = async (data: PresentationData) => {
+    try {
+      // Create file URLs for uploaded files
+      const presentationFileUrl = data.file
+        ? URL.createObjectURL(data.file)
+        : undefined;
+      const originalArticleUrl = data.originalArticle
+        ? URL.createObjectURL(data.originalArticle)
+        : undefined;
+      const thumbnailUrl = data.thumbnail
+        ? URL.createObjectURL(data.thumbnail)
+        : undefined;
 
-    const newPresentation: Presentation = {
-      id: String(Date.now()),
-      title: data.trialName,
-      specialty: data.subspecialty[0] || "General Internal Medicine", // Use first specialty as primary
-      summary: data.briefDescription,
-      journal: data.journalSource,
-      year: new Date().getFullYear().toString(),
-      viewerCount: 0,
-      thumbnail: thumbnailUrl,
-      presentationFileUrl,
-      originalArticleUrl,
-    };
+      const newPresentationData = {
+        title: data.trialName,
+        specialty: data.subspecialty[0] || "General Internal Medicine",
+        summary: data.briefDescription,
+        journal: data.journalSource,
+        year: new Date().getFullYear().toString(),
+        thumbnail: thumbnailUrl,
+        presentationFileUrl,
+        originalArticleUrl,
+      };
 
-    setPresentations((prev) => [newPresentation, ...prev]);
-    markAsChanged(); // Mark that changes have been made
+      // Create presentation via API if authenticated as admin
+      if (isAdminMode) {
+        const response = await presentationsAPI.createPresentation(newPresentationData);
+        const apiPresentation = response.presentation;
 
-    // Add files to media library
-    addPresentationFilesToMediaLibrary(
-      data.file,
-      data.originalArticle,
-      data.trialName,
-    );
+        const newPresentation: Presentation = {
+          id: apiPresentation.id,
+          title: apiPresentation.title,
+          specialty: apiPresentation.specialty,
+          summary: apiPresentation.summary,
+          authors: apiPresentation.authors,
+          journal: apiPresentation.journal,
+          year: apiPresentation.year,
+          thumbnail: apiPresentation.thumbnail,
+          viewerCount: apiPresentation.viewerCount,
+          presentationFileUrl: apiPresentation.presentationFileUrl,
+          originalArticleUrl: apiPresentation.originalArticleUrl,
+        };
+
+        setPresentations((prev) => [newPresentation, ...prev]);
+      } else {
+        // Local storage fallback for non-admin users
+        const newPresentation: Presentation = {
+          id: String(Date.now()),
+          ...newPresentationData,
+          viewerCount: 0,
+        };
+        setPresentations((prev) => [newPresentation, ...prev]);
+      }
+
+      markAsChanged(); // Mark that changes have been made
+
+      // Add files to media library
+      addPresentationFilesToMediaLibrary(
+        data.file,
+        data.originalArticle,
+        data.trialName,
+      );
+    } catch (error) {
+      console.error("Error creating presentation:", error);
+      alert("Failed to create presentation. Please try again.");
+    }
   };
 
   const handleFeaturedUpload = (data: FeaturedPresentationData) => {
