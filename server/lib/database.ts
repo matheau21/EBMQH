@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 // Declare global type for Prisma
 declare global {
@@ -8,7 +8,7 @@ declare global {
 // Create a singleton instance of Prisma Client
 export const prisma = globalThis.__prisma || new PrismaClient();
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   globalThis.__prisma = prisma;
 }
 
@@ -16,9 +16,9 @@ if (process.env.NODE_ENV === 'development') {
 export async function connectDatabase() {
   try {
     await prisma.$connect();
-    console.log('✅ Database connected successfully');
+    console.log("✅ Database connected successfully");
   } catch (error) {
-    console.error('❌ Database connection failed:', error);
+    console.error("❌ Database connection failed:", error);
     process.exit(1);
   }
 }
@@ -29,6 +29,6 @@ export async function disconnectDatabase() {
 }
 
 // Gracefully shutdown database connection
-process.on('beforeExit', async () => {
+process.on("beforeExit", async () => {
   await disconnectDatabase();
 });

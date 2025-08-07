@@ -29,7 +29,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (error) setError(""); // Clear error when user types
   };
 
@@ -119,8 +119,12 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div>
 
           <div className="bg-blue-50 p-4 rounded-lg">
-            <p className="text-sm text-blue-800 font-medium mb-2">Demo Credentials:</p>
-            <p className="text-xs text-blue-600">Email: admin@ebmquickhits.com</p>
+            <p className="text-sm text-blue-800 font-medium mb-2">
+              Demo Credentials:
+            </p>
+            <p className="text-xs text-blue-600">
+              Email: admin@ebmquickhits.com
+            </p>
             <p className="text-xs text-blue-600">Password: admin123</p>
           </div>
 

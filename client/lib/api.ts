@@ -1,5 +1,5 @@
 // API base configuration
-const API_BASE_URL = '/api';
+const API_BASE_URL = "/api";
 
 // Types
 export interface User {
@@ -8,7 +8,7 @@ export interface User {
   username: string;
   firstName?: string;
   lastName?: string;
-  userType: 'ADMIN' | 'END_USER';
+  userType: "ADMIN" | "END_USER";
   createdAt: string;
   updatedAt: string;
 }
@@ -56,28 +56,28 @@ export interface PaginatedResponse<T> {
 
 // Storage utilities
 export const getToken = (): string | null => {
-  return localStorage.getItem('authToken');
+  return localStorage.getItem("authToken");
 };
 
 export const setToken = (token: string): void => {
-  localStorage.setItem('authToken', token);
+  localStorage.setItem("authToken", token);
 };
 
 export const removeToken = (): void => {
-  localStorage.removeItem('authToken');
+  localStorage.removeItem("authToken");
 };
 
 export const getCurrentUser = (): User | null => {
-  const userStr = localStorage.getItem('currentUser');
+  const userStr = localStorage.getItem("currentUser");
   return userStr ? JSON.parse(userStr) : null;
 };
 
 export const setCurrentUser = (user: User): void => {
-  localStorage.setItem('currentUser', JSON.stringify(user));
+  localStorage.setItem("currentUser", JSON.stringify(user));
 };
 
 export const removeCurrentUser = (): void => {
-  localStorage.removeItem('currentUser');
+  localStorage.removeItem("currentUser");
 };
 
 // Backend availability flag
@@ -90,24 +90,27 @@ const checkBackendAvailability = async (): Promise<boolean> => {
   const now = Date.now();
 
   // Re-check if enough time has passed
-  if (isBackendAvailable !== null && (now - lastBackendCheck) < BACKEND_CHECK_INTERVAL) {
+  if (
+    isBackendAvailable !== null &&
+    now - lastBackendCheck < BACKEND_CHECK_INTERVAL
+  ) {
     return isBackendAvailable;
   }
 
   lastBackendCheck = now;
 
   try {
-    console.log('Checking backend availability at:', `${API_BASE_URL}/health`);
+    console.log("Checking backend availability at:", `${API_BASE_URL}/health`);
     const response = await fetch(`${API_BASE_URL}/health`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
     });
     isBackendAvailable = response.ok;
-    console.log('Backend availability check result:', isBackendAvailable);
+    console.log("Backend availability check result:", isBackendAvailable);
     return isBackendAvailable;
   } catch (error) {
-    console.log('Backend health check failed:', error);
-    console.log('Backend not available, falling back to client-side data');
+    console.log("Backend health check failed:", error);
+    console.log("Backend not available, falling back to client-side data");
     isBackendAvailable = false;
     return false;
   }
@@ -116,13 +119,13 @@ const checkBackendAvailability = async (): Promise<boolean> => {
 // API request helper
 const apiRequest = async <T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> => {
   const token = getToken();
 
   const config: RequestInit = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
     },
     ...options,
@@ -132,14 +135,19 @@ const apiRequest = async <T>(
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Network error' }));
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Network error" }));
       throw new Error(error.error || `HTTP ${response.status}`);
     }
 
     return response.json();
   } catch (error) {
     // Mark backend as unavailable on network errors
-    if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+    if (
+      error instanceof TypeError &&
+      error.message.includes("Failed to fetch")
+    ) {
       isBackendAvailable = false;
     }
     throw error;
@@ -154,17 +162,17 @@ export const authAPI = {
     password: string;
     firstName?: string;
     lastName?: string;
-    userType?: 'ADMIN' | 'END_USER';
+    userType?: "ADMIN" | "END_USER";
   }): Promise<AuthResponse> {
-    return apiRequest<AuthResponse>('/users/register', {
-      method: 'POST',
+    return apiRequest<AuthResponse>("/users/register", {
+      method: "POST",
       body: JSON.stringify(data),
     });
   },
 
   async login(email: string, password: string): Promise<AuthResponse> {
-    return apiRequest<AuthResponse>('/users/login', {
-      method: 'POST',
+    return apiRequest<AuthResponse>("/users/login", {
+      method: "POST",
       body: JSON.stringify({ email, password }),
     });
   },
@@ -174,19 +182,21 @@ export const authAPI = {
       const backendAvailable = await checkBackendAvailability();
 
       if (!backendAvailable) {
-        throw new Error('Backend not available');
+        throw new Error("Backend not available");
       }
 
-      return apiRequest<{ user: User }>('/users/me');
+      return apiRequest<{ user: User }>("/users/me");
     } catch (error) {
-      console.log('Error getting user profile:', error);
+      console.log("Error getting user profile:", error);
       throw error;
     }
   },
 
-  async updateProfile(data: Partial<User>): Promise<{ message: string; user: User }> {
-    return apiRequest<{ message: string; user: User }>('/users/me', {
-      method: 'PUT',
+  async updateProfile(
+    data: Partial<User>,
+  ): Promise<{ message: string; user: User }> {
+    return apiRequest<{ message: string; user: User }>("/users/me", {
+      method: "PUT",
       body: JSON.stringify(data),
     });
   },
@@ -202,31 +212,36 @@ export const usersAPI = {
   async getUsers(params?: {
     page?: number;
     limit?: number;
-    userType?: 'ADMIN' | 'END_USER';
+    userType?: "ADMIN" | "END_USER";
   }): Promise<PaginatedResponse<User>> {
     const searchParams = new URLSearchParams();
-    if (params?.page) searchParams.append('page', params.page.toString());
-    if (params?.limit) searchParams.append('limit', params.limit.toString());
-    if (params?.userType) searchParams.append('userType', params.userType);
+    if (params?.page) searchParams.append("page", params.page.toString());
+    if (params?.limit) searchParams.append("limit", params.limit.toString());
+    if (params?.userType) searchParams.append("userType", params.userType);
 
     const query = searchParams.toString();
-    return apiRequest<PaginatedResponse<User>>(`/users${query ? `?${query}` : ''}`);
+    return apiRequest<PaginatedResponse<User>>(
+      `/users${query ? `?${query}` : ""}`,
+    );
   },
 
   async getUser(id: string): Promise<{ user: User }> {
     return apiRequest<{ user: User }>(`/users/${id}`);
   },
 
-  async updateUser(id: string, data: Partial<User>): Promise<{ message: string; user: User }> {
+  async updateUser(
+    id: string,
+    data: Partial<User>,
+  ): Promise<{ message: string; user: User }> {
     return apiRequest<{ message: string; user: User }>(`/users/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(data),
     });
   },
 
   async deleteUser(id: string): Promise<{ message: string }> {
     return apiRequest<{ message: string }>(`/users/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   },
 };
@@ -239,7 +254,7 @@ export const presentationsAPI = {
     specialty?: string;
     search?: string;
     sortBy?: string;
-    sortOrder?: 'asc' | 'desc';
+    sortOrder?: "asc" | "desc";
   }): Promise<PaginatedResponse<Presentation>> {
     try {
       // Check if backend is available first
@@ -253,23 +268,27 @@ export const presentationsAPI = {
             page: 1,
             limit: 10,
             total: 0,
-            pages: 0
-          }
+            pages: 0,
+          },
         };
       }
 
       const searchParams = new URLSearchParams();
-      if (params?.page) searchParams.append('page', params.page.toString());
-      if (params?.limit) searchParams.append('limit', params.limit.toString());
-      if (params?.specialty) searchParams.append('specialty', params.specialty);
-      if (params?.search) searchParams.append('search', params.search);
-      if (params?.sortBy) searchParams.append('sortBy', params.sortBy);
-      if (params?.sortOrder) searchParams.append('sortOrder', params.sortOrder);
+      if (params?.page) searchParams.append("page", params.page.toString());
+      if (params?.limit) searchParams.append("limit", params.limit.toString());
+      if (params?.specialty) searchParams.append("specialty", params.specialty);
+      if (params?.search) searchParams.append("search", params.search);
+      if (params?.sortBy) searchParams.append("sortBy", params.sortBy);
+      if (params?.sortOrder) searchParams.append("sortOrder", params.sortOrder);
 
       const query = searchParams.toString();
-      return apiRequest<PaginatedResponse<Presentation>>(`/presentations${query ? `?${query}` : ''}`);
+      return apiRequest<PaginatedResponse<Presentation>>(
+        `/presentations${query ? `?${query}` : ""}`,
+      );
     } catch (error) {
-      console.log('Error fetching presentations from API, returning empty result');
+      console.log(
+        "Error fetching presentations from API, returning empty result",
+      );
       // Return empty response on any error
       return {
         presentations: [],
@@ -277,8 +296,8 @@ export const presentationsAPI = {
           page: 1,
           limit: 10,
           total: 0,
-          pages: 0
-        }
+          pages: 0,
+        },
       };
     }
   },
@@ -287,45 +306,59 @@ export const presentationsAPI = {
     return apiRequest<{ presentation: Presentation }>(`/presentations/${id}`);
   },
 
-  async createPresentation(data: Omit<Presentation, 'id' | 'createdAt' | 'updatedAt' | 'createdBy' | 'user' | 'viewerCount'>): Promise<{ message: string; presentation: Presentation }> {
+  async createPresentation(
+    data: Omit<
+      Presentation,
+      "id" | "createdAt" | "updatedAt" | "createdBy" | "user" | "viewerCount"
+    >,
+  ): Promise<{ message: string; presentation: Presentation }> {
     try {
       const backendAvailable = await checkBackendAvailability();
 
       if (!backendAvailable) {
-        throw new Error('Backend not available for creating presentations');
+        throw new Error("Backend not available for creating presentations");
       }
 
-      return apiRequest<{ message: string; presentation: Presentation }>('/presentations', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
+      return apiRequest<{ message: string; presentation: Presentation }>(
+        "/presentations",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+        },
+      );
     } catch (error) {
-      console.log('Error creating presentation via API:', error);
+      console.log("Error creating presentation via API:", error);
       throw error;
     }
   },
 
-  async updatePresentation(id: string, data: Partial<Presentation>): Promise<{ message: string; presentation: Presentation }> {
-    return apiRequest<{ message: string; presentation: Presentation }>(`/presentations/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+  async updatePresentation(
+    id: string,
+    data: Partial<Presentation>,
+  ): Promise<{ message: string; presentation: Presentation }> {
+    return apiRequest<{ message: string; presentation: Presentation }>(
+      `/presentations/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(data),
+      },
+    );
   },
 
   async deletePresentation(id: string): Promise<{ message: string }> {
     return apiRequest<{ message: string }>(`/presentations/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   },
 
   async incrementViewCount(id: string): Promise<{ viewerCount: number }> {
     return apiRequest<{ viewerCount: number }>(`/presentations/${id}/view`, {
-      method: 'POST',
+      method: "POST",
     });
   },
 
   async getSpecialties(): Promise<{ specialties: string[] }> {
-    return apiRequest<{ specialties: string[] }>('/presentations/specialties');
+    return apiRequest<{ specialties: string[] }>("/presentations/specialties");
   },
 
   async getStats(): Promise<{
@@ -340,14 +373,22 @@ export const presentationsAPI = {
       createdAt: string;
     }>;
   }> {
-    return apiRequest('/presentations/stats/overview');
+    return apiRequest("/presentations/stats/overview");
   },
 };
 
 // Health check
 export const healthAPI = {
-  async check(): Promise<{ status: string; timestamp: string; environment: string }> {
-    return apiRequest<{ status: string; timestamp: string; environment: string }>('/health');
+  async check(): Promise<{
+    status: string;
+    timestamp: string;
+    environment: string;
+  }> {
+    return apiRequest<{
+      status: string;
+      timestamp: string;
+      environment: string;
+    }>("/health");
   },
 };
 

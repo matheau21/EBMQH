@@ -1,5 +1,18 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { authAPI, checkBackendAvailability, getCurrentUser, setCurrentUser, removeCurrentUser, User } from '@/lib/api';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import {
+  authAPI,
+  checkBackendAvailability,
+  getCurrentUser,
+  setCurrentUser,
+  removeCurrentUser,
+  User,
+} from "@/lib/api";
 
 interface AdminContextType {
   isAdminMode: boolean;
@@ -33,12 +46,12 @@ export function AdminProvider({ children }: { children: ReactNode }) {
             setCurrentUser(response.user);
           } else {
             // Backend not available, use saved user data
-            console.log('Backend not available, using cached user data');
+            console.log("Backend not available, using cached user data");
             setUser(savedUser);
           }
         }
       } catch (error) {
-        console.log('Auth initialization failed, clearing user data');
+        console.log("Auth initialization failed, clearing user data");
         // Token might be expired or backend unavailable, clear it
         removeCurrentUser();
         authAPI.logout();
@@ -63,21 +76,21 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         setCurrentUser(response.user);
       } else {
         // Demo login for when backend is not available
-        if (email === 'admin@ebmquickhits.com' && password === 'admin123') {
+        if (email === "admin@ebmquickhits.com" && password === "admin123") {
           const demoUser = {
-            id: 'demo-admin',
-            email: 'admin@ebmquickhits.com',
-            username: 'admin',
-            firstName: 'Demo',
-            lastName: 'Admin',
-            userType: 'ADMIN' as const,
+            id: "demo-admin",
+            email: "admin@ebmquickhits.com",
+            username: "admin",
+            firstName: "Demo",
+            lastName: "Admin",
+            userType: "ADMIN" as const,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           };
           setUser(demoUser);
           setCurrentUser(demoUser);
         } else {
-          throw new Error('Invalid credentials');
+          throw new Error("Invalid credentials");
         }
       }
     } catch (error) {
@@ -98,13 +111,13 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       setUser(response.user);
       setCurrentUser(response.user);
     } catch (error) {
-      console.error('Failed to refresh profile:', error);
+      console.error("Failed to refresh profile:", error);
       logout();
     }
   };
 
   const value = {
-    isAdminMode: user?.userType === 'ADMIN',
+    isAdminMode: user?.userType === "ADMIN",
     user,
     isAuthenticated: !!user,
     isLoading,
@@ -114,16 +127,14 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AdminContext.Provider value={value}>
-      {children}
-    </AdminContext.Provider>
+    <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
   );
 }
 
 export function useAdmin() {
   const context = useContext(AdminContext);
   if (context === undefined) {
-    throw new Error('useAdmin must be used within an AdminProvider');
+    throw new Error("useAdmin must be used within an AdminProvider");
   }
   return context;
 }

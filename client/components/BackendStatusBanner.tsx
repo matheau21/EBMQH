@@ -21,7 +21,7 @@ export function BackendStatusBanner() {
 
   useEffect(() => {
     checkStatus();
-    
+
     // Check status every 30 seconds
     const interval = setInterval(checkStatus, 30000);
     return () => clearInterval(interval);
@@ -51,7 +51,9 @@ export function BackendStatusBanner() {
           className="ml-4 p-1 hover:bg-orange-100 rounded"
           title="Retry connection"
         >
-          <RefreshCw className={`h-4 w-4 text-orange-600 ${isChecking ? 'animate-spin' : ''}`} />
+          <RefreshCw
+            className={`h-4 w-4 text-orange-600 ${isChecking ? "animate-spin" : ""}`}
+          />
         </button>
       </AlertDescription>
     </Alert>

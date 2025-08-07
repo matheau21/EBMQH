@@ -7,6 +7,7 @@ This document describes the complete backend implementation with SQL database, u
 ## 📋 Database Schema
 
 ### Users Table
+
 ```sql
 - id: string (primary key)
 - email: string (unique)
@@ -20,6 +21,7 @@ This document describes the complete backend implementation with SQL database, u
 ```
 
 ### Presentations Table
+
 ```sql
 - id: string (primary key)
 - title: string
@@ -40,11 +42,13 @@ This document describes the complete backend implementation with SQL database, u
 ## 🚀 Setup Instructions
 
 ### 1. Install Dependencies (Already Done)
+
 ```bash
 npm install prisma @prisma/client bcryptjs jsonwebtoken @types/bcryptjs @types/jsonwebtoken
 ```
 
 ### 2. Database Initialization (Already Done)
+
 ```bash
 npx prisma generate
 npx prisma db push
@@ -52,25 +56,30 @@ npx tsx prisma/seed.ts
 ```
 
 ### 3. Environment Variables
+
 The following environment variables are configured in `.env`:
+
 - `DATABASE_URL="file:./dev.db"`
 - `JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"`
 
 ## 🔗 API Endpoints
 
 ### Authentication Endpoints
+
 - `POST /api/users/register` - Register new user
 - `POST /api/users/login` - Login user
 - `GET /api/users/me` - Get current user profile
 - `PUT /api/users/me` - Update current user profile
 
 ### User Management (Admin Only)
+
 - `GET /api/users` - Get all users (paginated)
 - `GET /api/users/:id` - Get user by ID
 - `PUT /api/users/:id` - Update user by ID
 - `DELETE /api/users/:id` - Delete user by ID
 
 ### Presentations
+
 - `GET /api/presentations` - Get all presentations (public, paginated)
 - `GET /api/presentations/:id` - Get presentation by ID
 - `POST /api/presentations` - Create presentation (Admin only)
@@ -81,16 +90,19 @@ The following environment variables are configured in `.env`:
 - `GET /api/presentations/stats/overview` - Get statistics (Admin only)
 
 ### Health Check
+
 - `GET /api/health` - Server health status
 
 ## 👤 Demo Credentials
 
 ### Admin User
+
 - **Email:** admin@ebmquickhits.com
 - **Password:** admin123
 - **Type:** ADMIN
 
 ### Sample End User
+
 - **Email:** user@example.com
 - **Password:** user123
 - **Type:** END_USER
@@ -98,19 +110,23 @@ The following environment variables are configured in `.env`:
 ## 💻 Frontend Integration
 
 ### Authentication
+
 - Login modal appears when clicking "Admin Login" button
 - JWT tokens are stored in localStorage
 - Auto-refresh of user profile on app load
 - Logout functionality clears tokens and user data
 
 ### Presentation Management
+
 - Admin users can create, edit, and delete presentations via API
 - Non-admin users fall back to localStorage for local changes
 - View counts are tracked via API calls
 - Real-time presentation loading from database
 
 ### API Service Layer
+
 The frontend includes a comprehensive API service (`client/lib/api.ts`) with:
+
 - Automatic JWT token handling
 - Type-safe request/response interfaces
 - Error handling and network retry logic
@@ -119,12 +135,15 @@ The frontend includes a comprehensive API service (`client/lib/api.ts`) with:
 ## 🔧 Development Workflow
 
 ### 1. Start the Development Server
+
 ```bash
 npm run dev
 ```
 
 ### 2. Database Changes
+
 When making schema changes:
+
 ```bash
 # Update prisma/schema.prisma
 npx prisma generate
@@ -132,6 +151,7 @@ npx prisma db push
 ```
 
 ### 3. Reseed Database
+
 ```bash
 npx tsx prisma/seed.ts
 ```
@@ -157,6 +177,7 @@ npx tsx prisma/seed.ts
 ## 🧪 Testing
 
 You can test the API endpoints using:
+
 - Frontend admin interface (login as admin)
 - API testing tools (Postman, curl, etc.)
 - Browser developer tools (Network tab)
@@ -164,6 +185,7 @@ You can test the API endpoints using:
 ## 📈 Production Considerations
 
 For production deployment:
+
 1. Change JWT_SECRET to a secure random string
 2. Use PostgreSQL instead of SQLite for better performance
 3. Add rate limiting and CORS configuration

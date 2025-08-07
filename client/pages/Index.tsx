@@ -9,7 +9,11 @@ import { UploadModal } from "@/components/UploadModal";
 import { AdminToggleButton } from "@/components/AdminToggleButton";
 import { useAdmin } from "@/contexts/AdminContext";
 import { usePublish } from "@/contexts/PublishContext";
-import { presentationsAPI, checkBackendAvailability, Presentation as APIPresentation } from "@/lib/api";
+import {
+  presentationsAPI,
+  checkBackendAvailability,
+  Presentation as APIPresentation,
+} from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Plus, Users, Award } from "lucide-react";
@@ -195,23 +199,30 @@ export default function Index() {
         const backendAvailable = await checkBackendAvailability();
 
         if (backendAvailable) {
-          const response = await presentationsAPI.getPresentations({ limit: 100 });
-          const apiPresentations = response.presentations?.map(p => ({
-            id: p.id,
-            title: p.title,
-            specialty: p.specialty,
-            summary: p.summary,
-            authors: p.authors,
-            journal: p.journal,
-            year: p.year,
-            thumbnail: p.thumbnail,
-            viewerCount: p.viewerCount,
-            presentationFileUrl: p.presentationFileUrl,
-            originalArticleUrl: p.originalArticleUrl,
-          })) || [];
+          const response = await presentationsAPI.getPresentations({
+            limit: 100,
+          });
+          const apiPresentations =
+            response.presentations?.map((p) => ({
+              id: p.id,
+              title: p.title,
+              specialty: p.specialty,
+              summary: p.summary,
+              authors: p.authors,
+              journal: p.journal,
+              year: p.year,
+              thumbnail: p.thumbnail,
+              viewerCount: p.viewerCount,
+              presentationFileUrl: p.presentationFileUrl,
+              originalArticleUrl: p.originalArticleUrl,
+            })) || [];
 
           // Use API data if available, fallback to mock data
-          setPresentations(apiPresentations.length > 0 ? [...apiPresentations, ...mockPresentations] : mockPresentations);
+          setPresentations(
+            apiPresentations.length > 0
+              ? [...apiPresentations, ...mockPresentations]
+              : mockPresentations,
+          );
         } else {
           console.log("Backend not available, using mock data");
           setPresentations(mockPresentations);
@@ -367,7 +378,8 @@ export default function Index() {
 
       // Create presentation via API if authenticated as admin
       if (isAdminMode) {
-        const response = await presentationsAPI.createPresentation(newPresentationData);
+        const response =
+          await presentationsAPI.createPresentation(newPresentationData);
         const apiPresentation = response.presentation;
 
         const newPresentation: Presentation = {
