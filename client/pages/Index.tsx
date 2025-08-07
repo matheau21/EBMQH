@@ -554,6 +554,9 @@ export default function Index() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Backend Status Banner */}
+        <BackendStatusBanner />
+
         {/* Featured Presentation Section */}
         <div className="mb-12 sm:mb-16">
           <FeaturedPresentation />
