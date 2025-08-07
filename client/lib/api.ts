@@ -270,10 +270,21 @@ export const presentationsAPI = {
   },
 
   async createPresentation(data: Omit<Presentation, 'id' | 'createdAt' | 'updatedAt' | 'createdBy' | 'user' | 'viewerCount'>): Promise<{ message: string; presentation: Presentation }> {
-    return apiRequest<{ message: string; presentation: Presentation }>('/presentations', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    try {
+      const backendAvailable = await checkBackendAvailability();
+
+      if (!backendAvailable) {
+        throw new Error('Backend not available for creating presentations');
+      }
+
+      return apiRequest<{ message: string; presentation: Presentation }>('/presentations', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.log('Error creating presentation via API:', error);
+      throw error;
+    }
   },
 
   async updatePresentation(id: string, data: Partial<Presentation>): Promise<{ message: string; presentation: Presentation }> {
