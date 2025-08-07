@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  username    String   @unique
+  password    String
+  userType    UserType @default(END_USER)
+  firstName   String?
+  lastName    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  presentations Presentation[]
+  
+  @@map("users")
+}
+
+model Presentation {
+  id                   String   @id @default(cuid())
+  title                String
+  specialty            String
+  summary              String   @db.Text
+  authors              String?
+  journal              String?
+  year                 String?
+  thumbnail            String?
+  viewerCount          Int      @default(0)
+  presentationFileUrl  String?
+  originalArticleUrl   String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  
+  // Relations
+  createdBy            String?
+  user                 User?    @relation(fields: [createdBy], references: [id])
+  
+  @@map("presentations")
+}
+
+enum UserType {
+  ADMIN
+  END_USER
+}
