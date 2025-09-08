@@ -28,9 +28,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/presentations" element={<AllPresentations />} />
               <Route path="/coming-soon" element={<ComingSoon />} />
-              <Route path="/admin/users" element={
-                <AdminUsersLazy />
-              } />
+              <Route path="/admin/users" element={<AdminUsers />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
