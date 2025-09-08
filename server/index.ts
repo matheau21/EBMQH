@@ -5,7 +5,7 @@ import { handleDemo } from "./routes/demo.js";
 import { connectDatabase } from "./lib/database.js";
 import userRoutes from "./routes/users.js";
 import adminAuthRoutes from "./routes/admin-auth.js";
-import presentationRoutes from "./routes/presentations.js";
+import presentationRoutes from "./routes/presentations-sb.js";
 import adminUsersRoutes from "./routes/admin-users.js";
 
 export function createServer() {
