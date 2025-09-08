@@ -469,7 +469,12 @@ export const adminUsersAPI = {
       last_login_at: string | null;
     }>;
   }> {
-    return apiRequest("/admin/users");
+    try {
+      return await apiRequest("/admin/users");
+    } catch (e) {
+      console.warn("Admin users list failed, returning empty list", e);
+      return { users: [] } as any;
+    }
   },
   async create(input: { username: string; password: string; role: "owner" | "admin" | "user"; is_active?: boolean }): Promise<{ message: string; user: any }> {
     return apiRequest("/admin/users", {
