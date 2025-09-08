@@ -405,7 +405,12 @@ export const presentationsAPI = {
   },
 
   async getSpecialties(): Promise<{ specialties: string[] }> {
-    return apiRequest<{ specialties: string[] }>("/presentations/specialties");
+    try {
+      return await apiRequest<{ specialties: string[] }>("/presentations/specialties");
+    } catch (e) {
+      console.warn("getSpecialties failed, returning empty", e);
+      return { specialties: [] };
+    }
   },
 
   async getStats(): Promise<{
@@ -424,14 +429,19 @@ export const presentationsAPI = {
   },
 
   async adminList(params?: { page?: number; limit?: number; specialty?: string; search?: string; status?: "pending"|"approved"|"rejected" }): Promise<PaginatedResponse<any>> {
-    const sp = new URLSearchParams();
-    if (params?.page) sp.append("page", String(params.page));
-    if (params?.limit) sp.append("limit", String(params.limit));
-    if (params?.specialty) sp.append("specialty", params.specialty);
-    if (params?.search) sp.append("search", params.search);
-    if (params?.status) sp.append("status", params.status);
-    const q = sp.toString();
-    return apiRequest(`/presentations/admin${q ? `?${q}` : ""}`);
+    try {
+      const sp = new URLSearchParams();
+      if (params?.page) sp.append("page", String(params.page));
+      if (params?.limit) sp.append("limit", String(params.limit));
+      if (params?.specialty) sp.append("specialty", params.specialty);
+      if (params?.search) sp.append("search", params.search);
+      if (params?.status) sp.append("status", params.status);
+      const q = sp.toString();
+      return await apiRequest(`/presentations/admin${q ? `?${q}` : ""}`);
+    } catch (e) {
+      console.warn("adminList failed, returning empty", e);
+      return { presentations: [], pagination: { page: 1, limit: 10, total: 0, pages: 0 } } as any;
+    }
   },
 
   async updateStatus(id: string, status: "pending"|"approved"|"rejected"): Promise<{ message: string; presentation: any }> {
