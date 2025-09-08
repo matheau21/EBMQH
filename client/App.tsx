@@ -12,10 +12,7 @@ import Index from "./pages/Index";
 import AllPresentations from "./pages/AllPresentations";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
-const AdminUsersLazy = () => {
-  const Comp = require("./pages/AdminUsers").default;
-  return <Comp />;
-};
+import AdminUsers from "./pages/AdminUsers";
 
 const queryClient = new QueryClient();
 
