@@ -6,6 +6,7 @@ import { connectDatabase } from "./lib/database.js";
 import userRoutes from "./routes/users.js";
 import adminAuthRoutes from "./routes/admin-auth.js";
 import presentationRoutes from "./routes/presentations.js";
+import adminUsersRoutes from "./routes/admin-users.js";
 
 export function createServer() {
   const app = express();
@@ -33,7 +34,7 @@ export function createServer() {
   app.use("/api/users", userRoutes);
 
   // Admin users management (Supabase)
-  app.use("/api/admin/users", (await import("./routes/admin-users.js")).default);
+  app.use("/api/admin/users", adminUsersRoutes);
 
   // Presentation routes
   app.use("/api/presentations", presentationRoutes);
