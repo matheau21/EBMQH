@@ -17,6 +17,19 @@ interface SpecialtyFiltersProps {
   onSpecialtyToggle: (specialty: string) => void;
 }
 
+export const SPECIALTY_NAMES = [
+  "Cardiology",
+  "Heme/Onc",
+  "Endocrinology",
+  "General Internal Medicine",
+  "Pulmonary/Critical Care",
+  "Infectious Disease",
+  "Rheumatology",
+  "Nephrology",
+  "Gastroenterology/Hepatology",
+  "Neurology",
+];
+
 const specialtyConfig = [
   {
     name: "Cardiology",
