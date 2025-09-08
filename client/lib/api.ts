@@ -154,7 +154,7 @@ const apiRequest = async <T>(
   }
 };
 
-// Auth API
+// Auth API (legacy, Prisma-backed)
 export const authAPI = {
   async register(data: {
     email: string;
@@ -204,6 +204,38 @@ export const authAPI = {
   logout(): void {
     removeToken();
     removeCurrentUser();
+  },
+};
+
+// Admin Auth API (Supabase-backed)
+export const adminAuthAPI = {
+  async login(username: string, password: string): Promise<{
+    message: string;
+    token: string;
+    user: {
+      id: string;
+      username: string;
+      role: "owner" | "admin" | "user";
+      is_active: boolean;
+      created_at: string;
+      updated_at: string;
+      last_login_at: string | null;
+    };
+  }> {
+    const response = await apiRequest(
+      "/admin/login",
+      {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+      },
+    );
+    const { token } = response as any;
+    if (token) setToken(token);
+    return response as any;
+  },
+
+  async me(): Promise<{ user: { id: string; username: string; role: "owner" | "admin" | "user"; is_active: boolean; created_at: string; updated_at: string; last_login_at: string | null } }> {
+    return apiRequest("/admin/me");
   },
 };
 
