@@ -13,7 +13,7 @@ export default function AdminUsersPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin-users"],
     queryFn: () => adminUsersAPI.list(),
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && !!getToken(),
   });
 
   const createMutation = useMutation({
