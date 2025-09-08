@@ -73,30 +73,36 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     initializeAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (username: string, password: string) => {
     try {
       setIsLoading(true);
 
-      // Check if backend is available
       const backendAvailable = await checkBackendAvailability();
 
       if (backendAvailable) {
-        const response = await authAPI.login(email, password);
-        setUser(response.user);
-        setCurrentUser(response.user);
+        const resp = await adminAuthAPI.login(username, password);
+        const mapped: User = {
+          id: resp.user.id,
+          email: `${resp.user.username}@placeholder.local`,
+          username: resp.user.username,
+          firstName: undefined,
+          lastName: undefined,
+          userType: resp.user.role === "user" ? "END_USER" : "ADMIN",
+          createdAt: resp.user.created_at,
+          updatedAt: resp.user.updated_at,
+        };
+        setUser(mapped);
+        setCurrentUser(mapped);
       } else {
-        // Demo login for when backend is not available
-        if (email === "admin@ebmquickhits.com" && password === "admin123") {
-          const demoUser = {
-            id: "demo-admin",
-            email: "admin@ebmquickhits.com",
-            username: "admin",
-            firstName: "Demo",
-            lastName: "Admin",
-            userType: "ADMIN" as const,
+        if (username === "hoang" && password === "Ww123123") {
+          const demoUser: User = {
+            id: "demo-owner",
+            email: "hoang@placeholder.local",
+            username: "hoang",
+            userType: "ADMIN",
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
-          };
+          } as User;
           setUser(demoUser);
           setCurrentUser(demoUser);
         } else {
