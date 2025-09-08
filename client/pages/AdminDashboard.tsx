@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminUsersAPI, presentationsAPI } from "@/lib/api";
+import { adminUsersAPI, presentationsAPI, checkBackendAvailability, getToken } from "@/lib/api";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,22 +40,29 @@ export default function AdminDashboard() {
   const [newPdf, setNewPdf] = useState<File | null>(null);
   const [newPpt, setNewPpt] = useState<File | null>(null);
 
+  const { data: backendAvailable } = useQuery({
+    queryKey: ["backend-available"],
+    queryFn: () => checkBackendAvailability(),
+    staleTime: 30000,
+  });
+
   const { data: specialtiesData } = useQuery({
     queryKey: ["specialties"],
     queryFn: () => presentationsAPI.getSpecialties(),
+    enabled: !!backendAvailable,
   });
   const specialtyOptions = Array.from(new Set([...(SPECIALTY_NAMES || []), ...((specialtiesData?.specialties as string[]) || [])]));
 
   const { data: trials, refetch } = useQuery({
     queryKey: ["admin-trials"],
     queryFn: () => presentationsAPI.adminList({ limit: 20 }),
-    enabled: isAuthenticated,
+    enabled: !!backendAvailable && isAuthenticated && !!getToken(),
   });
 
   const { data: pending } = useQuery({
     queryKey: ["admin-trials-pending"],
     queryFn: () => presentationsAPI.adminList({ status: "pending", limit: 50 }),
-    enabled: isAuthenticated,
+    enabled: !!backendAvailable && isAuthenticated && !!getToken(),
   });
 
   const createMutation = useMutation({
