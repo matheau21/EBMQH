@@ -6,7 +6,7 @@ import React, {
   ReactNode,
 } from "react";
 import {
-  authAPI,
+  adminAuthAPI,
   checkBackendAvailability,
   getCurrentUser,
   setCurrentUser,
@@ -19,7 +19,7 @@ interface AdminContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   refreshProfile: () => Promise<void>;
 }
