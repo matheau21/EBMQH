@@ -7,6 +7,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AdminUsers from "./AdminUsers";
 
+function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected") => void }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="flex items-center justify-between border rounded px-3 py-2">
+      <div>
+        <div className="font-medium">{p.title}</div>
+        <div className="text-xs text-gray-500">{p.specialty} • {p.status || "approved"}</div>
+      </div>
+      <div className="flex gap-2">
+        <Button variant="outline" onClick={() => setOpen(true)}>Manage Files</Button>
+        {p.status !== "approved" && (
+          <Button variant="outline" onClick={() => onApprove("approved")}>Approve</Button>
+        )}
+        {p.status !== "rejected" && (
+          <Button variant="outline" onClick={() => onApprove("rejected")}>Reject</Button>
+        )}
+      </div>
+      <ManageFilesDialog presentationId={p.id} open={open} onOpenChange={setOpen} />
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
