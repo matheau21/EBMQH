@@ -407,6 +407,21 @@ export const presentationsAPI = {
   }> {
     return apiRequest("/presentations/stats/overview");
   },
+
+  async adminList(params?: { page?: number; limit?: number; specialty?: string; search?: string; status?: "pending"|"approved"|"rejected" }): Promise<PaginatedResponse<any>> {
+    const sp = new URLSearchParams();
+    if (params?.page) sp.append("page", String(params.page));
+    if (params?.limit) sp.append("limit", String(params.limit));
+    if (params?.specialty) sp.append("specialty", params.specialty);
+    if (params?.search) sp.append("search", params.search);
+    if (params?.status) sp.append("status", params.status);
+    const q = sp.toString();
+    return apiRequest(`/presentations/admin${q ? `?${q}` : ""}`);
+  },
+
+  async updateStatus(id: string, status: "pending"|"approved"|"rejected"): Promise<{ message: string; presentation: any }> {
+    return apiRequest(`/presentations/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
+  },
 };
 
 // Health check
