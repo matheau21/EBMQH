@@ -40,12 +40,22 @@ export function AdminProvider({ children }: { children: ReactNode }) {
           const backendAvailable = await checkBackendAvailability();
 
           if (backendAvailable) {
-            // Verify the user is still valid by fetching current profile
-            const response = await authAPI.getProfile();
-            setUser(response.user);
-            setCurrentUser(response.user);
+            // Verify the user is still valid by fetching current profile (admin auth)
+            const response = await adminAuthAPI.me();
+            // Map admin user to app User shape
+            const mapped: User = {
+              id: response.user.id,
+              email: `${response.user.username}@placeholder.local`,
+              username: response.user.username,
+              firstName: undefined,
+              lastName: undefined,
+              userType: response.user.role === "user" ? "END_USER" : "ADMIN",
+              createdAt: response.user.created_at,
+              updatedAt: response.user.updated_at,
+            };
+            setUser(mapped);
+            setCurrentUser(mapped);
           } else {
-            // Backend not available, use saved user data
             console.log("Backend not available, using cached user data");
             setUser(savedUser);
           }
