@@ -77,6 +77,35 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+// GET /api/presentations/admin - list all statuses (admin/owner)
+router.get("/admin", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+  try {
+    const { page = "1", limit = "10", specialty, search, status } = req.query as any;
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    const from = (pageNum - 1) * limitNum;
+    const to = from + limitNum - 1;
+
+    let query = supabaseAdmin
+      .from("presentations")
+      .select("*", { count: "exact" });
+
+    if (specialty) query = query.eq("specialty", specialty);
+    if (search) query = query.ilike("title", `%${search}%`);
+    if (status) query = query.eq("status", status);
+
+    const { data, error, count } = await query.order("created_at", { ascending: false }).range(from, to);
+    if (error) return res.status(500).json({ error: error.message });
+
+    return res.json({
+      presentations: data,
+      pagination: { page: pageNum, limit: limitNum, total: count || 0, pages: Math.ceil((count || 0) / limitNum) },
+    });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // GET /api/presentations/specialties
 router.get("/specialties", async (_req: Request, res: Response) => {
   try {
