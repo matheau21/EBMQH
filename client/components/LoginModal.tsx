@@ -39,9 +39,9 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
     setError("");
 
     try {
-      await login(formData.email, formData.password);
+      await login(formData.username, formData.password);
       onClose();
-      setFormData({ email: "", password: "" });
+      setFormData({ username: "", password: "" });
     } catch (error) {
       setError(error instanceof Error ? error.message : "Login failed");
     } finally {
@@ -50,7 +50,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
   };
 
   const handleClose = () => {
-    setFormData({ email: "", password: "" });
+    setFormData({ username: "", password: "" });
     setError("");
     setShowPassword(false);
     onClose();
@@ -74,14 +74,15 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="username">Username</Label>
             <Input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
+              id="username"
+              name="username"
+              type="text"
+              value={formData.username}
               onChange={handleInputChange}
-              placeholder="admin@ebmquickhits.com"
+              placeholder="alphanumeric, 3-32 chars"
+              pattern="^[A-Za-z0-9]{3,32}$"
               required
               disabled={isLoading}
             />
@@ -119,13 +120,9 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div>
 
           <div className="bg-blue-50 p-4 rounded-lg">
-            <p className="text-sm text-blue-800 font-medium mb-2">
-              Demo Credentials:
-            </p>
-            <p className="text-xs text-blue-600">
-              Email: admin@ebmquickhits.com
-            </p>
-            <p className="text-xs text-blue-600">Password: admin123</p>
+            <p className="text-sm text-blue-800 font-medium mb-2">Demo Credentials:</p>
+            <p className="text-xs text-blue-600">Username: hoang</p>
+            <p className="text-xs text-blue-600">Password: Ww123123</p>
           </div>
 
           <div className="flex justify-end gap-3 pt-4">
@@ -139,7 +136,9 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
             </Button>
             <Button
               type="submit"
-              disabled={isLoading || !formData.email || !formData.password}
+              disabled={
+                isLoading || !formData.username || !formData.password
+              }
               className="bg-ucla-blue hover:bg-blue-700"
             >
               {isLoading ? "Signing in..." : "Sign In"}
