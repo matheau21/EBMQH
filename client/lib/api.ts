@@ -383,6 +383,21 @@ export const presentationsAPI = {
     });
   },
 
+  async uploadFile(id: string, file: File): Promise<{ message: string; path: string }> {
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    const type = ext === "pdf" ? "pdf" : ext === "ppt" ? "ppt" : ext === "pptx" ? "pptx" : undefined;
+    if (!type) throw new Error("Unsupported file type. Allowed: pdf, ppt, pptx");
+    if (file.size > 50 * 1024 * 1024) throw new Error("File too large (max 50MB)");
+
+    const buffer = await file.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+
+    return apiRequest<{ message: string; path: string }>(`/presentations/${id}/upload`, {
+      method: "POST",
+      body: JSON.stringify({ fileType: type, filename: file.name, contentBase64: base64 }),
+    });
+  },
+
   async incrementViewCount(id: string): Promise<{ viewerCount: number }> {
     return apiRequest<{ viewerCount: number }>(`/presentations/${id}/view`, {
       method: "POST",
