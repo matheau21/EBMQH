@@ -111,20 +111,7 @@ export default function AdminDashboard() {
             <h2 className="font-medium mb-2">All Trials</h2>
             <div className="space-y-2">
               {trials?.presentations?.map((p: any) => (
-                <div key={p.id} className="flex items-center justify-between border rounded px-3 py-2">
-                  <div>
-                    <div className="font-medium">{p.title}</div>
-                    <div className="text-xs text-gray-500">{p.specialty} • {p.status || "approved"}</div>
-                  </div>
-                  <div className="flex gap-2">
-                    {p.status !== "approved" && (
-                      <Button variant="outline" onClick={() => approveMutation.mutate({ id: p.id, status: "approved" })}>Approve</Button>
-                    )}
-                    {p.status !== "rejected" && (
-                      <Button variant="outline" onClick={() => approveMutation.mutate({ id: p.id, status: "rejected" })}>Reject</Button>
-                    )}
-                  </div>
-                </div>
+                <TrialRow key={p.id} p={p} onApprove={(status) => approveMutation.mutate({ id: p.id, status })} />
               ))}
             </div>
           </div>
