@@ -427,9 +427,41 @@ export const healthAPI = {
 // Export backend availability check
 export { checkBackendAvailability };
 
+export const adminUsersAPI = {
+  async list(): Promise<{
+    users: Array<{
+      id: string;
+      username: string;
+      role: "owner" | "admin" | "user";
+      is_active: boolean;
+      created_at: string;
+      updated_at: string;
+      last_login_at: string | null;
+    }>;
+  }> {
+    return apiRequest("/admin/users");
+  },
+  async create(input: { username: string; password: string; role: "owner" | "admin" | "user"; is_active?: boolean }): Promise<{ message: string; user: any }> {
+    return apiRequest("/admin/users", {
+      method: "POST",
+      body: JSON.stringify(input),
+    });
+  },
+  async update(id: string, input: { password?: string; role?: "owner" | "admin" | "user"; is_active?: boolean }): Promise<{ message: string; user: any }> {
+    return apiRequest(`/admin/users/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    });
+  },
+  async remove(id: string): Promise<{ message: string }> {
+    return apiRequest(`/admin/users/${id}`, { method: "DELETE" });
+  },
+};
+
 export default {
   auth: authAPI,
   users: usersAPI,
   presentations: presentationsAPI,
   health: healthAPI,
+  adminUsers: adminUsersAPI,
 };
