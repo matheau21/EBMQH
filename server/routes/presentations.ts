@@ -1,11 +1,7 @@
 import express, { Request, Response } from "express";
 import { z } from "zod";
 import { prisma } from "../lib/database.js";
-import {
-  authenticateToken,
-  requireAdmin,
-  AuthRequest,
-} from "../middleware/auth.js";
+import { authenticateAdminToken, requireAdminOrOwner, AdminAuthRequest } from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
@@ -165,16 +161,15 @@ router.get("/:id", async (req: Request, res: Response) => {
 // POST /api/presentations - Create new presentation (Admin only)
 router.post(
   "/",
-  authenticateToken,
-  requireAdmin,
-  async (req: AuthRequest, res: Response) => {
+  authenticateAdminToken,
+  requireAdminOrOwner,
+  async (req: AdminAuthRequest, res: Response) => {
     try {
       const data = createPresentationSchema.parse(req.body);
 
       const presentation = await prisma.presentation.create({
         data: {
           ...data,
-          createdBy: req.user!.id,
         },
         include: {
           user: {
@@ -205,9 +200,9 @@ router.post(
 // PUT /api/presentations/:id - Update presentation (Admin only)
 router.put(
   "/:id",
-  authenticateToken,
-  requireAdmin,
-  async (req: AuthRequest, res: Response) => {
+  authenticateAdminToken,
+  requireAdminOrOwner,
+  async (req: AdminAuthRequest, res: Response) => {
     try {
       const { id } = req.params;
       const updates = updatePresentationSchema.parse(req.body);
@@ -253,9 +248,9 @@ router.put(
 // DELETE /api/presentations/:id - Delete presentation (Admin only)
 router.delete(
   "/:id",
-  authenticateToken,
-  requireAdmin,
-  async (req: AuthRequest, res: Response) => {
+  authenticateAdminToken,
+  requireAdminOrOwner,
+  async (req: AdminAuthRequest, res: Response) => {
     try {
       const { id } = req.params;
 
@@ -301,9 +296,9 @@ router.post("/:id/view", async (req: Request, res: Response) => {
 // GET /api/presentations/stats/overview - Get presentation statistics (Admin only)
 router.get(
   "/stats/overview",
-  authenticateToken,
-  requireAdmin,
-  async (req: AuthRequest, res: Response) => {
+  authenticateAdminToken,
+  requireAdminOrOwner,
+  async (req: AdminAuthRequest, res: Response) => {
     try {
       const [
         totalPresentations,
