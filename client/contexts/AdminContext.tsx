@@ -11,6 +11,7 @@ import {
   getCurrentUser,
   setCurrentUser,
   removeCurrentUser,
+  removeToken,
   User,
 } from "@/lib/api";
 
@@ -64,7 +65,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         console.log("Auth initialization failed, clearing user data");
         // Token might be expired or backend unavailable, clear it
         removeCurrentUser();
-        authAPI.logout();
+        removeToken();
       } finally {
         setIsLoading(false);
       }
@@ -118,14 +119,23 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     setUser(null);
-    authAPI.logout();
+    removeToken();
+    removeCurrentUser();
   };
 
   const refreshProfile = async () => {
     try {
-      const response = await authAPI.getProfile();
-      setUser(response.user);
-      setCurrentUser(response.user);
+      const resp = await adminAuthAPI.me();
+      const mapped: User = {
+        id: resp.user.id,
+        email: `${resp.user.username}@placeholder.local`,
+        username: resp.user.username,
+        userType: resp.user.role === "user" ? "END_USER" : "ADMIN",
+        createdAt: resp.user.created_at,
+        updatedAt: resp.user.updated_at,
+      } as User;
+      setUser(mapped);
+      setCurrentUser(mapped);
     } catch (error) {
       console.error("Failed to refresh profile:", error);
       logout();
