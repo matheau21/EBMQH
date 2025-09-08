@@ -9,6 +9,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import AdminUsers from "./AdminUsers";
 import ManageFilesDialog from "@/components/ManageFilesDialog";
 import FileDropzone from "@/components/FileDropzone";
+import { SPECIALTY_NAMES } from "@/components/SpecialtyFilters";
 
 function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected") => void }) {
   const [open, setOpen] = useState(false);
