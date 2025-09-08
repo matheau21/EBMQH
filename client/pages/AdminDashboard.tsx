@@ -138,7 +138,7 @@ export default function AdminDashboard() {
                     <SelectValue placeholder="Select specialty" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(specialtiesData?.specialties || []).map((s: string) => (
+                    {specialtyOptions.map((s: string) => (
                       <SelectItem key={s} value={s}>{s}</SelectItem>
                     ))}
                     <SelectItem value="__new__">+ Add new specialty…</SelectItem>
