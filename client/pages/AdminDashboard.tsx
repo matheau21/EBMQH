@@ -5,6 +5,7 @@ import { adminUsersAPI, presentationsAPI } from "@/lib/api";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import AdminUsers from "./AdminUsers";
 import ManageFilesDialog from "@/components/ManageFilesDialog";
 import FileDropzone from "@/components/FileDropzone";
@@ -37,6 +38,11 @@ export default function AdminDashboard() {
   const [newTrial, setNewTrial] = useState({ title: "", specialty: "", summary: "", authors: "", journal: "", year: "" });
   const [newPdf, setNewPdf] = useState<File | null>(null);
   const [newPpt, setNewPpt] = useState<File | null>(null);
+
+  const { data: specialtiesData } = useQuery({
+    queryKey: ["specialties"],
+    queryFn: () => presentationsAPI.getSpecialties(),
+  });
 
   const { data: trials, refetch } = useQuery({
     queryKey: ["admin-trials"],
@@ -119,7 +125,26 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <label className="text-sm">Specialty</label>
-                <Input value={newTrial.specialty} onChange={(e) => setNewTrial({ ...newTrial, specialty: e.target.value })} />
+                <Select onValueChange={(val)=>{
+                  if (val === "__new__") {
+                    setNewTrial({ ...newTrial, specialty: "" });
+                  } else {
+                    setNewTrial({ ...newTrial, specialty: val });
+                  }
+                }} value={newTrial.specialty || ""}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select specialty" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(specialtiesData?.specialties || []).map((s: string) => (
+                      <SelectItem key={s} value={s}>{s}</SelectItem>
+                    ))}
+                    <SelectItem value="__new__">+ Add new specialty…</SelectItem>
+                  </SelectContent>
+                </Select>
+                {newTrial.specialty === "" && (
+                  <Input className="mt-2" placeholder="Enter new specialty" value={newTrial.specialty} onChange={(e)=>setNewTrial({ ...newTrial, specialty: e.target.value })} />
+                )}
               </div>
               <div className="sm:col-span-2">
                 <label className="text-sm">Summary</label>
@@ -150,7 +175,7 @@ export default function AdminDashboard() {
                 {newPpt && <div className="text-xs text-gray-600 mt-1">Selected: {newPpt.name}</div>}
               </div>
             </div>
-            <Button className="bg-ucla-blue mt-3" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || !newTrial.specialty || !newTrial.summary}>
+            <Button className="bg-ucla-blue mt-3" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || !(newTrial.specialty && newTrial.specialty.trim()) || !newTrial.summary}>
               {createMutation.isPending ? "Creating..." : "Create"}
             </Button>
           </div>
