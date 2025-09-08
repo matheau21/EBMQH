@@ -44,6 +44,7 @@ export default function AdminDashboard() {
     queryKey: ["specialties"],
     queryFn: () => presentationsAPI.getSpecialties(),
   });
+  const specialtyOptions = Array.from(new Set([...(SPECIALTY_NAMES || []), ...((specialtiesData?.specialties as string[]) || [])]));
 
   const { data: trials, refetch } = useQuery({
     queryKey: ["admin-trials"],
