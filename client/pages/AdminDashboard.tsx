@@ -6,6 +6,7 @@ import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AdminUsers from "./AdminUsers";
+import ManageFilesDialog from "@/components/ManageFilesDialog";
 
 function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected") => void }) {
   const [open, setOpen] = useState(false);
