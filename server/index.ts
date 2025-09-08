@@ -4,6 +4,7 @@ import cors from "cors";
 import { handleDemo } from "./routes/demo.js";
 import { connectDatabase } from "./lib/database.js";
 import userRoutes from "./routes/users.js";
+import adminAuthRoutes from "./routes/admin-auth.js";
 import presentationRoutes from "./routes/presentations.js";
 
 export function createServer() {
@@ -24,6 +25,9 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Admin auth routes
+  app.use("/api/admin", adminAuthRoutes);
 
   // User management routes
   app.use("/api/users", userRoutes);
