@@ -13,6 +13,7 @@ import AllPresentations from "./pages/AllPresentations";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 import AdminUsers from "./pages/AdminUsers";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
