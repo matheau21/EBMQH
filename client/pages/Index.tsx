@@ -182,7 +182,7 @@ const specialties = [
 ];
 
 export default function Index() {
-  const { isAdminMode } = useAdmin();
+  const { isAdminMode, isAuthenticated, user, logout } = useAdmin();
   const { markAsChanged } = usePublish();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
@@ -199,9 +199,7 @@ export default function Index() {
         const backendAvailable = await checkBackendAvailability();
 
         if (backendAvailable) {
-          const response = await presentationsAPI.getPresentations({
-            limit: 100,
-          });
+          const response = await presentationsAPI.getPresentations({ limit: 100 });
           const apiPresentations =
             response.presentations?.map((p) => ({
               id: p.id,
@@ -216,16 +214,10 @@ export default function Index() {
               presentationFileUrl: p.presentationFileUrl,
               originalArticleUrl: p.originalArticleUrl,
             })) || [];
-
-          // Use API data if available, fallback to mock data
-          setPresentations(
-            apiPresentations.length > 0
-              ? [...apiPresentations, ...mockPresentations]
-              : mockPresentations,
-          );
+          setPresentations(apiPresentations);
         } else {
-          console.log("Backend not available, using mock data");
-          setPresentations(mockPresentations);
+          console.log("Backend not available, showing no data");
+          setPresentations([]);
         }
       } catch (error) {
         console.log("Backend not available, falling back to mock data");
@@ -237,18 +229,8 @@ export default function Index() {
     loadPresentations();
   }, []);
 
-  // Save presentations to localStorage whenever presentations change
-  useEffect(() => {
-    const customPresentations = presentations.filter(
-      (p) => !mockPresentations.find((mock) => mock.id === p.id),
-    );
-    if (customPresentations.length > 0) {
-      localStorage.setItem(
-        "ebm-presentations",
-        JSON.stringify(customPresentations),
-      );
-    }
-  }, [presentations]);
+  // No local storage persistence; data is dynamic from Supabase
+  useEffect(() => {}, [presentations]);
 
   const filteredPresentations = useMemo(() => {
     if (selectedSpecialties.length === 0) {
@@ -443,30 +425,45 @@ export default function Index() {
                 </p>
               </div>
             </div>
-            {isAdminMode && (
-              <div className="flex gap-2 sm:gap-3 flex-shrink-0">
-                <PublishButton
-                  variant="outline"
-                  size="sm"
-                  className="border-green-600 text-green-600 hover:bg-green-50"
-                />
-                <MediaLibraryButton
-                  allowedTypes={["pdf"]}
-                  mode="manage"
-                  variant="outline"
-                  size="sm"
-                  className="border-ucla-blue text-ucla-blue hover:bg-blue-50 hidden sm:flex"
-                />
-                <Button
-                  onClick={handleUploadClick}
-                  size="sm"
-                  className="bg-ucla-blue hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-2 border-ucla-gold/20 hover:border-ucla-gold/40"
-                >
-                  <Plus className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">Upload Presentation</span>
-                </Button>
-              </div>
-            )}
+            <div className="flex gap-2 sm:gap-3 flex-shrink-0 items-center">
+              {isAuthenticated && (
+                <div className="hidden sm:flex items-center text-sm text-gray-700 mr-2">
+                  Signed in as <span className="ml-1 font-medium">{user?.username}</span>
+                </div>
+              )}
+              {isAdminMode && (
+                <>
+                  <PublishButton
+                    variant="outline"
+                    size="sm"
+                    className="border-green-600 text-green-600 hover:bg-green-50"
+                  />
+                  <MediaLibraryButton
+                    allowedTypes={["pdf"]}
+                    mode="manage"
+                    variant="outline"
+                    size="sm"
+                    className="border-ucla-blue text-ucla-blue hover:bg-blue-50 hidden sm:flex"
+                  />
+                  <Button
+                    onClick={handleUploadClick}
+                    size="sm"
+                    className="bg-ucla-blue hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-2 border-ucla-gold/20 hover:border-ucla-gold/40"
+                  >
+                    <Plus className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Upload Presentation</span>
+                  </Button>
+                </>
+              )}
+              {isAuthenticated && (
+                <>
+                  <Link to="/admin/dashboard">
+                    <Button variant="outline" size="sm" className="border-ucla-blue text-ucla-blue hover:bg-blue-50">Dashboard</Button>
+                  </Link>
+                  <Button variant="outline" size="sm" onClick={logout}>Logout</Button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </header>
