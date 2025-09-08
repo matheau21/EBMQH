@@ -29,8 +29,11 @@ export function createServer() {
   // Admin auth routes
   app.use("/api/admin", adminAuthRoutes);
 
-  // User management routes
+  // User management routes (legacy)
   app.use("/api/users", userRoutes);
+
+  // Admin users management (Supabase)
+  app.use("/api/admin/users", (await import("./routes/admin-users.js")).default);
 
   // Presentation routes
   app.use("/api/presentations", presentationRoutes);
