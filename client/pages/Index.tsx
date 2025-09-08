@@ -182,13 +182,12 @@ const specialties = [
 ];
 
 export default function Index() {
-  const { isAdminMode, isAuthenticated, user, logout } = useAdmin();
+  const { isAdminMode, isAuthenticated: loggedIn, user, logout } = useAdmin();
   const { markAsChanged } = usePublish();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [presentations, setPresentations] = useState<Presentation[]>([]);
 
   // Load presentations from API with fallback to mock data
@@ -322,7 +321,7 @@ export default function Index() {
   };
 
   const handleUploadClick = () => {
-    if (isAuthenticated) {
+    if (loggedIn) {
       setShowUploadModal(true);
     } else {
       setShowAuthModal(true);
@@ -330,7 +329,6 @@ export default function Index() {
   };
 
   const handleAuthenticated = () => {
-    setIsAuthenticated(true);
     setShowUploadModal(true);
   };
 
@@ -426,7 +424,7 @@ export default function Index() {
               </div>
             </div>
             <div className="flex gap-2 sm:gap-3 flex-shrink-0 items-center">
-              {isAuthenticated && (
+              {loggedIn && (
                 <div className="hidden sm:flex items-center text-sm text-gray-700 mr-2">
                   Signed in as <span className="ml-1 font-medium">{user?.username}</span>
                 </div>
@@ -455,7 +453,7 @@ export default function Index() {
                   </Button>
                 </>
               )}
-              {isAuthenticated && (
+              {loggedIn && (
                 <>
                   <Link to="/admin/dashboard">
                     <Button variant="outline" size="sm" className="border-ucla-blue text-ucla-blue hover:bg-blue-50">Dashboard</Button>
