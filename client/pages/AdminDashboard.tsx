@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AdminUsers from "./AdminUsers";
 import ManageFilesDialog from "@/components/ManageFilesDialog";
+import FileDropzone from "@/components/FileDropzone";
 
 function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected") => void }) {
   const [open, setOpen] = useState(false);
@@ -34,6 +35,8 @@ export default function AdminDashboard() {
   const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
   const [newTrial, setNewTrial] = useState({ title: "", specialty: "", summary: "", authors: "", journal: "", year: "" });
+  const [newPdf, setNewPdf] = useState<File | null>(null);
+  const [newPpt, setNewPpt] = useState<File | null>(null);
 
   const { data: trials, refetch } = useQuery({
     queryKey: ["admin-trials"],
@@ -48,25 +51,35 @@ export default function AdminDashboard() {
   });
 
   const createMutation = useMutation({
-    mutationFn: () => presentationsAPI.createPresentation({
-      id: "" as any,
-      title: newTrial.title,
-      specialty: newTrial.specialty,
-      summary: newTrial.summary,
-      authors: newTrial.authors || undefined,
-      journal: newTrial.journal || undefined,
-      year: newTrial.year || undefined,
-      thumbnail: undefined,
-      viewerCount: 0,
-      originalArticleUrl: undefined,
-      createdAt: "" as any,
-      updatedAt: "" as any,
-      createdBy: undefined,
-      user: undefined,
-      presentationFileUrl: undefined,
-    } as any),
+    mutationFn: async () => {
+      const resp = await presentationsAPI.createPresentation({
+        id: "" as any,
+        title: newTrial.title,
+        specialty: newTrial.specialty,
+        summary: newTrial.summary,
+        authors: newTrial.authors || undefined,
+        journal: newTrial.journal || undefined,
+        year: newTrial.year || undefined,
+        thumbnail: undefined,
+        viewerCount: 0,
+        originalArticleUrl: undefined,
+        createdAt: "" as any,
+        updatedAt: "" as any,
+        createdBy: undefined,
+        user: undefined,
+        presentationFileUrl: undefined,
+      } as any);
+      const created = (resp as any).presentation || resp;
+      if (created?.id) {
+        if (newPdf) await presentationsAPI.uploadFile(created.id, newPdf);
+        if (newPpt) await presentationsAPI.uploadFile(created.id, newPpt);
+      }
+      return created;
+    },
     onSuccess: () => {
       setNewTrial({ title: "", specialty: "", summary: "", authors: "", journal: "", year: "" });
+      setNewPdf(null);
+      setNewPpt(null);
       qc.invalidateQueries({ queryKey: ["admin-trials"] });
       qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
     },
@@ -125,7 +138,19 @@ export default function AdminDashboard() {
                 <Input value={newTrial.year} onChange={(e) => setNewTrial({ ...newTrial, year: e.target.value })} />
               </div>
             </div>
-            <Button className="bg-ucla-blue" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || !newTrial.specialty || !newTrial.summary}>
+            <div className="grid sm:grid-cols-2 gap-3 mt-2">
+              <div>
+                <label className="text-sm">Attach PDF (optional)</label>
+                <FileDropzone accept={["pdf"]} onFile={(f)=>setNewPdf(f)} />
+                {newPdf && <div className="text-xs text-gray-600 mt-1">Selected: {newPdf.name}</div>}
+              </div>
+              <div>
+                <label className="text-sm">Attach PPT/PPTX (optional)</label>
+                <FileDropzone accept={["ppt","pptx"]} onFile={(f)=>setNewPpt(f)} />
+                {newPpt && <div className="text-xs text-gray-600 mt-1">Selected: {newPpt.name}</div>}
+              </div>
+            </div>
+            <Button className="bg-ucla-blue mt-3" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || !newTrial.specialty || !newTrial.summary}>
               {createMutation.isPending ? "Creating..." : "Create"}
             </Button>
           </div>
