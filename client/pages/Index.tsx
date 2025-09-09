@@ -18,8 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Plus, Users, Award } from "lucide-react";
 import { EBMLogo } from "@/components/EBMLogo";
-import { MediaLibraryButton } from "@/components/MediaLibraryButton";
-import { PublishButton } from "@/components/PublishButton";
+
 import { BackendStatusBanner } from "@/components/BackendStatusBanner";
 import { addPresentationFilesToMediaLibrary } from "@/lib/mediaLibraryUtils";
 import { Link } from "react-router-dom";
@@ -331,6 +330,13 @@ export default function Index() {
     setShowUploadModal(true);
   };
 
+  // Listen for global upload modal open events from floating buttons
+  useEffect(() => {
+    const handler = () => setShowUploadModal(true);
+    window.addEventListener("open-upload-modal", handler as any);
+    return () => window.removeEventListener("open-upload-modal", handler as any);
+  }, []);
+
   const handlePresentationSubmit = async (data: PresentationData) => {
     try {
       // Create file URLs for uploaded files
@@ -428,7 +434,7 @@ export default function Index() {
                   Signed in as <span className="ml-1 font-medium">{user?.username}</span>
                 </div>
               )}
-              {isAdminMode && (
+              {false && isAdminMode && (
                 <>
                   <PublishButton
                     variant="outline"
@@ -450,14 +456,6 @@ export default function Index() {
                     <Plus className="h-4 w-4 sm:mr-2" />
                     <span className="hidden sm:inline">Upload Presentation</span>
                   </Button>
-                </>
-              )}
-              {loggedIn && (
-                <>
-                  <Link to="/admin/dashboard">
-                    <Button variant="outline" size="sm" className="border-ucla-blue text-ucla-blue hover:bg-blue-50">Dashboard</Button>
-                  </Link>
-                  <Button variant="outline" size="sm" onClick={logout}>Logout</Button>
                 </>
               )}
             </div>
