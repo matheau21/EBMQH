@@ -106,6 +106,18 @@ router.get("/admin", authenticateAdminToken, async (req: AdminAuthRequest, res: 
   }
 });
 
+// GET /api/presentations/admin/:id - get single (admin/owner)
+router.get("/admin/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabaseAdmin.from("presentations").select("*").eq("id", id).single();
+    if (error || !data) return res.status(404).json({ error: "Not found" });
+    return res.json({ presentation: data });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // GET /api/presentations/specialties
 router.get("/specialties", async (_req: Request, res: Response) => {
   try {
@@ -322,6 +334,42 @@ router.post("/:id/upload", authenticateAdminToken, async (req: AdminAuthRequest,
     return res.json({ message: "File uploaded", path });
   } catch (err) {
     if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// DELETE /api/presentations/:id/file - remove pdf or ppt
+router.delete("/:id/file", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { type } = (req.query as any) as { type?: string };
+    if (!(type === "pdf" || type === "ppt")) {
+      return res.status(400).json({ error: "Invalid type" });
+    }
+
+    const { data: pres, error: fe } = await supabaseAdmin
+      .from("presentations")
+      .select("id, created_by, pdf_path, ppt_path")
+      .eq("id", id)
+      .single();
+    if (fe || !pres) return res.status(404).json({ error: "Presentation not found" });
+
+    if (req.adminUser!.role === "user" && pres.created_by !== req.adminUser!.id) {
+      return res.status(403).json({ error: "Not allowed" });
+    }
+
+    const path = type === "pdf" ? pres.pdf_path : pres.ppt_path;
+    if (path) {
+      await supabaseAdmin.storage.from("presentations").remove([path]);
+    }
+
+    const patch: any = {};
+    if (type === "pdf") patch.pdf_path = null; else patch.ppt_path = null;
+    const { error: upDb } = await supabaseAdmin.from("presentations").update(patch).eq("id", id);
+    if (upDb) return res.status(500).json({ error: upDb.message });
+
+    return res.json({ message: "File removed" });
+  } catch (err) {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
