@@ -3,19 +3,7 @@ import { supabaseAdmin } from "./supabase.js";
 
 export async function ensureInitialOwner() {
   try {
-    // Check if any users exist
-    const { data: countData, error: countErr } = await supabaseAdmin
-      .from("app_users")
-      .select("id", { count: "exact", head: true });
-
-    if (countErr) {
-      console.warn("ensureInitialOwner: count failed", countErr.message);
-      return;
-    }
-
-    const total = (countData as any)?.length ?? (countErr ? 0 : 0);
-
-    // Also check for specific seeded owner by username
+    // Check for specific seeded owner by username
     const { data: existingOwner, error: ownerErr } = await supabaseAdmin
       .from("app_users")
       .select("id, username, role")
@@ -26,7 +14,7 @@ export async function ensureInitialOwner() {
       console.warn("ensureInitialOwner: fetch owner failed", ownerErr.message);
     }
 
-    if ((typeof total === "number" && total > 0) || existingOwner) {
+    if (existingOwner) {
       return; // Already seeded
     }
 
