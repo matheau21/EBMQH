@@ -338,6 +338,10 @@ export const presentationsAPI = {
     return apiRequest<{ presentation: Presentation }>(`/presentations/${id}`);
   },
 
+  async adminGet(id: string): Promise<{ presentation: any }> {
+    return apiRequest(`/presentations/admin/${id}`);
+  },
+
   async createPresentation(
     data: Omit<
       Presentation,
@@ -396,6 +400,11 @@ export const presentationsAPI = {
       method: "POST",
       body: JSON.stringify({ fileType: type, filename: file.name, contentBase64: base64 }),
     });
+  },
+
+  async deleteFile(id: string, type: "pdf"|"ppt"): Promise<{ message: string }> {
+    const url = `/presentations/${id}/file?type=${encodeURIComponent(type)}`;
+    return apiRequest(url, { method: "DELETE" });
   },
 
   async incrementViewCount(id: string): Promise<{ viewerCount: number }> {
