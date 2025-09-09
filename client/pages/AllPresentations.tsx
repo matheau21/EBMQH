@@ -351,13 +351,6 @@ export default function AllPresentations() {
                 </p>
               </div>
             </div>
-            {isAdminMode && (
-              <PublishButton
-                variant="outline"
-                size="sm"
-                className="border-green-600 text-green-600 hover:bg-green-50 flex-shrink-0"
-              />
-            )}
           </div>
         </div>
       </header>
