@@ -17,8 +17,11 @@ export function createServer() {
   app.use(express.json({ limit: "60mb" }));
   app.use(express.urlencoded({ extended: true, limit: "60mb" }));
 
-  // Connect to database
+  // Connect to database (legacy Prisma used for other models; Supabase used elsewhere)
   connectDatabase();
+
+  // Ensure initial admin user exists in Supabase for local/dev usage
+  ensureInitialOwner();
 
   // API routes
   app.get("/api/ping", (_req, res) => {
