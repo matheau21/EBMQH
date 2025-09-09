@@ -10,6 +10,12 @@ if (!SUPABASE_SERVICE_ROLE) {
   throw new Error("SUPABASE_SERVICE_ROLE is not set");
 }
 
+// Safe debug: confirm envs are present (no values printed)
+try {
+  const len = SUPABASE_SERVICE_ROLE?.length || 0;
+  console.log(`Supabase env OK (url set, service role key length: ${len})`);
+} catch {}
+
 export const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE, {
   auth: { persistSession: false },
 });
