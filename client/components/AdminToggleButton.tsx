@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Settings, UserCheck, LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, Plus, LayoutDashboard } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { LoginModal } from "./LoginModal";
+import { useNavigate } from "react-router-dom";
 
 export function AdminToggleButton() {
-  const { isAdminMode, isAuthenticated, user, logout } = useAdmin();
+  const { isAuthenticated, logout } = useAdmin();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     if (isAuthenticated) {
@@ -18,7 +20,25 @@ export function AdminToggleButton() {
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+        {isAuthenticated && (
+          <>
+            <Button
+              variant="outline"
+              className="bg-white text-ucla-blue border-ucla-blue hover:bg-blue-50 shadow-lg"
+              onClick={() => window.dispatchEvent(new Event("open-upload-modal"))}
+            >
+              <Plus className="h-4 w-4 mr-2" /> Upload
+            </Button>
+            <Button
+              variant="outline"
+              className="bg-white text-ucla-blue border-ucla-blue hover:bg-blue-50 shadow-lg"
+              onClick={() => navigate("/admin/dashboard")}
+            >
+              <LayoutDashboard className="h-4 w-4 mr-2" /> Dashboard
+            </Button>
+          </>
+        )}
         <Button
           onClick={handleClick}
           variant={isAuthenticated ? "default" : "outline"}
@@ -35,12 +55,7 @@ export function AdminToggleButton() {
           {isAuthenticated ? (
             <>
               <LogOut className="h-5 w-5 mr-2" />
-              <span className="hidden sm:inline">
-                {isAdminMode ? "Admin" : user?.username || "User"}
-              </span>
-              <span className="sm:hidden">
-                {isAdminMode ? "Admin" : "User"}
-              </span>
+              <span>Logout</span>
             </>
           ) : (
             <>
