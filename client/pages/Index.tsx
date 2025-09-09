@@ -436,26 +436,6 @@ export default function Index() {
               )}
               {false && isAdminMode && (
                 <>
-                  <PublishButton
-                    variant="outline"
-                    size="sm"
-                    className="border-green-600 text-green-600 hover:bg-green-50"
-                  />
-                  <MediaLibraryButton
-                    allowedTypes={["pdf"]}
-                    mode="manage"
-                    variant="outline"
-                    size="sm"
-                    className="border-ucla-blue text-ucla-blue hover:bg-blue-50 hidden sm:flex"
-                  />
-                  <Button
-                    onClick={handleUploadClick}
-                    size="sm"
-                    className="bg-ucla-blue hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-2 border-ucla-gold/20 hover:border-ucla-gold/40"
-                  >
-                    <Plus className="h-4 w-4 sm:mr-2" />
-                    <span className="hidden sm:inline">Upload Presentation</span>
-                  </Button>
                 </>
               )}
             </div>
