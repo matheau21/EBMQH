@@ -11,8 +11,10 @@ import ManageFilesDialog from "@/components/ManageFilesDialog";
 import FileDropzone from "@/components/FileDropzone";
 import { SPECIALTY_NAMES } from "@/components/SpecialtyFilters";
 
+import { useNavigate } from "react-router-dom";
 function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected") => void }) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between border rounded px-3 py-2">
       <div>
@@ -21,6 +23,7 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
       </div>
       <div className="flex gap-2">
         <Button variant="outline" onClick={() => setOpen(true)}>Manage Files</Button>
+        <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
         {p.status !== "approved" && (
           <Button variant="outline" onClick={() => onApprove("approved")}>Approve</Button>
         )}
