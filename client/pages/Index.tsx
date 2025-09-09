@@ -266,8 +266,7 @@ export default function Index() {
   };
 
   const handleEditPresentation = (id: string) => {
-    console.log("Edit presentation:", id);
-    // Open edit modal or navigate to edit page
+    window.location.href = `/admin/trials/${id}`;
   };
 
   const handleDeletePresentation = (id: string) => {
