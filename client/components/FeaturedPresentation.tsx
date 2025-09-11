@@ -41,7 +41,7 @@ export function FeaturedPresentation() {
     if (!api || paused || items.length <= 1) return;
     const id = setInterval(() => {
       api.scrollNext();
-    }, 5000);
+    }, 10000);
     return () => clearInterval(id);
   }, [api, paused, items.length]);
 
