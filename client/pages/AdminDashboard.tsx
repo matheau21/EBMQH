@@ -81,14 +81,28 @@ export default function AdminDashboard() {
 
   const { data: trials, refetch } = useQuery({
     queryKey: ["admin-trials"],
-    queryFn: () => presentationsAPI.adminList({ limit: 50 }),
+    queryFn: async () => {
+      try {
+        return await presentationsAPI.adminList({ limit: 50 });
+      } catch (e) {
+        return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
+      }
+    },
     enabled: !!backendAvailable && isAuthenticated && !!getToken(),
+    retry: 0,
   });
 
   const { data: pending } = useQuery({
     queryKey: ["admin-trials-pending"],
-    queryFn: () => presentationsAPI.adminList({ status: "pending", limit: 50 }),
+    queryFn: async () => {
+      try {
+        return await presentationsAPI.adminList({ status: "pending", limit: 50 });
+      } catch (e) {
+        return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
+      }
+    },
     enabled: !!backendAvailable && isAuthenticated && !!getToken(),
+    retry: 0,
   });
 
   const filteredTrials = (trials?.presentations || []).filter((p: any) => {
