@@ -63,6 +63,7 @@ export default function AdminEditTrial() {
         <h1 className="text-xl font-semibold">Edit Trial</h1>
         <div className="space-x-2">
           <Button variant="outline" onClick={() => setOpenFiles(true)}>Manage Files</Button>
+          <Button variant="outline" onClick={() => navigate("/admin/dashboard?tab=trials")}>Cancel</Button>
           <Button onClick={async ()=>{
             try {
               if (!id) return;
@@ -77,7 +78,7 @@ export default function AdminEditTrial() {
                 thumbUrl: form.thumbUrl || undefined,
                 status: form.status,
               } as any);
-              navigate("/admin/dashboard");
+              navigate("/admin/dashboard?tab=trials");
             } catch (e:any) {
               setError(e?.message || "Failed to save");
             }
