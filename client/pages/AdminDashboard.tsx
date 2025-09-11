@@ -11,10 +11,11 @@ import ManageFilesDialog from "@/components/ManageFilesDialog";
 import FileDropzone from "@/components/FileDropzone";
 import { SPECIALTY_NAMES } from "@/components/SpecialtyFilters";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected"|"pending") => void }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const qc = useQueryClient();
   const status: "approved"|"rejected"|"pending" = (p.status || "approved");
   const containerCls = `flex items-center justify-between border rounded px-3 py-2 ${
     status === "rejected"
@@ -40,7 +41,9 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
           <span className="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-800 border border-yellow-200">Pending</span>
         )}
         <Button variant="outline" onClick={() => setOpen(true)}>Manage Files</Button>
-        <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
+        {status !== "rejected" && (
+          <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
+        )}
         {status === "pending" && (
           <>
             <Button variant="outline" onClick={() => onApprove("approved")}>Approve</Button>
@@ -48,8 +51,22 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
           </>
         )}
         {status === "rejected" && (
-          <Button variant="outline" onClick={() => onApprove("pending")}>Re-review</Button>
+          <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Re-review</Button>
         )}
+        {status !== "rejected" && (
+          <Button variant="outline" onClick={async ()=>{
+            if (!window.confirm("Archive this submission? It will no longer be displayed.")) return;
+            await presentationsAPI.updateStatus(p.id, "rejected");
+            qc.invalidateQueries({ queryKey: ["admin-trials"] });
+            qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
+          }}>Archive</Button>
+        )}
+        <Button variant="destructive" onClick={async ()=>{
+          if (!window.confirm("Delete this submission permanently? This cannot be undone.")) return;
+          await presentationsAPI.deletePresentation(p.id);
+          qc.invalidateQueries({ queryKey: ["admin-trials"] });
+          qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
+        }}>Delete</Button>
       </div>
       <ManageFilesDialog presentationId={p.id} open={open} onOpenChange={setOpen} />
     </div>
@@ -59,6 +76,9 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
 export default function AdminDashboard() {
   const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
+  const location = useLocation();
+  const initialTab = new URLSearchParams(location.search).get("tab") || "users";
+  const [tab, setTab] = useState(initialTab);
   const [newTrial, setNewTrial] = useState({ title: "", specialty: "", summary: "", authors: "", journal: "", year: "" });
   const [newPdf, setNewPdf] = useState<File | null>(null);
   const [newPpt, setNewPpt] = useState<File | null>(null);
@@ -78,6 +98,12 @@ export default function AdminDashboard() {
 
   const [filterStatus, setFilterStatus] = useState<"all"|"approved"|"pending"|"rejected">("all");
   const [filterSpecialty, setFilterSpecialty] = useState<string>("all");
+
+  // keep tab in sync with URL changes
+  useEffect(()=>{
+    const t = new URLSearchParams(location.search).get("tab") || "users";
+    setTab(t);
+  }, [location.search]);
 
   const { data: trials, refetch } = useQuery({
     queryKey: ["admin-trials"],
@@ -160,7 +186,7 @@ export default function AdminDashboard() {
   return (
     <div className="max-w-6xl mx-auto p-6">
       <h1 className="text-2xl font-semibold text-ucla-blue mb-4">Admin Dashboard</h1>
-      <Tabs defaultValue="users">
+      <Tabs value={tab} onValueChange={setTab}>
         <TabsList>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="trials">Trials</TabsTrigger>
