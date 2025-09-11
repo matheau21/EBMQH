@@ -90,7 +90,7 @@ const BACKEND_CHECK_INTERVAL = 30000; // 30 seconds
 const checkBackendAvailability = async (): Promise<boolean> => {
   const now = Date.now();
 
-  // Re-check if enough time has passed
+  // Use cached result within interval
   if (
     isBackendAvailable !== null &&
     now - lastBackendCheck < BACKEND_CHECK_INTERVAL
@@ -100,20 +100,25 @@ const checkBackendAvailability = async (): Promise<boolean> => {
 
   lastBackendCheck = now;
 
+  // Timeout after 5 seconds to avoid hanging fetches
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+
   try {
-    console.log("Checking backend availability at:", `${API_BASE_URL}/health`);
     const response = await fetch(`${API_BASE_URL}/health`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
+      cache: "no-store",
+      signal: controller.signal,
     });
-    isBackendAvailable = response.ok;
-    console.log("Backend availability check result:", isBackendAvailable);
+    isBackendAvailable = !!response && response.ok === true;
     return isBackendAvailable;
-  } catch (error) {
-    console.log("Backend health check failed:", error);
-    console.log("Backend not available, falling back to client-side data");
+  } catch (_err) {
+    // Swallow network errors; treat backend as unavailable
     isBackendAvailable = false;
     return false;
+  } finally {
+    clearTimeout(timeout);
   }
 };
 
