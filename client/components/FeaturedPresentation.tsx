@@ -90,7 +90,7 @@ export function FeaturedPresentation() {
           )}
         </div>
 
-        <Carousel setApi={setApi} className="max-w-3xl mx-auto" opts={{ loop: true }}>
+        <Carousel setApi={setApi} className="max-w-3xl mx-auto" opts={{ loop: false }}>
           <CarouselContent>
             {items.length === 0 ? (
               <CarouselItem>
@@ -122,8 +122,26 @@ export function FeaturedPresentation() {
               ))
             )}
           </CarouselContent>
-          <CarouselPrevious className="-left-4 sm:-left-8" onClick={() => { setPaused(true); api?.scrollPrev(); }} />
-          <CarouselNext className="-right-4 sm:-right-8" onClick={() => { setPaused(true); api?.scrollNext(); }} />
+          <CarouselPrevious
+            className="-left-4 sm:-left-8"
+            onClick={() => {
+              setPaused(true);
+              if (api) {
+                if (api.canScrollPrev()) api.scrollPrev();
+                else api.scrollTo(Math.max(items.length - 1, 0), true);
+              }
+            }}
+          />
+          <CarouselNext
+            className="-right-4 sm:-right-8"
+            onClick={() => {
+              setPaused(true);
+              if (api) {
+                if (api.canScrollNext()) api.scrollNext();
+                else api.scrollTo(0, true);
+              }
+            }}
+          />
         </Carousel>
       </div>
 
