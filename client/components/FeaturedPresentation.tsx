@@ -140,20 +140,26 @@ export function FeaturedPresentation() {
           <CarouselPrevious
             className="-left-4 sm:-left-8"
             onClick={() => {
-              setPaused(true);
-              if (api) {
-                if (api.canScrollPrev()) api.scrollPrev();
-                else api.scrollTo(Math.max(items.length - 1, 0), true);
+              if (!api) return;
+              if (api.canScrollPrev()) {
+                setPaused(true);
+                api.scrollPrev();
+              } else {
+                // at first, fast-forward to last
+                speedScrollTo(Math.max(items.length - 1, 0), "forward");
               }
             }}
           />
           <CarouselNext
             className="-right-4 sm:-right-8"
             onClick={() => {
-              setPaused(true);
-              if (api) {
-                if (api.canScrollNext()) api.scrollNext();
-                else api.scrollTo(0, true);
+              if (!api) return;
+              if (api.canScrollNext()) {
+                setPaused(true);
+                api.scrollNext();
+              } else {
+                // at last, rewind to first
+                speedScrollTo(0, "backward");
               }
             }}
           />
