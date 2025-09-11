@@ -459,7 +459,7 @@ export const presentationsAPI = {
     }
   },
 
-  async updateStatus(id: string, status: "pending"|"approved"|"rejected"): Promise<{ message: string; presentation: any }> {
+  async updateStatus(id: string, status: "pending"|"approved"|"rejected"|"archived"): Promise<{ message: string; presentation: any }> {
     return apiRequest(`/presentations/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
   },
 };
