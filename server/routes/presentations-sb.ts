@@ -25,7 +25,7 @@ const updateSchema = z.object({
   year: z.string().optional(),
   originalArticleUrl: z.string().url().optional(),
   thumbUrl: z.string().url().optional(),
-  status: z.enum(["pending", "approved", "rejected"]).optional(),
+  status: z.enum(["pending", "approved", "rejected", "archived"]).optional(),
 });
 
 // GET /api/presentations (public: approved only)
@@ -285,7 +285,7 @@ router.patch("/:id/status", authenticateAdminToken, async (req: AdminAuthRequest
       return res.status(403).json({ error: "Admin access required" });
     }
     const { id } = req.params;
-    const { status } = z.object({ status: z.enum(["pending","approved","rejected"]) }).parse(req.body);
+    const { status } = z.object({ status: z.enum(["pending","approved","rejected","archived"]) }).parse(req.body);
     const { data, error } = await supabaseAdmin
       .from("presentations")
       .update({ status })
