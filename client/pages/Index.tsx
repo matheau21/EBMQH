@@ -430,8 +430,13 @@ export default function Index() {
             </div>
             <div className="flex gap-2 sm:gap-3 flex-shrink-0 items-center">
               {loggedIn && (
-                <div className="hidden sm:flex items-center text-sm text-gray-700 mr-2">
-                  Signed in as <span className="ml-1 font-medium">{user?.username}</span>
+                <div className="hidden sm:flex flex-col items-end text-sm text-gray-700 mr-2">
+                  <div>
+                    Signed in as <span className="ml-1 font-medium">{user?.username}</span>
+                  </div>
+                  <div className="text-xs text-gray-500 -mt-0.5">
+                    {(user?.role ?? (isAdminMode ? "admin" : "user"))}
+                  </div>
                 </div>
               )}
               {false && isAdminMode && (

@@ -9,6 +9,7 @@ export interface User {
   firstName?: string;
   lastName?: string;
   userType: "ADMIN" | "END_USER";
+  role?: "owner" | "admin" | "user";
   createdAt: string;
   updatedAt: string;
 }

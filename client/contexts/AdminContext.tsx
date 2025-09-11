@@ -51,6 +51,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
               firstName: undefined,
               lastName: undefined,
               userType: response.user.role === "user" ? "END_USER" : "ADMIN",
+              role: response.user.role,
               createdAt: response.user.created_at,
               updatedAt: response.user.updated_at,
             };
@@ -89,6 +90,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
           firstName: undefined,
           lastName: undefined,
           userType: resp.user.role === "user" ? "END_USER" : "ADMIN",
+          role: resp.user.role,
           createdAt: resp.user.created_at,
           updatedAt: resp.user.updated_at,
         };
@@ -101,6 +103,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
             email: "hoang@placeholder.local",
             username: "hoang",
             userType: "ADMIN",
+            role: "owner",
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           } as User;
@@ -131,6 +134,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         email: `${resp.user.username}@placeholder.local`,
         username: resp.user.username,
         userType: resp.user.role === "user" ? "END_USER" : "ADMIN",
+        role: resp.user.role,
         createdAt: resp.user.created_at,
         updatedAt: resp.user.updated_at,
       } as User;

@@ -119,11 +119,6 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
             </div>
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <p className="text-sm text-blue-800 font-medium mb-2">Demo Credentials:</p>
-            <p className="text-xs text-blue-600">Username: hoang</p>
-            <p className="text-xs text-blue-600">Password: Ww123123</p>
-          </div>
 
           <div className="flex justify-end gap-3 pt-4">
             <Button
