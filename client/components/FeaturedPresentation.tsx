@@ -40,7 +40,11 @@ export function FeaturedPresentation() {
   useEffect(() => {
     if (!api || paused || items.length <= 1) return;
     const id = setInterval(() => {
-      api.scrollNext();
+      if (api.canScrollNext()) {
+        api.scrollNext();
+      } else {
+        api.scrollTo(0, true);
+      }
     }, 10000);
     return () => clearInterval(id);
   }, [api, paused, items.length]);
