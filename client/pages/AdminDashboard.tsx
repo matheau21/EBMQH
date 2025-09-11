@@ -16,7 +16,7 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const status: "approved"|"rejected"|"pending" = (p.status || "approved");
+  const status: "approved"|"rejected"|"pending"|"archived" = (p.status || "approved");
   const containerCls = `flex items-center justify-between border rounded px-3 py-2 ${
     status === "rejected"
       ? "bg-gray-50 border-gray-200"
@@ -40,6 +40,9 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
         {status === "pending" && (
           <span className="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-800 border border-yellow-200">Pending</span>
         )}
+        {status === "archived" && (
+          <span className="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700 border border-gray-300">Archived</span>
+        )}
         <Button variant="outline" onClick={() => setOpen(true)}>Manage Files</Button>
         {status !== "rejected" && (
           <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
@@ -53,10 +56,10 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
         {status === "rejected" && (
           <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Re-review</Button>
         )}
-        {status !== "rejected" && (
+        {status !== "archived" && (
           <Button variant="outline" onClick={async ()=>{
             if (!window.confirm("Archive this submission? It will no longer be displayed.")) return;
-            await presentationsAPI.updateStatus(p.id, "rejected");
+            await presentationsAPI.updateStatus(p.id, "archived");
             qc.invalidateQueries({ queryKey: ["admin-trials"] });
             qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
           }}>Archive</Button>
@@ -96,7 +99,7 @@ export default function AdminDashboard() {
   });
   const specialtyOptions = Array.from(new Set([...(SPECIALTY_NAMES || []), ...((specialtiesData?.specialties as string[]) || [])]));
 
-  const [filterStatus, setFilterStatus] = useState<"all"|"approved"|"pending"|"rejected">("all");
+  const [filterStatus, setFilterStatus] = useState<"all"|"approved"|"pending"|"rejected"|"archived">("all");
   const [filterSpecialty, setFilterSpecialty] = useState<string>("all");
 
   // keep tab in sync with URL changes
@@ -274,6 +277,7 @@ export default function AdminDashboard() {
                     <SelectItem value="approved">Approved</SelectItem>
                     <SelectItem value="pending">Pending</SelectItem>
                     <SelectItem value="rejected">Rejected</SelectItem>
+                    <SelectItem value="archived">Archived</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
