@@ -78,12 +78,6 @@ export default function AdminDashboard() {
 
   const [filterStatus, setFilterStatus] = useState<"all"|"approved"|"pending"|"rejected">("all");
   const [filterSpecialty, setFilterSpecialty] = useState<string>("all");
-  const filteredTrials = (trials?.presentations || []).filter((p: any) => {
-    const status = p.status || "approved";
-    const statusOk = filterStatus === "all" ? true : status === filterStatus;
-    const specOk = filterSpecialty === "all" ? true : p.specialty === filterSpecialty;
-    return statusOk && specOk;
-  });
 
   const { data: trials, refetch } = useQuery({
     queryKey: ["admin-trials"],
