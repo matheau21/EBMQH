@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAdmin } from "@/contexts/AdminContext";
-import { presentationsAPI } from "@/lib/api";
+import { presentationsAPI, checkBackendAvailability } from "@/lib/api";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
@@ -31,6 +31,11 @@ export default function AdminEditTrial() {
     const load = async () => {
       try {
         if (!id) return;
+        const available = await checkBackendAvailability();
+        if (!available) {
+          setError("Backend not available");
+          return;
+        }
         const res = await presentationsAPI.adminGet(id);
         const p = res.presentation;
         setForm({
