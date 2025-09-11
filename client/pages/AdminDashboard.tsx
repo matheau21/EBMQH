@@ -12,23 +12,43 @@ import FileDropzone from "@/components/FileDropzone";
 import { SPECIALTY_NAMES } from "@/components/SpecialtyFilters";
 
 import { useNavigate } from "react-router-dom";
-function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected") => void }) {
+function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected"|"pending") => void }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const status: "approved"|"rejected"|"pending" = (p.status || "approved");
+  const containerCls = `flex items-center justify-between border rounded px-3 py-2 ${
+    status === "rejected"
+      ? "bg-gray-50 border-gray-200"
+      : status === "pending"
+      ? "bg-yellow-50 border-yellow-200"
+      : "bg-white"
+  }`;
   return (
-    <div className="flex items-center justify-between border rounded px-3 py-2">
+    <div className={containerCls}>
       <div>
-        <div className="font-medium">{p.title}</div>
-        <div className="text-xs text-gray-500">{p.specialty} • {p.status || "approved"}</div>
+        <div className={`font-medium ${status === "rejected" ? "text-gray-500" : ""}`}>{p.title}</div>
+        <div className={`text-xs ${status === "rejected" ? "text-gray-400" : "text-gray-500"}`}>{p.specialty} • {status}</div>
       </div>
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
+        {status === "approved" && (
+          <span className="text-xs px-2 py-1 rounded bg-green-100 text-green-700 border border-green-200">Live</span>
+        )}
+        {status === "rejected" && (
+          <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600 border border-gray-200">Rejected</span>
+        )}
+        {status === "pending" && (
+          <span className="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-800 border border-yellow-200">Pending</span>
+        )}
         <Button variant="outline" onClick={() => setOpen(true)}>Manage Files</Button>
         <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
-        {p.status !== "approved" && (
-          <Button variant="outline" onClick={() => onApprove("approved")}>Approve</Button>
+        {status === "pending" && (
+          <>
+            <Button variant="outline" onClick={() => onApprove("approved")}>Approve</Button>
+            <Button variant="outline" onClick={() => onApprove("rejected")}>Reject</Button>
+          </>
         )}
-        {p.status !== "rejected" && (
-          <Button variant="outline" onClick={() => onApprove("rejected")}>Reject</Button>
+        {status === "rejected" && (
+          <Button variant="outline" onClick={() => onApprove("pending")}>Re-review</Button>
         )}
       </div>
       <ManageFilesDialog presentationId={p.id} open={open} onOpenChange={setOpen} />
@@ -56,9 +76,18 @@ export default function AdminDashboard() {
   });
   const specialtyOptions = Array.from(new Set([...(SPECIALTY_NAMES || []), ...((specialtiesData?.specialties as string[]) || [])]));
 
+  const [filterStatus, setFilterStatus] = useState<"all"|"approved"|"pending"|"rejected">("all");
+  const [filterSpecialty, setFilterSpecialty] = useState<string>("all");
+  const filteredTrials = (trials?.presentations || []).filter((p: any) => {
+    const status = p.status || "approved";
+    const statusOk = filterStatus === "all" ? true : status === filterStatus;
+    const specOk = filterSpecialty === "all" ? true : p.specialty === filterSpecialty;
+    return statusOk && specOk;
+  });
+
   const { data: trials, refetch } = useQuery({
     queryKey: ["admin-trials"],
-    queryFn: () => presentationsAPI.adminList({ limit: 20 }),
+    queryFn: () => presentationsAPI.adminList({ limit: 50 }),
     enabled: !!backendAvailable && isAuthenticated && !!getToken(),
   });
 
@@ -104,7 +133,7 @@ export default function AdminDashboard() {
   });
 
   const approveMutation = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: "approved" | "rejected" }) => presentationsAPI.updateStatus(id, status),
+    mutationFn: ({ id, status }: { id: string; status: "approved" | "rejected" | "pending" }) => presentationsAPI.updateStatus(id, status as any),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-trials"] });
       qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
@@ -120,7 +149,7 @@ export default function AdminDashboard() {
         <TabsList>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="trials">Trials</TabsTrigger>
-          <TabsTrigger value="approvals">Approvals</TabsTrigger>
+          <TabsTrigger value="approvals">Approvals{pending?.pagination?.total ? ` (${pending.pagination.total})` : pending?.presentations?.length ? ` (${pending.presentations.length})` : ""}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="users" className="mt-4">
@@ -193,9 +222,35 @@ export default function AdminDashboard() {
           </div>
 
           <div className="border rounded p-4">
-            <h2 className="font-medium mb-2">All Trials</h2>
+            <h2 className="font-medium mb-3">All Trials</h2>
+            <div className="flex flex-wrap gap-3 mb-3">
+              <div className="w-44">
+                <label className="text-xs text-gray-500">Status</label>
+                <Select value={(filterStatus as any)} onValueChange={(v)=>setFilterStatus(v as any)}>
+                  <SelectTrigger><SelectValue placeholder="All statuses" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="approved">Approved</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="rejected">Rejected</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-56">
+                <label className="text-xs text-gray-500">Specialty</label>
+                <Select value={filterSpecialty} onValueChange={(v)=>setFilterSpecialty(v)}>
+                  <SelectTrigger><SelectValue placeholder="All specialties" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    {specialtyOptions.map((s: string) => (
+                      <SelectItem key={s} value={s}>{s}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
             <div className="space-y-2">
-              {trials?.presentations?.map((p: any) => (
+              {filteredTrials?.map((p: any) => (
                 <TrialRow key={p.id} p={p} onApprove={(status) => approveMutation.mutate({ id: p.id, status })} />
               ))}
             </div>
@@ -205,10 +260,10 @@ export default function AdminDashboard() {
         <TabsContent value="approvals" className="mt-4">
           <div className="space-y-2">
             {pending?.presentations?.map((p: any) => (
-              <div key={p.id} className="flex items-center justify-between border rounded px-3 py-2">
+              <div key={p.id} className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200">
                 <div>
                   <div className="font-medium">{p.title}</div>
-                  <div className="text-xs text-gray-500">{p.specialty} • pending</div>
+                  <div className="text-xs text-gray-600">{p.specialty} • pending</div>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline" onClick={() => approveMutation.mutate({ id: p.id, status: "approved" })}>Approve</Button>
