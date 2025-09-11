@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminUsersAPI, getToken } from "@/lib/api";
+import { adminUsersAPI, getToken, checkBackendAvailability } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,10 +10,23 @@ export default function AdminUsersPage() {
   const { isAuthenticated } = useAdmin();
   const qc = useQueryClient();
 
+  const { data: backendAvailable } = useQuery({
+    queryKey: ["backend-available"],
+    queryFn: () => checkBackendAvailability(),
+    staleTime: 30000,
+  });
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin-users"],
-    queryFn: () => adminUsersAPI.list(),
-    enabled: isAuthenticated && !!getToken(),
+    queryFn: async () => {
+      try {
+        return await adminUsersAPI.list();
+      } catch (e) {
+        return { users: [] } as any;
+      }
+    },
+    enabled: !!backendAvailable && isAuthenticated && !!getToken(),
+    retry: 0,
   });
 
   const createMutation = useMutation({
