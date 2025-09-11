@@ -91,6 +91,13 @@ export default function AdminDashboard() {
     enabled: !!backendAvailable && isAuthenticated && !!getToken(),
   });
 
+  const filteredTrials = (trials?.presentations || []).filter((p: any) => {
+    const status = p.status || "approved";
+    const statusOk = filterStatus === "all" ? true : status === filterStatus;
+    const specOk = filterSpecialty === "all" ? true : p.specialty === filterSpecialty;
+    return statusOk && specOk;
+  });
+
   const createMutation = useMutation({
     mutationFn: async () => {
       const resp = await presentationsAPI.createPresentation({
