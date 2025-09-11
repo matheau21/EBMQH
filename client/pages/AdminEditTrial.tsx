@@ -24,7 +24,7 @@ export default function AdminEditTrial() {
     year: "",
     originalArticleUrl: "",
     thumbUrl: "",
-    status: "pending" as "pending"|"approved"|"rejected",
+    status: "pending" as "pending"|"approved"|"rejected"|"archived",
   });
 
   useEffect(() => {
@@ -141,6 +141,7 @@ export default function AdminEditTrial() {
               <SelectItem value="pending">pending</SelectItem>
               <SelectItem value="approved">approved</SelectItem>
               <SelectItem value="rejected">rejected</SelectItem>
+              <SelectItem value="archived">archived</SelectItem>
             </SelectContent>
           </Select>
         </div>
