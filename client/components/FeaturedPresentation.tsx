@@ -37,13 +37,28 @@ export function FeaturedPresentation() {
   });
   const items = (data?.presentations || []).slice(0, 3);
 
+  async function speedScrollTo(target: number, direction: "forward" | "backward") {
+    if (!api || items.length === 0) return;
+    setPaused(true);
+    const maxSteps = items.length + 2;
+    let steps = 0;
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    while (api.selectedScrollSnap() !== target && steps < maxSteps) {
+      if (direction === "forward") api.scrollNext();
+      else api.scrollPrev();
+      steps++;
+      await sleep(120);
+    }
+  }
+
   useEffect(() => {
     if (!api || paused || items.length <= 1) return;
     const id = setInterval(() => {
       if (api.canScrollNext()) {
         api.scrollNext();
       } else {
-        api.scrollTo(0, true);
+        // autoplay rewind to first
+        speedScrollTo(0, "backward");
       }
     }, 10000);
     return () => clearInterval(id);
