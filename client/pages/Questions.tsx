@@ -9,7 +9,9 @@ import { ArrowRight, CheckCircle2, XCircle } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import PdfHighlightViewer from "@/components/PdfHighlightViewer";
 
-export default function QuizPage() {
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+function QuizPageInner() {
   const [mode, setMode] = useState<"all" | "specialty" | "presentation">("all");
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>("");
   const [selectedPresentationId, setSelectedPresentationId] = useState<string>("");
