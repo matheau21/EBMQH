@@ -10,6 +10,9 @@ import { usePublish } from "@/contexts/PublishContext";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { EBMLogo } from "@/components/EBMLogo";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { useQuery } from "@tanstack/react-query";
+import { presentationsAPI } from "@/lib/api";
 import { addPresentationFilesToMediaLibrary } from "@/lib/mediaLibraryUtils";
 import { Link } from "react-router-dom";
 
