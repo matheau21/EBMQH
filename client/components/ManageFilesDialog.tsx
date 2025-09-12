@@ -10,6 +10,13 @@ interface Props {
   onOpenChange: (v: boolean) => void;
 }
 
+function middleEllipsis(path: string, max = 48) {
+  if (!path) return "";
+  if (path.length <= max) return path;
+  const keep = Math.max(8, Math.floor((max - 1) / 2));
+  return `${path.slice(0, keep)}…${path.slice(-keep)}`;
+}
+
 export default function ManageFilesDialog({ presentationId, open, onOpenChange }: Props) {
   const [pdfPath, setPdfPath] = useState<string | null>(null);
   const [pptPath, setPptPath] = useState<string | null>(null);
@@ -45,7 +52,7 @@ export default function ManageFilesDialog({ presentationId, open, onOpenChange }
             <div className="font-medium mb-2">PDF</div>
             {pdfPath ? (
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-gray-600 truncate">{pdfPath}</span>
+                <span className="text-gray-700 font-mono inline-block max-w-[70%] align-middle" title={pdfPath || undefined}>{middleEllipsis(pdfPath || "", 48)}</span>
                 <Button variant="outline" size="sm" onClick={async ()=>{
                   try { await presentationsAPI.deleteFile(presentationId, "pdf"); setPdfPath(null);} catch(e:any){ setError(e?.message||"Failed to remove PDF"); }
                 }}>Remove</Button>
@@ -66,7 +73,7 @@ export default function ManageFilesDialog({ presentationId, open, onOpenChange }
             <div className="font-medium mb-2">PPT/PPTX</div>
             {pptPath ? (
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-gray-600 truncate">{pptPath}</span>
+                <span className="text-gray-700 font-mono inline-block max-w-[70%] align-middle" title={pptPath || undefined}>{middleEllipsis(pptPath || "", 48)}</span>
                 <Button variant="outline" size="sm" onClick={async ()=>{
                   try { await presentationsAPI.deleteFile(presentationId, "ppt"); setPptPath(null);} catch(e:any){ setError(e?.message||"Failed to remove PPT"); }
                 }}>Remove</Button>
