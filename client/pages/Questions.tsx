@@ -22,6 +22,15 @@ export default function QuizPage() {
   const [answered, setAnswered] = useState(0);
   const [correct, setCorrect] = useState(0);
 
+  // Right-side PDF panel state
+  const [showPdfPanel, setShowPdfPanel] = useState<boolean>(() => {
+    const v = sessionStorage.getItem("quiz-show-pdf-panel");
+    return v === null ? true : v === "true";
+  });
+  const [pdfUrl, setPdfUrl] = useState<string | undefined>(undefined);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+
   const { data: specialties } = useQuery({
     queryKey: ["specialties"],
     queryFn: () => presentationsAPI.getSpecialties(),
@@ -48,7 +57,7 @@ export default function QuizPage() {
       random: true,
     });
     setPool(res.questions || []);
-    setSeenIds(new Set());
+    // Preserve seenIds across filter changes within the same session
     setCurrent(null);
     setSelectedChoiceId("");
     setConfirmed(false);
@@ -59,6 +68,11 @@ export default function QuizPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, selectedSpecialty, selectedPresentationId]);
 
+  // Persist panel preference
+  useEffect(() => {
+    sessionStorage.setItem("quiz-show-pdf-panel", String(showPdfPanel));
+  }, [showPdfPanel]);
+
   useEffect(() => {
     if (!current && pool.length) {
       const next = pool.find((q) => !seenIds.has(q.id));
@@ -67,6 +81,29 @@ export default function QuizPage() {
   }, [current, pool, seenIds]);
 
   const exhausted = useMemo(() => pool.length > 0 && pool.every((q) => seenIds.has(q.id)), [pool, seenIds]);
+
+  // Load associated presentation PDF for current question
+  useEffect(() => {
+    const fetchPdf = async () => {
+      if (!current?.presentationId) {
+        setPdfUrl(undefined);
+        setPdfError(null);
+        return;
+      }
+      setPdfLoading(true);
+      setPdfError(null);
+      try {
+        const res = await presentationsAPI.getFileUrls(current.presentationId);
+        setPdfUrl(res.pdfUrl || undefined);
+      } catch (e: any) {
+        setPdfUrl(undefined);
+        setPdfError(e?.message || "Failed to load PDF");
+      } finally {
+        setPdfLoading(false);
+      }
+    };
+    fetchPdf();
+  }, [current?.presentationId]);
 
   const correctChoiceId = current?.choices.find((c) => c.isCorrect)?.id;
   const isCorrect = confirmed && selectedChoiceId && selectedChoiceId === correctChoiceId;
@@ -79,6 +116,16 @@ export default function QuizPage() {
   };
 
   const onNext = () => {
+    if (!current) return;
+    const newSeen = new Set(seenIds);
+    newSeen.add(current.id);
+    setSeenIds(newSeen);
+    setCurrent(null);
+    setSelectedChoiceId("");
+    setConfirmed(false);
+  };
+
+  const onSkip = () => {
     if (!current) return;
     const newSeen = new Set(seenIds);
     newSeen.add(current.id);
@@ -177,7 +224,16 @@ export default function QuizPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">{current ? "Question" : exhausted ? "All questions exhausted" : pool.length ? "Select Next" : "Loading questions..."}</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">{current ? "Question" : exhausted ? "All questions exhausted" : pool.length ? "Select Next" : "Loading questions..."}</CardTitle>
+              {current && (
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" onClick={() => setShowPdfPanel((v) => !v)}>
+                    {showPdfPanel ? "Hide PDF" : "Show PDF"}
+                  </Button>
+                </div>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             {!current && !exhausted && pool.length === 0 && (
@@ -188,64 +244,86 @@ export default function QuizPage() {
             )}
 
             {current && (
-              <div className="space-y-4">
-                <div>
-                  <div className="text-gray-900 font-medium mb-2">{current.prompt}</div>
-                  <div className="text-xs text-gray-500 flex gap-2">
-                    {current.specialty && <Badge variant="secondary">{current.specialty}</Badge>}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  {current.choices.map((c) => {
-                    const isSelected = selectedChoiceId === c.id;
-                    const isCorrectChoice = confirmed && c.isCorrect;
-                    const isWrongSelected = confirmed && isSelected && !c.isCorrect;
-                    return (
-                      <button
-                        key={c.id}
-                        onClick={() => !confirmed && setSelectedChoiceId(c.id)}
-                        className={`w-full text-left border rounded px-3 py-2 transition-colors ${
-                          isCorrectChoice ? "border-green-600 bg-green-50" : isWrongSelected ? "border-red-600 bg-red-50" : isSelected ? "border-ucla-blue" : "hover:bg-gray-50"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span>{c.content}</span>
-                          {isCorrectChoice && <CheckCircle2 className="h-5 w-5 text-green-600" />}
-                          {isWrongSelected && <XCircle className="h-5 w-5 text-red-600" />}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {!confirmed ? (
-                  <div className="flex justify-end">
-                    <Button disabled={!selectedChoiceId} onClick={onConfirm} className="bg-ucla-blue">
-                      Confirm
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <div className={`text-sm font-medium ${isCorrect ? "text-green-700" : "text-red-700"}`}>
-                      {isCorrect ? "Correct!" : "Incorrect."}
+              <div className={`grid gap-4 ${showPdfPanel ? "grid-cols-1 md:grid-cols-[3fr_2fr]" : "grid-cols-1"}`}>
+                {/* Left: Question/answers */}
+                <div className="space-y-4">
+                  <div>
+                    <div className="text-gray-900 font-medium mb-2">{current.prompt}</div>
+                    <div className="text-xs text-gray-500 flex gap-2">
+                      {current.specialty && <Badge variant="secondary">{current.specialty}</Badge>}
                     </div>
-                    {(current.explanation || current.referenceUrl) && (
-                      <div className="text-sm text-gray-700 space-y-1">
-                        {current.explanation && <div>{current.explanation}</div>}
-                        {current.referenceUrl && (
-                          <div>
-                            <a className="text-ucla-blue underline" href={current.referenceUrl} target="_blank" rel="noreferrer">
-                              View referenced study
-                            </a>
+                  </div>
+
+                  <div className="space-y-2">
+                    {current.choices.map((c) => {
+                      const isSelected = selectedChoiceId === c.id;
+                      const isCorrectChoice = confirmed && c.isCorrect;
+                      const isWrongSelected = confirmed && isSelected && !c.isCorrect;
+                      return (
+                        <button
+                          key={c.id}
+                          onClick={() => !confirmed && setSelectedChoiceId(c.id)}
+                          className={`w-full text-left border rounded px-3 py-2 transition-colors ${
+                            isCorrectChoice ? "border-green-600 bg-green-50" : isWrongSelected ? "border-red-600 bg-red-50" : isSelected ? "border-ucla-blue" : "hover:bg-gray-50"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span>{c.content}</span>
+                            {isCorrectChoice && <CheckCircle2 className="h-5 w-5 text-green-600" />}
+                            {isWrongSelected && <XCircle className="h-5 w-5 text-red-600" />}
                           </div>
-                        )}
-                      </div>
-                    )}
-                    <div className="flex justify-end">
-                      <Button onClick={onNext} className="bg-ucla-blue">
-                        Next question <ArrowRight className="h-4 w-4 ml-2" />
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {!confirmed ? (
+                    <div className="flex justify-between">
+                      <Button variant="outline" onClick={onSkip}>Skip</Button>
+                      <Button disabled={!selectedChoiceId} onClick={onConfirm} className="bg-ucla-blue">
+                        Confirm
                       </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className={`text-sm font-medium ${isCorrect ? "text-green-700" : "text-red-700"}`}>
+                        {isCorrect ? "Correct!" : "Incorrect."}
+                      </div>
+                      {(current.explanation || current.referenceUrl) && (
+                        <div className="text-sm text-gray-700 space-y-1">
+                          {current.explanation && <div>{current.explanation}</div>}
+                          {current.referenceUrl && (
+                            <div>
+                              <a className="text-ucla-blue underline" href={current.referenceUrl} target="_blank" rel="noreferrer">
+                                View referenced study
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      <div className="flex justify-end">
+                        <Button onClick={onNext} className="bg-ucla-blue">
+                          Next question <ArrowRight className="h-4 w-4 ml-2" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Right: Collapsible PDF panel */}
+                {showPdfPanel && (
+                  <div className="min-h-[50vh] md:min-h-[70vh] border rounded overflow-hidden">
+                    <div className="px-3 py-2 bg-gray-50 border-b text-xs font-medium text-gray-700">Reference PDF</div>
+                    <div className="h-[50vh] md:h-[70vh] bg-white">
+                      {pdfLoading ? (
+                        <div className="h-full flex items-center justify-center text-gray-600 text-sm">Loading PDF…</div>
+                      ) : pdfUrl ? (
+                        <iframe src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`} title="Reference PDF" className="w-full h-full" />
+                      ) : (
+                        <div className="h-full flex items-center justify-center text-gray-500 text-sm">
+                          {pdfError ? pdfError : "No PDF available for this question."}
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
