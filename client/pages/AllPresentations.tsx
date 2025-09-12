@@ -391,23 +391,50 @@ export default function AllPresentations() {
         </div>
 
         {/* Results Summary */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
           <p className="text-gray-600">
-            Showing {filteredPresentations.length} of {presentations.length}{" "}
-            presentations
+            Showing {filteredPresentations.length} of {presentations.length} presentations
           </p>
-          {(searchQuery || selectedSpecialties.length > 0) && (
-            <Button
-              variant="outline"
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedSpecialties([]);
-              }}
-              className="text-sm border-ucla-blue text-ucla-blue hover:bg-blue-50"
-            >
-              Clear Filters
-            </Button>
-          )}
+          <div className="flex flex-wrap gap-3 items-center">
+            <div className="w-48">
+              <label className="text-xs text-gray-500">Sort by</label>
+              <Select value={sortBy} onValueChange={(v)=>setSortBy(v as any)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="createdAt">Date submitted</SelectItem>
+                  <SelectItem value="journal">Journal</SelectItem>
+                  <SelectItem value="year">Year</SelectItem>
+                  <SelectItem value="title">Title</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="w-32">
+              <label className="text-xs text-gray-500">Order</label>
+              <Select value={sortOrder} onValueChange={(v)=>setSortOrder(v as any)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="desc">Descending</SelectItem>
+                  <SelectItem value="asc">Ascending</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <label className="text-xs text-gray-500 mr-2">Group by specialty</label>
+              <input type="checkbox" checked={groupBySpecialty} onChange={(e)=>setGroupBySpecialty(e.target.checked)} />
+            </div>
+            {(searchQuery || selectedSpecialties.length > 0) && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedSpecialties([]);
+                }}
+                className="text-sm border-ucla-blue text-ucla-blue hover:bg-blue-50"
+              >
+                Clear Filters
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Presentations Grid */}
