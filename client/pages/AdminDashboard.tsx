@@ -198,7 +198,7 @@ export default function AdminDashboard() {
         </TabsList>
 
         <TabsContent value="users" className="mt-4">
-          <AdminUsers />
+          <AdminUsers showHeader={false} />
         </TabsContent>
 
         <TabsContent value="trials" className="mt-4 space-y-6">
