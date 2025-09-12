@@ -258,6 +258,9 @@ export default function AdminDashboard() {
             <Button className="bg-ucla-blue mt-3" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || !(newTrial.specialty && newTrial.specialty.trim()) || !newTrial.summary}>
               {createMutation.isPending ? "Creating..." : "Create"}
             </Button>
+            {createMutation.error && (
+              <div className="text-sm text-red-600 mt-2">{(createMutation.error as any).message || "Failed to create"}</div>
+            )}
           </div>
 
           <div className="border rounded p-4">
