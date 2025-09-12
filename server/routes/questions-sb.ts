@@ -173,6 +173,7 @@ router.get("/admin", authenticateAdminToken, async (req: AdminAuthRequest, res: 
         presentationId: q.presentation_id || undefined,
         explanation: q.explanation || undefined,
         referenceUrl: q.reference_url || undefined,
+        highlights: (q as any).highlights || undefined,
         isActive: q.is_active,
         createdAt: q.created_at,
         updatedAt: q.updated_at,
