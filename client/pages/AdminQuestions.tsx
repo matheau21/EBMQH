@@ -33,7 +33,9 @@ export default function AdminQuestions() {
     enabled: isAuthenticated,
   });
 
-  const [form, setForm] = useState({
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  const initialForm = {
     prompt: "",
     specialty: "",
     presentationId: "",
@@ -46,7 +48,13 @@ export default function AdminQuestions() {
       { content: "", isCorrect: false },
       { content: "", isCorrect: false },
     ] as Array<{ content: string; isCorrect: boolean }>,
-  });
+  };
+  const [form, setForm] = useState(initialForm);
+
+  const resetForm = () => {
+    setEditingId(null);
+    setForm(initialForm);
+  };
 
   const createMutation = useMutation({
     mutationFn: () => questionsAPI.create({
@@ -60,20 +68,26 @@ export default function AdminQuestions() {
     }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-questions"] });
-      setForm({
-        prompt: "",
-        specialty: "",
-        presentationId: "",
-        explanation: "",
-        referenceUrl: "",
-        isActive: true,
-        choices: [
-          { content: "", isCorrect: true },
-          { content: "", isCorrect: false },
-          { content: "", isCorrect: false },
-          { content: "", isCorrect: false },
-        ],
+      resetForm();
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: () => {
+      if (!editingId) return Promise.resolve({} as any);
+      return questionsAPI.update(editingId, {
+        prompt: form.prompt,
+        specialty: form.specialty || null,
+        presentationId: form.presentationId || null,
+        explanation: form.explanation || null,
+        referenceUrl: form.referenceUrl || null,
+        isActive: form.isActive,
+        choices: form.choices.filter((c) => c.content.trim().length > 0),
       });
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-questions"] });
+      resetForm();
     },
   });
 
@@ -99,9 +113,22 @@ export default function AdminQuestions() {
   const removeChoice = (idx: number) => {
     setForm((prev) => {
       const next = prev.choices.filter((_, i) => i !== idx);
-      // Ensure at least one correct remains
       if (!next.some((c) => c.isCorrect) && next.length > 0) next[0].isCorrect = true;
       return { ...prev, choices: next };
+    });
+  };
+
+  const handleEdit = (q: any) => {
+    const pres = (presentations || []).find((p: any) => p.id === q.presentationId);
+    setEditingId(q.id);
+    setForm({
+      prompt: q.prompt,
+      specialty: pres?.specialty || q.specialty || "",
+      presentationId: q.presentationId || "",
+      explanation: q.explanation || "",
+      referenceUrl: q.referenceUrl || "",
+      isActive: q.isActive,
+      choices: (q.choices || []).map((c: any) => ({ content: c.content, isCorrect: !!c.isCorrect })),
     });
   };
 
@@ -110,7 +137,7 @@ export default function AdminQuestions() {
   return (
     <div className="space-y-6">
       <div className="p-4 border rounded-lg space-y-3">
-        <h2 className="font-medium">Create Question</h2>
+        <h2 className="font-medium">{editingId ? "Edit Question" : "Create Question"}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="sm:col-span-2">
             <Label>Prompt</Label>
@@ -132,7 +159,11 @@ export default function AdminQuestions() {
           </div>
           <div>
             <Label>Presentation (optional)</Label>
-            <Select value={form.presentationId ? form.presentationId : "__none__"} onValueChange={(v) => setForm({ ...form, presentationId: v === "__none__" ? "" : v })}>
+            <Select value={form.presentationId ? form.presentationId : "__none__"} onValueChange={(v) => {
+              const id = v === "__none__" ? "" : v;
+              const pres = (presentations || []).find((p: any) => p.id === id);
+              setForm({ ...form, presentationId: id, specialty: pres?.specialty || form.specialty });
+            }}>
               <SelectTrigger>
                 <SelectValue placeholder="Link to a presentation" />
               </SelectTrigger>
@@ -185,17 +216,20 @@ export default function AdminQuestions() {
           )}
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-between">
+          {editingId ? (
+            <Button variant="outline" onClick={resetForm}>Cancel</Button>
+          ) : <div />}
           <Button
             className="bg-ucla-blue"
-            onClick={() => createMutation.mutate()}
-            disabled={createMutation.isPending || !form.prompt.trim() || form.choices.filter((c) => c.content.trim()).length < 2 || !form.choices.some((c) => c.isCorrect)}
+            onClick={() => (editingId ? updateMutation.mutate() : createMutation.mutate())}
+            disabled={(editingId ? updateMutation.isPending : createMutation.isPending) || !form.prompt.trim() || form.choices.filter((c) => c.content.trim()).length < 2 || !form.choices.some((c) => c.isCorrect)}
           >
-            {createMutation.isPending ? "Creating..." : "Create"}
+            {editingId ? (updateMutation.isPending ? "Updating..." : "Update") : (createMutation.isPending ? "Creating..." : "Create")}
           </Button>
         </div>
-        {createMutation.error && (
-          <div className="text-sm text-red-600">{(createMutation.error as any).message || "Error creating question"}</div>
+        {(createMutation.error || updateMutation.error) && (
+          <div className="text-sm text-red-600">{((createMutation.error || updateMutation.error) as any).message || "Error"}</div>
         )}
       </div>
 
@@ -211,6 +245,7 @@ export default function AdminQuestions() {
                   <div className="text-xs text-gray-600">{q.specialty || "General"} • {q.choices.length} choices</div>
                 </div>
                 <div className="flex gap-2">
+                  <Button variant="outline" onClick={() => handleEdit(q)}>Edit</Button>
                   <Button variant="destructive" onClick={() => deleteMutation.mutate(q.id)}>Delete</Button>
                 </div>
               </div>
