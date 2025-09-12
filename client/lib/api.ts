@@ -438,7 +438,13 @@ export const presentationsAPI = {
   },
 
   async getFileUrls(id: string): Promise<{ pdfUrl?: string; pptUrl?: string }> {
-    return apiRequest<{ pdfUrl?: string; pptUrl?: string }>(`/presentations/${id}/files`);
+    try {
+      const backendAvailable = await checkBackendAvailability();
+      if (!backendAvailable) return {} as any;
+      return await apiRequest<{ pdfUrl?: string; pptUrl?: string }>(`/presentations/${id}/files`);
+    } catch (_e) {
+      return {} as any;
+    }
   },
 
   async incrementViewCount(id: string): Promise<{ viewerCount: number }> {
