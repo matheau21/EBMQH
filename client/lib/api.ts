@@ -349,18 +349,9 @@ export const presentationsAPI = {
   },
 
   async createPresentation(
-    data: Omit<
-      Presentation,
-      "id" | "createdAt" | "updatedAt" | "createdBy" | "user" | "viewerCount"
-    >,
+    data: Partial<Presentation> & { title: string; specialty: string; summary: string; originalArticleUrl?: string; thumbUrl?: string }
   ): Promise<{ message: string; presentation: Presentation }> {
     try {
-      const backendAvailable = await checkBackendAvailability();
-
-      if (!backendAvailable) {
-        throw new Error("Backend not available for creating presentations");
-      }
-
       return apiRequest<{ message: string; presentation: Presentation }>(
         "/presentations",
         {
