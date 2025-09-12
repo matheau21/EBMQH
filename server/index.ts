@@ -44,6 +44,9 @@ export function createServer() {
   // Presentation routes
   app.use("/api/presentations", presentationRoutes);
 
+  // Questions routes
+  app.use("/api/questions", questionsRoutes);
+
   // Health check endpoint
   app.get("/api/health", (_req, res) => {
     res.json({
