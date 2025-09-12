@@ -109,6 +109,52 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
     }
   }, [url, useProxy]);
 
+  // Apply naive DOM-based highlights after pages render
+  const applyHighlights = useCallback(() => {
+    const root = containerRef.current;
+    if (!root) return;
+    const pageEls = root.querySelectorAll('.react-pdf__Page');
+    pageEls.forEach((pageEl) => {
+      const pageAttr = (pageEl as HTMLElement).getAttribute('data-page-number');
+      const pageNumber = pageAttr ? parseInt(pageAttr) : NaN;
+      if (!pageNumber || !pagesWithHighlights.has(pageNumber)) return;
+      const hs = pagesWithHighlights.get(pageNumber)!;
+      const tl = pageEl.querySelector('.react-pdf__Page__textContent');
+      if (!tl) return;
+      const spans = Array.from(tl.querySelectorAll('span')) as HTMLSpanElement[];
+      // Reset any prior markup
+      spans.forEach((s) => { s.textContent = s.textContent || ''; });
+      for (const h of hs) {
+        let seen = 0;
+        for (const s of spans) {
+          const text = s.textContent || '';
+          const idx = text.toLowerCase().indexOf(h.phrase.toLowerCase());
+          if (idx < 0) continue;
+          seen += 1;
+          if (h.occurrence && seen !== h.occurrence) continue;
+          const before = text.slice(0, idx);
+          const match = text.slice(idx, idx + h.phrase.length);
+          const after = text.slice(idx + h.phrase.length);
+          s.innerHTML = '';
+          if (before) s.append(document.createTextNode(before));
+          const mark = document.createElement('span');
+          mark.style.backgroundColor = h.color || '#fff59d';
+          mark.setAttribute('data-ebm-hl', '1');
+          mark.textContent = match;
+          s.append(mark);
+          if (after) s.append(document.createTextNode(after));
+          break; // only first span occurrence per highlight
+        }
+      }
+    });
+  }, [pagesWithHighlights]);
+
+  useEffect(() => {
+    // Delay to allow text layer to render
+    const t = setTimeout(applyHighlights, 50);
+    return () => clearTimeout(t);
+  }, [applyHighlights, numPages, finalUrl, highlights]);
+
   return (
     <div ref={containerRef} className="w-full h-full overflow-auto bg-white">
       <Document
@@ -121,7 +167,6 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
       >
         {Array.from(new Array(numPages), (_el, index) => {
           const pageNumber = index + 1;
-          const hasHls = pagesWithHighlights.has(pageNumber);
           return (
             <div key={`p-${pageNumber}`} className="flex justify-center py-3 border-b last:border-b-0">
               <Page
@@ -129,7 +174,6 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
                 width={width ? Math.min(width - 16, 1200) : undefined}
                 renderAnnotationLayer={false}
                 renderTextLayer={true}
-                customTextRenderer={hasHls ? makeCustomTextRenderer(pageNumber) : undefined}
               />
             </div>
           );
