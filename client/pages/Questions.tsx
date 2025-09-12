@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { questionsAPI, presentationsAPI, Question } from "@/lib/api";
 import { ArrowRight, CheckCircle2, XCircle } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
+import PdfHighlightViewer from "@/components/PdfHighlightViewer";
 
 export default function QuizPage() {
   const [mode, setMode] = useState<"all" | "specialty" | "presentation">("all");
