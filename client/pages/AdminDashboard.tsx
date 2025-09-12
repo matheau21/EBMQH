@@ -77,6 +77,8 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
   );
 }
 
+import SiteHeader from "@/components/SiteHeader";
+
 export default function AdminDashboard() {
   const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
