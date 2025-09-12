@@ -53,7 +53,9 @@ export default function AdminUsersPage() {
   if (!isAuthenticated) return <div className="p-6">Please login as admin.</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="min-h-screen bg-gray-50">
+      <SiteHeader showQuickLinks />
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
       <h1 className="text-2xl font-semibold text-ucla-blue">User Management</h1>
 
       <div className="p-4 border rounded-lg space-y-3">
@@ -132,6 +134,7 @@ export default function AdminUsersPage() {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </div>
   );
