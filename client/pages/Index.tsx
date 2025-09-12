@@ -661,7 +661,7 @@ export default function Index() {
               <ul className="space-y-2 text-blue-200">
                 <li>
                   <Link
-                    to="/coming-soon"
+                    to="/questions"
                     className="hover:text-white transition-colors"
                   >
                     Contact Us
