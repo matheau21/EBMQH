@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Plus, Users, Award } from "lucide-react";
 import { EBMLogo } from "@/components/EBMLogo";
-import { siteAPI } from "@/lib/api";
+import SiteFooter from "@/components/SiteFooter";
 
 import { BackendStatusBanner } from "@/components/BackendStatusBanner";
 import { addPresentationFilesToMediaLibrary } from "@/lib/mediaLibraryUtils";
@@ -189,7 +189,6 @@ export default function Index() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [presentations, setPresentations] = useState<Presentation[]>([]);
-  const [referenceHref, setReferenceHref] = useState<string | undefined>(undefined);
 
   // Load presentations from API with fallback to mock data
   useEffect(() => {
@@ -232,16 +231,6 @@ export default function Index() {
   // No local storage persistence; data is dynamic from Supabase
   useEffect(() => {}, [presentations]);
 
-  // Load site config for Reference Card link
-  useEffect(() => {
-    let ignore = false;
-    (async () => {
-      const cfg = await siteAPI.getAbout();
-      if (ignore) return;
-      setReferenceHref(cfg?.referenceCard?.url || cfg?.referenceCard?.signedUrl || undefined);
-    })();
-    return () => { ignore = true; };
-  }, []);
 
   const filteredPresentations = useMemo(() => {
     if (selectedSpecialties.length === 0) {
@@ -637,64 +626,7 @@ export default function Index() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-ucla-blue text-white py-12 mt-16 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <EBMLogo size="sm" />
-                <span className="text-xl font-bold">EBM Quick Hits</span>
-              </div>
-              <p className="text-blue-200">
-                Evidence-based medicine summaries for medical education and
-                clinical practice
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-blue-200">
-                <li>
-                  <Link
-                    to="/presentations"
-                    className="hover:text-white transition-colors"
-                  >
-                    All Presentations
-                  </Link>
-                </li>
-                <li>
-                  {referenceHref ? (
-                    <a href={referenceHref} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                      EBM Reference Card
-                    </a>
-                  ) : (
-                    <span className="opacity-70">EBM Reference Card</span>
-                  )}
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-blue-200">
-                <li>
-                  <Link
-                    to="/about"
-                    className="hover:text-white transition-colors"
-                  >
-                    About Us
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-blue-600 mt-8 pt-8 text-center text-blue-200">
-            <p>&copy; 2025 EBM Quick Hits. All rights reserved.</p>
-          </div>
-        </div>
-
-        {/* Admin Toggle Button */}
-        <AdminToggleButton />
-      </footer>
+      <SiteFooter />
 
       {/* Modals */}
       <AuthModal
