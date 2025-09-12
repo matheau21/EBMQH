@@ -28,7 +28,7 @@ export default function SiteHeader({ showQuickLinks = true }: { showQuickLinks?:
                     <Button variant="ghost" className="text-gray-700">Questions</Button>
                   </Link>
                   <Link to="/presentations">
-                    <Button variant="ghost" className="text-gray-700">All Submissions</Button>
+                    <Button variant="ghost" className="text-gray-700">All Trials<br /></Button>
                   </Link>
                 </nav>
               )}
