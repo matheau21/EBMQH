@@ -214,6 +214,7 @@ router.post("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Resp
         explanation: body.explanation,
         reference_url: body.referenceUrl,
         is_active: body.isActive ?? true,
+        highlights: body.highlights || null,
       })
       .select("id")
       .single();
