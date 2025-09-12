@@ -11,10 +11,14 @@ import AdminQuestions from "./AdminQuestions";
 import ManageFilesDialog from "@/components/ManageFilesDialog";
 import FileDropzone from "@/components/FileDropzone";
 import { SPECIALTY_NAMES } from "@/components/SpecialtyFilters";
+import PresentationFilesViewer from "@/components/PresentationFilesViewer";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { useNavigate, useLocation } from "react-router-dom";
 function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected"|"pending") => void }) {
   const [open, setOpen] = useState(false);
+  const [showViewer, setShowViewer] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const navigate = useNavigate();
   const qc = useQueryClient();
   const status: "approved"|"rejected"|"pending"|"archived" = (p.status || "approved");
@@ -27,24 +31,32 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
   }`;
   return (
     <div className={containerCls}>
-      <div>
-        <div className={`font-medium ${status === "rejected" ? "text-gray-500" : ""}`}>{p.title}</div>
+      <div className="min-w-0">
+        <div className={`font-medium ${status === "rejected" ? "text-gray-500" : "cursor-pointer hover:underline"}`} onClick={() => setShowPreview(true)} title="Preview public view">
+          {p.title}
+        </div>
         <div className={`text-xs ${status === "rejected" ? "text-gray-400" : "text-gray-500"}`}>
           {p.specialty} • {status}
           {(status === "approved" || status === "archived") && (
             <span className="ml-2 inline-flex items-center gap-1 align-middle">
-              <span
-                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.pdf_path ? "text-green-700 border-green-200 bg-green-50" : "text-gray-500 border-gray-200 bg-gray-50"}`}
-                title={p.pdf_path ? "PDF attached" : "No PDF"}
+              <button
+                type="button"
+                onClick={(e)=>{ e.stopPropagation(); if (p.pdf_path) setShowViewer(true); }}
+                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.pdf_path ? "text-green-700 border-green-200 bg-green-50 hover:bg-green-100 cursor-pointer" : "text-gray-500 border-gray-200 bg-gray-50 cursor-not-allowed"}`}
+                title={p.pdf_path ? "Open PDF" : "No PDF"}
+                disabled={!p.pdf_path}
               >
                 PDF {p.pdf_path ? "✓" : "–"}
-              </span>
-              <span
-                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.ppt_path ? "text-green-700 border-green-200 bg-green-50" : "text-gray-500 border-gray-200 bg-gray-50"}`}
-                title={p.ppt_path ? "PPT attached" : "No PPT"}
+              </button>
+              <button
+                type="button"
+                onClick={(e)=>{ e.stopPropagation(); if (p.ppt_path) setShowViewer(true); }}
+                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.ppt_path ? "text-green-700 border-green-200 bg-green-50 hover:bg-green-100 cursor-pointer" : "text-gray-500 border-gray-200 bg-gray-50 cursor-not-allowed"}`}
+                title={p.ppt_path ? "Open PPT" : "No PPT"}
+                disabled={!p.ppt_path}
               >
                 PPT {p.ppt_path ? "✓" : "–"}
-              </span>
+              </button>
             </span>
           )}
         </div>
@@ -91,6 +103,36 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
         }}>Delete</Button>
       </div>
       <ManageFilesDialog presentationId={p.id} open={open} onOpenChange={setOpen} />
+
+      <PresentationFilesViewer
+        isOpen={showViewer}
+        onClose={() => setShowViewer(false)}
+        presentationId={p.id}
+        title={p.title}
+      />
+
+      <Dialog open={showPreview} onOpenChange={setShowPreview}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Public Preview</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-2">
+            <div className="text-lg font-semibold">{p.title}</div>
+            <div className="text-sm text-gray-600">{p.specialty}{p.year ? ` • ${p.year}` : ""}</div>
+            {p.summary && <div className="text-sm text-gray-700">{p.summary}</div>}
+            {(p.authors || p.journal) && (
+              <div className="text-xs text-gray-500">
+                {p.authors && <div className="font-medium">{p.authors}</div>}
+                {p.journal && <div>{p.journal}</div>}
+              </div>
+            )}
+            <div className="pt-2 flex items-center gap-2">
+              <Button className="bg-ucla-blue text-white" onClick={() => { setShowViewer(true); }}>View Files</Button>
+              <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
