@@ -118,12 +118,12 @@ export default function AdminQuestions() {
           </div>
           <div>
             <Label>Specialty</Label>
-            <Select value={form.specialty} onValueChange={(v) => setForm({ ...form, specialty: v })}>
+            <Select value={form.specialty ? form.specialty : "__none__"} onValueChange={(v) => setForm({ ...form, specialty: v === "__none__" ? "" : v })}>
               <SelectTrigger>
                 <SelectValue placeholder="Optional" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="__none__">None</SelectItem>
                 {(specialties?.specialties || []).map((s) => (
                   <SelectItem key={s} value={s}>{s}</SelectItem>
                 ))}
@@ -132,12 +132,12 @@ export default function AdminQuestions() {
           </div>
           <div>
             <Label>Presentation (optional)</Label>
-            <Select value={form.presentationId} onValueChange={(v) => setForm({ ...form, presentationId: v })}>
+            <Select value={form.presentationId ? form.presentationId : "__none__"} onValueChange={(v) => setForm({ ...form, presentationId: v === "__none__" ? "" : v })}>
               <SelectTrigger>
                 <SelectValue placeholder="Link to a presentation" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="__none__">None</SelectItem>
                 {(presentations || []).map((p: any) => (
                   <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>
                 ))}
