@@ -8,7 +8,7 @@ import { useAdmin } from "@/contexts/AdminContext";
 
 import SiteHeader from "@/components/SiteHeader";
 
-export default function AdminUsersPage() {
+export default function AdminUsersPage({ showHeader = true }: { showHeader?: boolean }) {
   const { isAuthenticated } = useAdmin();
   const qc = useQueryClient();
 
