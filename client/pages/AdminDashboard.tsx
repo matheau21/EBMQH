@@ -29,7 +29,25 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
     <div className={containerCls}>
       <div>
         <div className={`font-medium ${status === "rejected" ? "text-gray-500" : ""}`}>{p.title}</div>
-        <div className={`text-xs ${status === "rejected" ? "text-gray-400" : "text-gray-500"}`}>{p.specialty} • {status}</div>
+        <div className={`text-xs ${status === "rejected" ? "text-gray-400" : "text-gray-500"}`}>
+          {p.specialty} • {status}
+          {(status === "approved" || status === "archived") && (
+            <span className="ml-2 inline-flex items-center gap-1 align-middle">
+              <span
+                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.pdf_path ? "text-green-700 border-green-200 bg-green-50" : "text-gray-500 border-gray-200 bg-gray-50"}`}
+                title={p.pdf_path ? "PDF attached" : "No PDF"}
+              >
+                PDF {p.pdf_path ? "✓" : "–"}
+              </span>
+              <span
+                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.ppt_path ? "text-green-700 border-green-200 bg-green-50" : "text-gray-500 border-gray-200 bg-gray-50"}`}
+                title={p.ppt_path ? "PPT attached" : "No PPT"}
+              >
+                PPT {p.ppt_path ? "✓" : "–"}
+              </span>
+            </span>
+          )}
+        </div>
       </div>
       <div className="flex items-center gap-2">
         {status === "approved" && (
