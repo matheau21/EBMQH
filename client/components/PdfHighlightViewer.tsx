@@ -70,6 +70,8 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [numPages, setNumPages] = useState<number>(0);
   const [width, setWidth] = useState<number>(0);
+  const [useProxy, setUseProxy] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
     const ro = new ResizeObserver(() => {
@@ -81,6 +83,8 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
     }
     return () => ro.disconnect();
   }, []);
+
+  useEffect(() => { setUseProxy(false); setLoadError(null); setNumPages(0); }, [url]);
 
   const pagesWithHighlights = useMemo(() => {
     const map = new Map<number, QuestionHighlight[]>();
@@ -110,18 +114,26 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
 
   const finalUrl = useMemo(() => {
     try {
+      if (url.startsWith("blob:")) return url;
       const u = new URL(url, window.location.origin);
       const sameOrigin = u.origin === window.location.origin;
-      const isSupabase = /supabase\.co$/.test(u.hostname) || u.hostname.includes("supabase.co");
-      return sameOrigin || isSupabase ? url : `/api/presentations/proxy-pdf?src=${encodeURIComponent(url)}`;
+      if (sameOrigin) return url;
+      return useProxy ? `/api/presentations/proxy-pdf?src=${encodeURIComponent(url)}` : url;
     } catch {
       return url;
     }
-  }, [url]);
+  }, [url, useProxy]);
 
   return (
     <div ref={containerRef} className="w-full h-full overflow-auto bg-white">
-      <Document file={finalUrl} onLoadSuccess={({ numPages }) => setNumPages(numPages)} loading={<div className="p-4 text-sm text-gray-600">Loading PDF…</div>}>
+      <Document
+        key={finalUrl}
+        file={finalUrl}
+        onLoadSuccess={({ numPages }) => { setNumPages(numPages); setLoadError(null); }}
+        onLoadError={(e: any) => { if (!useProxy) setUseProxy(true); else setLoadError(e?.message || "Failed to load PDF file."); }}
+        loading={<div className="p-4 text-sm text-gray-600">Loading PDF…</div>}
+        error={<div className="p-4 text-sm text-red-600">{loadError || "Failed to load PDF file."}</div>}
+      >
         {Array.from(new Array(numPages), (_el, index) => {
           const pageNumber = index + 1;
           const hasHls = pagesWithHighlights.has(pageNumber);
