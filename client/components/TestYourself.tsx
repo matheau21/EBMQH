@@ -6,7 +6,7 @@ export function TestYourself() {
   const navigate = useNavigate();
 
   const handleQuizClick = () => {
-    navigate("/coming-soon");
+    navigate("/questions");
   };
 
   return (
