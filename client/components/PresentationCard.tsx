@@ -104,6 +104,7 @@ export function PresentationCard({
   const [showPresentationViewer, setShowPresentationViewer] = useState(false);
   const [showArticleViewer, setShowArticleViewer] = useState(false);
   const [showFilesViewer, setShowFilesViewer] = useState(false);
+  const [views, setViews] = useState<number>(viewerCount || 0);
   const specialtyColors: Record<string, string> = {
     Cardiology:
       "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20",
@@ -251,7 +252,7 @@ export function PresentationCard({
           <div className="flex items-center gap-1 text-gray-500">
             <Eye className="h-4 w-4" />
             <span className="text-sm font-medium">
-              {viewerCount.toLocaleString()}
+              {views.toLocaleString()}
             </span>
           </div>
         </div>
@@ -285,6 +286,7 @@ export function PresentationCard({
           title={title}
           fallbackPdfUrl={originalArticleUrl}
           fallbackPptUrl={presentationFileUrl}
+          onCountedView={(newCount)=> setViews(newCount || (views + 1))}
         />
       </CardContent>
     </Card>
