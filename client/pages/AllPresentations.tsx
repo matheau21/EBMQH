@@ -378,7 +378,7 @@ export default function AllPresentations() {
             onSearchChange={setSearchQuery}
             selectedSpecialties={selectedSpecialties}
             onSpecialtyToggle={handleSpecialtyToggle}
-            availableSpecialties={specialties}
+            availableSpecialties={(specData?.specialties as string[]) || []}
           />
         </div>
 
