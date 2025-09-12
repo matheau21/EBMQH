@@ -100,9 +100,9 @@ export default function QuizPage() {
       try {
         const res = await presentationsAPI.getFileUrls(current.presentationId);
         setPdfUrl(res.pdfUrl || undefined);
-      } catch (e: any) {
+      } catch (_e: any) {
         setPdfUrl(undefined);
-        setPdfError(e?.message || "Failed to load PDF");
+        setPdfError(null);
       } finally {
         setPdfLoading(false);
       }
