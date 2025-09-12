@@ -44,6 +44,14 @@ export interface QuestionChoice {
   orderIndex: number;
 }
 
+export interface QuestionHighlight {
+  page: number;
+  phrase: string;
+  occurrence?: number;
+  color?: string;
+  note?: string;
+}
+
 export interface Question {
   id: string;
   prompt: string;
@@ -55,6 +63,7 @@ export interface Question {
   createdAt: string;
   updatedAt: string;
   choices: QuestionChoice[];
+  highlights?: QuestionHighlight[];
 }
 
 export interface AuthResponse {
