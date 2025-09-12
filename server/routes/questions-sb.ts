@@ -18,6 +18,7 @@ const createSchema = z.object({
   referenceUrl: z.string().url().optional(),
   choices: z.array(choiceSchema).min(2).max(8),
   isActive: z.boolean().optional(),
+  highlights: z.array(highlightSchema).optional(),
 });
 
 const updateSchema = z.object({
