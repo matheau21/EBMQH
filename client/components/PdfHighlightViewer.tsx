@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import type { QuestionHighlight } from "@/lib/api";
-// Vite-compatible worker import (resolves to a URL)
+// Use asset URL for worker so PDF.js can fetch it directly
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error - Vite query params
-import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min.mjs?worker&url";
+import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.js?url";
 
-pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker as unknown as string;
+pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl as unknown as string;
 
 interface Props {
   url: string;
