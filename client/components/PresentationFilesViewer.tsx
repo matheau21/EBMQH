@@ -60,7 +60,7 @@ export default function PresentationFilesViewer({ isOpen, onClose, presentationI
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`${isFullscreen ? "w-screen h-screen max-w-screen max-h-screen rounded-none p-0" : "sm:max-w-6xl w-[96vw] h-[88vh] p-0"} overflow-hidden`}>
-        <DialogHeader className={`bg-ucla-blue text-white px-6 py-4 flex flex-row items-center justify-between space-y-0 ${isFullscreen ? "rounded-none" : "rounded-t-lg"}`}>
+        <DialogHeader className={`bg-ucla-blue text-white ${isFullscreen ? "px-4 py-3" : "px-6 py-4"} flex flex-row items-center justify-between space-y-0 ${isFullscreen ? "rounded-none" : "rounded-t-lg"}`}>
           <DialogTitle className="flex items-center gap-2 text-white">
             <Presentation className="h-5 w-5" />
             {title}
