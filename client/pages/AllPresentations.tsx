@@ -192,18 +192,10 @@ export default function AllPresentations() {
     if (apiData?.presentations) setPresentations(apiData.presentations as any);
   }, [apiData]);
 
-  // Save presentations to localStorage whenever presentations change
-  useEffect(() => {
-    const customPresentations = presentations.filter(
-      (p) => !mockPresentations.find((mock) => mock.id === p.id),
-    );
-    if (customPresentations.length > 0) {
-      localStorage.setItem(
-        "ebm-presentations",
-        JSON.stringify(customPresentations),
-      );
-    }
-  }, [presentations]);
+  // Sort/group controls
+  const [sortBy, setSortBy] = useState<"createdAt"|"journal"|"year"|"title">("createdAt");
+  const [sortOrder, setSortOrder] = useState<"asc"|"desc">("desc");
+  const [groupBySpecialty, setGroupBySpecialty] = useState(false);
 
   const filteredPresentations = useMemo(() => {
     return presentations.filter((presentation) => {
