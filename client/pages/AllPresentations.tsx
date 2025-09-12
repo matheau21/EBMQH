@@ -8,8 +8,8 @@ import { PublishButton } from "@/components/PublishButton";
 import { useAdmin } from "@/contexts/AdminContext";
 import { usePublish } from "@/contexts/PublishContext";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import { EBMLogo } from "@/components/EBMLogo";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
 import { presentationsAPI } from "@/lib/api";
@@ -345,29 +345,14 @@ export default function AllPresentations() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
-              <Link to="/">
-                <Button variant="ghost" size="icon" className="flex-shrink-0">
-                  <ArrowLeft className="h-5 w-5" />
-                </Button>
-              </Link>
-              <EBMLogo size="md" className="shadow-lg flex-shrink-0" />
-              <div className="min-w-0">
-                <h1 className="text-lg sm:text-xl font-bold text-ucla-blue truncate">
-                  All Presentations
-                </h1>
-                <p className="text-xs text-blue-600 hidden sm:block">
-                  Browse all landmark trial summaries
-                </p>
-              </div>
-            </div>
-          </div>
+      <SiteHeader showQuickLinks />
+      <div className="bg-blue-50 border-b border-blue-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-sm">
+          <Link to="/" className="text-ucla-blue hover:underline">Home</Link>
+          <span className="mx-2 text-blue-600">/</span>
+          <span className="text-blue-800">All Presentations</span>
         </div>
-      </header>
+      </div>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -525,8 +510,7 @@ export default function AllPresentations() {
         )}
       </main>
 
-      {/* Admin Toggle Button */}
-      <AdminToggleButton />
+      <SiteFooter />
 
       {/* Upload Modal */}
       <UploadModal
