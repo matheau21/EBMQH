@@ -144,26 +144,21 @@ export default function AdminDashboard() {
   const createMutation = useMutation({
     mutationFn: async () => {
       const resp = await presentationsAPI.createPresentation({
-        id: "" as any,
         title: newTrial.title,
         specialty: newTrial.specialty,
         summary: newTrial.summary,
         authors: newTrial.authors || undefined,
         journal: newTrial.journal || undefined,
         year: newTrial.year || undefined,
-        thumbnail: undefined,
-        viewerCount: 0,
-        originalArticleUrl: undefined,
-        createdAt: "" as any,
-        updatedAt: "" as any,
-        createdBy: undefined,
-        user: undefined,
-        presentationFileUrl: undefined,
       } as any);
       const created = (resp as any).presentation || resp;
       if (created?.id) {
-        if (newPdf) await presentationsAPI.uploadFile(created.id, newPdf);
-        if (newPpt) await presentationsAPI.uploadFile(created.id, newPpt);
+        try {
+          if (newPdf) await presentationsAPI.uploadFile(created.id, newPdf);
+          if (newPpt) await presentationsAPI.uploadFile(created.id, newPpt);
+        } catch (e) {
+          console.warn("File upload failed, presentation created", e);
+        }
       }
       return created;
     },
