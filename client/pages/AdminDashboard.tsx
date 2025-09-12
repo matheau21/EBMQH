@@ -117,7 +117,7 @@ export default function AdminDashboard() {
         return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
       }
     },
-    enabled: !!backendAvailable && isAuthenticated && !!getToken(),
+    enabled: isAuthenticated && !!getToken(),
     retry: 0,
   });
 
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
         return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
       }
     },
-    enabled: !!backendAvailable && isAuthenticated && !!getToken(),
+    enabled: isAuthenticated && !!getToken(),
     retry: 0,
   });
 
