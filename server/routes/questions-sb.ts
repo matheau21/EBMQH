@@ -10,6 +10,14 @@ const choiceSchema = z.object({
   isCorrect: z.boolean(),
 });
 
+const highlightSchema = z.object({
+  page: z.number().int().min(1),
+  phrase: z.string().min(1).max(1000),
+  occurrence: z.number().int().min(1).optional(),
+  color: z.string().optional(),
+  note: z.string().optional(),
+});
+
 const createSchema = z.object({
   prompt: z.string().min(1).max(5000),
   specialty: z.string().optional(),
