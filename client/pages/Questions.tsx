@@ -56,7 +56,12 @@ export default function QuizPage() {
       limit: 200,
       random: true,
     });
-    setPool(res.questions || []);
+    const list = (res.questions || []).slice();
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    setPool(list);
     // Preserve seenIds across filter changes within the same session
     setCurrent(null);
     setSelectedChoiceId("");
@@ -244,7 +249,7 @@ export default function QuizPage() {
             )}
 
             {current && (
-              <div className={`grid gap-4 ${showPdfPanel ? "grid-cols-1 md:grid-cols-[3fr_2fr]" : "grid-cols-1"}`}>
+              <div className={`grid gap-4 ${showPdfPanel ? "grid-cols-1 md:grid-cols-[2fr_3fr]" : "grid-cols-1"}`}>
                 {/* Left: Question/answers */}
                 <div className="space-y-4">
                   <div>
