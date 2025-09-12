@@ -118,6 +118,32 @@ router.get("/admin/:id", authenticateAdminToken, async (req: AdminAuthRequest, r
   }
 });
 
+// GET /api/presentations/proxy-pdf?src=...
+router.get("/proxy-pdf", async (req: Request, res: Response) => {
+  try {
+    const src = (req.query.src as string) || "";
+    if (!src) return res.status(400).json({ error: "Missing src" });
+    let u: URL;
+    try {
+      u = new URL(src);
+    } catch {
+      return res.status(400).json({ error: "Invalid URL" });
+    }
+    if (!(u.protocol === "http:" || u.protocol === "https:")) {
+      return res.status(400).json({ error: "Invalid protocol" });
+    }
+    const r = await fetch(u.toString(), { headers: { "user-agent": "Mozilla/5.0" } });
+    if (!r.ok) return res.status(502).json({ error: `Upstream error ${r.status}` });
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Cache-Control", "private, max-age=60");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const ab = await r.arrayBuffer();
+    return res.send(Buffer.from(ab));
+  } catch (err) {
+    return res.status(500).json({ error: "Proxy error" });
+  }
+});
+
 // GET /api/presentations/files - get signed URLs for files (public for approved)
 router.get("/:id/files", async (req: Request, res: Response) => {
   try {
