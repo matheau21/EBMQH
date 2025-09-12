@@ -159,6 +159,13 @@ function QuizPageInner() {
   return (
     <div className="min-h-screen bg-white">
       <SiteHeader />
+      <div className="bg-blue-50 border-b border-blue-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-sm">
+          <Link to="/" className="text-ucla-blue hover:underline">Home</Link>
+          <span className="mx-2 text-blue-600">/</span>
+          <span className="text-blue-800">Questions</span>
+        </div>
+      </div>
       {/* Hero */}
       <section className="bg-ucla-blue text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
