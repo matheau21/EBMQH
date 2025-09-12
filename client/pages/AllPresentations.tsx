@@ -438,30 +438,70 @@ export default function AllPresentations() {
         </div>
 
         {/* Presentations Grid */}
-        {filteredPresentations.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredPresentations.map((presentation) => (
-              <PresentationCard
-                key={presentation.id}
-                id={presentation.id}
-                title={presentation.title}
-                specialty={presentation.specialty}
-                summary={presentation.summary}
-                authors={presentation.authors}
-                journal={presentation.journal}
-                year={presentation.year}
-                viewerCount={presentation.viewerCount}
-                thumbnail={presentation.thumbnail}
-                presentationFileUrl={presentation.presentationFileUrl}
-                originalArticleUrl={presentation.originalArticleUrl}
-                onViewSummary={() => handleViewSummary(presentation.id)}
-                onEdit={handleEditPresentation}
-                onDelete={handleDeletePresentation}
-                onDuplicate={handleDuplicatePresentation}
-                onToggleFeatured={handleToggleFeatured}
-              />
-            ))}
-          </div>
+        {isLoading ? (
+          <div>Loading…</div>
+        ) : filteredPresentations.length > 0 ? (
+          groupBySpecialty ? (
+            <div className="space-y-8">
+              {Object.entries(
+                filteredPresentations.reduce((acc: Record<string, Presentation[]>, p) => {
+                  (acc[p.specialty] = acc[p.specialty] || []).push(p);
+                  return acc;
+                }, {})
+              ).map(([spec, list]) => (
+                <div key={spec}>
+                  <h3 className="text-lg font-semibold mb-3">{spec}</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    {list.map((presentation) => (
+                      <PresentationCard
+                        key={presentation.id}
+                        id={presentation.id}
+                        title={presentation.title}
+                        specialty={presentation.specialty}
+                        summary={presentation.summary}
+                        authors={presentation.authors}
+                        journal={presentation.journal}
+                        year={presentation.year}
+                        viewerCount={presentation.viewerCount}
+                        thumbnail={presentation.thumbnail}
+                        presentationFileUrl={presentation.presentationFileUrl}
+                        originalArticleUrl={presentation.originalArticleUrl}
+                        onViewSummary={() => handleViewSummary(presentation.id)}
+                        onEdit={handleEditPresentation}
+                        onDelete={handleDeletePresentation}
+                        onDuplicate={handleDuplicatePresentation}
+                        onToggleFeatured={handleToggleFeatured}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {filteredPresentations.map((presentation) => (
+                <PresentationCard
+                  key={presentation.id}
+                  id={presentation.id}
+                  title={presentation.title}
+                  specialty={presentation.specialty}
+                  summary={presentation.summary}
+                  authors={presentation.authors}
+                  journal={presentation.journal}
+                  year={presentation.year}
+                  viewerCount={presentation.viewerCount}
+                  thumbnail={presentation.thumbnail}
+                  presentationFileUrl={presentation.presentationFileUrl}
+                  originalArticleUrl={presentation.originalArticleUrl}
+                  onViewSummary={() => handleViewSummary(presentation.id)}
+                  onEdit={handleEditPresentation}
+                  onDelete={handleDeletePresentation}
+                  onDuplicate={handleDuplicatePresentation}
+                  onToggleFeatured={handleToggleFeatured}
+                />
+              ))}
+            </div>
+          )
         ) : (
           <div className="text-center py-12">
             <div className="h-16 w-16 text-gray-300 mx-auto mb-4">📚</div>
