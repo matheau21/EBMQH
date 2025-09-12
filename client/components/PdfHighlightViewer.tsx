@@ -97,21 +97,6 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
     return map;
   }, [highlights]);
 
-  // Prepare per-page custom renderer with occurrence trackers
-  const makeCustomTextRenderer = useCallback(
-    (pageNumber: number) => ({ str }: { str: string }) => {
-      const hs = pagesWithHighlights.get(pageNumber) || [];
-      const phrases = hs.map((h) => ({
-        phrase: h.phrase,
-        color: h.color || "#fff59d",
-        occurrence: h.occurrence,
-        tracker: { count: 0 },
-      }));
-      return <span>{highlightText(str, phrases)}</span> as any;
-    },
-    [pagesWithHighlights]
-  );
-
   const finalUrl = useMemo(() => {
     try {
       if (url.startsWith("blob:")) return url;
