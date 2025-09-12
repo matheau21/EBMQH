@@ -108,9 +108,20 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
     [pagesWithHighlights]
   );
 
+  const finalUrl = useMemo(() => {
+    try {
+      const u = new URL(url, window.location.origin);
+      const sameOrigin = u.origin === window.location.origin;
+      const isSupabase = /supabase\.co$/.test(u.hostname) || u.hostname.includes("supabase.co");
+      return sameOrigin || isSupabase ? url : `/api/presentations/proxy-pdf?src=${encodeURIComponent(url)}`;
+    } catch {
+      return url;
+    }
+  }, [url]);
+
   return (
     <div ref={containerRef} className="w-full h-full overflow-auto bg-white">
-      <Document file={url} onLoadSuccess={({ numPages }) => setNumPages(numPages)} loading={<div className="p-4 text-sm text-gray-600">Loading PDF…</div>}>
+      <Document file={finalUrl} onLoadSuccess={({ numPages }) => setNumPages(numPages)} loading={<div className="p-4 text-sm text-gray-600">Loading PDF…</div>}>
         {Array.from(new Array(numPages), (_el, index) => {
           const pageNumber = index + 1;
           const hasHls = pagesWithHighlights.has(pageNumber);
