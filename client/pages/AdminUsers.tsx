@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAdmin } from "@/contexts/AdminContext";
 
+import SiteHeader from "@/components/SiteHeader";
+
 export default function AdminUsersPage() {
   const { isAuthenticated } = useAdmin();
   const qc = useQueryClient();
