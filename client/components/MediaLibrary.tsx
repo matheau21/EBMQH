@@ -254,14 +254,14 @@ export function MediaLibrary({
               />
             </div>
             <Select
-              value={selectedCategory || ""}
-              onValueChange={(value) => setSelectedCategory(value || "")}
+              value={selectedCategory ? selectedCategory : "__all__"}
+              onValueChange={(value) => setSelectedCategory(value === "__all__" ? "" : value)}
             >
               <SelectTrigger className="w-[200px]">
                 <SelectValue placeholder="All categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All categories</SelectItem>
+                <SelectItem value="__all__">All categories</SelectItem>
                 {categories.filter(Boolean).map((category, index) => (
                   <SelectItem
                     key={`category-${index}-${category}`}
