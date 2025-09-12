@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { LogIn, LogOut, Plus, LayoutDashboard } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { LoginModal } from "./LoginModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export function AdminToggleButton() {
   const { isAuthenticated, logout } = useAdmin();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const inDashboard = location.pathname.startsWith("/admin");
 
   const handleClick = () => {
     if (isAuthenticated) {
@@ -21,7 +23,7 @@ export function AdminToggleButton() {
   return (
     <>
       <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
-        {isAuthenticated && (
+        {isAuthenticated && !inDashboard && (
           <>
             <Button
               variant="outline"
