@@ -29,6 +29,7 @@ const updateSchema = z.object({
   referenceUrl: z.string().url().optional().nullable(),
   choices: z.array(choiceSchema).min(2).max(8).optional(),
   isActive: z.boolean().optional(),
+  highlights: z.array(highlightSchema).optional().nullable(),
 });
 
 function shuffle<T>(arr: T[]): T[] {
