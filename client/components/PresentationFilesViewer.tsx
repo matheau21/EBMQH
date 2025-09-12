@@ -59,8 +59,8 @@ export default function PresentationFilesViewer({ isOpen, onClose, presentationI
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`${isFullscreen ? "w-screen h-screen max-w-screen max-h-screen rounded-none p-0" : "sm:max-w-6xl w-[96vw] h-[88vh] p-0"} overflow-hidden`}>
-        <DialogHeader className={`bg-ucla-blue text-white ${isFullscreen ? "px-4 py-3" : "px-6 py-4"} flex flex-row items-center justify-between space-y-0 ${isFullscreen ? "rounded-none" : "rounded-t-lg"}`}>
+      <DialogContent className={`${isFullscreen ? "w-screen h-screen max-w-screen max-h-screen rounded-none p-0" : "sm:max-w-6xl w-[96vw] h-[88vh] p-0"} overflow-hidden flex flex-col gap-0`}>
+        <DialogHeader className={`bg-ucla-blue text-white ${isFullscreen ? "px-2 py-2" : "px-3 py-2"} flex flex-row items-center justify-between space-y-0 ${isFullscreen ? "rounded-none" : "rounded-t-lg"}`}>
           <DialogTitle className="flex items-center gap-2 text-white">
             <Presentation className="h-5 w-5" />
             {title}
@@ -87,10 +87,10 @@ export default function PresentationFilesViewer({ isOpen, onClose, presentationI
               </div>
             </div>
           ) : (
-            <div className={`grid gap-3 h-full ${hasPdf && hasPpt ? (isFullscreen ? "grid-cols-1 md:grid-cols-5" : "grid-cols-1 md:grid-cols-2") : "grid-cols-1"}`}>
+            <div className={`grid gap-2 h-full ${hasPdf && hasPpt ? (isFullscreen ? "grid-cols-1 md:grid-cols-5" : "grid-cols-1 md:grid-cols-2") : "grid-cols-1"}`}>
               {hasPpt && (
                 <div className={`flex flex-col h-full ${hasPdf && hasPpt && isFullscreen ? "md:col-span-3" : ""}`}>
-                  <div className="px-4 py-1.5 bg-white border-b text-sm font-medium flex items-center gap-2"><Presentation className="h-4 w-4" /> Presentation</div>
+                  <div className="px-3 py-1 bg-white border-b text-xs font-medium flex items-center gap-2"><Presentation className="h-4 w-4" /> Presentation</div>
                   {pptUrl!.startsWith("blob:") ? (
                     <div className="flex-1 flex items-center justify-center bg-white">
                       <div className="text-center text-gray-700">
@@ -108,7 +108,7 @@ export default function PresentationFilesViewer({ isOpen, onClose, presentationI
               )}
               {hasPdf && (
                 <div className={`flex flex-col h-full ${hasPdf && hasPpt && isFullscreen ? "md:col-span-2" : ""}`}>
-                  <div className="px-4 py-1.5 bg-white border-b text-sm font-medium flex items-center gap-2"><FileText className="h-4 w-4" /> PDF</div>
+                  <div className="px-3 py-1 bg-white border-b text-xs font-medium flex items-center gap-2"><FileText className="h-4 w-4" /> PDF</div>
                   <div className="flex-1 min-h-0">
                     <iframe src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`} className="w-full h-full bg-white" title={`${title} - PDF`} />
                   </div>
@@ -119,7 +119,7 @@ export default function PresentationFilesViewer({ isOpen, onClose, presentationI
         </div>
 
         {(hasPdf || hasPpt) && (
-          <div className="bg-gray-50 px-6 py-3 border-t flex items-center justify-end gap-2">
+          <div className="bg-gray-50 px-3 py-2 border-t flex items-center justify-end gap-2">
             {hasPpt && (
               <Button variant="outline" size="sm" onClick={() => window.open(pptUrl!, "_blank")} className="text-ucla-blue border-ucla-blue hover:bg-blue-50">Open PPT</Button>
             )}
