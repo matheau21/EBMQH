@@ -544,7 +544,7 @@ export const questionsAPI = {
   async get(id: string): Promise<{ question: Question }> {
     return apiRequest(`/questions/${id}`);
   },
-  async create(input: { prompt: string; specialty?: string; presentationId?: string; explanation?: string; referenceUrl?: string; isActive?: boolean; choices: Array<{ content: string; isCorrect: boolean }> }): Promise<{ message: string; question: Question }> {
+  async create(input: { prompt: string; specialty?: string; presentationId?: string; explanation?: string; referenceUrl?: string; isActive?: boolean; choices: Array<{ content: string; isCorrect: boolean }>; highlights?: QuestionHighlight[] }): Promise<{ message: string; question: Question }> {
     return apiRequest(`/questions`, { method: "POST", body: JSON.stringify(input) });
   },
   async update(id: string, input: Partial<{ prompt: string; specialty?: string | null; presentationId?: string | null; explanation?: string | null; referenceUrl?: string | null; isActive?: boolean; choices: Array<{ content: string; isCorrect: boolean }> }>): Promise<{ message: string; question: Question }> {
