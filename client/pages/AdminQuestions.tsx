@@ -1,0 +1,223 @@
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { questionsAPI, presentationsAPI } from "@/lib/api";
+import { useAdmin } from "@/contexts/AdminContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+
+export default function AdminQuestions() {
+  const { isAuthenticated } = useAdmin();
+  const qc = useQueryClient();
+
+  const { data: specialties } = useQuery({
+    queryKey: ["specialties"],
+    queryFn: () => presentationsAPI.getSpecialties(),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: presentations } = useQuery({
+    queryKey: ["presentations", { limit: 100 }],
+    queryFn: async () => {
+      const res = await presentationsAPI.getPresentations({ limit: 100 });
+      return res.presentations || [];
+    },
+  });
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-questions"],
+    queryFn: () => questionsAPI.adminList({ page: 1, limit: 50 }),
+    enabled: isAuthenticated,
+  });
+
+  const [form, setForm] = useState({
+    prompt: "",
+    specialty: "",
+    presentationId: "",
+    explanation: "",
+    referenceUrl: "",
+    isActive: true,
+    choices: [
+      { content: "", isCorrect: true },
+      { content: "", isCorrect: false },
+      { content: "", isCorrect: false },
+      { content: "", isCorrect: false },
+    ] as Array<{ content: string; isCorrect: boolean }>,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: () => questionsAPI.create({
+      prompt: form.prompt,
+      specialty: form.specialty || undefined,
+      presentationId: form.presentationId || undefined,
+      explanation: form.explanation || undefined,
+      referenceUrl: form.referenceUrl || undefined,
+      isActive: form.isActive,
+      choices: form.choices.filter((c) => c.content.trim().length > 0),
+    }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-questions"] });
+      setForm({
+        prompt: "",
+        specialty: "",
+        presentationId: "",
+        explanation: "",
+        referenceUrl: "",
+        isActive: true,
+        choices: [
+          { content: "", isCorrect: true },
+          { content: "", isCorrect: false },
+          { content: "", isCorrect: false },
+          { content: "", isCorrect: false },
+        ],
+      });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => questionsAPI.remove(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-questions"] }),
+  });
+
+  const setCorrectIndex = (idx: number) => {
+    setForm((prev) => ({
+      ...prev,
+      choices: prev.choices.map((c, i) => ({ ...c, isCorrect: i === idx })),
+    }));
+  };
+
+  const addChoice = () => {
+    setForm((prev) => ({
+      ...prev,
+      choices: prev.choices.length < 8 ? [...prev.choices, { content: "", isCorrect: false }] : prev.choices,
+    }));
+  };
+
+  const removeChoice = (idx: number) => {
+    setForm((prev) => {
+      const next = prev.choices.filter((_, i) => i !== idx);
+      // Ensure at least one correct remains
+      if (!next.some((c) => c.isCorrect) && next.length > 0) next[0].isCorrect = true;
+      return { ...prev, choices: next };
+    });
+  };
+
+  if (!isAuthenticated) return <div className="p-4">Please login as admin.</div>;
+
+  return (
+    <div className="space-y-6">
+      <div className="p-4 border rounded-lg space-y-3">
+        <h2 className="font-medium">Create Question</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="sm:col-span-2">
+            <Label>Prompt</Label>
+            <Textarea value={form.prompt} onChange={(e) => setForm({ ...form, prompt: e.target.value })} placeholder="Enter question" />
+          </div>
+          <div>
+            <Label>Specialty</Label>
+            <Select value={form.specialty} onValueChange={(v) => setForm({ ...form, specialty: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Optional" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {(specialties?.specialties || []).map((s) => (
+                  <SelectItem key={s} value={s}>{s}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Presentation (optional)</Label>
+            <Select value={form.presentationId} onValueChange={(v) => setForm({ ...form, presentationId: v })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Link to a presentation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {(presentations || []).map((p: any) => (
+                  <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Reference URL</Label>
+            <Input value={form.referenceUrl} onChange={(e) => setForm({ ...form, referenceUrl: e.target.value })} placeholder="https://..." />
+          </div>
+          <div className="sm:col-span-2">
+            <Label>Explanation (optional)</Label>
+            <Textarea value={form.explanation} onChange={(e) => setForm({ ...form, explanation: e.target.value })} placeholder="Why is this correct?" />
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox checked={form.isActive} onCheckedChange={(v) => setForm({ ...form, isActive: !!v })} />
+            <Label>Active</Label>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <div className="font-medium">Choices (up to 8)</div>
+          {form.choices.map((c, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="correct"
+                className="h-4 w-4"
+                checked={c.isCorrect}
+                onChange={() => setCorrectIndex(idx)}
+                aria-label={`Mark choice ${idx + 1} correct`}
+              />
+              <Input
+                value={c.content}
+                onChange={(e) => setForm({ ...form, choices: form.choices.map((cc, i) => i === idx ? { ...cc, content: e.target.value } : cc) })}
+                placeholder={`Choice ${idx + 1}`}
+              />
+              {form.choices.length > 2 && (
+                <Button variant="outline" onClick={() => removeChoice(idx)}>Remove</Button>
+              )}
+            </div>
+          ))}
+          {form.choices.length < 8 && (
+            <Button variant="outline" onClick={addChoice}>Add Choice</Button>
+          )}
+        </div>
+
+        <div className="flex justify-end">
+          <Button
+            className="bg-ucla-blue"
+            onClick={() => createMutation.mutate()}
+            disabled={createMutation.isPending || !form.prompt.trim() || form.choices.filter((c) => c.content.trim()).length < 2 || !form.choices.some((c) => c.isCorrect)}
+          >
+            {createMutation.isPending ? "Creating..." : "Create"}
+          </Button>
+        </div>
+        {createMutation.error && (
+          <div className="text-sm text-red-600">{(createMutation.error as any).message || "Error creating question"}</div>
+        )}
+      </div>
+
+      <div className="p-4 border rounded-lg">
+        <h2 className="font-medium mb-3">Existing Questions</h2>
+        {isLoading && <div>Loading...</div>}
+        <div className="space-y-2">
+          {(data?.questions || []).map((q) => (
+            <div key={q.id} className="border rounded p-3">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="font-medium">{q.prompt}</div>
+                  <div className="text-xs text-gray-600">{q.specialty || "General"} • {q.choices.length} choices</div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="destructive" onClick={() => deleteMutation.mutate(q.id)}>Delete</Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
