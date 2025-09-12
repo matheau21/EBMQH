@@ -37,6 +37,26 @@ export interface Presentation {
   };
 }
 
+export interface QuestionChoice {
+  id: string;
+  content: string;
+  isCorrect: boolean;
+  orderIndex: number;
+}
+
+export interface Question {
+  id: string;
+  prompt: string;
+  specialty?: string;
+  presentationId?: string;
+  explanation?: string;
+  referenceUrl?: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  choices: QuestionChoice[];
+}
+
 export interface AuthResponse {
   message: string;
   user: User;
@@ -455,6 +475,54 @@ export const presentationsAPI = {
   },
 };
 
+// Questions API
+export const questionsAPI = {
+  async list(params?: { specialty?: string; presentationId?: string; limit?: number; random?: boolean }): Promise<{ questions: Question[]; pagination: { page: number; limit: number; total: number; pages: number } }> {
+    try {
+      const backendAvailable = await checkBackendAvailability();
+      if (!backendAvailable) {
+        return { questions: [], pagination: { page: 1, limit: params?.limit || 10, total: 0, pages: 0 } };
+      }
+      const sp = new URLSearchParams();
+      if (params?.specialty) sp.append("specialty", params.specialty);
+      if (params?.presentationId) sp.append("presentationId", params.presentationId);
+      if (params?.limit) sp.append("limit", String(params.limit));
+      if (params?.random) sp.append("random", "1");
+      const q = sp.toString();
+      return apiRequest(`/questions${q ? `?${q}` : ""}`);
+    } catch (e) {
+      console.warn("Questions list failed, returning empty", e);
+      return { questions: [], pagination: { page: 1, limit: params?.limit || 10, total: 0, pages: 0 } } as any;
+    }
+  },
+  async adminList(params?: { page?: number; limit?: number; specialty?: string; presentationId?: string }): Promise<{ questions: Question[]; pagination: { page: number; limit: number; total: number; pages: number } }> {
+    try {
+      const sp = new URLSearchParams();
+      if (params?.page) sp.append("page", String(params.page));
+      if (params?.limit) sp.append("limit", String(params.limit));
+      if (params?.specialty) sp.append("specialty", params.specialty);
+      if (params?.presentationId) sp.append("presentationId", params.presentationId);
+      const q = sp.toString();
+      return await apiRequest(`/questions/admin${q ? `?${q}` : ""}`);
+    } catch (e) {
+      console.warn("Admin questions list failed, returning empty", e);
+      return { questions: [], pagination: { page: 1, limit: params?.limit || 10 || 10, total: 0, pages: 0 } } as any;
+    }
+  },
+  async get(id: string): Promise<{ question: Question }> {
+    return apiRequest(`/questions/${id}`);
+  },
+  async create(input: { prompt: string; specialty?: string; presentationId?: string; explanation?: string; referenceUrl?: string; isActive?: boolean; choices: Array<{ content: string; isCorrect: boolean }> }): Promise<{ message: string; question: Question }> {
+    return apiRequest(`/questions`, { method: "POST", body: JSON.stringify(input) });
+  },
+  async update(id: string, input: Partial<{ prompt: string; specialty?: string | null; presentationId?: string | null; explanation?: string | null; referenceUrl?: string | null; isActive?: boolean; choices: Array<{ content: string; isCorrect: boolean }> }>): Promise<{ message: string; question: Question }> {
+    return apiRequest(`/questions/${id}`, { method: "PUT", body: JSON.stringify(input) });
+  },
+  async remove(id: string): Promise<{ message: string }> {
+    return apiRequest(`/questions/${id}`, { method: "DELETE" });
+  },
+};
+
 // Health check
 export const healthAPI = {
   async check(): Promise<{
@@ -513,6 +581,7 @@ export default {
   auth: authAPI,
   users: usersAPI,
   presentations: presentationsAPI,
+  questions: questionsAPI,
   health: healthAPI,
   adminUsers: adminUsersAPI,
 };
