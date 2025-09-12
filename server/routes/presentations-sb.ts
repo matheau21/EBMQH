@@ -118,6 +118,45 @@ router.get("/admin/:id", authenticateAdminToken, async (req: AdminAuthRequest, r
   }
 });
 
+// GET /api/presentations/files - get signed URLs for files (public for approved)
+router.get("/:id/files", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabaseAdmin
+      .from("presentations")
+      .select("status, pdf_path, ppt_path, original_article_url")
+      .eq("id", id)
+      .single();
+    if (error || !data) return res.status(404).json({ error: "Presentation not found" });
+    if (data.status !== "approved") return res.status(403).json({ error: "Not available" });
+
+    let pdfUrl: string | undefined;
+    let pptUrl: string | undefined;
+
+    if (data.pdf_path) {
+      const { data: signed, error: se } = await supabaseAdmin.storage
+        .from("presentations")
+        .createSignedUrl(data.pdf_path, 60 * 60); // 1 hour
+      if (!se && signed?.signedUrl) pdfUrl = signed.signedUrl;
+    }
+
+    if (!pdfUrl && data.original_article_url) {
+      pdfUrl = data.original_article_url;
+    }
+
+    if (data.ppt_path) {
+      const { data: signed, error: se } = await supabaseAdmin.storage
+        .from("presentations")
+        .createSignedUrl(data.ppt_path, 60 * 60); // 1 hour
+      if (!se && signed?.signedUrl) pptUrl = signed.signedUrl;
+    }
+
+    return res.json({ pdfUrl, pptUrl });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // GET /api/presentations/specialties
 router.get("/specialties", async (_req: Request, res: Response) => {
   try {
