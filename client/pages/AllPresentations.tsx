@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect } from "react";
 import { PresentationCard } from "@/components/PresentationCard";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
 import { SpecialtyFilters } from "@/components/SpecialtyFilters";
-import { AdminToggleButton } from "@/components/AdminToggleButton";
 import { UploadModal } from "@/components/UploadModal";
 import { PublishButton } from "@/components/PublishButton";
 import { useAdmin } from "@/contexts/AdminContext";
