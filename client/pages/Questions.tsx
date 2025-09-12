@@ -8,6 +8,8 @@ import { questionsAPI, presentationsAPI, Question } from "@/lib/api";
 import { ArrowRight, CheckCircle2, XCircle } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import PdfHighlightViewer from "@/components/PdfHighlightViewer";
+import SiteFooter from "@/components/SiteFooter";
+import { Link } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
