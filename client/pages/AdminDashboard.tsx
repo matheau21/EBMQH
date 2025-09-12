@@ -316,6 +316,10 @@ export default function AdminDashboard() {
             ))}
           </div>
         </TabsContent>
+
+        <TabsContent value="questions" className="mt-4">
+          <AdminQuestions />
+        </TabsContent>
       </Tabs>
     </div>
   );
