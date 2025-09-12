@@ -261,6 +261,7 @@ router.put("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Re
     if (body.explanation !== undefined) patch.explanation = body.explanation || null;
     if (body.referenceUrl !== undefined) patch.reference_url = body.referenceUrl || null;
     if (body.isActive !== undefined) patch.is_active = body.isActive;
+    if (body.highlights !== undefined) patch.highlights = body.highlights;
 
     if (Object.keys(patch).length) {
       const { error: ue } = await supabaseAdmin.from("questions").update(patch).eq("id", id);
