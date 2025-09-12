@@ -64,7 +64,9 @@ export default function AdminEditTrial() {
   if (error) return <div className="p-6 text-red-600">{error}</div>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-4">
+    <div className="min-h-screen bg-gray-50">
+      <SiteHeader showQuickLinks />
+      <div className="max-w-3xl mx-auto p-6 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Edit Trial</h1>
         <div className="space-x-2">
@@ -149,6 +151,7 @@ export default function AdminEditTrial() {
       </div>
 
       <ManageFilesDialog presentationId={id!} open={openFiles} onOpenChange={setOpenFiles} />
+      </div>
     </div>
   );
 }
