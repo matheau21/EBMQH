@@ -11,9 +11,10 @@ interface Props {
   title: string;
   fallbackPdfUrl?: string;
   fallbackPptUrl?: string;
+  onCountedView?: (newCount: number) => void;
 }
 
-export default function PresentationFilesViewer({ isOpen, onClose, presentationId, title, fallbackPdfUrl, fallbackPptUrl }: Props) {
+export default function PresentationFilesViewer({ isOpen, onClose, presentationId, title, fallbackPdfUrl, fallbackPptUrl, onCountedView }: Props) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -45,6 +46,21 @@ export default function PresentationFilesViewer({ isOpen, onClose, presentationI
     run();
     return () => { ignore = true; };
   }, [isOpen, presentationId, fallbackPdfUrl, fallbackPptUrl]);
+
+  // After open, wait 10s then increment unique view (per browser per presentation)
+  useEffect(() => {
+    if (!isOpen) return;
+    const key = `viewed:${presentationId}`;
+    if (localStorage.getItem(key)) return; // already counted for this browser
+    const t = setTimeout(async () => {
+      try {
+        const res = await presentationsAPI.incrementViewCount(presentationId);
+        localStorage.setItem(key, "1");
+        onCountedView?.(res.viewerCount);
+      } catch {}
+    }, 10000);
+    return () => clearTimeout(t);
+  }, [isOpen, presentationId, onCountedView]);
 
   const pptEmbedUrl = useMemo(() => {
     if (!pptUrl) return undefined;
