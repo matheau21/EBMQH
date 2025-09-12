@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { SPECIALTY_NAMES } from "@/components/SpecialtyFilters";
 import ManageFilesDialog from "@/components/ManageFilesDialog";
+import SiteHeader from "@/components/SiteHeader";
 
 export default function AdminEditTrial() {
   const { id } = useParams<{ id: string }>();
