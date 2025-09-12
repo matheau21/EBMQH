@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 import FileDropzone from "./FileDropzone";
 import { presentationsAPI } from "@/lib/api";
+import PresentationFilesViewer from "@/components/PresentationFilesViewer";
 
 interface Props {
   presentationId: string;
@@ -21,6 +22,7 @@ export default function ManageFilesDialog({ presentationId, open, onOpenChange }
   const [pdfPath, setPdfPath] = useState<string | null>(null);
   const [pptPath, setPptPath] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [viewerOpen, setViewerOpen] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -40,6 +42,8 @@ export default function ManageFilesDialog({ presentationId, open, onOpenChange }
     return () => { ignore = true; };
   }, [presentationId, open]);
 
+  const hasAny = !!pdfPath || !!pptPath;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
@@ -52,7 +56,8 @@ export default function ManageFilesDialog({ presentationId, open, onOpenChange }
             <div className="font-medium mb-2">PDF</div>
             {pdfPath ? (
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-gray-700 font-mono inline-block max-w-[70%] align-middle" title={pdfPath || undefined}>{middleEllipsis(pdfPath || "", 48)}</span>
+                <span className="text-gray-700 font-mono inline-block max-w-[60%] align-middle" title={pdfPath || undefined}>{middleEllipsis(pdfPath || "", 48)}</span>
+                <Button variant="outline" size="sm" onClick={()=>setViewerOpen(true)}>View</Button>
                 <Button variant="outline" size="sm" onClick={async ()=>{
                   try { await presentationsAPI.deleteFile(presentationId, "pdf"); setPdfPath(null);} catch(e:any){ setError(e?.message||"Failed to remove PDF"); }
                 }}>Remove</Button>
@@ -73,7 +78,8 @@ export default function ManageFilesDialog({ presentationId, open, onOpenChange }
             <div className="font-medium mb-2">PPT/PPTX</div>
             {pptPath ? (
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-gray-700 font-mono inline-block max-w-[70%] align-middle" title={pptPath || undefined}>{middleEllipsis(pptPath || "", 48)}</span>
+                <span className="text-gray-700 font-mono inline-block max-w-[60%] align-middle" title={pptPath || undefined}>{middleEllipsis(pptPath || "", 48)}</span>
+                <Button variant="outline" size="sm" onClick={()=>setViewerOpen(true)}>View</Button>
                 <Button variant="outline" size="sm" onClick={async ()=>{
                   try { await presentationsAPI.deleteFile(presentationId, "ppt"); setPptPath(null);} catch(e:any){ setError(e?.message||"Failed to remove PPT"); }
                 }}>Remove</Button>
@@ -82,7 +88,7 @@ export default function ManageFilesDialog({ presentationId, open, onOpenChange }
               <FileDropzone accept={["ppt","pptx"]} onFile={async (f) => {
                 try {
                   const res = await presentationsAPI.uploadFile(presentationId, f);
-                setPptPath(res.path);
+                  setPptPath(res.path);
                 } catch (e: any) {
                   setError(e?.message || "Failed to upload PPT/PPTX");
                 }
@@ -93,9 +99,22 @@ export default function ManageFilesDialog({ presentationId, open, onOpenChange }
           {error && <div className="text-sm text-red-600">{error}</div>}
         </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Close</Button>
+        <DialogFooter className="flex items-center justify-between">
+          <div />
+          <div className="flex items-center gap-2">
+            {hasAny && (
+              <Button onClick={()=>setViewerOpen(true)} className="bg-ucla-blue text-white">View Files</Button>
+            )}
+            <Button variant="outline" onClick={() => onOpenChange(false)}>Close</Button>
+          </div>
         </DialogFooter>
+
+        <PresentationFilesViewer
+          isOpen={viewerOpen}
+          onClose={() => setViewerOpen(false)}
+          presentationId={presentationId}
+          title="Files"
+        />
       </DialogContent>
     </Dialog>
   );
