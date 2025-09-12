@@ -10,7 +10,7 @@ import { AdminProvider } from "@/contexts/AdminContext";
 import { PublishProvider } from "@/contexts/PublishContext";
 import Index from "./pages/Index";
 import AllPresentations from "./pages/AllPresentations";
-import ComingSoon from "./pages/ComingSoon";
+import Questions from "./pages/Questions";
 import NotFound from "./pages/NotFound";
 import AdminUsers from "./pages/AdminUsers";
 import AdminDashboard from "./pages/AdminDashboard";
