@@ -11,6 +11,7 @@ import { PublishProvider } from "@/contexts/PublishContext";
 import Index from "./pages/Index";
 import AllPresentations from "./pages/AllPresentations";
 import Questions from "./pages/Questions";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import AdminUsers from "./pages/AdminUsers";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/presentations" element={<AllPresentations />} />
               <Route path="/questions" element={<Questions />} />
+              <Route path="/about" element={<About />} />
               <Route path="/coming-soon" element={<Questions />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />

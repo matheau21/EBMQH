@@ -15,6 +15,7 @@ import PresentationFilesViewer from "@/components/PresentationFilesViewer";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { useNavigate, useLocation } from "react-router-dom";
+import { siteAPI } from "@/lib/api";
 function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected"|"pending") => void }) {
   const [open, setOpen] = useState(false);
   const [showViewer, setShowViewer] = useState(false);
@@ -139,6 +140,114 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
 
 import SiteHeader from "@/components/SiteHeader";
 
+function SiteEditor() {
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [title, setTitle] = useState("About EBM Quick Hits");
+  const [subtitle, setSubtitle] = useState<string | "">("");
+  const [sections, setSections] = useState<Array<{ heading: string; body: string }>>([]);
+  const [refUrl, setRefUrl] = useState<string>("");
+  const [refPath, setRefPath] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        setLoading(true);
+        const cfg = await siteAPI.getAbout();
+        if (ignore) return;
+        setTitle(cfg.title || "About EBM Quick Hits");
+        setSubtitle(cfg.subtitle || "");
+        setSections(Array.isArray(cfg.sections) ? cfg.sections : []);
+        setRefUrl(cfg.referenceCard?.url || "");
+        setRefPath(cfg.referenceCard?.filePath || "");
+      } catch (e: any) {
+        setError(e?.message || "Failed to load");
+      } finally {
+        setLoading(false);
+      }
+    })();
+    return () => { ignore = true; };
+  }, []);
+
+  const addSection = () => setSections((s) => [...s, { heading: "New Section", body: "" }]);
+  const removeSection = (idx: number) => setSections((s) => s.filter((_, i) => i !== idx));
+  const updateSection = (idx: number, key: "heading"|"body", val: string) => setSections((s) => s.map((it, i) => i === idx ? { ...it, [key]: val } : it));
+
+  const onUploadRef = async (file: File) => {
+    try {
+      const { path } = await siteAPI.uploadReference(file);
+      setRefPath(path);
+      setRefUrl("");
+    } catch (e: any) {
+      setError(e?.message || "Upload failed");
+    }
+  };
+
+  const onSave = async () => {
+    try {
+      setSaving(true);
+      setError(null);
+      await siteAPI.saveAbout({ title, subtitle, sections, referenceCard: { url: refUrl || null, filePath: refPath || null } });
+      alert("Saved");
+    } catch (e: any) {
+      setError(e?.message || "Save failed");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return <div className="border rounded p-4">Loading…</div>;
+
+  return (
+    <div className="border rounded p-4 space-y-4">
+      <h2 className="font-medium">Site Content</h2>
+      <div className="grid sm:grid-cols-2 gap-3">
+        <div className="sm:col-span-2">
+          <label className="text-sm">About Title</label>
+          <Input value={title} onChange={(e)=>setTitle(e.target.value)} />
+        </div>
+        <div className="sm:col-span-2">
+          <label className="text-sm">About Subtitle</label>
+          <Input value={subtitle} onChange={(e)=>setSubtitle(e.target.value)} />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="font-medium">Sections</div>
+          <Button variant="outline" onClick={addSection}>Add Section</Button>
+        </div>
+        {sections.length === 0 && <div className="text-sm text-gray-600">No sections yet.</div>}
+        {sections.map((s, i) => (
+          <div key={i} className="border rounded p-3 space-y-2 bg-white">
+            <div className="flex items-center gap-2">
+              <Input value={s.heading} onChange={(e)=>updateSection(i, "heading", e.target.value)} placeholder="Section heading" />
+              <Button variant="outline" onClick={()=>removeSection(i)}>Remove</Button>
+            </div>
+            <textarea className="w-full border rounded p-2 text-sm min-h-[100px]" value={s.body} onChange={(e)=>updateSection(i, "body", e.target.value)} placeholder="Section body (supports line breaks)" />
+          </div>
+        ))}
+      </div>
+
+      <div className="space-y-2">
+        <div className="font-medium">EBM Reference Card Link</div>
+        <Input placeholder="https://..." value={refUrl} onChange={(e)=>{ setRefUrl(e.target.value); if (e.target.value) setRefPath(""); }} />
+        <div className="text-xs text-gray-600">Or upload a file to link to:</div>
+        <input type="file" onChange={(e)=>{ const f=e.target.files?.[0]; if (f) onUploadRef(f); }} />
+        {refPath && <div className="text-xs text-gray-700">Uploaded path: <span className="font-mono">{refPath}</span></div>}
+      </div>
+
+      {error && <div className="text-sm text-red-600">{error}</div>}
+
+      <div className="pt-2">
+        <Button className="bg-ucla-blue" disabled={saving} onClick={onSave}>{saving ? "Saving…" : "Save"}</Button>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
@@ -255,6 +364,7 @@ export default function AdminDashboard() {
           <TabsTrigger value="trials">Trials</TabsTrigger>
           <TabsTrigger value="approvals">Approvals{pending?.pagination?.total ? ` (${pending.pagination.total})` : pending?.presentations?.length ? ` (${pending.presentations.length})` : ""}</TabsTrigger>
           <TabsTrigger value="questions">Questions</TabsTrigger>
+          <TabsTrigger value="site">Site</TabsTrigger>
         </TabsList>
 
         <TabsContent value="users" className="mt-4">
@@ -385,6 +495,10 @@ export default function AdminDashboard() {
 
         <TabsContent value="questions" className="mt-4">
           <AdminQuestions />
+        </TabsContent>
+
+        <TabsContent value="site" className="mt-4">
+          <SiteEditor />
         </TabsContent>
       </Tabs>
       </div>

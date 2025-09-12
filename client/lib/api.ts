@@ -555,6 +555,37 @@ export const questionsAPI = {
   },
 };
 
+// Site API
+export const siteAPI = {
+  async getAbout(): Promise<{ title: string; subtitle?: string | null; sections: Array<{ heading: string; body: string }>; referenceCard?: { url?: string | null; filePath?: string | null; signedUrl?: string | null } }> {
+    try {
+      const backendAvailable = await checkBackendAvailability();
+      if (!backendAvailable) {
+        return { title: "About EBM Quick Hits", subtitle: "", sections: [], referenceCard: {} } as any;
+      }
+      return await apiRequest(`/site/about`);
+    } catch {
+      return { title: "About EBM Quick Hits", sections: [], referenceCard: {} } as any;
+    }
+  },
+  async saveAbout(input: { title: string; subtitle?: string | null; sections: Array<{ heading: string; body: string }>; referenceCard?: { url?: string | null; filePath?: string | null } }): Promise<{ message: string }> {
+    return apiRequest(`/site/about`, { method: "PUT", body: JSON.stringify(input) });
+  },
+  async uploadReference(file: File): Promise<{ message: string; path: string }> {
+    const base64: string = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        const idx = result.indexOf(",");
+        resolve(idx >= 0 ? result.slice(idx + 1) : result);
+      };
+      reader.onerror = () => reject(new Error("Failed to read file"));
+      reader.readAsDataURL(file);
+    });
+    return apiRequest(`/site/reference/upload`, { method: "POST", body: JSON.stringify({ filename: file.name, contentBase64: base64 }) });
+  },
+};
+
 // Health check
 export const healthAPI = {
   async check(): Promise<{

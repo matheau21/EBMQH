@@ -47,6 +47,10 @@ export function createServer() {
   // Questions routes
   app.use("/api/questions", questionsRoutes);
 
+  // Site routes (About, reference)
+  const siteRoutes = (await import("./routes/site.js")).default;
+  app.use("/api/site", siteRoutes);
+
   // Health check endpoint
   app.get("/api/health", (_req, res) => {
     res.json({
