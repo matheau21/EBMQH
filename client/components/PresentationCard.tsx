@@ -14,6 +14,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { PresentationViewer } from "./PresentationViewer";
+import PresentationFilesViewer from "./PresentationFilesViewer";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -102,6 +103,7 @@ export function PresentationCard({
   const { isAdminMode } = useAdmin();
   const [showPresentationViewer, setShowPresentationViewer] = useState(false);
   const [showArticleViewer, setShowArticleViewer] = useState(false);
+  const [showFilesViewer, setShowFilesViewer] = useState(false);
   const specialtyColors: Record<string, string> = {
     Cardiology:
       "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20",
@@ -257,16 +259,16 @@ export function PresentationCard({
         <div className="flex flex-col gap-2">
           {/* Quick Hits Button */}
           <Button
-            onClick={() => setShowPresentationViewer(true)}
+            onClick={() => setShowFilesViewer(true)}
             className="w-full bg-ucla-blue hover:bg-blue-700 text-white group-hover:bg-blue-700 transition-all duration-300"
           >
             <Presentation className="h-4 w-4 mr-2" />
-            Quick Hits
+            View Files
           </Button>
 
           {/* Original Article Button */}
           <Button
-            onClick={() => setShowArticleViewer(true)}
+            onClick={() => setShowFilesViewer(true)}
             variant="outline"
             className="w-full border-ucla-blue text-ucla-blue hover:bg-blue-50 transition-all duration-300"
           >
@@ -275,22 +277,14 @@ export function PresentationCard({
           </Button>
         </div>
 
-        {/* Presentation Viewer */}
-        <PresentationViewer
-          isOpen={showPresentationViewer}
-          onClose={() => setShowPresentationViewer(false)}
+        {/* Combined Files Viewer */}
+        <PresentationFilesViewer
+          isOpen={showFilesViewer}
+          onClose={() => setShowFilesViewer(false)}
+          presentationId={id}
           title={title}
-          fileUrl={presentationFileUrl}
-          type="presentation"
-        />
-
-        {/* Article Viewer */}
-        <PresentationViewer
-          isOpen={showArticleViewer}
-          onClose={() => setShowArticleViewer(false)}
-          title={`${title} - Original Article`}
-          fileUrl={originalArticleUrl}
-          type="article"
+          fallbackPdfUrl={originalArticleUrl}
+          fallbackPptUrl={presentationFileUrl}
         />
       </CardContent>
     </Card>
