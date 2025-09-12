@@ -124,12 +124,12 @@ export default function QuizPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm text-gray-700">Specialty</label>
-                  <Select value={selectedSpecialty} onValueChange={(v) => setSelectedSpecialty(v)}>
+                  <Select value={selectedSpecialty ? selectedSpecialty : "__any__"} onValueChange={(v) => setSelectedSpecialty(v === "__any__" ? "" : v)}>
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Any specialty" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Any</SelectItem>
+                      <SelectItem value="__any__">Any</SelectItem>
                       {(specialties?.specialties || []).map((s) => (
                         <SelectItem key={s} value={s}>{s}</SelectItem>
                       ))}
@@ -139,11 +139,12 @@ export default function QuizPage() {
                 {mode === "presentation" && (
                   <div>
                     <label className="text-sm text-gray-700">Presentation</label>
-                    <Select value={selectedPresentationId} onValueChange={(v) => setSelectedPresentationId(v)}>
+                    <Select value={selectedPresentationId ? selectedPresentationId : "__any__"} onValueChange={(v) => setSelectedPresentationId(v === "__any__" ? "" : v)}>
                       <SelectTrigger className="mt-1">
                         <SelectValue placeholder={selectedSpecialty ? "Select presentation" : "Select specialty first"} />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="__any__">Any</SelectItem>
                         {(presentations || []).map((p) => (
                           <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>
                         ))}
