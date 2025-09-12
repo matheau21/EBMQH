@@ -340,6 +340,7 @@ function QuizPageInner() {
           </CardContent>
         </Card>
       </div>
+      <SiteFooter />
     </div>
   );
 }
