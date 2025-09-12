@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { questionsAPI, presentationsAPI, Question } from "@/lib/api";
 import { ArrowRight, CheckCircle2, XCircle } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
 
 export default function QuizPage() {
   const [mode, setMode] = useState<"all" | "specialty" | "presentation">("all");
