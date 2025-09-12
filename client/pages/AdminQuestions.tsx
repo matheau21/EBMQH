@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { questionsAPI, presentationsAPI } from "@/lib/api";
 import { useAdmin } from "@/contexts/AdminContext";
@@ -51,6 +51,33 @@ export default function AdminQuestions() {
     ] as Array<{ content: string; isCorrect: boolean }>,
   };
   const [form, setForm] = useState(initialForm);
+
+  // Fetch PDF URL for selected presentation to enable highlights workflow
+  const [pdfUrl, setPdfUrl] = useState<string | undefined>(undefined);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPdf = async () => {
+      if (!form.presentationId) {
+        setPdfUrl(undefined);
+        setPdfError(null);
+        return;
+      }
+      setPdfLoading(true);
+      setPdfError(null);
+      try {
+        const res = await presentationsAPI.getFileUrls(form.presentationId);
+        setPdfUrl(res.pdfUrl || undefined);
+      } catch (_e) {
+        setPdfUrl(undefined);
+        setPdfError(null);
+      } finally {
+        setPdfLoading(false);
+      }
+    };
+    fetchPdf();
+  }, [form.presentationId]);
 
   const resetForm = () => {
     setEditingId(null);
@@ -206,8 +233,45 @@ export default function AdminQuestions() {
         </div>
 
         <div className="space-y-2">
+          <div className="font-medium">Choices (up to 8)</div>
+          {form.choices.map((c, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="correct"
+                className="h-4 w-4"
+                checked={c.isCorrect}
+                onChange={() => setCorrectIndex(idx)}
+                aria-label={`Mark choice ${idx + 1} correct`}
+              />
+              <Input
+                value={c.content}
+                onChange={(e) => setForm({ ...form, choices: form.choices.map((cc, i) => i === idx ? { ...cc, content: e.target.value } : cc) })}
+                placeholder={`Choice ${idx + 1}`}
+              />
+              {form.choices.length > 2 && (
+                <Button variant="outline" onClick={() => removeChoice(idx)}>Remove</Button>
+              )}
+            </div>
+          ))}
+          {form.choices.length < 8 && (
+            <Button variant="outline" onClick={addChoice}>Add Choice</Button>
+          )}
+        </div>
+
+        <div className="space-y-2 mt-4">
           <div className="font-medium">Answer Source Highlights (optional)</div>
           <div className="text-xs text-gray-600">Provide phrases to highlight in the linked PDF after the question is answered. Occurrence index = which appearance of the phrase on that page (1 = first, 2 = second, etc.).</div>
+
+          {!form.presentationId ? (
+            <div className="text-xs text-gray-600">Select a presentation to enable PDF highlights.</div>
+          ) : pdfLoading ? (
+            <div className="text-xs text-gray-600">Loading PDF…</div>
+          ) : !pdfUrl ? (
+            <div className="text-xs text-red-600">No PDF found for the selected presentation. Highlights are disabled.</div>
+          ) : null}
+
+          {/* Highlights editor */}
           <div className="space-y-2">
             {(form.highlights || []).map((h, idx) => (
               <div key={idx} className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
@@ -234,10 +298,25 @@ export default function AdminQuestions() {
                 </div>
                 <div className="sm:col-span-2">
                   <Label className="text-xs">Color</Label>
-                  <Input value={h.color || ""} onChange={(e)=>{
-                    const val = e.target.value;
-                    setForm(prev=>({ ...prev, highlights: prev.highlights.map((hh,i)=> i===idx ? { ...hh, color: val } : hh) }));
-                  }} placeholder="#ffff00 or name" />
+                  <div className="flex gap-2 items-center">
+                    {[
+                      { name: "Yellow", value: "#fff59d" },
+                      { name: "Green", value: "#a5d6a7" },
+                      { name: "Blue", value: "#90caf9" },
+                      { name: "Orange", value: "#ffcc80" },
+                      { name: "Pink", value: "#f8bbd0" },
+                    ].map((c) => (
+                      <button
+                        key={c.value}
+                        type="button"
+                        className={`h-6 w-6 rounded border ${ (h.color || "#fff59d") === c.value ? "ring-2 ring-black" : ""}`}
+                        style={{ backgroundColor: c.value }}
+                        onClick={() => setForm(prev=>({ ...prev, highlights: prev.highlights.map((hh,i)=> i===idx ? { ...hh, color: c.value } : hh) }))}
+                        aria-label={c.name}
+                        title={c.name}
+                      />
+                    ))}
+                  </div>
                 </div>
                 <div className="sm:col-span-1 flex items-end">
                   <Button variant="outline" onClick={()=> setForm(prev=>({ ...prev, highlights: prev.highlights.filter((_,i)=>i!==idx) }))}>Remove</Button>
@@ -251,35 +330,43 @@ export default function AdminQuestions() {
                 </div>
               </div>
             ))}
-            <Button variant="outline" onClick={()=> setForm(prev=>({ ...prev, highlights: [...prev.highlights, { page: 1, phrase: "", occurrence: 1 }] }))}>Add Highlight</Button>
+            <Button variant="outline" onClick={()=> setForm(prev=>({ ...prev, highlights: [...prev.highlights, { page: 1, phrase: "", occurrence: 1, color: "#fff59d" }] }))} disabled={!pdfUrl}>Add Highlight</Button>
+            {!pdfUrl && form.presentationId && !pdfLoading && (
+              <div className="text-xs text-gray-600">Attach a PDF to this presentation to enable highlights.</div>
+            )}
           </div>
-        </div>
 
-        <div className="space-y-2">
-          <div className="font-medium">Choices (up to 8)</div>
-          {form.choices.map((c, idx) => (
-            <div key={idx} className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="correct"
-                className="h-4 w-4"
-                checked={c.isCorrect}
-                onChange={() => setCorrectIndex(idx)}
-                aria-label={`Mark choice ${idx + 1} correct`}
-              />
-              <Input
-                value={c.content}
-                onChange={(e) => setForm({ ...form, choices: form.choices.map((cc, i) => i === idx ? { ...cc, content: e.target.value } : cc) })}
-                placeholder={`Choice ${idx + 1}`}
-              />
-              {form.choices.length > 2 && (
-                <Button variant="outline" onClick={() => removeChoice(idx)}>Remove</Button>
+          {/* PDF Preview & planned highlight preview (textual list) */}
+          <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="text-xs text-gray-700 space-y-1">
+              <div className="font-medium">Preview (planned)</div>
+              {(form.highlights || []).length === 0 ? (
+                <div>No highlights added.</div>
+              ) : (
+                <ul className="list-disc ml-4">
+                  {(form.highlights || []).map((h, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <span className="inline-block h-3 w-3 rounded" style={{ backgroundColor: h.color || "#fff59d" }} />
+                      <span>Page {h.page}: “{h.phrase}” {h.occurrence ? `(occ ${h.occurrence})` : ""}</span>
+                    </li>
+                  ))}
+                </ul>
               )}
             </div>
-          ))}
-          {form.choices.length < 8 && (
-            <Button variant="outline" onClick={addChoice}>Add Choice</Button>
-          )}
+            <div className="border rounded overflow-hidden">
+              <div className="px-3 py-2 bg-gray-50 border-b text-xs flex items-center justify-between">
+                <span>Reference PDF</span>
+                {pdfUrl && <a className="text-ucla-blue underline" href={pdfUrl} target="_blank" rel="noreferrer">Open PDF</a>}
+              </div>
+              <div className="h-[50vh] bg-white">
+                {pdfUrl ? (
+                  <iframe src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`} title="Reference PDF" className="w-full h-full" />
+                ) : (
+                  <div className="h-full flex items-center justify-center text-xs text-gray-600">PDF unavailable</div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex justify-between">
