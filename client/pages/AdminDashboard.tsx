@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import AdminUsers from "./AdminUsers";
+import AdminQuestions from "./AdminQuestions";
 import ManageFilesDialog from "@/components/ManageFilesDialog";
 import FileDropzone from "@/components/FileDropzone";
 import { SPECIALTY_NAMES } from "@/components/SpecialtyFilters";
