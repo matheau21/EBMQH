@@ -213,7 +213,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     if (error || !data) return res.status(404).json({ error: "Presentation not found" });
     if (data.status !== "approved") return res.status(403).json({ error: "Not available" });
 
-    await supabaseAdmin.from("presentations").update({ viewer_count: (data.viewer_count || 0) + 1 }).eq("id", id);
+    // Do not increment here; use explicit /view endpoint
 
     return res.json({
       presentation: {
@@ -227,11 +227,35 @@ router.get("/:id", async (req: Request, res: Response) => {
         thumbnail: data.thumb_url || undefined,
         presentationFileUrl: undefined,
         originalArticleUrl: data.original_article_url || undefined,
-        viewerCount: (data.viewer_count || 0) + 1,
+        viewerCount: data.viewer_count || 0,
         createdAt: data.created_at,
         updatedAt: data.updated_at,
       },
     });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /api/presentations/:id/view - increment view count (used after 10s on client)
+router.post("/:id/view", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabaseAdmin
+      .from("presentations")
+      .select("viewer_count")
+      .eq("id", id)
+      .single();
+    if (error || !data) return res.status(404).json({ error: "Presentation not found" });
+
+    const current = data.viewer_count || 0;
+    const { error: upErr } = await supabaseAdmin
+      .from("presentations")
+      .update({ viewer_count: current + 1 })
+      .eq("id", id);
+    if (upErr) return res.status(500).json({ error: upErr.message });
+
+    return res.json({ viewerCount: current + 1 });
   } catch (err) {
     return res.status(500).json({ error: "Internal server error" });
   }
