@@ -161,7 +161,13 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
         key={finalUrl}
         file={finalUrl}
         onLoadSuccess={({ numPages }) => { setNumPages(numPages); setLoadError(null); }}
-        onLoadError={(e: any) => { if (!useProxy) setUseProxy(true); else setLoadError(e?.message || "Failed to load PDF file."); }}
+        onLoadError={(e: any) => {
+          const msg = String(e?.message || "").toLowerCase();
+          const isAbort = e?.name === "AbortError" || msg.includes("abort");
+          if (isAbort) return; // benign during rerenders or URL switches
+          if (!useProxy) setUseProxy(true);
+          else setLoadError(e?.message || "Failed to load PDF file.");
+        }}
         loading={<div className="p-4 text-sm text-gray-600">Loading PDF…</div>}
         error={<div className="p-4 text-sm text-red-600">{loadError || "Failed to load PDF file."}</div>}
       >
