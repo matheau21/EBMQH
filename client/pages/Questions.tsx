@@ -323,7 +323,7 @@ export default function QuizPage() {
                       {pdfLoading ? (
                         <div className="h-full flex items-center justify-center text-gray-600 text-sm">Loading PDF…</div>
                       ) : pdfUrl ? (
-                        <iframe src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`} title="Reference PDF" className="w-full h-full" />
+                        <PdfHighlightViewer url={pdfUrl} highlights={confirmed ? (current.highlights || []) : []} />
                       ) : (
                         <div className="h-full flex items-center justify-center text-gray-500 text-sm">
                           {pdfError ? pdfError : "No PDF available for this question."}
