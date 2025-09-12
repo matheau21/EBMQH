@@ -198,13 +198,11 @@ export default function AllPresentations() {
   const [groupBySpecialty, setGroupBySpecialty] = useState(false);
 
   const filteredPresentations = useMemo(() => {
-    return presentations.filter((presentation) => {
+    const base = presentations.filter((presentation) => {
       const matchesSearch =
         searchQuery === "" ||
         presentation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        presentation.summary
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
+        presentation.summary?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         presentation.authors?.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesSpecialty =
@@ -213,7 +211,28 @@ export default function AllPresentations() {
 
       return matchesSearch && matchesSpecialty;
     });
-  }, [searchQuery, selectedSpecialties, presentations]);
+
+    const sorted = [...base].sort((a, b) => {
+      const dir = sortOrder === "asc" ? 1 : -1;
+      if (sortBy === "createdAt") {
+        return (new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime()) * dir;
+      }
+      if (sortBy === "year") {
+        const ay = parseInt(a.year || "0");
+        const by = parseInt(b.year || "0");
+        return (ay - by) * dir;
+      }
+      if (sortBy === "journal") {
+        return ((a.journal || "").localeCompare(b.journal || "")) * dir;
+      }
+      if (sortBy === "title") {
+        return (a.title.localeCompare(b.title)) * dir;
+      }
+      return 0;
+    });
+
+    return sorted;
+  }, [searchQuery, selectedSpecialties, presentations, sortBy, sortOrder]);
 
   const handleSpecialtyToggle = (specialty: string) => {
     setSelectedSpecialties((prev) =>
