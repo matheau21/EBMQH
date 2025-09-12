@@ -87,27 +87,31 @@ export default function PresentationFilesViewer({ isOpen, onClose, presentationI
               </div>
             </div>
           ) : (
-            <div className={`grid gap-3 h-full ${hasPdf && hasPpt ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"}`}>
+            <div className={`grid gap-3 h-full ${hasPdf && hasPpt ? (isFullscreen ? "grid-cols-1 md:grid-cols-5" : "grid-cols-1 md:grid-cols-2") : "grid-cols-1"}`}>
               {hasPpt && (
-                <div className="flex flex-col h-full">
-                  <div className="px-4 py-2 bg-white border-b text-sm font-medium flex items-center gap-2"><Presentation className="h-4 w-4" /> Presentation</div>
+                <div className={`flex flex-col h-full ${hasPdf && hasPpt && isFullscreen ? "md:col-span-3" : ""}`}>
+                  <div className="px-4 py-1.5 bg-white border-b text-sm font-medium flex items-center gap-2"><Presentation className="h-4 w-4" /> Presentation</div>
                   {pptUrl!.startsWith("blob:") ? (
                     <div className="flex-1 flex items-center justify-center bg-white">
                       <div className="text-center text-gray-700">
                         <Presentation className="h-12 w-12 mx-auto mb-3 text-ucla-blue" />
-                        <div className="mb-4">PowerPoint file detected. Open in a new tab to view.</div>
+                        <div className="mb-3">PowerPoint file detected. Open in a new tab to view.</div>
                         <Button onClick={() => window.open(pptUrl!, "_blank")}>Open Presentation</Button>
                       </div>
                     </div>
                   ) : (
-                    <iframe src={pptEmbedUrl} className="w-full h-full bg-white" title={`${title} - Presentation`} allow="fullscreen" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" />
+                    <div className="flex-1 min-h-0">
+                      <iframe src={pptEmbedUrl} className="w-full h-full bg-white" title={`${title} - Presentation`} allow="fullscreen" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" />
+                    </div>
                   )}
                 </div>
               )}
               {hasPdf && (
-                <div className="flex flex-col h-full">
-                  <div className="px-4 py-2 bg-white border-b text-sm font-medium flex items-center gap-2"><FileText className="h-4 w-4" /> PDF</div>
-                  <iframe src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`} className="w-full h-full bg-white" title={`${title} - PDF`} />
+                <div className={`flex flex-col h-full ${hasPdf && hasPpt && isFullscreen ? "md:col-span-2" : ""}`}>
+                  <div className="px-4 py-1.5 bg-white border-b text-sm font-medium flex items-center gap-2"><FileText className="h-4 w-4" /> PDF</div>
+                  <div className="flex-1 min-h-0">
+                    <iframe src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`} className="w-full h-full bg-white" title={`${title} - PDF`} />
+                  </div>
                 </div>
               )}
             </div>
