@@ -437,6 +437,10 @@ export const presentationsAPI = {
     return apiRequest(url, { method: "DELETE" });
   },
 
+  async getFileUrls(id: string): Promise<{ pdfUrl?: string; pptUrl?: string }> {
+    return apiRequest<{ pdfUrl?: string; pptUrl?: string }>(`/presentations/${id}/files`);
+  },
+
   async incrementViewCount(id: string): Promise<{ viewerCount: number }> {
     return apiRequest<{ viewerCount: number }>(`/presentations/${id}/view`, {
       method: "POST",
