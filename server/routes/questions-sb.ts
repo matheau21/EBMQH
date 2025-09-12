@@ -143,7 +143,7 @@ router.get("/admin", authenticateAdminToken, async (req: AdminAuthRequest, res: 
 
     let query = supabaseAdmin
       .from("questions")
-      .select("id, prompt, specialty, presentation_id, explanation, reference_url, is_active, created_at, updated_at", { count: "exact" });
+      .select("id, prompt, specialty, presentation_id, explanation, reference_url, highlights, is_active, created_at, updated_at", { count: "exact" });
 
     if (specialty) query = query.eq("specialty", specialty);
     if (presentationId) query = query.eq("presentation_id", presentationId);
