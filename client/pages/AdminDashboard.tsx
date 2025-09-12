@@ -189,6 +189,7 @@ export default function AdminDashboard() {
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="trials">Trials</TabsTrigger>
           <TabsTrigger value="approvals">Approvals{pending?.pagination?.total ? ` (${pending.pagination.total})` : pending?.presentations?.length ? ` (${pending.presentations.length})` : ""}</TabsTrigger>
+          <TabsTrigger value="questions">Questions</TabsTrigger>
         </TabsList>
 
         <TabsContent value="users" className="mt-4">
