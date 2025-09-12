@@ -410,8 +410,21 @@ export const presentationsAPI = {
     if (!type) throw new Error("Unsupported file type. Allowed: pdf, ppt, pptx");
     if (file.size > 50 * 1024 * 1024) throw new Error("File too large (max 50MB)");
 
-    const buffer = await file.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+    // Use FileReader to avoid call stack overflow with large files
+    const base64: string = await new Promise((resolve, reject) => {
+      try {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          const idx = result.indexOf(",");
+          resolve(idx >= 0 ? result.slice(idx + 1) : result);
+        };
+        reader.onerror = () => reject(new Error("Failed to read file"));
+        reader.readAsDataURL(file);
+      } catch (e) {
+        reject(e);
+      }
+    });
 
     return apiRequest<{ message: string; path: string }>(`/presentations/${id}/upload`, {
       method: "POST",
