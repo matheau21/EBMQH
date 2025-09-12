@@ -669,7 +669,7 @@ export default function Index() {
                 </li>
                 <li>
                   <Link
-                    to="/coming-soon"
+                    to="/questions"
                     className="hover:text-white transition-colors"
                   >
                     Feedback
