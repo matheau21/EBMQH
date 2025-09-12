@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Plus, Users, Award } from "lucide-react";
 import { EBMLogo } from "@/components/EBMLogo";
+import { siteAPI } from "@/lib/api";
 
 import { BackendStatusBanner } from "@/components/BackendStatusBanner";
 import { addPresentationFilesToMediaLibrary } from "@/lib/mediaLibraryUtils";
@@ -188,6 +189,7 @@ export default function Index() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [presentations, setPresentations] = useState<Presentation[]>([]);
+  const [referenceHref, setReferenceHref] = useState<string | undefined>(undefined);
 
   // Load presentations from API with fallback to mock data
   useEffect(() => {
@@ -229,6 +231,17 @@ export default function Index() {
 
   // No local storage persistence; data is dynamic from Supabase
   useEffect(() => {}, [presentations]);
+
+  // Load site config for Reference Card link
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      const cfg = await siteAPI.getAbout();
+      if (ignore) return;
+      setReferenceHref(cfg?.referenceCard?.url || cfg?.referenceCard?.signedUrl || undefined);
+    })();
+    return () => { ignore = true; };
+  }, []);
 
   const filteredPresentations = useMemo(() => {
     if (selectedSpecialties.length === 0) {
@@ -650,9 +663,13 @@ export default function Index() {
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    EBM Reference Card
-                  </a>
+                  {referenceHref ? (
+                    <a href={referenceHref} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                      EBM Reference Card
+                    </a>
+                  ) : (
+                    <span className="opacity-70">EBM Reference Card</span>
+                  )}
                 </li>
               </ul>
             </div>
@@ -661,18 +678,10 @@ export default function Index() {
               <ul className="space-y-2 text-blue-200">
                 <li>
                   <Link
-                    to="/questions"
+                    to="/about"
                     className="hover:text-white transition-colors"
                   >
-                    Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/questions"
-                    className="hover:text-white transition-colors"
-                  >
-                    Feedback
+                    About Us
                   </Link>
                 </li>
               </ul>
