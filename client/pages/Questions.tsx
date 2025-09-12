@@ -343,3 +343,13 @@ function QuizPageInner() {
     </div>
   );
 }
+
+const fallbackQueryClient = new QueryClient();
+
+export default function QuizPage() {
+  return (
+    <QueryClientProvider client={fallbackQueryClient}>
+      <QuizPageInner />
+    </QueryClientProvider>
+  );
+}
