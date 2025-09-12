@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { siteAPI } from "@/lib/api";
 
@@ -27,6 +28,13 @@ export default function About() {
   return (
     <div className="min-h-screen bg-gray-50">
       <SiteHeader showQuickLinks />
+      <div className="bg-blue-50 border-b border-blue-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-sm">
+          <Link to="/" className="text-ucla-blue hover:underline">Home</Link>
+          <span className="mx-2 text-blue-600">/</span>
+          <span className="text-blue-800">About</span>
+        </div>
+      </div>
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <section className="text-center mb-10">
           <h1 className="text-3xl sm:text-4xl font-bold text-ucla-blue mb-2">{title}</h1>
@@ -51,6 +59,7 @@ export default function About() {
           </Link>
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 }
