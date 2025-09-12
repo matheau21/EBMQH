@@ -176,21 +176,21 @@ export default function AllPresentations() {
   const [editingPresentation, setEditingPresentation] =
     useState<Presentation | null>(null);
 
-  // Load presentations from localStorage on mount
+  // Fetch presentations and specialties from API
+  const { data: apiData, isLoading } = useQuery({
+    queryKey: ["all-presentations"],
+    queryFn: () => presentationsAPI.getPresentations({ limit: 100 }),
+    staleTime: 30000,
+  });
+  const { data: specData } = useQuery({
+    queryKey: ["public-specialties"],
+    queryFn: () => presentationsAPI.getSpecialties(),
+    staleTime: 300000,
+  });
+
   useEffect(() => {
-    const savedPresentations = localStorage.getItem("ebm-presentations");
-    if (savedPresentations) {
-      try {
-        const parsed = JSON.parse(savedPresentations);
-        setPresentations([...mockPresentations, ...parsed]);
-      } catch (error) {
-        console.error("Error loading presentations:", error);
-        setPresentations(mockPresentations);
-      }
-    } else {
-      setPresentations(mockPresentations);
-    }
-  }, []);
+    if (apiData?.presentations) setPresentations(apiData.presentations as any);
+  }, [apiData]);
 
   // Save presentations to localStorage whenever presentations change
   useEffect(() => {
