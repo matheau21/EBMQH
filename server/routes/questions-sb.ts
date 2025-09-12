@@ -43,7 +43,7 @@ function shuffle<T>(arr: T[]): T[] {
 async function loadQuestion(id: string) {
   const { data: q, error } = await supabaseAdmin
     .from("questions")
-    .select("id, prompt, specialty, presentation_id, explanation, reference_url, is_active, created_at, updated_at")
+    .select("id, prompt, specialty, presentation_id, explanation, reference_url, highlights, is_active, created_at, updated_at")
     .eq("id", id)
     .single();
   if (error || !q) return { error: error?.message || "Not found" } as const;
