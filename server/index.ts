@@ -7,6 +7,7 @@ import userRoutes from "./routes/users.js";
 import adminAuthRoutes from "./routes/admin-auth.js";
 import presentationRoutes from "./routes/presentations-sb.js";
 import adminUsersRoutes from "./routes/admin-users.js";
+import questionsRoutes from "./routes/questions-sb.js";
 import { ensureInitialOwner } from "./lib/seed.js";
 
 export function createServer() {
