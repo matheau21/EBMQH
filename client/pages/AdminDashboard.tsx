@@ -31,8 +31,8 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
   }`;
   return (
     <div className={containerCls}>
-      <div className="min-w-0">
-        <div className={`font-medium ${status === "rejected" ? "text-gray-500" : "cursor-pointer hover:underline"}`} onClick={() => setShowPreview(true)} title="Preview public view">
+      <div className="min-w-0 cursor-pointer" onClick={() => setShowPreview(true)} title="Preview public view">
+        <div className={`font-medium ${status === "rejected" ? "text-gray-500" : "hover:underline"}`}>
           {p.title}
         </div>
         <div className={`text-xs ${status === "rejected" ? "text-gray-400" : "text-gray-500"}`}>
