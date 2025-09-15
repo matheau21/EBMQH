@@ -78,7 +78,7 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 // GET /api/presentations/admin - list all statuses (admin/owner)
-router.get("/admin", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+router.get("/admin", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
   try {
     const { page = "1", limit = "10", specialty, search, status } = req.query as any;
     const pageNum = parseInt(page);
