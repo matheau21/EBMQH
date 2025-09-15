@@ -267,13 +267,28 @@ router.put("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Re
       if (correctCount !== 1) return res.status(400).json({ error: "Exactly one correct choice is required" });
     }
 
+    // Enforce permissions
+    const { data: q0, error: qe } = await supabaseAdmin
+      .from("questions")
+      .select("id, created_by, status")
+      .eq("id", id)
+      .single();
+    if (qe || !q0) return res.status(404).json({ error: "Not found" });
+
+    const isAdmin = req.adminUser!.role === "admin" || req.adminUser!.role === "owner";
+    const isCreator = q0.created_by === req.adminUser!.id;
+    if (!isAdmin) {
+      if (!isCreator) return res.status(403).json({ error: "Not allowed" });
+      if (q0.status !== "pending") return res.status(403).json({ error: "Cannot edit after approval" });
+    }
+
     const patch: any = {};
     if (body.prompt !== undefined) patch.prompt = body.prompt;
     if (body.specialty !== undefined) patch.specialty = body.specialty || null;
     if (body.presentationId !== undefined) patch.presentation_id = body.presentationId || null;
     if (body.explanation !== undefined) patch.explanation = body.explanation || null;
     if (body.referenceUrl !== undefined) patch.reference_url = body.referenceUrl || null;
-    if (body.isActive !== undefined) patch.is_active = body.isActive;
+    if (body.isActive !== undefined && isAdmin) patch.is_active = body.isActive;
     if (body.highlights !== undefined) patch.highlights = body.highlights;
 
     if (Object.keys(patch).length) {
