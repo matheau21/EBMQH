@@ -90,7 +90,7 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
         {status === "rejected" && (
           <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Re-review</Button>
         )}
-        {status === "approved" && (
+        {isAdmin && status === "approved" && (
           <Button variant="outline" onClick={async ()=>{
             if (!window.confirm("Archive this submission? It will no longer be displayed.")) return;
             await presentationsAPI.updateStatus(p.id, "archived");
