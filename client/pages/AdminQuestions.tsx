@@ -28,8 +28,14 @@ export default function AdminQuestions() {
   });
 
   const { data, isLoading } = useQuery({
-    queryKey: ["admin-questions"],
-    queryFn: () => questionsAPI.adminList({ page: 1, limit: 50 }),
+    queryKey: ["questions", user?.role],
+    queryFn: async () => {
+      if (user?.role === "user") {
+        const res = await questionsAPI.myList();
+        return { questions: res.questions, pagination: { page: 1, limit: res.questions.length, total: res.questions.length, pages: 1 } } as any;
+      }
+      return questionsAPI.adminList({ page: 1, limit: 50 });
+    },
     enabled: isAuthenticated,
   });
 
@@ -102,7 +108,7 @@ export default function AdminQuestions() {
       })),
     }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin-questions"] });
+      qc.invalidateQueries({ queryKey: ["questions"] });
       resetForm();
     },
   });
@@ -128,14 +134,14 @@ export default function AdminQuestions() {
       });
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin-questions"] });
+      qc.invalidateQueries({ queryKey: ["questions"] });
       resetForm();
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => questionsAPI.remove(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-questions"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["questions"] }),
   });
 
   const setCorrectIndex = (idx: number) => {
@@ -397,11 +403,15 @@ export default function AdminQuestions() {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="font-medium">{q.prompt}</div>
-                  <div className="text-xs text-gray-600">{q.specialty || "General"} • {q.choices.length} choices</div>
+                  <div className="text-xs text-gray-600">{q.specialty || "General"} • {(q as any).status || "approved"} • {q.choices.length} choices</div>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => handleEdit(q)}>Edit</Button>
-                  <Button variant="destructive" onClick={() => deleteMutation.mutate(q.id)}>Delete</Button>
+                  {(user?.role !== "user" || (q as any).status === "pending") && (
+                    <Button variant="outline" onClick={() => handleEdit(q)}>Edit</Button>
+                  )}
+                  {user?.role !== "user" && (
+                    <Button variant="destructive" onClick={() => deleteMutation.mutate(q.id)}>Delete</Button>
+                  )}
                 </div>
               </div>
             </div>
