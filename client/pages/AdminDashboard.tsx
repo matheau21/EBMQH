@@ -81,7 +81,7 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
         {status !== "rejected" && (
           <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
         )}
-        {status === "pending" && (
+        {isAdmin && status === "pending" && (
           <>
             <Button variant="outline" onClick={() => onApprove("approved")}>Approve</Button>
             <Button variant="outline" onClick={() => onApprove("rejected")}>Reject</Button>
