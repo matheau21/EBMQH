@@ -8,7 +8,7 @@ import { authenticateAdminToken, AdminAuthRequest } from "../middleware/adminAut
 const router = express.Router();
 
 const loginSchema = z.object({
-  username: z.string().regex(/^[A-Za-z0-9]{3,32}$/),
+  username: z.string().trim().regex(/^[A-Za-z0-9]{3,32}$/),
   password: z.string().min(6),
 });
 
@@ -19,7 +19,7 @@ router.post("/login", async (req: Request, res: Response) => {
     const { data: user, error } = await supabaseAdmin
       .from("app_users")
       .select("id, username, password_hash, role, is_active, created_at, updated_at, last_login_at")
-      .eq("username", username)
+      .ilike("username", username)
       .single();
 
     if (error || !user) {
@@ -28,6 +28,10 @@ router.post("/login", async (req: Request, res: Response) => {
 
     if (!user.is_active) {
       return res.status(403).json({ error: "User is deactivated" });
+    }
+
+    if (!user.password_hash || typeof user.password_hash !== "string") {
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     const valid = await bcrypt.compare(password, user.password_hash);

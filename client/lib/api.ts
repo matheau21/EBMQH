@@ -170,10 +170,25 @@ const apiRequest = async <T>(
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
     if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ error: "Network error" }));
-      throw new Error(error.error || `HTTP ${response.status}`);
+      let message = `HTTP ${response.status}`;
+      try {
+        const data = await response.json();
+        message = data?.error || message;
+      } catch {
+        try {
+          const text = await response.text();
+          // Try to parse JSON from text if possible
+          try {
+            const parsed = JSON.parse(text);
+            message = parsed?.error || message;
+          } catch {
+            message = text || "Network error";
+          }
+        } catch {
+          message = "Network error";
+        }
+      }
+      throw new Error(message);
     }
 
     return response.json();
