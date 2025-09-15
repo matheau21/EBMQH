@@ -318,7 +318,7 @@ router.put("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Re
 });
 
 // Delete
-router.delete("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+router.delete("/:id", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const { error } = await supabaseAdmin.from("questions").delete().eq("id", id);
