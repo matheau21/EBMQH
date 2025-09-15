@@ -569,6 +569,12 @@ export const questionsAPI = {
   async remove(id: string): Promise<{ message: string }> {
     return apiRequest(`/questions/${id}`, { method: "DELETE" });
   },
+  async updateStatus(id: string, status: "pending"|"approved"|"rejected"): Promise<{ message: string; question: Question }> {
+    return apiRequest(`/questions/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
+  },
+  async myList(): Promise<{ questions: Question[] }> {
+    return apiRequest(`/questions/my`);
+  },
 };
 
 // Site API
