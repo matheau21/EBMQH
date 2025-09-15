@@ -23,6 +23,8 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
   const navigate = useNavigate();
   const qc = useQueryClient();
   const status: "approved"|"rejected"|"pending"|"archived" = (p.status || "approved");
+  const { user } = useAdmin();
+  const isAdmin = user?.role !== "user";
   const containerCls = `flex items-center justify-between border rounded px-3 py-2 ${
     status === "rejected"
       ? "bg-gray-50 border-gray-200"
@@ -78,7 +80,7 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
         {isAdmin || status === "pending" ? (
           <Button variant="outline" onClick={() => setOpen(true)}>Manage Files</Button>
         ) : null}
-        {status !== "rejected" && (
+        {(isAdmin || status === "pending") && (
           <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
         )}
         {isAdmin && status === "pending" && (
@@ -133,7 +135,9 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
             )}
             <div className="pt-2 flex items-center gap-2">
               <Button className="bg-ucla-blue text-white" onClick={() => { setShowViewer(true); }}>View Files</Button>
-              <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
+              {(isAdmin || status === "pending") && (
+                <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
+              )}
             </div>
           </div>
         </DialogContent>
