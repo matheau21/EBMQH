@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { z } from "zod";
 import { supabaseAdmin } from "../lib/supabase.js";
-import { authenticateAdminToken, AdminAuthRequest } from "../middleware/adminAuth.js";
+import { authenticateAdminToken, AdminAuthRequest, requireAdminOrOwner } from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
