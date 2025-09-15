@@ -93,8 +93,9 @@ router.get("/", async (req: Request, res: Response) => {
 
     let query = supabaseAdmin
       .from("questions")
-      .select("id, prompt, specialty, presentation_id, explanation, reference_url, highlights, is_active, created_at, updated_at")
-      .eq("is_active", true);
+      .select("id, prompt, specialty, presentation_id, explanation, reference_url, highlights, is_active, status, created_at, updated_at")
+      .eq("is_active", true)
+      .eq("status", "approved");
 
     if (specialty) query = query.eq("specialty", specialty);
     if (presentationId) query = query.eq("presentation_id", presentationId);
