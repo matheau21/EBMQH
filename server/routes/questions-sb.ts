@@ -158,6 +158,7 @@ router.get("/admin", authenticateAdminToken, requireAdminOrOwner, async (req: Ad
 
     if (specialty) query = query.eq("specialty", specialty);
     if (presentationId) query = query.eq("presentation_id", presentationId);
+    if (status) query = query.eq("status", status);
 
     const { data, error, count } = await query.order("created_at", { ascending: false }).range(from, to);
     if (error) return res.status(500).json({ error: error.message });
