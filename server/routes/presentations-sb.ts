@@ -451,13 +451,15 @@ router.delete("/:id/file", authenticateAdminToken, async (req: AdminAuthRequest,
 
     const { data: pres, error: fe } = await supabaseAdmin
       .from("presentations")
-      .select("id, created_by, pdf_path, ppt_path")
+      .select("id, created_by, status, pdf_path, ppt_path")
       .eq("id", id)
       .single();
     if (fe || !pres) return res.status(404).json({ error: "Presentation not found" });
 
-    if (req.adminUser!.role === "user" && pres.created_by !== req.adminUser!.id) {
-      return res.status(403).json({ error: "Not allowed" });
+    const isAdmin = req.adminUser!.role === "admin" || req.adminUser!.role === "owner";
+    if (!isAdmin) {
+      if (pres.created_by !== req.adminUser!.id) return res.status(403).json({ error: "Not allowed" });
+      if (pres.status !== "pending") return res.status(403).json({ error: "Cannot modify files after approval" });
     }
 
     const path = type === "pdf" ? pres.pdf_path : pres.ppt_path;
