@@ -107,7 +107,7 @@ router.get("/admin", authenticateAdminToken, requireAdminOrOwner, async (req: Ad
 });
 
 // GET /api/presentations/admin/:id - get single (admin/owner)
-router.get("/admin/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+router.get("/admin/:id", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const { data, error } = await supabaseAdmin.from("presentations").select("*").eq("id", id).single();
