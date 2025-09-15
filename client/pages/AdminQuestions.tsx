@@ -226,10 +226,12 @@ export default function AdminQuestions() {
             <Label>Explanation (optional)</Label>
             <Textarea value={form.explanation} onChange={(e) => setForm({ ...form, explanation: e.target.value })} placeholder="Why is this correct?" />
           </div>
-          <div className="flex items-center gap-2">
-            <Checkbox checked={form.isActive} onCheckedChange={(v) => setForm({ ...form, isActive: !!v })} />
-            <Label>Active</Label>
-          </div>
+          {user?.role !== "user" && (
+            <div className="flex items-center gap-2">
+              <Checkbox checked={form.isActive} onCheckedChange={(v) => setForm({ ...form, isActive: !!v })} />
+              <Label>Active</Label>
+            </div>
+          )}
         </div>
 
         <div className="space-y-2">

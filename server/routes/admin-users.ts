@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { supabaseAdmin } from "../lib/supabase.js";
-import { authenticateAdminToken, AdminAuthRequest } from "../middleware/adminAuth.js";
+import { authenticateAdminToken, AdminAuthRequest, requireAdminOrOwner } from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
@@ -22,7 +22,7 @@ const updateUserSchema = z.object({
   is_active: z.boolean().optional(),
 });
 
-router.get("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+router.get("/", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("app_users")
@@ -38,7 +38,7 @@ router.get("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Respo
   }
 });
 
-router.post("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+router.post("/", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
   try {
     const body = createUserSchema.parse(req.body);
 
@@ -73,7 +73,7 @@ router.post("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Resp
   }
 });
 
-router.patch("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+router.patch("/:id", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const updates = updateUserSchema.parse(req.body);
@@ -116,7 +116,7 @@ router.patch("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: 
   }
 });
 
-router.delete("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+router.delete("/:id", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
   try {
     const { id } = req.params;
 

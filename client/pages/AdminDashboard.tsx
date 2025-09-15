@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminUsersAPI, presentationsAPI, checkBackendAvailability, getToken } from "@/lib/api";
+import { adminUsersAPI, presentationsAPI, checkBackendAvailability, getToken, adminAuthAPI, questionsAPI } from "@/lib/api";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,7 +75,9 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
         {status === "archived" && (
           <span className="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700 border border-gray-300">Archived</span>
         )}
-        <Button variant="outline" onClick={() => setOpen(true)}>Manage Files</Button>
+        {isAdmin || status === "pending" ? (
+          <Button variant="outline" onClick={() => setOpen(true)}>Manage Files</Button>
+        ) : null}
         {status !== "rejected" && (
           <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
         )}

@@ -53,6 +53,8 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
   const [resetPassword, setResetPassword] = useState("");
 
   if (!isAuthenticated) return <div className="p-6">Please login as admin.</div>;
+  // Basic client-side guard: only allow admins/owners to see this page
+  if ((useAdmin().user?.role || "user") === "user") return <div className="p-6">Admin access required.</div>;
 
   return (
     <div className="min-h-screen bg-gray-50">
