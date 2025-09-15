@@ -542,7 +542,7 @@ export const questionsAPI = {
       return { questions: [], pagination: { page: 1, limit: params?.limit || 10, total: 0, pages: 0 } } as any;
     }
   },
-  async adminList(params?: { page?: number; limit?: number; specialty?: string; presentationId?: string }): Promise<{ questions: Question[]; pagination: { page: number; limit: number; total: number; pages: number } }> {
+  async adminList(params?: { page?: number; limit?: number; specialty?: string; presentationId?: string; status?: "pending"|"approved"|"rejected" }): Promise<{ questions: Question[]; pagination: { page: number; limit: number; total: number; pages: number } }> {
     try {
       const sp = new URLSearchParams();
       if (params?.page) sp.append("page", String(params.page));
