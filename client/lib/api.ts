@@ -287,6 +287,13 @@ export const adminAuthAPI = {
   async me(): Promise<{ user: { id: string; username: string; role: "owner" | "admin" | "user"; is_active: boolean; created_at: string; updated_at: string; last_login_at: string | null } }> {
     return apiRequest("/admin/me");
   },
+
+  async changePassword(currentPassword: string, newPassword: string): Promise<{ message: string }> {
+    return apiRequest(`/admin/change-password`, {
+      method: "POST",
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+  },
 };
 
 // Users API (Admin only)
