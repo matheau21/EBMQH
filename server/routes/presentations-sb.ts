@@ -351,32 +351,6 @@ router.delete("/:id", authenticateAdminToken, requireAdminOrOwner, async (req: A
   }
 });
 
-// POST /api/presentations/:id/view - increment
-router.post("/:id/view", async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { data, error } = await supabaseAdmin
-      .from("presentations")
-      .update({ viewer_count: supabaseAdmin.rpc as any })
-      .eq("id", id)
-      .select("viewer_count")
-      .single();
-    // fallback simple increment
-    if (error) {
-      const { data: d, error: e2 } = await supabaseAdmin
-        .from("presentations")
-        .select("viewer_count")
-        .eq("id", id)
-        .single();
-      if (e2 || !d) return res.status(404).json({ error: "Not found" });
-      await supabaseAdmin.from("presentations").update({ viewer_count: (d.viewer_count || 0) + 1 }).eq("id", id);
-      return res.json({ viewerCount: (d.viewer_count || 0) + 1 });
-    }
-    return res.json({ viewerCount: data.viewer_count });
-  } catch (err) {
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
 
 // PATCH /api/presentations/:id/status - approve/reject (admin/owner)
 router.patch("/:id/status", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
