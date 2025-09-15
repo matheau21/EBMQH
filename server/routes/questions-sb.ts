@@ -329,4 +329,63 @@ router.delete("/:id", authenticateAdminToken, requireAdminOrOwner, async (req: A
   }
 });
 
+// Approve/Reject question (admin/owner)
+router.patch("/:id/status", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { status } = z.object({ status: z.enum(["pending","approved","rejected"]) }).parse(req.body);
+    const { error } = await supabaseAdmin.from("questions").update({ status }).eq("id", id);
+    if (error) return res.status(500).json({ error: error.message });
+    const loaded = await loadQuestion(id);
+    if (loaded.error || !loaded.question) return res.status(404).json({ error: "Not found" });
+    return res.json({ message: "Status updated", question: loaded.question });
+  } catch (err) {
+    if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// My questions
+router.get("/my", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("questions")
+      .select("id, prompt, specialty, presentation_id, explanation, reference_url, highlights, is_active, status, created_at, updated_at")
+      .eq("created_by", req.adminUser!.id)
+      .order("created_at", { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+
+    // Load choices
+    const ids = (data || []).map((q) => q.id);
+    let choicesMap: Record<string, any[]> = {};
+    if (ids.length) {
+      const { data: choices } = await supabaseAdmin
+        .from("question_choices")
+        .select("id, question_id, content, is_correct, order_index")
+        .in("question_id", ids)
+        .order("order_index", { ascending: true });
+      for (const c of choices || []) (choicesMap[c.question_id] ||= []).push(c);
+    }
+
+    return res.json({
+      questions: (data || []).map((q) => ({
+        id: q.id,
+        prompt: q.prompt,
+        specialty: q.specialty || undefined,
+        presentationId: q.presentation_id || undefined,
+        explanation: q.explanation || undefined,
+        referenceUrl: q.reference_url || undefined,
+        highlights: (q as any).highlights || undefined,
+        isActive: q.is_active,
+        createdAt: q.created_at,
+        updatedAt: q.updated_at,
+        choices: (choicesMap[q.id] || []).map((c) => ({ id: c.id, content: c.content, isCorrect: !!c.is_correct, orderIndex: c.order_index })),
+        status: (q as any).status,
+      }))
+    });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 export default router;
