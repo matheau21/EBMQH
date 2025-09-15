@@ -549,6 +549,7 @@ export const questionsAPI = {
       if (params?.limit) sp.append("limit", String(params.limit));
       if (params?.specialty) sp.append("specialty", params.specialty);
       if (params?.presentationId) sp.append("presentationId", params.presentationId);
+      if (params?.status) sp.append("status", params.status);
       const q = sp.toString();
       return await apiRequest(`/questions/admin${q ? `?${q}` : ""}`);
     } catch (e) {
