@@ -146,7 +146,7 @@ router.get("/", async (req: Request, res: Response) => {
 // Admin list (with filters)
 router.get("/admin", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
   try {
-    const { page = "1", limit = "10", specialty, presentationId } = req.query as any;
+    const { page = "1", limit = "10", specialty, presentationId, status } = req.query as any;
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
     const from = (pageNum - 1) * limitNum;
