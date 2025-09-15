@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 
 export default function AdminQuestions() {
-  const { isAuthenticated } = useAdmin();
+  const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
 
   const { data: specialties } = useQuery({
