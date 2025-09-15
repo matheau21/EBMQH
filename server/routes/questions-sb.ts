@@ -217,6 +217,7 @@ router.post("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Resp
     const correctCount = body.choices.filter((c) => c.isCorrect).length;
     if (correctCount !== 1) return res.status(400).json({ error: "Exactly one correct choice is required" });
 
+    const role = req.adminUser!.role;
     const { data: q, error } = await supabaseAdmin
       .from("questions")
       .insert({
@@ -226,6 +227,8 @@ router.post("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Resp
         explanation: body.explanation,
         reference_url: body.referenceUrl,
         is_active: body.isActive ?? true,
+        status: role === "user" ? "pending" : "approved",
+        created_by: req.adminUser!.id,
         highlights: body.highlights || null,
       })
       .select("id")
