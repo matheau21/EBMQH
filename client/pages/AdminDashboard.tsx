@@ -250,6 +250,79 @@ function SiteEditor() {
   );
 }
 
+function AdminApprovalsQuestions() {
+  const qc = useQueryClient();
+  const { user } = useAdmin();
+  const { data } = useQuery({
+    queryKey: ["approvals-questions", user?.role],
+    queryFn: async () => {
+      if (user?.role === "user") return { questions: [] } as any;
+      return await questionsAPI.adminList({ status: "pending", limit: 50 });
+    },
+  });
+  const approveQ = useMutation({
+    mutationFn: ({ id, status }: { id: string; status: "approved"|"rejected" }) => questionsAPI.updateStatus(id, status),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["approvals-questions"] }); },
+  });
+  return (
+    <div>
+      <h3 className="font-medium mb-2">Questions Pending</h3>
+      <div className="space-y-2">
+        {(data?.questions || []).map((q: any) => (
+          <div key={q.id} className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200">
+            <div className="min-w-0">
+              <div className="font-medium truncate" title={q.prompt}>{q.prompt}</div>
+              <div className="text-xs text-gray-600">{q.specialty || "General"} • pending</div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => approveQ.mutate({ id: q.id, status: "approved" })}>Approve</Button>
+              <Button variant="outline" onClick={() => approveQ.mutate({ id: q.id, status: "rejected" })}>Reject</Button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AccountSettings() {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const onSave = async () => {
+    try {
+      setSaving(true);
+      setMessage(null);
+      await adminAuthAPI.changePassword(currentPassword, newPassword);
+      setMessage("Password updated");
+      setCurrentPassword("");
+      setNewPassword("");
+    } catch (e: any) {
+      setMessage(e?.message || "Failed to update");
+    } finally {
+      setSaving(false);
+    }
+  };
+  return (
+    <div className="border rounded p-4 space-y-3 max-w-md">
+      <h2 className="font-medium">Account</h2>
+      <div>
+        <label className="text-sm">Current password</label>
+        <Input type="password" value={currentPassword} onChange={(e)=>setCurrentPassword(e.target.value)} />
+      </div>
+      <div>
+        <label className="text-sm">New password</label>
+        <Input type="password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} />
+      </div>
+      <div className="flex items-center gap-2">
+        <Button className="bg-ucla-blue" onClick={onSave} disabled={saving || newPassword.length < 6 || currentPassword.length < 6}>{saving ? "Saving…" : "Save"}</Button>
+        {message && <div className="text-sm text-gray-600">{message}</div>}
+      </div>
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
@@ -283,9 +356,10 @@ export default function AdminDashboard() {
   }, [location.search]);
 
   const { data: trials, refetch } = useQuery({
-    queryKey: ["admin-trials"],
+    queryKey: ["admin-trials", user?.role],
     queryFn: async () => {
       try {
+        if (user?.role === "user") return await presentationsAPI.myList();
         return await presentationsAPI.adminList({ limit: 50 });
       } catch (e) {
         return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
@@ -296,9 +370,10 @@ export default function AdminDashboard() {
   });
 
   const { data: pending } = useQuery({
-    queryKey: ["admin-trials-pending"],
+    queryKey: ["admin-trials-pending", user?.role],
     queryFn: async () => {
       try {
+        if (user?.role === "user") return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
         return await presentationsAPI.adminList({ status: "pending", limit: 50 });
       } catch (e) {
         return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
@@ -362,11 +437,12 @@ export default function AdminDashboard() {
       <h1 className="text-2xl font-semibold text-ucla-blue mb-4">Admin Dashboard</h1>
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList>
-          <TabsTrigger value="users">Users</TabsTrigger>
+          {user?.role !== "user" && <TabsTrigger value="users">Users</TabsTrigger>}
           <TabsTrigger value="trials">Trials</TabsTrigger>
-          <TabsTrigger value="approvals">Approvals{pending?.pagination?.total ? ` (${pending.pagination.total})` : pending?.presentations?.length ? ` (${pending.presentations.length})` : ""}</TabsTrigger>
+          {user?.role !== "user" && <TabsTrigger value="approvals">Approvals{pending?.pagination?.total ? ` (${pending.pagination.total})` : pending?.presentations?.length ? ` (${pending.presentations.length})` : ""}</TabsTrigger>}
           <TabsTrigger value="questions">Questions</TabsTrigger>
-          <TabsTrigger value="site">Site</TabsTrigger>
+          {user?.role !== "user" && <TabsTrigger value="site">Site</TabsTrigger>}
+          <TabsTrigger value="account">Account</TabsTrigger>
         </TabsList>
 
         <TabsContent value="users" className="mt-4">
@@ -474,24 +550,33 @@ export default function AdminDashboard() {
               {filteredTrials?.map((p: any) => (
                 <TrialRow key={p.id} p={p} onApprove={(status) => approveMutation.mutate({ id: p.id, status })} />
               ))}
+              {filteredTrials?.length === 0 && (
+                <div className="text-sm text-gray-600">No submissions yet.</div>
+              )}
             </div>
           </div>
         </TabsContent>
 
         <TabsContent value="approvals" className="mt-4">
-          <div className="space-y-2">
-            {pending?.presentations?.map((p: any) => (
-              <div key={p.id} className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200">
-                <div>
-                  <div className="font-medium">{p.title}</div>
-                  <div className="text-xs text-gray-600">{p.specialty} • pending</div>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => approveMutation.mutate({ id: p.id, status: "approved" })}>Approve</Button>
-                  <Button variant="outline" onClick={() => approveMutation.mutate({ id: p.id, status: "rejected" })}>Reject</Button>
-                </div>
+          <div className="space-y-6">
+            <div>
+              <h3 className="font-medium mb-2">Trials/Presentations Pending</h3>
+              <div className="space-y-2">
+                {pending?.presentations?.map((p: any) => (
+                  <div key={p.id} className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200">
+                    <div>
+                      <div className="font-medium">{p.title}</div>
+                      <div className="text-xs text-gray-600">{p.specialty} • pending</div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" onClick={() => approveMutation.mutate({ id: p.id, status: "approved" })}>Approve</Button>
+                      <Button variant="outline" onClick={() => approveMutation.mutate({ id: p.id, status: "rejected" })}>Reject</Button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <AdminApprovalsQuestions />
           </div>
         </TabsContent>
 
@@ -501,6 +586,10 @@ export default function AdminDashboard() {
 
         <TabsContent value="site" className="mt-4">
           <SiteEditor />
+        </TabsContent>
+
+        <TabsContent value="account" className="mt-4">
+          <AccountSettings />
         </TabsContent>
       </Tabs>
       </div>
