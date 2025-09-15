@@ -290,25 +290,36 @@ router.post("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Resp
   }
 });
 
-// PUT /api/presentations/:id - update (admin/owner only)
+// PUT /api/presentations/:id - update (admin/owner or user on own pending)
 router.put("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
   try {
-    if (!(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")) {
-      return res.status(403).json({ error: "Admin access required" });
-    }
     const { id } = req.params;
     const updates = updateSchema.parse(req.body);
 
+    const { data: target, error: te } = await supabaseAdmin
+      .from("presentations")
+      .select("id, created_by, status")
+      .eq("id", id)
+      .single();
+    if (te || !target) return res.status(404).json({ error: "Not found" });
+
+    const isAdmin = req.adminUser!.role === "admin" || req.adminUser!.role === "owner";
+    const isCreator = target.created_by === req.adminUser!.id;
+    if (!isAdmin) {
+      if (!isCreator) return res.status(403).json({ error: "Not allowed" });
+      if (target.status !== "pending") return res.status(403).json({ error: "Cannot edit after approval" });
+    }
+
     const patch: any = {};
-    if (updates.title) patch.title = updates.title;
-    if (updates.specialty) patch.specialty = updates.specialty;
-    if (updates.summary) patch.summary = updates.summary;
+    if (updates.title !== undefined) patch.title = updates.title;
+    if (updates.specialty !== undefined) patch.specialty = updates.specialty;
+    if (updates.summary !== undefined) patch.summary = updates.summary;
     if (updates.authors !== undefined) patch.authors = updates.authors;
     if (updates.journal !== undefined) patch.journal = updates.journal;
     if (updates.year !== undefined) patch.year = updates.year;
     if (updates.originalArticleUrl !== undefined) patch.original_article_url = updates.originalArticleUrl;
     if (updates.thumbUrl !== undefined) patch.thumb_url = updates.thumbUrl;
-    if (updates.status) patch.status = updates.status;
+    if (isAdmin && updates.status) patch.status = updates.status;
 
     const { data, error } = await supabaseAdmin
       .from("presentations")
