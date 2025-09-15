@@ -38,7 +38,7 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
   });
 
   const updateMutation = useMutation({
-    mutationFn: (vars: { id: string; input: { role?: "owner" | "admin" | "user"; is_active?: boolean } }) =>
+    mutationFn: (vars: { id: string; input: { password?: string; role?: "owner" | "admin" | "user"; is_active?: boolean } }) =>
       adminUsersAPI.update(vars.id, vars.input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-users"] }),
   });
@@ -49,6 +49,8 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
   });
 
   const [newUser, setNewUser] = useState({ username: "", password: "", role: "user" as const });
+  const [resetFor, setResetFor] = useState<string | null>(null);
+  const [resetPassword, setResetPassword] = useState("");
 
   if (!isAuthenticated) return <div className="p-6">Please login as admin.</div>;
 
@@ -108,29 +110,51 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
         {error && <div className="text-red-600">Failed to load users</div>}
         <div className="space-y-2">
           {data?.users?.map((u) => (
-            <div key={u.id} className="flex items-center justify-between border rounded px-3 py-2">
-              <div className="space-x-3">
-                <span className="font-mono">{u.username}</span>
-                <span className="text-xs border rounded px-2 py-0.5 bg-gray-50">{u.role}</span>
-                <span className={`text-xs ml-2 ${u.is_active ? "text-green-600" : "text-gray-500"}`}>
-                  {u.is_active ? "active" : "inactive"}
-                </span>
+            <div key={u.id} className="border rounded px-3 py-2">
+              <div className="flex items-center justify-between">
+                <div className="space-x-3">
+                  <span className="font-mono">{u.username}</span>
+                  <span className="text-xs border rounded px-2 py-0.5 bg-gray-50">{u.role}</span>
+                  <span className={`text-xs ml-2 ${u.is_active ? "text-green-600" : "text-gray-500"}`}>
+                    {u.is_active ? "active" : "inactive"}
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => updateMutation.mutate({ id: u.id, input: { role: u.role === "admin" ? "user" : "admin" } })}
+                  >
+                    {u.role === "admin" ? "Demote to user" : "Promote to admin"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => updateMutation.mutate({ id: u.id, input: { is_active: !u.is_active } })}
+                  >
+                    {u.is_active ? "Deactivate" : "Activate"}
+                  </Button>
+                  <Button variant="outline" onClick={() => { setResetFor(resetFor === u.id ? null : u.id); setResetPassword(""); }}>Reset Password</Button>
+                  <Button variant="destructive" onClick={() => deleteMutation.mutate(u.id)}>Delete</Button>
+                </div>
               </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => updateMutation.mutate({ id: u.id, input: { role: u.role === "admin" ? "user" : "admin" } })}
-                >
-                  {u.role === "admin" ? "Demote to user" : "Promote to admin"}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => updateMutation.mutate({ id: u.id, input: { is_active: !u.is_active } })}
-                >
-                  {u.is_active ? "Deactivate" : "Activate"}
-                </Button>
-                <Button variant="destructive" onClick={() => deleteMutation.mutate(u.id)}>Delete</Button>
-              </div>
+              {resetFor === u.id && (
+                <div className="mt-3 flex items-end gap-2">
+                  <div className="flex-1">
+                    <Label>New Password</Label>
+                    <Input type="password" value={resetPassword} onChange={(e) => setResetPassword(e.target.value)} placeholder="min 6 chars" />
+                  </div>
+                  <Button
+                    onClick={() => {
+                      if (!resetPassword || resetPassword.length < 6) return;
+                      updateMutation.mutate({ id: u.id, input: { password: resetPassword } });
+                      setResetFor(null);
+                      setResetPassword("");
+                    }}
+                    disabled={updateMutation.isPending || resetPassword.length < 6}
+                  >
+                    Save
+                  </Button>
+                </div>
+              )}
             </div>
           ))}
         </div>
