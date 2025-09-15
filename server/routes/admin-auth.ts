@@ -93,4 +93,35 @@ router.get("/me", authenticateAdminToken, async (req: AdminAuthRequest, res: Res
   }
 });
 
+// Change own password
+router.post("/change-password", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+  try {
+    const schema = z.object({ currentPassword: z.string().min(6), newPassword: z.string().min(6) });
+    const { currentPassword, newPassword } = schema.parse(req.body);
+
+    const { data: user, error } = await supabaseAdmin
+      .from("app_users")
+      .select("id, password_hash")
+      .eq("id", req.adminUser!.id)
+      .single();
+    if (error || !user) return res.status(404).json({ error: "User not found" });
+
+    if (!user.password_hash || !(await bcrypt.compare(currentPassword, user.password_hash))) {
+      return res.status(401).json({ error: "Current password incorrect" });
+    }
+
+    const password_hash = await bcrypt.hash(newPassword, 10);
+    const { error: upErr } = await supabaseAdmin
+      .from("app_users")
+      .update({ password_hash })
+      .eq("id", req.adminUser!.id);
+    if (upErr) return res.status(500).json({ error: upErr.message });
+
+    return res.json({ message: "Password updated" });
+  } catch (err) {
+    if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 export default router;
