@@ -337,7 +337,7 @@ router.put("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Re
 });
 
 // DELETE /api/presentations/:id - delete (admin/owner)
-router.delete("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+router.delete("/:id", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
   try {
     if (!(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")) {
       return res.status(403).json({ error: "Admin access required" });
