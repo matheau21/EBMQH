@@ -254,7 +254,7 @@ export default function AdminDashboard() {
   const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
   const location = useLocation();
-  const initialTab = new URLSearchParams(location.search).get("tab") || "users";
+  const initialTab = new URLSearchParams(location.search).get("tab") || (user?.role === "user" ? "trials" : "users");
   const [tab, setTab] = useState(initialTab);
   const [newTrial, setNewTrial] = useState({ title: "", specialty: "", summary: "", authors: "", journal: "", year: "" });
   const [newPdf, setNewPdf] = useState<File | null>(null);
