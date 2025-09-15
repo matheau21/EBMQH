@@ -478,4 +478,19 @@ router.delete("/:id/file", authenticateAdminToken, async (req: AdminAuthRequest,
   }
 });
 
+// List own submissions
+router.get("/mine", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("presentations")
+      .select("*")
+      .eq("created_by", req.adminUser!.id)
+      .order("created_at", { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json({ presentations: data, pagination: { page: 1, limit: data?.length || 0, total: data?.length || 0, pages: 1 } });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 export default router;
