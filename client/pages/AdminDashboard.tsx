@@ -98,12 +98,14 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
             qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
           }}>Archive</Button>
         )}
-        <Button variant="destructive" onClick={async ()=>{
-          if (!window.confirm("Delete this submission permanently? This cannot be undone.")) return;
-          await presentationsAPI.deletePresentation(p.id);
-          qc.invalidateQueries({ queryKey: ["admin-trials"] });
-          qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
-        }}>Delete</Button>
+        {isAdmin && (
+          <Button variant="destructive" onClick={async ()=>{
+            if (!window.confirm("Delete this submission permanently? This cannot be undone.")) return;
+            await presentationsAPI.deletePresentation(p.id);
+            qc.invalidateQueries({ queryKey: ["admin-trials"] });
+            qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
+          }}>Delete</Button>
+        )}
       </div>
       <ManageFilesDialog presentationId={p.id} open={open} onOpenChange={setOpen} />
 
