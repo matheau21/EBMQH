@@ -45,12 +45,14 @@ router.post("/login", async (req: Request, res: Response) => {
     const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "7d" });
 
     // Update last_login_at (non-blocking)
-    supabaseAdmin
-      .from("app_users")
-      .update({ last_login_at: new Date().toISOString() })
-      .eq("id", user.id)
-      .then(() => {})
-      .catch(() => {});
+    void (async () => {
+      try {
+        await supabaseAdmin
+          .from("app_users")
+          .update({ last_login_at: new Date().toISOString() })
+          .eq("id", user.id);
+      } catch (_) {}
+    })();
 
     return res.json({
       message: "Login successful",
