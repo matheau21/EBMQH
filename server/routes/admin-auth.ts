@@ -3,12 +3,18 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { supabaseAdmin } from "../lib/supabase.js";
-import { authenticateAdminToken, AdminAuthRequest } from "../middleware/adminAuth.js";
+import {
+  authenticateAdminToken,
+  AdminAuthRequest,
+} from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
 const loginSchema = z.object({
-  username: z.string().trim().regex(/^[A-Za-z0-9]{3,32}$/),
+  username: z
+    .string()
+    .trim()
+    .regex(/^[A-Za-z0-9]{3,32}$/),
   password: z.string().min(6),
 });
 
@@ -18,7 +24,9 @@ router.post("/login", async (req: Request, res: Response) => {
 
     const { data: user, error } = await supabaseAdmin
       .from("app_users")
-      .select("id, username, password_hash, role, is_active, created_at, updated_at, last_login_at")
+      .select(
+        "id, username, password_hash, role, is_active, created_at, updated_at, last_login_at",
+      )
       .ilike("username", username)
       .single();
 
@@ -76,54 +84,72 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/me", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    const { data: user, error } = await supabaseAdmin
-      .from("app_users")
-      .select("id, username, role, is_active, created_at, updated_at, last_login_at")
-      .eq("id", req.adminUser!.id)
-      .single();
+router.get(
+  "/me",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      const { data: user, error } = await supabaseAdmin
+        .from("app_users")
+        .select(
+          "id, username, role, is_active, created_at, updated_at, last_login_at",
+        )
+        .eq("id", req.adminUser!.id)
+        .single();
 
-    if (error || !user) {
-      return res.status(404).json({ error: "User not found" });
+      if (error || !user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      return res.json({ user });
+    } catch (err) {
+      console.error("Get admin profile error:", err);
+      return res.status(500).json({ error: "Internal server error" });
     }
-
-    return res.json({ user });
-  } catch (err) {
-    console.error("Get admin profile error:", err);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+  },
+);
 
 // Change own password
-router.post("/change-password", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    const schema = z.object({ currentPassword: z.string().min(6), newPassword: z.string().min(6) });
-    const { currentPassword, newPassword } = schema.parse(req.body);
+router.post(
+  "/change-password",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      const schema = z.object({
+        currentPassword: z.string().min(6),
+        newPassword: z.string().min(6),
+      });
+      const { currentPassword, newPassword } = schema.parse(req.body);
 
-    const { data: user, error } = await supabaseAdmin
-      .from("app_users")
-      .select("id, password_hash")
-      .eq("id", req.adminUser!.id)
-      .single();
-    if (error || !user) return res.status(404).json({ error: "User not found" });
+      const { data: user, error } = await supabaseAdmin
+        .from("app_users")
+        .select("id, password_hash")
+        .eq("id", req.adminUser!.id)
+        .single();
+      if (error || !user)
+        return res.status(404).json({ error: "User not found" });
 
-    if (!user.password_hash || !(await bcrypt.compare(currentPassword, user.password_hash))) {
-      return res.status(401).json({ error: "Current password incorrect" });
+      if (
+        !user.password_hash ||
+        !(await bcrypt.compare(currentPassword, user.password_hash))
+      ) {
+        return res.status(401).json({ error: "Current password incorrect" });
+      }
+
+      const password_hash = await bcrypt.hash(newPassword, 10);
+      const { error: upErr } = await supabaseAdmin
+        .from("app_users")
+        .update({ password_hash })
+        .eq("id", req.adminUser!.id);
+      if (upErr) return res.status(500).json({ error: upErr.message });
+
+      return res.json({ message: "Password updated" });
+    } catch (err) {
+      if (err instanceof z.ZodError)
+        return res.status(400).json({ error: "Invalid input" });
+      return res.status(500).json({ error: "Internal server error" });
     }
-
-    const password_hash = await bcrypt.hash(newPassword, 10);
-    const { error: upErr } = await supabaseAdmin
-      .from("app_users")
-      .update({ password_hash })
-      .eq("id", req.adminUser!.id);
-    if (upErr) return res.status(500).json({ error: upErr.message });
-
-    return res.json({ message: "Password updated" });
-  } catch (err) {
-    if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+  },
+);
 
 export default router;
