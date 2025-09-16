@@ -72,6 +72,10 @@ router.get("/", async (req: Request, res: Response) => {
       },
     });
   } catch (err) {
+    const msg = (err as any)?.message || String(err);
+    if (msg === "fetch-timeout") {
+      return res.status(504).json({ error: "Upstream timeout contacting Supabase" });
+    }
     console.error("List presentations error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
