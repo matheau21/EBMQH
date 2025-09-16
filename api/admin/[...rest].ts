@@ -10,7 +10,9 @@ const MOUNT = "/api/admin";
 gateway.use((req, _res, next) => {
   if (typeof req.url === "string") {
     const q = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
-    const p = req.url.includes("?") ? req.url.slice(0, req.url.indexOf("?")) : req.url;
+    const p = req.url.includes("?")
+      ? req.url.slice(0, req.url.indexOf("?"))
+      : req.url;
     let tail = p.replace(/^\/api\/admin/, "").replace(/^\/admin/, "");
     if (tail && !tail.startsWith("/")) tail = "/" + tail;
     req.url = MOUNT + (tail || "") + q;
