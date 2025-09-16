@@ -14,6 +14,20 @@ if (!SUPABASE_SERVICE_ROLE) {
   throw new Error("SUPABASE_SERVICE_ROLE is not set");
 }
 
+// Provide a fetch with timeout to avoid hanging
+function withTimeout(ms: number) {
+  return async (input: RequestInfo | URL, init?: RequestInit) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(new Error("fetch-timeout")), ms);
+    try {
+      const res = await fetch(input as any, { ...(init as any), signal: controller.signal } as any);
+      return res as any;
+    } finally {
+      clearTimeout(id);
+    }
+  };
+}
+
 // Safe debug: confirm envs are present (no values printed)
 try {
   const len = SUPABASE_SERVICE_ROLE?.length || 0;
@@ -22,4 +36,5 @@ try {
 
 export const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE, {
   auth: { persistSession: false },
+  global: { fetch: withTimeout(10000) as any },
 });
