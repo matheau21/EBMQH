@@ -26,7 +26,10 @@ export async function connectDatabase() {
     await prisma.$connect();
     console.log("✅ Database connected successfully");
   } catch (error) {
-    console.warn("⚠️ Prisma connection failed (continuing without Prisma):", (error as any)?.message || error);
+    console.warn(
+      "⚠️ Prisma connection failed (continuing without Prisma):",
+      (error as any)?.message || error,
+    );
   }
 }
 
