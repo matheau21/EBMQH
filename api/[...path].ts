@@ -1,5 +1,5 @@
 import serverless from "serverless-http";
-import { createServer } from "../server/index.js";
+import { createServer } from "../server/index.ts";
 
 const app = createServer();
 const handler = serverless(app);
