@@ -23,7 +23,10 @@ export function createServer() {
   connectDatabase();
 
   // Ensure initial admin user exists only in development (avoid serverless cold-start side effects)
-  if (process.env.NODE_ENV !== "production" && process.env.DISABLE_SEED !== "1") {
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.DISABLE_SEED !== "1"
+  ) {
     ensureInitialOwner();
   }
 
