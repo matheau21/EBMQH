@@ -14,12 +14,19 @@ if (process.env.NODE_ENV === "development") {
 
 // Connect to the database
 export async function connectDatabase() {
+  const isProd = process.env.NODE_ENV === "production";
+  const hasUrl = !!process.env.DATABASE_URL;
+  if (isProd || !hasUrl) {
+    try {
+      console.log("Prisma connection skipped", { isProd, hasUrl });
+    } catch {}
+    return;
+  }
   try {
     await prisma.$connect();
     console.log("✅ Database connected successfully");
   } catch (error) {
-    console.error("❌ Database connection failed:", error);
-    process.exit(1);
+    console.warn("⚠️ Prisma connection failed (continuing without Prisma):", (error as any)?.message || error);
   }
 }
 
@@ -30,5 +37,7 @@ export async function disconnectDatabase() {
 
 // Gracefully shutdown database connection
 process.on("beforeExit", async () => {
-  await disconnectDatabase();
+  try {
+    await disconnectDatabase();
+  } catch {}
 });
