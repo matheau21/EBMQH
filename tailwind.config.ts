@@ -82,7 +82,7 @@ export default {
           pulmonarycritical: "#0000FF",
           infectious: "#FF7F00",
           rheumatology: "#CBA3FF",
-          nephrology: "#FFFF00",
+          nephrology: "#E6BC00",
           gastroenterology: "#00FF00",
           neurology: "#8000FF",
         },
