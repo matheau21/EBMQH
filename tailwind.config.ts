@@ -83,7 +83,7 @@ export default {
           infectious: "#FF7F00",
           rheumatology: "#CBA3FF",
           nephrology: "#E6BC00",
-          gastroenterology: "#00FF00",
+          gastroenterology: "#6B8E23",
           neurology: "#8000FF",
         },
       },
