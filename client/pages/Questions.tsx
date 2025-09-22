@@ -28,10 +28,7 @@ function QuizPageInner() {
   const [correct, setCorrect] = useState(0);
 
   // Right-side PDF panel state
-  const [showPdfPanel, setShowPdfPanel] = useState<boolean>(() => {
-    const v = sessionStorage.getItem("quiz-show-pdf-panel");
-    return v === null ? false : v === "true";
-  });
+  const [showPdfPanel, setShowPdfPanel] = useState<boolean>(false);
   const [pdfUrl, setPdfUrl] = useState<string | undefined>(undefined);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [pdfError, setPdfError] = useState<string | null>(null);
