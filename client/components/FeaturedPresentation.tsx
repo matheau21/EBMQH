@@ -31,11 +31,11 @@ export function FeaturedPresentation() {
   const [api, setApi] = useState<CarouselApi | null>(null);
 
   const { data } = useQuery({
-    queryKey: ["featured-recent"],
-    queryFn: () => presentationsAPI.getPresentations({ limit: 3 }),
+    queryKey: ["featured-presentations"],
+    queryFn: () => siteAPI.getFeaturedPresentations(),
     staleTime: 30000,
   });
-  const items = (data?.presentations || []).slice(0, 3);
+  const items = (data?.presentations || []);
 
   async function speedScrollTo(target: number, direction: "forward" | "backward") {
     if (!api || items.length === 0) return;
