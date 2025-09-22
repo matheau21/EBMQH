@@ -17,6 +17,7 @@ const AboutSchema = z.object({
 
 const STORAGE_BUCKET = "presentations"; // reuse existing bucket
 const ABOUT_PATH = "site/about.json";
+const FEATURED_PATH = "site/featured.json";
 
 router.get("/about", async (_req: Request, res: Response) => {
   try {
@@ -70,6 +71,100 @@ router.put("/about", authenticateAdminToken, async (req: AdminAuthRequest, res: 
     const { error } = await supabaseAdmin.storage
       .from(STORAGE_BUCKET)
       .upload(ABOUT_PATH, Buffer.from(payload), { contentType: "application/json", upsert: true });
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json({ message: "Saved" });
+  } catch (err) {
+    if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Get featured presentations (public)
+router.get("/featured", async (_req: Request, res: Response) => {
+  try {
+    // Load manual config
+    const { data } = await supabaseAdmin.storage.from(STORAGE_BUCKET).download(FEATURED_PATH);
+    let ids: string[] = [];
+    if (data) {
+      try {
+        const parsed = JSON.parse(await data.text());
+        if (Array.isArray(parsed?.ids)) ids = parsed.ids.filter((v: any) => typeof v === "string");
+      } catch {}
+    }
+
+    let items: any[] = [];
+    let source: "manual" | "recent" = "manual";
+
+    if (ids.length > 0) {
+      const { data: pres, error } = await supabaseAdmin
+        .from("presentations")
+        .select("id, title, specialty, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at, status")
+        .in("id", ids)
+        .eq("status", "approved");
+      if (!error && pres) {
+        const order = new Map(ids.map((id, idx) => [id, idx] as const));
+        pres.sort((a: any, b: any) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
+        items = pres.slice(0, 3).map((p: any) => ({
+          id: p.id,
+          title: p.title,
+          specialty: p.specialty,
+          summary: p.summary,
+          authors: p.authors || undefined,
+          journal: p.journal || undefined,
+          year: p.year || undefined,
+          thumbnail: p.thumb_url || undefined,
+          presentationFileUrl: undefined,
+          originalArticleUrl: p.original_article_url || undefined,
+          viewerCount: p.viewer_count || 0,
+          createdAt: p.created_at,
+          updatedAt: p.updated_at,
+        }));
+      }
+    }
+
+    if (items.length === 0) {
+      // Fallback: most recent 3 approved
+      source = "recent";
+      const { data: recent } = await supabaseAdmin
+        .from("presentations")
+        .select("id, title, specialty, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at")
+        .eq("status", "approved")
+        .order("created_at", { ascending: false })
+        .limit(3);
+      items = (recent || []).map((p: any) => ({
+        id: p.id,
+        title: p.title,
+        specialty: p.specialty,
+        summary: p.summary,
+        authors: p.authors || undefined,
+        journal: p.journal || undefined,
+        year: p.year || undefined,
+        thumbnail: p.thumb_url || undefined,
+        presentationFileUrl: undefined,
+        originalArticleUrl: p.original_article_url || undefined,
+        viewerCount: p.viewer_count || 0,
+        createdAt: p.created_at,
+        updatedAt: p.updated_at,
+      }));
+    }
+
+    return res.json({ presentations: items, source });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Save featured presentations (admin/owner)
+router.put("/featured", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+  try {
+    if (!(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")) {
+      return res.status(403).json({ error: "Admin access required" });
+    }
+    const { ids } = z.object({ ids: z.array(z.string().min(1)).max(10) }).parse(req.body);
+    const payload = JSON.stringify({ ids }, null, 2);
+    const { error } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKET)
+      .upload(FEATURED_PATH, Buffer.from(payload), { contentType: "application/json", upsert: true });
     if (error) return res.status(500).json({ error: error.message });
     return res.json({ message: "Saved" });
   } catch (err) {
