@@ -103,11 +103,12 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
       const u = new URL(url, window.location.origin);
       const sameOrigin = u.origin === window.location.origin;
       if (sameOrigin) return url;
-      return useProxy ? `/api/presentations/proxy-pdf?src=${encodeURIComponent(url)}` : url;
+      // Always use proxy for cross-origin URLs to avoid CORS and fetch-stream issues
+      return `/api/presentations/proxy-pdf?src=${encodeURIComponent(url)}`;
     } catch {
       return url;
     }
-  }, [url, useProxy]);
+  }, [url]);
 
   // Apply naive DOM-based highlights after pages render
   const applyHighlights = useCallback(() => {
