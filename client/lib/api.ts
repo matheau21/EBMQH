@@ -613,6 +613,22 @@ export const siteAPI = {
     });
     return apiRequest(`/site/reference/upload`, { method: "POST", body: JSON.stringify({ filename: file.name, contentBase64: base64 }) });
   },
+  async getFeaturedPresentations(): Promise<{ presentations: Presentation[] }> {
+    try {
+      const backendAvailable = await checkBackendAvailability();
+      if (!backendAvailable) {
+        const r = await presentationsAPI.getPresentations({ limit: 3 });
+        return { presentations: (r.presentations || []).slice(0, 3) as any };
+      }
+      return await apiRequest(`/site/featured`);
+    } catch {
+      const r = await presentationsAPI.getPresentations({ limit: 3 });
+      return { presentations: (r.presentations || []).slice(0, 3) as any };
+    }
+  },
+  async saveFeatured(ids: string[]): Promise<{ message: string }> {
+    return apiRequest(`/site/featured`, { method: "PUT", body: JSON.stringify({ ids }) });
+  },
 };
 
 // Health check
