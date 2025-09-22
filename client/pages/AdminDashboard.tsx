@@ -158,6 +158,10 @@ function SiteEditor() {
   const [refPath, setRefPath] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
+  const [featuredIds, setFeaturedIds] = useState<string[]>([]);
+  const [allApproved, setAllApproved] = useState<any[]>([]);
+  const [savingFeatured, setSavingFeatured] = useState(false);
+
   useEffect(() => {
     let ignore = false;
     (async () => {
@@ -178,6 +182,39 @@ function SiteEditor() {
     })();
     return () => { ignore = true; };
   }, []);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const f = await siteAPI.getFeaturedPresentations();
+        if (ignore) return;
+        setFeaturedIds((f.presentations || []).map((p: any) => p.id));
+      } catch {}
+    })();
+    return () => { ignore = true; };
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await presentationsAPI.adminList({ status: "approved", limit: 200 } as any);
+        if (ignore) return;
+        setAllApproved(res.presentations || []);
+      } catch {}
+    })();
+    return () => { ignore = true; };
+  }, []);
+
+  const toggleFeatured = (id: string) => {
+    setFeaturedIds((prev) => {
+      const has = prev.includes(id);
+      if (has) return prev.filter((x) => x !== id);
+      if (prev.length >= 3) return prev; // max 3
+      return [...prev, id];
+    });
+  };
 
   const addSection = () => setSections((s) => [...s, { heading: "New Section", body: "" }]);
   const removeSection = (idx: number) => setSections((s) => s.filter((_, i) => i !== idx));
@@ -203,6 +240,18 @@ function SiteEditor() {
       setError(e?.message || "Save failed");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const onSaveFeatured = async () => {
+    try {
+      setSavingFeatured(true);
+      await siteAPI.saveFeatured(featuredIds);
+      alert("Featured trials saved");
+    } catch (e: any) {
+      setError(e?.message || "Save featured failed");
+    } finally {
+      setSavingFeatured(false);
     }
   };
 
@@ -245,6 +294,25 @@ function SiteEditor() {
         <div className="text-xs text-gray-600">Or upload a file to link to:</div>
         <input type="file" onChange={(e)=>{ const f=e.target.files?.[0]; if (f) onUploadRef(f); }} />
         {refPath && <div className="text-xs text-gray-700">Uploaded path: <span className="font-mono">{refPath}</span></div>}
+      </div>
+
+      <div className="space-y-2">
+        <div className="font-medium">Featured Trials (max 3)</div>
+        <div className="grid sm:grid-cols-2 gap-2">
+          {allApproved.map((p) => (
+            <label key={p.id} className={`flex items-center gap-2 border rounded px-3 py-2 ${featuredIds.includes(p.id) ? "bg-ucla-gold/10 border-ucla-gold" : "bg-white"}`}>
+              <input
+                type="checkbox"
+                checked={featuredIds.includes(p.id)}
+                onChange={() => toggleFeatured(p.id)}
+              />
+              <span className="truncate">{p.title}</span>
+              <span className="ml-auto text-xs text-gray-600">{p.specialty}</span>
+            </label>
+          ))}
+        </div>
+        <div className="text-xs text-gray-600">Selected: {featuredIds.length}/3</div>
+        <Button className="bg-ucla-blue" disabled={savingFeatured} onClick={onSaveFeatured}>{savingFeatured ? "Saving…" : "Save Featured"}</Button>
       </div>
 
       {error && <div className="text-sm text-red-600">{error}</div>}
