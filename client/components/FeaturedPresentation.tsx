@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Presentation, Calendar, Upload, Pause, Play } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useQuery } from "@tanstack/react-query";
-import { presentationsAPI } from "@/lib/api";
+import { siteAPI } from "@/lib/api";
 import {
   Dialog,
   DialogContent,
