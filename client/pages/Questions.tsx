@@ -89,9 +89,14 @@ function QuizPageInner() {
 
   const exhausted = useMemo(() => pool.length > 0 && pool.every((q) => seenIds.has(q.id)), [pool, seenIds]);
 
-  // Load associated presentation PDF for current question
+  // Load associated presentation PDF for current question (only when panel is visible)
   useEffect(() => {
     const fetchPdf = async () => {
+      if (!showPdfPanel) {
+        setPdfUrl(undefined);
+        setPdfError(null);
+        return;
+      }
       if (!current?.presentationId) {
         setPdfUrl(undefined);
         setPdfError(null);
@@ -110,7 +115,7 @@ function QuizPageInner() {
       }
     };
     fetchPdf();
-  }, [current?.presentationId]);
+  }, [current?.presentationId, showPdfPanel]);
 
   const correctChoiceId = current?.choices.find((c) => c.isCorrect)?.id;
   const isCorrect = confirmed && selectedChoiceId && selectedChoiceId === correctChoiceId;
