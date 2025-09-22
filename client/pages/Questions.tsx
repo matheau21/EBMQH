@@ -30,7 +30,7 @@ function QuizPageInner() {
   // Right-side PDF panel state
   const [showPdfPanel, setShowPdfPanel] = useState<boolean>(() => {
     const v = sessionStorage.getItem("quiz-show-pdf-panel");
-    return v === null ? true : v === "true";
+    return v === null ? false : v === "true";
   });
   const [pdfUrl, setPdfUrl] = useState<string | undefined>(undefined);
   const [pdfLoading, setPdfLoading] = useState(false);
@@ -246,7 +246,7 @@ function QuizPageInner() {
               {current && (
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="sm" onClick={() => setShowPdfPanel((v) => !v)}>
-                    {showPdfPanel ? "Hide PDF" : "Show PDF"}
+                    {showPdfPanel ? "Hide Trial Paper" : "Show Trial Paper"}
                   </Button>
                 </div>
               )}
@@ -330,15 +330,15 @@ function QuizPageInner() {
                 {/* Right: Collapsible PDF panel */}
                 {showPdfPanel && (
                   <div className="min-h-[50vh] md:min-h-[70vh] border rounded overflow-hidden">
-                    <div className="px-3 py-2 bg-gray-50 border-b text-xs font-medium text-gray-700">Reference PDF</div>
+                    <div className="px-3 py-2 bg-gray-50 border-b text-xs font-medium text-gray-700">Trial Paper</div>
                     <div className="h-[50vh] md:h-[70vh] bg-white">
                       {pdfLoading ? (
-                        <div className="h-full flex items-center justify-center text-gray-600 text-sm">Loading PDF…</div>
+                        <div className="h-full flex items-center justify-center text-gray-600 text-sm">Loading trial paper…</div>
                       ) : pdfUrl ? (
                         <PdfHighlightViewer url={pdfUrl} highlights={confirmed ? (current.highlights || []) : []} />
                       ) : (
                         <div className="h-full flex items-center justify-center text-gray-500 text-sm">
-                          {pdfError ? pdfError : "No PDF available for this question."}
+                          {pdfError ? pdfError : "No trial paper available for this question."}
                         </div>
                       )}
                     </div>
