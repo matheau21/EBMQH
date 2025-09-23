@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminUsersAPI, presentationsAPI, checkBackendAvailability, getToken, adminAuthAPI, questionsAPI } from "@/lib/api";
@@ -450,14 +450,17 @@ export default function AdminDashboard() {
     queryFn: () => presentationsAPI.getSpecialties(),
     enabled: !!backendAvailable,
   });
-  const specialtyOptions = Array.from(new Set([...(SPECIALTY_NAMES || []), ...((specialtiesData?.specialties as string[]) || [])]));
-  const [allSpecialties, setAllSpecialties] = useState<string[]>(specialtyOptions);
+  const baseSpecialties = useMemo(() => Array.from(new Set([...(SPECIALTY_NAMES || []), ...((specialtiesData?.specialties as string[]) || [])])), [specialtiesData?.specialties]);
+  const [addedSpecialties, setAddedSpecialties] = useState<string[]>([]);
   const [newSpecialtyInput, setNewSpecialtyInput] = useState("");
-  useEffect(()=>{ setAllSpecialties(specialtyOptions); }, [specialtyOptions]);
+  const allSpecialties = useMemo(() => Array.from(new Set([...
+    baseSpecialties,
+    ...addedSpecialties,
+  ])), [baseSpecialties, addedSpecialties]);
   const addSpecialty = () => {
     const s = newSpecialtyInput.trim();
     if (!s) return;
-    if (!allSpecialties.includes(s)) setAllSpecialties(prev => [...prev, s]);
+    if (!allSpecialties.includes(s)) setAddedSpecialties(prev => [...prev, s]);
     setNewTrial(v => ({ ...v, specialties: v.specialties.includes(s) ? v.specialties : [...v.specialties, s] }));
     setNewSpecialtyInput("");
   };
@@ -648,7 +651,7 @@ export default function AdminDashboard() {
                   <SelectTrigger><SelectValue placeholder="All specialties" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All</SelectItem>
-                    {specialtyOptions.map((s: string) => (
+                    {allSpecialties.map((s: string) => (
                       <SelectItem key={s} value={s}>{s}</SelectItem>
                     ))}
                   </SelectContent>
