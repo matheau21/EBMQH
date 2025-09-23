@@ -192,6 +192,20 @@ function SiteEditor() {
     let ignore = false;
     (async () => {
       try {
+        const c = await siteAPI.getContact();
+        if (ignore) return;
+        setContactTitle(c.title || "Contact Us");
+        setContactBody(c.body || "");
+        setContactEmail(c.email || "");
+      } catch {}
+    })();
+    return () => { ignore = true; };
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
         const f = await siteAPI.getFeaturedPresentations();
         if (ignore) return;
         setFeaturedIds((f.presentations || []).map((p: any) => p.id));
