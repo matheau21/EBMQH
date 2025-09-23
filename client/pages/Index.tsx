@@ -565,7 +565,7 @@ export default function Index() {
           <div className="mb-16">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                {selectedSpecialties.join(", ")} Presentations
+                Presentations
               </h2>
               <p className="text-gray-600">
                 Showing {filteredPresentations.length} presentations for
