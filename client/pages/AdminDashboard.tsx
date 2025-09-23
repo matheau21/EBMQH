@@ -394,8 +394,10 @@ function AdminApprovalsQuestions() {
 function AccountSettings() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const passwordsMatch = newPassword.length >= 6 && confirmPassword.length >= 6 && newPassword === confirmPassword;
   const onSave = async () => {
     try {
       setSaving(true);
@@ -404,6 +406,7 @@ function AccountSettings() {
       setMessage("Password updated");
       setCurrentPassword("");
       setNewPassword("");
+      setConfirmPassword("");
     } catch (e: any) {
       setMessage(e?.message || "Failed to update");
     } finally {
@@ -421,8 +424,15 @@ function AccountSettings() {
         <label className="text-sm">New password</label>
         <Input type="password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} />
       </div>
+      <div>
+        <label className="text-sm">Confirm new password</label>
+        <Input type="password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} />
+        {newPassword && confirmPassword && newPassword !== confirmPassword && (
+          <div className="text-xs text-red-600 mt-1">Passwords do not match</div>
+        )}
+      </div>
       <div className="flex items-center gap-2">
-        <Button className="bg-ucla-blue" onClick={onSave} disabled={saving || newPassword.length < 6 || currentPassword.length < 6}>{saving ? "Saving…" : "Save"}</Button>
+        <Button className="bg-ucla-blue" onClick={onSave} disabled={saving || !passwordsMatch || currentPassword.length < 6}>{saving ? "Saving…" : "Save"}</Button>
         {message && <div className="text-sm text-gray-600">{message}</div>}
       </div>
     </div>
