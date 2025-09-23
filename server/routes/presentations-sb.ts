@@ -55,6 +55,7 @@ router.get("/", async (req: Request, res: Response) => {
         id: p.id,
         title: p.title,
         specialty: p.specialty,
+        specialties: p.specialties || [],
         summary: p.summary,
         authors: p.authors || undefined,
         journal: p.journal || undefined,
