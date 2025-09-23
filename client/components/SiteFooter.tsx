@@ -58,6 +58,11 @@ export default function SiteFooter() {
                   About Us
                 </Link>
               </li>
+              <li>
+                <Link to="/contact" className="hover:text-white transition-colors">
+                  Contact Us
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
