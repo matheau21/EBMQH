@@ -131,29 +131,27 @@ export function PresentationCard({
   const getSpecialtyThumbnailColors = (specialty: string) => {
     switch (specialty) {
       case "Cardiology":
-        return "from-red-100 to-red-200 text-red-600";
+        return "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20";
       case "Heme/Onc":
-        return "from-purple-100 to-purple-200 text-purple-600";
+        return "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20";
       case "Endocrinology":
-        return "from-emerald-100 to-emerald-200 text-emerald-600";
+        return "bg-specialty-endocrinology/10 text-specialty-endocrinology border-specialty-endocrinology/20";
       case "General Internal Medicine":
-        return "from-gray-100 to-gray-200 text-gray-600";
+        return "bg-specialty-generalinternal/10 text-specialty-generalinternal border-specialty-generalinternal/20";
       case "Pulmonary/Critical Care":
-        return "from-sky-100 to-sky-200 text-sky-600";
+        return "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20";
       case "Infectious Disease":
-        return "from-orange-100 to-orange-200 text-orange-600";
+        return "bg-specialty-infectious/10 text-specialty-infectious border-specialty-infectious/20";
       case "Rheumatology":
-        return "from-violet-100 to-violet-200 text-violet-600";
+        return "bg-specialty-rheumatology/10 text-specialty-rheumatology border-specialty-rheumatology/20";
       case "Nephrology":
-        return "from-purple-100 to-purple-200 text-purple-600";
+        return "bg-specialty-nephrology/10 text-specialty-nephrology border-specialty-nephrology/20";
       case "Gastroenterology/Hepatology":
-        return "from-lime-100 to-lime-200 text-lime-600";
+        return "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20";
       case "Neurology":
-        return "from-indigo-100 to-indigo-200 text-indigo-600";
-      case "Psychiatry":
-        return "from-pink-100 to-pink-200 text-pink-600";
+        return "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20";
       default:
-        return "from-blue-100 to-blue-200 text-blue-600";
+        return "bg-ucla-blue/10 text-ucla-blue border-ucla-blue/20";
     }
   };
 
@@ -218,7 +216,7 @@ export function PresentationCard({
             </div>
           ) : (
             <div
-              className={`w-full h-32 bg-gradient-to-br ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4`}
+              className={`w-full h-32 ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4 border`}
             >
               {(() => {
                 const SpecialtyIcon = getSpecialtyIcon(specialty);
