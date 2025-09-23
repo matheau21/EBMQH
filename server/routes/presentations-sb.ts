@@ -223,6 +223,7 @@ router.get("/:id", async (req: Request, res: Response) => {
         id: data.id,
         title: data.title,
         specialty: data.specialty,
+        specialties: data.specialties || [],
         summary: data.summary,
         authors: data.authors || undefined,
         journal: data.journal || undefined,
