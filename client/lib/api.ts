@@ -152,19 +152,37 @@ const checkBackendAvailability = async (): Promise<boolean> => {
   }
 };
 
-// API request helper
+// API request helper with graceful offline fallbacks for GET requests
 const apiRequest = async <T>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> => {
   const token = getToken();
+  const method = (options.method || "GET").toUpperCase();
 
   const config: RequestInit = {
     headers: {
       "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
     },
+    cache: "no-store",
     ...options,
+  };
+
+  const fallbackFor = (ep: string): any => {
+    if (ep.startsWith("/presentations")) {
+      if (ep.endsWith("/files")) return {};
+      if (ep.endsWith("/specialties")) return { specialties: [] };
+      if (/\/view$/.test(ep)) return { viewerCount: 0 };
+      return { presentations: [], pagination: { page: 1, limit: 10, total: 0, pages: 0 } };
+    }
+    if (ep.startsWith("/site/featured")) return { presentations: [] };
+    if (ep.startsWith("/site/about")) return { title: "About EBM Quick Hits", subtitle: "", sections: [], referenceCard: {} };
+    if (ep.startsWith("/site/contact")) return { title: "Contact Us", body: "Email us at example@example.com", email: null };
+    if (ep.startsWith("/questions")) return { questions: [], pagination: { page: 1, limit: 10, total: 0, pages: 0 } };
+    if (ep.startsWith("/admin/users")) return { users: [] };
+    if (ep.startsWith("/health")) return { status: "offline", timestamp: new Date().toISOString(), environment: "offline" };
+    return {};
   };
 
   try {
@@ -178,7 +196,6 @@ const apiRequest = async <T>(
       } catch {
         try {
           const text = await response.text();
-          // Try to parse JSON from text if possible
           try {
             const parsed = JSON.parse(text);
             message = parsed?.error || message;
@@ -194,12 +211,13 @@ const apiRequest = async <T>(
 
     return response.json();
   } catch (error) {
-    // Mark backend as unavailable on network errors
-    if (
-      error instanceof TypeError &&
-      error.message.includes("Failed to fetch")
-    ) {
+    const isNetworkError = error instanceof TypeError && String(error.message).includes("Failed to fetch");
+    if (isNetworkError) {
       isBackendAvailable = false;
+      if (method === "GET") {
+        // Resolve with a sensible fallback to avoid bubbling rejections/logging noise
+        return fallbackFor(endpoint) as T;
+      }
     }
     throw error;
   }
