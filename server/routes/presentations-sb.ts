@@ -274,7 +274,8 @@ router.post("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Resp
       .from("presentations")
       .insert({
         title: body.title,
-        specialty: body.specialty,
+        specialty: body.specialty || (Array.isArray(body.specialties) && body.specialties.length ? body.specialties[0] : null),
+        specialties: Array.isArray(body.specialties) ? body.specialties : (body.specialty ? [body.specialty] : []),
         summary: body.summary,
         authors: body.authors,
         journal: body.journal,
