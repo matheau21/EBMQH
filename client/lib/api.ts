@@ -18,6 +18,7 @@ export interface Presentation {
   id: string;
   title: string;
   specialty: string;
+  specialties?: string[];
   summary: string;
   authors?: string;
   journal?: string;
@@ -400,7 +401,7 @@ export const presentationsAPI = {
   },
 
   async createPresentation(
-    data: Partial<Presentation> & { title: string; specialty: string; summary: string; originalArticleUrl?: string; thumbUrl?: string }
+    data: Partial<Presentation> & { title: string; specialty?: string; specialties?: string[]; summary: string; originalArticleUrl?: string; thumbUrl?: string }
   ): Promise<{ message: string; presentation: Presentation }> {
     try {
       return apiRequest<{ message: string; presentation: Presentation }>(
@@ -628,6 +629,18 @@ export const siteAPI = {
   },
   async saveFeatured(ids: string[]): Promise<{ message: string }> {
     return apiRequest(`/site/featured`, { method: "PUT", body: JSON.stringify({ ids }) });
+  },
+  async getContact(): Promise<{ title: string; body: string; email?: string | null }> {
+    try {
+      const backendAvailable = await checkBackendAvailability();
+      if (!backendAvailable) return { title: "Contact Us", body: "Email us at example@example.com", email: null } as any;
+      return await apiRequest(`/site/contact`);
+    } catch {
+      return { title: "Contact Us", body: "Email us at example@example.com", email: null } as any;
+    }
+  },
+  async saveContact(input: { title: string; body: string; email?: string | null }): Promise<{ message: string }> {
+    return apiRequest(`/site/contact`, { method: "PUT", body: JSON.stringify(input) });
   },
 };
 
