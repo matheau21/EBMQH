@@ -19,6 +19,7 @@ interface Presentation {
   id: string;
   title: string;
   specialty: string;
+  specialties?: string[];
   summary: string;
   authors?: string;
   journal?: string;
@@ -206,7 +207,8 @@ export default function AllPresentations() {
 
       const matchesSpecialty =
         selectedSpecialties.length === 0 ||
-        selectedSpecialties.includes(presentation.specialty);
+        selectedSpecialties.includes(presentation.specialty) ||
+        (Array.isArray(presentation.specialties) && presentation.specialties.some(s => selectedSpecialties.includes(s)));
 
       return matchesSearch && matchesSpecialty;
     });
