@@ -41,10 +41,10 @@ router.get("/", async (req: Request, res: Response) => {
 
     let query = supabaseAdmin
       .from("presentations")
-      .select("id, title, specialty, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at", { count: "exact" })
+      .select("id, title, specialty, specialties, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at", { count: "exact" })
       .eq("status", "approved");
 
-    if (specialty) query = query.eq("specialty", specialty);
+    if (specialty) query = query.or(`specialty.eq.${specialty},specialties.cs.{${specialty}}`);
     if (search) query = query.ilike("title", `%${search}%`);
 
     const { data, error, count } = await query.order("created_at", { ascending: false }).range(from, to);
