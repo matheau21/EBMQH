@@ -8,6 +8,30 @@ import { useAdmin } from "@/contexts/AdminContext";
 
 import SiteHeader from "@/components/SiteHeader";
 
+function UserPasswordReset({ onSave, saving }: { onSave: (pwd: string) => void; saving: boolean }) {
+  const [pwd, setPwd] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const valid = pwd.length >= 6 && confirm.length >= 6 && pwd === confirm;
+  return (
+    <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 items-end gap-2">
+      <div className="sm:col-span-1">
+        <Label>New Password</Label>
+        <Input type="password" value={pwd} onChange={(e)=>setPwd(e.target.value)} placeholder="min 6 chars" />
+      </div>
+      <div className="sm:col-span-1">
+        <Label>Confirm Password</Label>
+        <Input type="password" value={confirm} onChange={(e)=>setConfirm(e.target.value)} placeholder="repeat password" />
+        {pwd && confirm && pwd !== confirm && (
+          <div className="text-xs text-red-600 mt-1">Passwords do not match</div>
+        )}
+      </div>
+      <div>
+        <Button onClick={()=> valid && onSave(pwd)} disabled={!valid || saving}>{saving ? "Saving…" : "Save"}</Button>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminUsersPage({ showHeader = true }: { showHeader?: boolean }) {
   const { isAuthenticated } = useAdmin();
   const qc = useQueryClient();
@@ -122,12 +146,14 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
                   </span>
                 </div>
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => updateMutation.mutate({ id: u.id, input: { role: u.role === "admin" ? "user" : "admin" } })}
-                  >
-                    {u.role === "admin" ? "Demote to user" : "Promote to admin"}
-                  </Button>
+                  {u.role !== "owner" && (
+                    <Button
+                      variant="outline"
+                      onClick={() => updateMutation.mutate({ id: u.id, input: { role: u.role === "admin" ? "user" : "admin" } })}
+                    >
+                      {u.role === "admin" ? "Demote to user" : "Promote to admin"}
+                    </Button>
+                  )}
                   <Button
                     variant="outline"
                     onClick={() => updateMutation.mutate({ id: u.id, input: { is_active: !u.is_active } })}
@@ -139,23 +165,14 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
                 </div>
               </div>
               {resetFor === u.id && (
-                <div className="mt-3 flex items-end gap-2">
-                  <div className="flex-1">
-                    <Label>New Password</Label>
-                    <Input type="password" value={resetPassword} onChange={(e) => setResetPassword(e.target.value)} placeholder="min 6 chars" />
-                  </div>
-                  <Button
-                    onClick={() => {
-                      if (!resetPassword || resetPassword.length < 6) return;
-                      updateMutation.mutate({ id: u.id, input: { password: resetPassword } });
-                      setResetFor(null);
-                      setResetPassword("");
-                    }}
-                    disabled={updateMutation.isPending || resetPassword.length < 6}
-                  >
-                    Save
-                  </Button>
-                </div>
+                <UserPasswordReset
+                  onSave={(pwd) => {
+                    updateMutation.mutate({ id: u.id, input: { password: pwd } });
+                    setResetFor(null);
+                    setResetPassword("");
+                  }}
+                  saving={updateMutation.isPending}
+                />
               )}
             </div>
           ))}
