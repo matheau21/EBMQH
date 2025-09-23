@@ -154,7 +154,7 @@ export function SpecialtyFilters({
               <div className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0">
                 <Icon />
               </div>
-              <span className="text-xs font-semibold leading-tight text-center">
+              <span className="text-sm font-semibold leading-tight text-center">
                 {specialty.name}
               </span>
             </div>
