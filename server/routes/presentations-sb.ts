@@ -93,7 +93,7 @@ router.get("/admin", authenticateAdminToken, requireAdminOrOwner, async (req: Ad
       .from("presentations")
       .select("*", { count: "exact" });
 
-    if (specialty) query = query.eq("specialty", specialty);
+    if (specialty) query = query.or(`specialty.eq.${specialty},specialties.cs.{${specialty}}`);
     if (search) query = query.ilike("title", `%${search}%`);
     if (status) query = query.eq("status", status);
 
