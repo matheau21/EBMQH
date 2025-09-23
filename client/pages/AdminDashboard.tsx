@@ -162,6 +162,11 @@ function SiteEditor() {
   const [allApproved, setAllApproved] = useState<any[]>([]);
   const [savingFeatured, setSavingFeatured] = useState(false);
 
+  const [contactTitle, setContactTitle] = useState("Contact Us");
+  const [contactBody, setContactBody] = useState("");
+  const [contactEmail, setContactEmail] = useState<string>("");
+  const [savingContact, setSavingContact] = useState(false);
+
   useEffect(() => {
     let ignore = false;
     (async () => {
