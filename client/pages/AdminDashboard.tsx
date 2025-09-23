@@ -451,6 +451,16 @@ export default function AdminDashboard() {
     enabled: !!backendAvailable,
   });
   const specialtyOptions = Array.from(new Set([...(SPECIALTY_NAMES || []), ...((specialtiesData?.specialties as string[]) || [])]));
+  const [allSpecialties, setAllSpecialties] = useState<string[]>(specialtyOptions);
+  const [newSpecialtyInput, setNewSpecialtyInput] = useState("");
+  useEffect(()=>{ setAllSpecialties(specialtyOptions); }, [specialtyOptions]);
+  const addSpecialty = () => {
+    const s = newSpecialtyInput.trim();
+    if (!s) return;
+    if (!allSpecialties.includes(s)) setAllSpecialties(prev => [...prev, s]);
+    setNewTrial(v => ({ ...v, specialties: v.specialties.includes(s) ? v.specialties : [...v.specialties, s] }));
+    setNewSpecialtyInput("");
+  };
 
   const [filterStatus, setFilterStatus] = useState<"all"|"approved"|"pending"|"rejected"|"archived">("all");
   const [filterSpecialty, setFilterSpecialty] = useState<string>("all");
@@ -500,7 +510,7 @@ export default function AdminDashboard() {
     mutationFn: async () => {
       const resp = await presentationsAPI.createPresentation({
         title: newTrial.title,
-        specialty: newTrial.specialty || (newTrial.specialties[0] || undefined),
+        specialty: newTrial.specialties[0] || undefined,
         specialties: newTrial.specialties.length ? newTrial.specialties : undefined,
         summary: newTrial.summary,
         authors: newTrial.authors || undefined,
@@ -564,38 +574,19 @@ export default function AdminDashboard() {
                 <label className="text-sm">Title</label>
                 <Input value={newTrial.title} onChange={(e) => setNewTrial({ ...newTrial, title: e.target.value })} />
               </div>
-              <div>
-                <label className="text-sm">Specialty</label>
-                <Select onValueChange={(val)=>{
-                  if (val === "__new__") {
-                    setNewTrial({ ...newTrial, specialty: "" });
-                  } else {
-                    setNewTrial({ ...newTrial, specialty: val });
-                  }
-                }} value={newTrial.specialty || ""}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select specialty" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {specialtyOptions.map((s: string) => (
-                      <SelectItem key={s} value={s}>{s}</SelectItem>
-                    ))}
-                    <SelectItem value="__new__">+ Add new specialty…</SelectItem>
-                  </SelectContent>
-                </Select>
-                {newTrial.specialty === "" && (
-                  <Input className="mt-2" placeholder="Enter new specialty" value={newTrial.specialty} onChange={(e)=>setNewTrial({ ...newTrial, specialty: e.target.value })} />
-                )}
-              </div>
               <div className="sm:col-span-2">
-                <label className="text-sm">Specialties (select multiple)</label>
+                <label className="text-sm">Specialty</label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-1">
-                  {specialtyOptions.map((s: string) => (
+                  {allSpecialties.map((s: string) => (
                     <label key={s} className={`text-sm px-2 py-1 border rounded inline-flex items-center gap-2 ${newTrial.specialties.includes(s) ? "bg-ucla-gold/10 border-ucla-gold" : "bg-white"}`}>
                       <input type="checkbox" checked={newTrial.specialties.includes(s)} onChange={(e)=> setNewTrial(v=> ({ ...v, specialties: e.target.checked ? [...v.specialties, s] : v.specialties.filter(x=>x!==s) }))} />
                       <span className="truncate">{s}</span>
                     </label>
                   ))}
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <Input placeholder="Add a specialty" value={newSpecialtyInput} onChange={(e)=>setNewSpecialtyInput(e.target.value)} onKeyDown={(e)=>{ if (e.key === "Enter") { e.preventDefault(); addSpecialty(); } }} />
+                  <Button type="button" variant="outline" onClick={addSpecialty}>Add</Button>
                 </div>
               </div>
               <div className="sm:col-span-2">
@@ -627,7 +618,7 @@ export default function AdminDashboard() {
                 {newPpt && <div className="text-xs text-gray-600 mt-1">Selected: {newPpt.name}</div>}
               </div>
             </div>
-            <Button className="bg-ucla-blue mt-3" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || (!((newTrial.specialty && newTrial.specialty.trim()) || newTrial.specialties.length > 0)) || !newTrial.summary}>
+            <Button className="bg-ucla-blue mt-3" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || (newTrial.specialties.length === 0) || !newTrial.summary}>
               {createMutation.isPending ? "Creating..." : "Create"}
             </Button>
             {createMutation.error && (
