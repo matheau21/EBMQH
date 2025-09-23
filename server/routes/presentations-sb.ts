@@ -7,7 +7,8 @@ const router = express.Router();
 
 const createSchema = z.object({
   title: z.string().min(1).max(500),
-  specialty: z.string().min(1),
+  specialty: z.string().min(1).optional(),
+  specialties: z.array(z.string().min(1)).optional(),
   summary: z.string().min(1),
   authors: z.string().optional(),
   journal: z.string().optional(),
