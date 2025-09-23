@@ -155,7 +155,7 @@ export function SpecialtyFilters({
                 <Icon />
               </div>
               <span className="text-sm font-semibold leading-tight text-center">
-                {specialty.name}
+                {specialty.name.replace(/\//g, " ")}
               </span>
             </div>
           );
