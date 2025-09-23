@@ -234,16 +234,21 @@ export function PresentationCard({
           )}
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-ucla-blue transition-colors">
+        <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-2 group-hover:text-ucla-blue transition-colors">
           {title}
         </h3>
 
-        <p className="text-sm text-gray-600 mb-3 line-clamp-3">{summary}</p>
+        {(journal || year) && (
+          <div className="text-sm text-gray-600 mb-3">
+            {journal ? journal : ""}{year ? `${journal ? " / " : ""}${year}` : ""}
+          </div>
+        )}
 
-        {(authors || journal) && (
-          <div className="text-xs text-gray-500 mb-4 space-y-1">
-            {authors && <p className="font-medium">{authors}</p>}
-            {journal && <p>{journal}</p>}
+        <p className="text-sm text-gray-700 mb-4 line-clamp-3">{summary}</p>
+
+        {authors && (
+          <div className="text-xs text-gray-500 mb-4">
+            <p className="font-medium">{authors}</p>
           </div>
         )}
 
