@@ -435,7 +435,7 @@ export default function AdminDashboard() {
   const location = useLocation();
   const initialTab = new URLSearchParams(location.search).get("tab") || (user?.role === "user" ? "trials" : "users");
   const [tab, setTab] = useState(initialTab);
-  const [newTrial, setNewTrial] = useState({ title: "", specialty: "", summary: "", authors: "", journal: "", year: "" });
+  const [newTrial, setNewTrial] = useState({ title: "", specialty: "", specialties: [] as string[], summary: "", authors: "", journal: "", year: "" });
   const [newPdf, setNewPdf] = useState<File | null>(null);
   const [newPpt, setNewPpt] = useState<File | null>(null);
 
@@ -500,7 +500,8 @@ export default function AdminDashboard() {
     mutationFn: async () => {
       const resp = await presentationsAPI.createPresentation({
         title: newTrial.title,
-        specialty: newTrial.specialty,
+        specialty: newTrial.specialty || (newTrial.specialties[0] || undefined),
+        specialties: newTrial.specialties.length ? newTrial.specialties : undefined,
         summary: newTrial.summary,
         authors: newTrial.authors || undefined,
         journal: newTrial.journal || undefined,
@@ -518,7 +519,7 @@ export default function AdminDashboard() {
       return created;
     },
     onSuccess: () => {
-      setNewTrial({ title: "", specialty: "", summary: "", authors: "", journal: "", year: "" });
+      setNewTrial({ title: "", specialty: "", specialties: [], summary: "", authors: "", journal: "", year: "" });
       setNewPdf(null);
       setNewPpt(null);
       qc.invalidateQueries({ queryKey: ["admin-trials"] });
@@ -587,6 +588,17 @@ export default function AdminDashboard() {
                 )}
               </div>
               <div className="sm:col-span-2">
+                <label className="text-sm">Specialties (select multiple)</label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-1">
+                  {specialtyOptions.map((s: string) => (
+                    <label key={s} className={`text-sm px-2 py-1 border rounded inline-flex items-center gap-2 ${newTrial.specialties.includes(s) ? "bg-ucla-gold/10 border-ucla-gold" : "bg-white"}`}>
+                      <input type="checkbox" checked={newTrial.specialties.includes(s)} onChange={(e)=> setNewTrial(v=> ({ ...v, specialties: e.target.checked ? [...v.specialties, s] : v.specialties.filter(x=>x!==s) }))} />
+                      <span className="truncate">{s}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="sm:col-span-2">
                 <label className="text-sm">Summary</label>
                 <Input value={newTrial.summary} onChange={(e) => setNewTrial({ ...newTrial, summary: e.target.value })} />
               </div>
@@ -615,7 +627,7 @@ export default function AdminDashboard() {
                 {newPpt && <div className="text-xs text-gray-600 mt-1">Selected: {newPpt.name}</div>}
               </div>
             </div>
-            <Button className="bg-ucla-blue mt-3" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || !(newTrial.specialty && newTrial.specialty.trim()) || !newTrial.summary}>
+            <Button className="bg-ucla-blue mt-3" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || (!((newTrial.specialty && newTrial.specialty.trim()) || newTrial.specialties.length > 0)) || !newTrial.summary}>
               {createMutation.isPending ? "Creating..." : "Create"}
             </Button>
             {createMutation.error && (
