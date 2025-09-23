@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Presentation, Calendar, Upload, Pause, Play } from "lucide-react";
+import { Presentation as PresIcon, Calendar, Upload, Pause, Play, BookOpen } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useQuery } from "@tanstack/react-query";
-import { siteAPI } from "@/lib/api";
+import { siteAPI, Presentation } from "@/lib/api";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import { FeaturedUpload } from "./FeaturedUpload";
+import PresentationFilesViewer from "./PresentationFilesViewer";
 
 interface FeaturedPresentationData {
   title: string;
@@ -29,6 +30,8 @@ export function FeaturedPresentation() {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [paused, setPaused] = useState(false);
   const [api, setApi] = useState<CarouselApi | null>(null);
+  const [showFilesViewer, setShowFilesViewer] = useState(false);
+  const [selected, setSelected] = useState<Presentation | null>(null);
 
   const { data } = useQuery({
     queryKey: ["featured-presentations"],
@@ -64,14 +67,9 @@ export function FeaturedPresentation() {
     return () => clearInterval(id);
   }, [api, paused, items.length]);
 
-  const handleFeaturedClick = () => {
-    // Intentionally noop: public list doesn't include file URLs.
-    // Could navigate to All Presentations instead.
-    window.location.href = "/presentations";
-  };
-
-  const handleOriginalArticleClick = () => {
-    window.location.href = "/presentations";
+  const openViewer = (p: Presentation) => {
+    setSelected(p);
+    setShowFilesViewer(true);
   };
 
   const handleUploadFeatured = () => {
@@ -91,7 +89,7 @@ export function FeaturedPresentation() {
     <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-6 sm:p-8 shadow-lg">
       <div className="text-center relative">
         <div className="w-16 h-16 bg-ucla-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
-          <Presentation className="h-8 w-8 text-ucla-blue" />
+          <PresIcon className="h-8 w-8 text-ucla-blue" />
         </div>
 
         <div className="absolute right-0 top-0 flex items-center gap-2">
@@ -125,11 +123,11 @@ export function FeaturedPresentation() {
                     </div>
                     <p className="text-gray-600 mb-5 max-w-xl mx-auto">{p.summary}</p>
                     <div className="flex justify-center gap-3">
-                      <Button className="bg-ucla-blue" onClick={handleFeaturedClick}>
-                        <ExternalLink className="h-4 w-4 mr-2" /> View
+                      <Button className="bg-ucla-blue" onClick={() => openViewer(p)}>
+                        <PresIcon className="h-4 w-4 mr-2" /> View Files
                       </Button>
-                      <Button variant="outline" onClick={handleOriginalArticleClick} className="border-ucla-blue text-ucla-blue">
-                        <ExternalLink className="h-4 w-4 mr-2" /> Original Article
+                      <Button variant="outline" onClick={() => openViewer(p)} className="border-ucla-blue text-ucla-blue">
+                        <BookOpen className="h-4 w-4 mr-2" /> Original Article
                       </Button>
                     </div>
                   </div>
@@ -179,6 +177,17 @@ export function FeaturedPresentation() {
           <FeaturedUpload onUpload={handleFeaturedUpload} />
         </DialogContent>
       </Dialog>
+
+      {selected && (
+        <PresentationFilesViewer
+          isOpen={showFilesViewer}
+          onClose={() => setShowFilesViewer(false)}
+          presentationId={selected.id}
+          title={selected.title}
+          fallbackPdfUrl={selected.originalArticleUrl}
+          fallbackPptUrl={selected.presentationFileUrl}
+        />
+      )}
     </div>
   );
 }
