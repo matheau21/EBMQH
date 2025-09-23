@@ -117,9 +117,22 @@ export function SpecialtyFilters({
 }: SpecialtyFiltersProps) {
   return (
     <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-4 sm:p-6 shadow-lg">
-      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 text-center">
-        Explore Trial by Subspecialty
-      </h3>
+      <div className="mb-4 flex items-center justify-between">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+          Explore Trial by Subspecialty
+        </h3>
+        {selectedSpecialties.length > 0 && (
+          <div className="text-xs sm:text-sm text-gray-600 flex items-center gap-3">
+            <span>{selectedSpecialties.length} selected</span>
+            <button
+              onClick={() => selectedSpecialties.forEach(onSpecialtyToggle)}
+              className="text-olive-600 hover:text-olive-700 font-medium underline underline-offset-2"
+            >
+              Clear All
+            </button>
+          </div>
+        )}
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 max-w-6xl mx-auto">
         {specialtyConfig.map((specialty) => {
           const Icon = specialty.icon;
@@ -149,21 +162,6 @@ export function SpecialtyFilters({
         })}
       </div>
 
-      {selectedSpecialties.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">
-              {selectedSpecialties.length} specialties selected
-            </span>
-            <button
-              onClick={() => selectedSpecialties.forEach(onSpecialtyToggle)}
-              className="text-sm text-olive-600 hover:text-olive-700 font-medium"
-            >
-              Clear All
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
