@@ -3,9 +3,13 @@ import { Link } from "react-router-dom";
 import { EBMLogo } from "@/components/EBMLogo";
 import { AdminToggleButton } from "@/components/AdminToggleButton";
 import { siteAPI } from "@/lib/api";
+import { useAdmin } from "@/contexts/AdminContext";
+import { LoginModal } from "@/components/LoginModal";
 
 export default function SiteFooter() {
   const [referenceHref, setReferenceHref] = useState<string | undefined>(undefined);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const { isAuthenticated } = useAdmin();
 
   useEffect(() => {
     let ignore = false;
@@ -63,6 +67,18 @@ export default function SiteFooter() {
                   Contact Us
                 </Link>
               </li>
+              {!isAuthenticated && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setShowLoginModal(true)}
+                    className="hover:text-white transition-colors underline underline-offset-2"
+                    aria-label="Admin Login"
+                  >
+                    Admin
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -71,7 +87,7 @@ export default function SiteFooter() {
         </div>
       </div>
 
-      {/* Admin Toggle Button */}
+      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
       <AdminToggleButton />
     </footer>
   );
