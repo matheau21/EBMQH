@@ -12,6 +12,7 @@ import Index from "./pages/Index";
 import AllPresentations from "./pages/AllPresentations";
 import Questions from "./pages/Questions";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import AdminUsers from "./pages/AdminUsers";
 import AdminDashboard from "./pages/AdminDashboard";
