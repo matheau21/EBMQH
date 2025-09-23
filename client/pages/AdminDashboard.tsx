@@ -334,6 +334,19 @@ function SiteEditor() {
         <Button className="bg-ucla-blue" disabled={savingFeatured} onClick={onSaveFeatured}>{savingFeatured ? "Saving…" : "Save Featured"}</Button>
       </div>
 
+      <div className="space-y-2">
+        <div className="font-medium">Contact Us</div>
+        <label className="text-sm">Title</label>
+        <Input value={contactTitle} onChange={(e)=>setContactTitle(e.target.value)} />
+        <label className="text-sm">Email (optional)</label>
+        <Input value={contactEmail} onChange={(e)=>setContactEmail(e.target.value)} />
+        <label className="text-sm">Body</label>
+        <textarea className="w-full border rounded p-2 text-sm min-h-[120px]" value={contactBody} onChange={(e)=>setContactBody(e.target.value)} />
+        <div>
+          <Button className="bg-ucla-blue" disabled={savingContact} onClick={async ()=>{ try { setSavingContact(true); await siteAPI.saveContact({ title: contactTitle, body: contactBody, email: contactEmail || null }); alert("Contact saved"); } finally { setSavingContact(false); } }}>{savingContact ? "Saving…" : "Save Contact"}</Button>
+        </div>
+      </div>
+
       {error && <div className="text-sm text-red-600">{error}</div>}
 
       <div className="pt-2">
