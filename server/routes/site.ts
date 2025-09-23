@@ -18,6 +18,7 @@ const AboutSchema = z.object({
 const STORAGE_BUCKET = "presentations"; // reuse existing bucket
 const ABOUT_PATH = "site/about.json";
 const FEATURED_PATH = "site/featured.json";
+const CONTACT_PATH = "site/contact.json";
 
 router.get("/about", async (_req: Request, res: Response) => {
   try {
@@ -187,6 +188,42 @@ router.post("/reference/upload", authenticateAdminToken, async (req: AdminAuthRe
       .upload(path, buffer, { contentType: "application/octet-stream", upsert: true });
     if (upErr) return res.status(500).json({ error: upErr.message });
     return res.json({ message: "Uploaded", path });
+  } catch (err) {
+    if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Contact content
+const ContactSchema = z.object({
+  title: z.string().min(1).max(200).default("Contact Us"),
+  body: z.string().max(5000).default("Email us at example@example.com"),
+  email: z.string().email().optional().nullable(),
+});
+
+router.get("/contact", async (_req: Request, res: Response) => {
+  try {
+    const { data } = await supabaseAdmin.storage.from(STORAGE_BUCKET).download(CONTACT_PATH);
+    if (!data) return res.json({ title: "Contact Us", body: "Email us at example@example.com", email: null });
+    const text = await data.text();
+    try { return res.json(JSON.parse(text)); } catch {
+      return res.json({ title: "Contact Us", body: "Email us at example@example.com", email: null });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.put("/contact", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
+  try {
+    if (!(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")) {
+      return res.status(403).json({ error: "Admin access required" });
+    }
+    const body = ContactSchema.parse(req.body);
+    const payload = JSON.stringify(body, null, 2);
+    const { error } = await supabaseAdmin.storage.from(STORAGE_BUCKET).upload(CONTACT_PATH, Buffer.from(payload), { contentType: "application/json", upsert: true });
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json({ message: "Saved" });
   } catch (err) {
     if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
     return res.status(500).json({ error: "Internal server error" });
