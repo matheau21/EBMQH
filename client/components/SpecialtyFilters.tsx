@@ -142,7 +142,7 @@ export function SpecialtyFilters({
             <div
               key={specialty.name}
               className={`
-                aspect-[5/3] flex flex-col items-center justify-center gap-1 sm:gap-2 cursor-pointer transition-all duration-300 p-2 sm:p-3 rounded-xl border-2
+                aspect-square flex flex-col items-center justify-center gap-1 sm:gap-2 cursor-pointer transition-all duration-300 p-2 sm:p-3 rounded-xl border-2
                 ${
                   isSelected
                     ? `${specialty.activeColor} shadow-lg transform scale-105`
