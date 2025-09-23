@@ -20,6 +20,7 @@ const createSchema = z.object({
 const updateSchema = z.object({
   title: z.string().min(1).max(500).optional(),
   specialty: z.string().min(1).optional(),
+  specialties: z.array(z.string().min(1)).optional(),
   summary: z.string().min(1).optional(),
   authors: z.string().optional(),
   journal: z.string().optional(),
