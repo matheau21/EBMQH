@@ -305,47 +305,24 @@ export const ModernNephrologyIcon = () => (
 
 export const ModernGastroenterologyIcon = () => (
   <svg viewBox="0 0 60 60" className="w-full h-full">
-    {/* Liver shape - right lobe */}
+    {/* Liver (dominant on right) */}
     <path
-      d="M20 20 Q35 15 40 22 Q42 25 42 30 Q42 35 40 40 Q38 45 35 46 Q30 47 25 45 Q20 43 18 38 Q16 33 16 28 Q16 23 20 20"
+      d="M26 22 Q38 18 44 24 Q46 27 46 31 Q46 36 43 40 Q40 45 34 46 Q28 47 24 45 Q20 43 18 38 Q16 33 18 28 Q20 24 26 22"
       fill="currentColor"
-      opacity="0.7"
+      opacity="0.75"
     />
+    {/* Simple hepatic markings */}
+    <path d="M28 28 Q33 30 38 28" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.7" />
+    <path d="M26 34 Q32 36 38 34" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.7" />
 
-    {/* Liver shape - left lobe */}
+    {/* Stomach (on left, curved sac) */}
     <path
-      d="M16 28 Q14 25 12 22 Q10 20 8 22 Q6 25 6 30 Q6 35 8 38 Q10 40 13 41 Q16 42 18 40 Q18 35 16 28"
+      d="M14 26 C 10 30, 12 39, 20 43 C 26 46, 32 43, 32 37 C 32 33, 30 31, 28 29 C 26 27, 24 25, 22 25"
       fill="currentColor"
-      opacity="0.6"
+      opacity="0.55"
     />
-
-    {/* Liver vessels/hepatic structure */}
-    <path
-      d="M25 25 Q30 27 35 25"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      opacity="0.8"
-      fill="none"
-    />
-    <path
-      d="M22 32 Q28 34 34 32"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      opacity="0.8"
-      fill="none"
-    />
-    <path
-      d="M24 38 Q30 40 36 38"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      opacity="0.8"
-      fill="none"
-    />
-
-    {/* Hepatic portal */}
-    <circle cx="30" cy="30" r="1.5" fill="currentColor" opacity="0.9" />
-    <circle cx="25" cy="35" r="1" fill="currentColor" opacity="0.9" />
-    <circle cx="32" cy="37" r="1" fill="currentColor" opacity="0.9" />
+    {/* Stomach outline accent */}
+    <path d="M14 26 C 10 30, 12 39, 20 43" stroke="currentColor" strokeWidth="1.2" fill="none" opacity="0.6" />
   </svg>
 );
 
