@@ -100,42 +100,26 @@ export const ModernEndocrinologyIcon = () => (
 
 export const ModernGeneralInternalIcon = () => (
   <svg viewBox="0 0 60 60" className="w-full h-full">
-    {/* Stethoscope earpieces */}
-    <circle cx="20" cy="15" r="4" fill="currentColor" opacity="0.8" />
-    <circle cx="40" cy="15" r="4" fill="currentColor" opacity="0.8" />
+    {/* Earpieces */}
+    <circle cx="20" cy="14" r="3.5" fill="currentColor" opacity="0.9" />
+    <circle cx="40" cy="14" r="3.5" fill="currentColor" opacity="0.9" />
 
-    {/* Stethoscope tubing */}
-    <path
-      d="M20 19 Q15 25 15 35 Q15 45 25 50"
-      stroke="currentColor"
-      strokeWidth="3"
-      fill="none"
-    />
-    <path
-      d="M40 19 Q45 25 45 35 Q45 45 35 50"
-      stroke="currentColor"
-      strokeWidth="3"
-      fill="none"
-    />
+    {/* Binaurals (metal arms) */}
+    <path d="M20 14 C28 10, 32 10, 40 14" stroke="currentColor" strokeWidth="2" fill="none" />
 
-    {/* Chest piece (diaphragm) */}
-    <circle cx="30" cy="50" r="8" fill="currentColor" opacity="0.9" />
-    <circle
-      cx="30"
-      cy="50"
-      r="5"
-      fill="none"
-      stroke="white"
-      strokeWidth="1.5"
-    />
+    {/* Flexible tubing from each side joining into single tube */}
+    <path d="M20 18 C16 26, 16 36, 28 42" stroke="currentColor" strokeWidth="3" fill="none" />
+    <path d="M40 18 C44 26, 44 36, 32 42" stroke="currentColor" strokeWidth="3" fill="none" />
 
-    {/* Binaurals (headset connector) */}
-    <path
-      d="M20 15 Q30 10 40 15"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
-    />
+    {/* Single tube to chest piece */}
+    <path d="M30 42 C32 46, 36 48, 40 48" stroke="currentColor" strokeWidth="3" fill="none" />
+
+    {/* Chest piece and diaphragm */}
+    <circle cx="47" cy="48" r="4.5" fill="currentColor" opacity="0.95" />
+    <circle cx="47" cy="48" r="2.7" fill="none" stroke="white" strokeWidth="1.5" />
+
+    {/* Short stem connecting tube to chest piece */}
+    <path d="M40 48 L43 48" stroke="currentColor" strokeWidth="3" />
   </svg>
 );
 
