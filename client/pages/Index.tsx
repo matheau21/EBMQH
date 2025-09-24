@@ -188,6 +188,7 @@ export default function Index() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [presentations, setPresentations] = useState<Presentation[]>([]);
+  const [animatedCount, setAnimatedCount] = useState(0);
 
   // Load presentations from API with fallback to mock data
   useEffect(() => {
@@ -226,6 +227,28 @@ export default function Index() {
 
     loadPresentations();
   }, []);
+
+  // Animate posted trials count
+  useEffect(() => {
+    const target = presentations.length || 0;
+    let raf = 0;
+    const duration = 800; // ms
+    const startTime = performance.now();
+    const startVal = animatedCount > target ? 0 : 0;
+
+    const tick = (now: number) => {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const value = Math.floor(startVal + eased * target);
+      setAnimatedCount(value);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [presentations.length]);
 
   // No local storage persistence; data is dynamic from Supabase
   useEffect(() => {}, [presentations]);
