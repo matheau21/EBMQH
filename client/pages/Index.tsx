@@ -532,7 +532,7 @@ export default function Index() {
           <div className="flex justify-center">
             <div className="bg-white border-2 border-ucla-gold/20 p-6 sm:p-8 lg:p-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:border-ucla-gold/40 w-full max-w-2xl text-center">
               <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-ucla-blue mb-3 sm:mb-4">
-                {presentations.length}
+                {animatedCount.toLocaleString()}
               </div>
               <div className="text-ucla-gold font-semibold text-lg sm:text-xl">
                 Posted Trial Summaries
