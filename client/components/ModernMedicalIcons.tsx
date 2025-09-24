@@ -104,9 +104,6 @@ export const ModernGeneralInternalIcon = () => (
     <circle cx="20" cy="14" r="3.5" fill="currentColor" opacity="0.9" />
     <circle cx="40" cy="14" r="3.5" fill="currentColor" opacity="0.9" />
 
-    {/* Binaurals (metal arms) */}
-    <path d="M20 14 C28 10, 32 10, 40 14" stroke="currentColor" strokeWidth="2" fill="none" />
-
     {/* Flexible tubing from each side joining into single tube */}
     <path d="M20 18 C16 26, 16 36, 28 42" stroke="currentColor" strokeWidth="3" fill="none" />
     <path d="M40 18 C44 26, 44 36, 32 42" stroke="currentColor" strokeWidth="3" fill="none" />
