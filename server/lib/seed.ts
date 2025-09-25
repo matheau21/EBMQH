@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { supabaseAdmin } from "./supabase.js";
+import { supabaseAdmin } from "./supabase";
 
 export async function ensureInitialOwner() {
   try {
