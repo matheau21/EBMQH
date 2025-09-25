@@ -11,6 +11,13 @@ import {
 
 const router = express.Router();
 
+// Ensure Prisma is available; otherwise return a friendly error for all /api/users endpoints
+router.use((_, res, next) => {
+  const ready = !!(prisma && typeof (prisma as any).$queryRaw !== "undefined");
+  if (!ready) return res.status(503).json({ error: "Database not configured for this deployment" });
+  next();
+});
+
 // Validation schemas
 const registerSchema = z.object({
   email: z.string().email(),
