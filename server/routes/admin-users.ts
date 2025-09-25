@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { supabaseAdmin } from "../lib/supabase.js";
-import { authenticateAdminToken, AdminAuthRequest, requireAdminOrOwner } from "../middleware/adminAuth.js";
+import { supabaseAdmin } from "../lib/supabase";
+import { authenticateAdminToken, AdminAuthRequest, requireAdminOrOwner } from "../middleware/adminAuth";
 
 const router = express.Router();
 
