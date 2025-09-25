@@ -74,13 +74,13 @@ export function createServer() {
       const totalRes = await runWithTimeout(
         supabaseAdmin
           .from("presentations")
-          .select("id", { count: "exact", head: true })
+          .select("id", { count: "exact", head: true }),
       );
       const approvedRes = await runWithTimeout(
         supabaseAdmin
           .from("presentations")
           .select("id", { count: "exact", head: true })
-          .eq("status", "approved")
+          .eq("status", "approved"),
       );
       const sampleRes = await runWithTimeout(
         supabaseAdmin
@@ -88,13 +88,20 @@ export function createServer() {
           .select("id,title,status,created_at")
           .eq("status", "approved")
           .order("created_at", { ascending: false })
-          .limit(3)
+          .limit(3),
       );
       const duration = Date.now() - t0;
       res.json({
         env: process.env.NODE_ENV || "development",
-        supabaseKeyMode: process.env.SUPABASE_SERVICE_ROLE ? "service_role" : (process.env.SUPABASE_ANON_KEY ? "anon" : "none"),
-        totals: { total: totalRes.count || 0, approved: approvedRes.count || 0 },
+        supabaseKeyMode: process.env.SUPABASE_SERVICE_ROLE
+          ? "service_role"
+          : process.env.SUPABASE_ANON_KEY
+            ? "anon"
+            : "none",
+        totals: {
+          total: totalRes.count || 0,
+          approved: approvedRes.count || 0,
+        },
         sample: sampleRes.data || [],
         durationMs: duration,
       });
