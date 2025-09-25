@@ -55,8 +55,7 @@ router.get("/", async (req: Request, res: Response) => {
     let query = supabaseAdmin
       .from("presentations")
       .select(
-        "id, title, specialty, specialties, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at",
-        { count: "exact" },
+        "id, title, specialty, specialties, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at"
       )
       .eq("status", "approved");
 
