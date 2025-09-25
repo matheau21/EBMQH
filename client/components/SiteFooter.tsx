@@ -8,7 +8,9 @@ import { LoginModal } from "@/components/LoginModal";
 import ReferencePdfModal from "@/components/ReferencePdfModal";
 
 export default function SiteFooter() {
-  const [referenceHref, setReferenceHref] = useState<string | undefined>(undefined);
+  const [referenceHref, setReferenceHref] = useState<string | undefined>(
+    undefined,
+  );
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showReferenceModal, setShowReferenceModal] = useState(false);
   const { isAuthenticated } = useAdmin();
@@ -18,9 +20,13 @@ export default function SiteFooter() {
     (async () => {
       const cfg = await siteAPI.getAbout();
       if (ignore) return;
-      setReferenceHref(cfg?.referenceCard?.url || cfg?.referenceCard?.signedUrl || undefined);
+      setReferenceHref(
+        cfg?.referenceCard?.url || cfg?.referenceCard?.signedUrl || undefined,
+      );
     })();
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   return (
@@ -41,7 +47,10 @@ export default function SiteFooter() {
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-blue-200">
               <li>
-                <Link to="/presentations" className="hover:text-white transition-colors">
+                <Link
+                  to="/presentations"
+                  className="hover:text-white transition-colors"
+                >
                   All Presentations
                 </Link>
               </li>
@@ -49,7 +58,10 @@ export default function SiteFooter() {
                 {referenceHref ? (
                   <button
                     type="button"
-                    onClick={(e) => { e.preventDefault(); setShowReferenceModal(true); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowReferenceModal(true);
+                    }}
                     className="hover:text-white transition-colors underline underline-offset-2"
                     aria-label="Open EBM Reference Card"
                   >
@@ -65,12 +77,18 @@ export default function SiteFooter() {
             <h3 className="font-semibold mb-4">Support</h3>
             <ul className="space-y-2 text-blue-200">
               <li>
-                <Link to="/about" className="hover:text-white transition-colors">
+                <Link
+                  to="/about"
+                  className="hover:text-white transition-colors"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-white transition-colors">
+                <Link
+                  to="/contact"
+                  className="hover:text-white transition-colors"
+                >
                   Contact Us
                 </Link>
               </li>
@@ -94,9 +112,17 @@ export default function SiteFooter() {
         </div>
       </div>
 
-      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
       {referenceHref && (
-        <ReferencePdfModal isOpen={showReferenceModal} onClose={() => setShowReferenceModal(false)} url={referenceHref} title="EBM Reference Card" />
+        <ReferencePdfModal
+          isOpen={showReferenceModal}
+          onClose={() => setShowReferenceModal(false)}
+          url={referenceHref}
+          title="EBM Reference Card"
+        />
       )}
       <AdminToggleButton />
     </footer>
