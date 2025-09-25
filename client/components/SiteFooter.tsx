@@ -95,6 +95,9 @@ export default function SiteFooter() {
       </div>
 
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      {referenceHref && (
+        <ReferencePdfModal isOpen={showReferenceModal} onClose={() => setShowReferenceModal(false)} url={referenceHref} title="EBM Reference Card" />
+      )}
       <AdminToggleButton />
     </footer>
   );
