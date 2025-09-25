@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { z } from "zod";
-import { supabaseAdmin } from "../lib/supabase.js";
+import { supabaseAdmin, runWithTimeout } from "../lib/supabase.js";
 import {
   authenticateAdminToken,
   AdminAuthRequest,
