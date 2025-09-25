@@ -23,9 +23,15 @@ if (!SUPABASE_KEY) {
 function withTimeout(ms: number) {
   return async (input: RequestInfo | URL, init?: RequestInit) => {
     const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(new Error("fetch-timeout")), ms);
+    const id = setTimeout(
+      () => controller.abort(new Error("fetch-timeout")),
+      ms,
+    );
     try {
-      const res = await fetch(input as any, { ...(init as any), signal: controller.signal } as any);
+      const res = await fetch(
+        input as any,
+        { ...(init as any), signal: controller.signal } as any,
+      );
       return res as any;
     } finally {
       clearTimeout(id);
