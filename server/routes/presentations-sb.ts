@@ -88,7 +88,7 @@ router.get("/", async (req: Request, res: Response) => {
     });
   } catch (err) {
     const msg = (err as any)?.message || String(err);
-    if (msg === "fetch-timeout") {
+    if (msg === "fetch-timeout" || msg === "supabase-timeout") {
       return res
         .status(504)
         .json({ error: "Upstream timeout contacting Supabase" });
