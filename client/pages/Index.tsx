@@ -194,8 +194,8 @@ export default function Index() {
   useEffect(() => {
     const loadPresentations = async () => {
       try {
-        // Check if backend is available
         const backendAvailable = await checkBackendAvailability();
+        console.log("[home] backendAvailable:", backendAvailable);
 
         if (backendAvailable) {
           const response = await presentationsAPI.getPresentations({ limit: 100 });
@@ -213,14 +213,14 @@ export default function Index() {
               presentationFileUrl: p.presentationFileUrl,
               originalArticleUrl: p.originalArticleUrl,
             })) || [];
+          console.log("[home] presentations fetched:", apiPresentations.length);
           setPresentations(apiPresentations);
         } else {
-          console.log("Backend not available, showing no data");
+          console.log("[home] backend unavailable -> zero presentations");
           setPresentations([]);
         }
       } catch (error) {
-        console.log("Backend not available, falling back to mock data");
-        // Fallback to mock data without logging error
+        console.log("[home] API error -> fallback to mock:", (error as any)?.message || error);
         setPresentations(mockPresentations);
       }
     };
