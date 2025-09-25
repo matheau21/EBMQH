@@ -361,12 +361,10 @@ router.post(
         .select("*")
         .single();
       if (error) return res.status(500).json({ error: error.message });
-      return res
-        .status(201)
-        .json({
-          message: "Presentation created successfully",
-          presentation: data,
-        });
+      return res.status(201).json({
+        message: "Presentation created successfully",
+        presentation: data,
+      });
     } catch (err) {
       if (err instanceof z.ZodError)
         return res.status(400).json({ error: "Invalid input" });

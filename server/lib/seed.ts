@@ -21,7 +21,12 @@ export async function ensureInitialOwner() {
     const password_hash = await bcrypt.hash("Ww123123", 10);
     const { data, error } = await supabaseAdmin
       .from("app_users")
-      .insert({ username: "hoang", password_hash, role: "owner", is_active: true })
+      .insert({
+        username: "hoang",
+        password_hash,
+        role: "owner",
+        is_active: true,
+      })
       .select("id")
       .single();
 
