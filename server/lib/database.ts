@@ -1,28 +1,22 @@
-import { PrismaClient } from "@prisma/client";
+// Lazy Prisma loader to avoid importing @prisma/client in serverless/production where it's unused
+// This prevents function crashes when Prisma engines are not available
+export let prisma: any = undefined;
 
-// Declare global type for Prisma
-declare global {
-  var __prisma: PrismaClient | undefined;
-}
-
-// Create a singleton instance of Prisma Client
-export const prisma = globalThis.__prisma || new PrismaClient();
-
-if (process.env.NODE_ENV === "development") {
-  globalThis.__prisma = prisma;
-}
-
-// Connect to the database
+// Connect to the database in development (or when DATABASE_URL is explicitly configured locally)
 export async function connectDatabase() {
   const isProd = process.env.NODE_ENV === "production";
   const hasUrl = !!process.env.DATABASE_URL;
+
   if (isProd || !hasUrl) {
     try {
       console.log("Prisma connection skipped", { isProd, hasUrl });
     } catch {}
     return;
   }
+
   try {
+    const { PrismaClient } = await import("@prisma/client");
+    prisma = new PrismaClient();
     await prisma.$connect();
     console.log("✅ Database connected successfully");
   } catch (error) {
@@ -35,7 +29,11 @@ export async function connectDatabase() {
 
 // Disconnect from the database
 export async function disconnectDatabase() {
-  await prisma.$disconnect();
+  if (prisma && typeof prisma.$disconnect === "function") {
+    try {
+      await prisma.$disconnect();
+    } catch {}
+  }
 }
 
 // Gracefully shutdown database connection
