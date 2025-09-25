@@ -31,7 +31,9 @@ export const authenticateAdminToken = async (
 
     const { data, error } = await supabaseAdmin
       .from("app_users")
-      .select("id, username, role, is_active, created_at, updated_at, last_login_at")
+      .select(
+        "id, username, role, is_active, created_at, updated_at, last_login_at",
+      )
       .eq("id", decoded.userId)
       .single();
 

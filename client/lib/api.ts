@@ -174,14 +174,37 @@ const apiRequest = async <T>(
       if (ep.endsWith("/files")) return {};
       if (ep.endsWith("/specialties")) return { specialties: [] };
       if (/\/view$/.test(ep)) return { viewerCount: 0 };
-      return { presentations: [], pagination: { page: 1, limit: 10, total: 0, pages: 0 } };
+      return {
+        presentations: [],
+        pagination: { page: 1, limit: 10, total: 0, pages: 0 },
+      };
     }
     if (ep.startsWith("/site/featured")) return { presentations: [] };
-    if (ep.startsWith("/site/about")) return { title: "About EBM Quick Hits", subtitle: "", sections: [], referenceCard: {} };
-    if (ep.startsWith("/site/contact")) return { title: "Contact Us", body: "Email us at example@example.com", email: null };
-    if (ep.startsWith("/questions")) return { questions: [], pagination: { page: 1, limit: 10, total: 0, pages: 0 } };
+    if (ep.startsWith("/site/about"))
+      return {
+        title: "About EBM Quick Hits",
+        subtitle: "",
+        sections: [],
+        referenceCard: {},
+      };
+    if (ep.startsWith("/site/contact"))
+      return {
+        title: "Contact Us",
+        body: "Email us at example@example.com",
+        email: null,
+      };
+    if (ep.startsWith("/questions"))
+      return {
+        questions: [],
+        pagination: { page: 1, limit: 10, total: 0, pages: 0 },
+      };
     if (ep.startsWith("/admin/users")) return { users: [] };
-    if (ep.startsWith("/health")) return { status: "offline", timestamp: new Date().toISOString(), environment: "offline" };
+    if (ep.startsWith("/health"))
+      return {
+        status: "offline",
+        timestamp: new Date().toISOString(),
+        environment: "offline",
+      };
     return {};
   };
 
@@ -211,7 +234,9 @@ const apiRequest = async <T>(
 
     return response.json();
   } catch (error) {
-    const isNetworkError = error instanceof TypeError && String(error.message).includes("Failed to fetch");
+    const isNetworkError =
+      error instanceof TypeError &&
+      String(error.message).includes("Failed to fetch");
     if (isNetworkError) {
       isBackendAvailable = false;
       if (method === "GET") {
@@ -278,7 +303,10 @@ export const authAPI = {
 
 // Admin Auth API (Supabase-backed)
 export const adminAuthAPI = {
-  async login(username: string, password: string): Promise<{
+  async login(
+    username: string,
+    password: string,
+  ): Promise<{
     message: string;
     token: string;
     user: {
@@ -291,23 +319,33 @@ export const adminAuthAPI = {
       last_login_at: string | null;
     };
   }> {
-    const response = await apiRequest(
-      "/admin/login",
-      {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-      },
-    );
+    const response = await apiRequest("/admin/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+    });
     const { token } = response as any;
     if (token) setToken(token);
     return response as any;
   },
 
-  async me(): Promise<{ user: { id: string; username: string; role: "owner" | "admin" | "user"; is_active: boolean; created_at: string; updated_at: string; last_login_at: string | null } }> {
+  async me(): Promise<{
+    user: {
+      id: string;
+      username: string;
+      role: "owner" | "admin" | "user";
+      is_active: boolean;
+      created_at: string;
+      updated_at: string;
+      last_login_at: string | null;
+    };
+  }> {
     return apiRequest("/admin/me");
   },
 
-  async changePassword(currentPassword: string, newPassword: string): Promise<{ message: string }> {
+  async changePassword(
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<{ message: string }> {
     return apiRequest(`/admin/change-password`, {
       method: "POST",
       body: JSON.stringify({ currentPassword, newPassword }),
@@ -419,7 +457,14 @@ export const presentationsAPI = {
   },
 
   async createPresentation(
-    data: Partial<Presentation> & { title: string; specialty?: string; specialties?: string[]; summary: string; originalArticleUrl?: string; thumbUrl?: string }
+    data: Partial<Presentation> & {
+      title: string;
+      specialty?: string;
+      specialties?: string[];
+      summary: string;
+      originalArticleUrl?: string;
+      thumbUrl?: string;
+    },
   ): Promise<{ message: string; presentation: Presentation }> {
     try {
       return apiRequest<{ message: string; presentation: Presentation }>(
@@ -454,11 +499,23 @@ export const presentationsAPI = {
     });
   },
 
-  async uploadFile(id: string, file: File): Promise<{ message: string; path: string }> {
+  async uploadFile(
+    id: string,
+    file: File,
+  ): Promise<{ message: string; path: string }> {
     const ext = file.name.split(".").pop()?.toLowerCase();
-    const type = ext === "pdf" ? "pdf" : ext === "ppt" ? "ppt" : ext === "pptx" ? "pptx" : undefined;
-    if (!type) throw new Error("Unsupported file type. Allowed: pdf, ppt, pptx");
-    if (file.size > 50 * 1024 * 1024) throw new Error("File too large (max 50MB)");
+    const type =
+      ext === "pdf"
+        ? "pdf"
+        : ext === "ppt"
+          ? "ppt"
+          : ext === "pptx"
+            ? "pptx"
+            : undefined;
+    if (!type)
+      throw new Error("Unsupported file type. Allowed: pdf, ppt, pptx");
+    if (file.size > 50 * 1024 * 1024)
+      throw new Error("File too large (max 50MB)");
 
     // Use FileReader to avoid call stack overflow with large files
     const base64: string = await new Promise((resolve, reject) => {
@@ -476,13 +533,23 @@ export const presentationsAPI = {
       }
     });
 
-    return apiRequest<{ message: string; path: string }>(`/presentations/${id}/upload`, {
-      method: "POST",
-      body: JSON.stringify({ fileType: type, filename: file.name, contentBase64: base64 }),
-    });
+    return apiRequest<{ message: string; path: string }>(
+      `/presentations/${id}/upload`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          fileType: type,
+          filename: file.name,
+          contentBase64: base64,
+        }),
+      },
+    );
   },
 
-  async deleteFile(id: string, type: "pdf"|"ppt"): Promise<{ message: string }> {
+  async deleteFile(
+    id: string,
+    type: "pdf" | "ppt",
+  ): Promise<{ message: string }> {
     const url = `/presentations/${id}/file?type=${encodeURIComponent(type)}`;
     return apiRequest(url, { method: "DELETE" });
   },
@@ -491,7 +558,9 @@ export const presentationsAPI = {
     try {
       const backendAvailable = await checkBackendAvailability();
       if (!backendAvailable) return {} as any;
-      return await apiRequest<{ pdfUrl?: string; pptUrl?: string }>(`/presentations/${id}/files`);
+      return await apiRequest<{ pdfUrl?: string; pptUrl?: string }>(
+        `/presentations/${id}/files`,
+      );
     } catch (_e) {
       return {} as any;
     }
@@ -505,7 +574,9 @@ export const presentationsAPI = {
 
   async getSpecialties(): Promise<{ specialties: string[] }> {
     try {
-      return await apiRequest<{ specialties: string[] }>("/presentations/specialties");
+      return await apiRequest<{ specialties: string[] }>(
+        "/presentations/specialties",
+      );
     } catch (e) {
       console.warn("getSpecialties failed, returning empty", e);
       return { specialties: [] };
@@ -527,7 +598,13 @@ export const presentationsAPI = {
     return apiRequest("/presentations/stats/overview");
   },
 
-  async adminList(params?: { page?: number; limit?: number; specialty?: string; search?: string; status?: "pending"|"approved"|"rejected" }): Promise<PaginatedResponse<any>> {
+  async adminList(params?: {
+    page?: number;
+    limit?: number;
+    specialty?: string;
+    search?: string;
+    status?: "pending" | "approved" | "rejected";
+  }): Promise<PaginatedResponse<any>> {
     try {
       const sp = new URLSearchParams();
       if (params?.page) sp.append("page", String(params.page));
@@ -539,64 +616,144 @@ export const presentationsAPI = {
       return await apiRequest(`/presentations/admin${q ? `?${q}` : ""}`);
     } catch (e) {
       console.warn("adminList failed, returning empty", e);
-      return { presentations: [], pagination: { page: 1, limit: 10, total: 0, pages: 0 } } as any;
+      return {
+        presentations: [],
+        pagination: { page: 1, limit: 10, total: 0, pages: 0 },
+      } as any;
     }
   },
 
-  async updateStatus(id: string, status: "pending"|"approved"|"rejected"|"archived"): Promise<{ message: string; presentation: any }> {
-    return apiRequest(`/presentations/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
+  async updateStatus(
+    id: string,
+    status: "pending" | "approved" | "rejected" | "archived",
+  ): Promise<{ message: string; presentation: any }> {
+    return apiRequest(`/presentations/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
   },
 };
 
 // Questions API
 export const questionsAPI = {
-  async list(params?: { specialty?: string; presentationId?: string; limit?: number; random?: boolean }): Promise<{ questions: Question[]; pagination: { page: number; limit: number; total: number; pages: number } }> {
+  async list(params?: {
+    specialty?: string;
+    presentationId?: string;
+    limit?: number;
+    random?: boolean;
+  }): Promise<{
+    questions: Question[];
+    pagination: { page: number; limit: number; total: number; pages: number };
+  }> {
     try {
       const backendAvailable = await checkBackendAvailability();
       if (!backendAvailable) {
-        return { questions: [], pagination: { page: 1, limit: params?.limit || 10, total: 0, pages: 0 } };
+        return {
+          questions: [],
+          pagination: {
+            page: 1,
+            limit: params?.limit || 10,
+            total: 0,
+            pages: 0,
+          },
+        };
       }
       const sp = new URLSearchParams();
       if (params?.specialty) sp.append("specialty", params.specialty);
-      if (params?.presentationId) sp.append("presentationId", params.presentationId);
+      if (params?.presentationId)
+        sp.append("presentationId", params.presentationId);
       if (params?.limit) sp.append("limit", String(params.limit));
       if (params?.random) sp.append("random", "1");
       const q = sp.toString();
       return apiRequest(`/questions${q ? `?${q}` : ""}`);
     } catch (e) {
       console.warn("Questions list failed, returning empty", e);
-      return { questions: [], pagination: { page: 1, limit: params?.limit || 10, total: 0, pages: 0 } } as any;
+      return {
+        questions: [],
+        pagination: { page: 1, limit: params?.limit || 10, total: 0, pages: 0 },
+      } as any;
     }
   },
-  async adminList(params?: { page?: number; limit?: number; specialty?: string; presentationId?: string; status?: "pending"|"approved"|"rejected" }): Promise<{ questions: Question[]; pagination: { page: number; limit: number; total: number; pages: number } }> {
+  async adminList(params?: {
+    page?: number;
+    limit?: number;
+    specialty?: string;
+    presentationId?: string;
+    status?: "pending" | "approved" | "rejected";
+  }): Promise<{
+    questions: Question[];
+    pagination: { page: number; limit: number; total: number; pages: number };
+  }> {
     try {
       const sp = new URLSearchParams();
       if (params?.page) sp.append("page", String(params.page));
       if (params?.limit) sp.append("limit", String(params.limit));
       if (params?.specialty) sp.append("specialty", params.specialty);
-      if (params?.presentationId) sp.append("presentationId", params.presentationId);
+      if (params?.presentationId)
+        sp.append("presentationId", params.presentationId);
       if (params?.status) sp.append("status", params.status);
       const q = sp.toString();
       return await apiRequest(`/questions/admin${q ? `?${q}` : ""}`);
     } catch (e) {
       console.warn("Admin questions list failed, returning empty", e);
-      return { questions: [], pagination: { page: 1, limit: params?.limit || 10 || 10, total: 0, pages: 0 } } as any;
+      return {
+        questions: [],
+        pagination: {
+          page: 1,
+          limit: params?.limit || 10 || 10,
+          total: 0,
+          pages: 0,
+        },
+      } as any;
     }
   },
   async get(id: string): Promise<{ question: Question }> {
     return apiRequest(`/questions/${id}`);
   },
-  async create(input: { prompt: string; specialty?: string; presentationId?: string; explanation?: string; referenceUrl?: string; isActive?: boolean; choices: Array<{ content: string; isCorrect: boolean }>; highlights?: QuestionHighlight[] }): Promise<{ message: string; question: Question }> {
-    return apiRequest(`/questions`, { method: "POST", body: JSON.stringify(input) });
+  async create(input: {
+    prompt: string;
+    specialty?: string;
+    presentationId?: string;
+    explanation?: string;
+    referenceUrl?: string;
+    isActive?: boolean;
+    choices: Array<{ content: string; isCorrect: boolean }>;
+    highlights?: QuestionHighlight[];
+  }): Promise<{ message: string; question: Question }> {
+    return apiRequest(`/questions`, {
+      method: "POST",
+      body: JSON.stringify(input),
+    });
   },
-  async update(id: string, input: Partial<{ prompt: string; specialty?: string | null; presentationId?: string | null; explanation?: string | null; referenceUrl?: string | null; isActive?: boolean; choices: Array<{ content: string; isCorrect: boolean }>; highlights?: QuestionHighlight[] | null }>): Promise<{ message: string; question: Question }> {
-    return apiRequest(`/questions/${id}`, { method: "PUT", body: JSON.stringify(input) });
+  async update(
+    id: string,
+    input: Partial<{
+      prompt: string;
+      specialty?: string | null;
+      presentationId?: string | null;
+      explanation?: string | null;
+      referenceUrl?: string | null;
+      isActive?: boolean;
+      choices: Array<{ content: string; isCorrect: boolean }>;
+      highlights?: QuestionHighlight[] | null;
+    }>,
+  ): Promise<{ message: string; question: Question }> {
+    return apiRequest(`/questions/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(input),
+    });
   },
   async remove(id: string): Promise<{ message: string }> {
     return apiRequest(`/questions/${id}`, { method: "DELETE" });
   },
-  async updateStatus(id: string, status: "pending"|"approved"|"rejected"): Promise<{ message: string; question: Question }> {
-    return apiRequest(`/questions/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
+  async updateStatus(
+    id: string,
+    status: "pending" | "approved" | "rejected",
+  ): Promise<{ message: string; question: Question }> {
+    return apiRequest(`/questions/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
   },
   async myList(): Promise<{ questions: Question[] }> {
     return apiRequest(`/questions/my`);
@@ -605,21 +762,49 @@ export const questionsAPI = {
 
 // Site API
 export const siteAPI = {
-  async getAbout(): Promise<{ title: string; subtitle?: string | null; sections: Array<{ heading: string; body: string }>; referenceCard?: { url?: string | null; filePath?: string | null; signedUrl?: string | null } }> {
+  async getAbout(): Promise<{
+    title: string;
+    subtitle?: string | null;
+    sections: Array<{ heading: string; body: string }>;
+    referenceCard?: {
+      url?: string | null;
+      filePath?: string | null;
+      signedUrl?: string | null;
+    };
+  }> {
     try {
       const backendAvailable = await checkBackendAvailability();
       if (!backendAvailable) {
-        return { title: "About EBM Quick Hits", subtitle: "", sections: [], referenceCard: {} } as any;
+        return {
+          title: "About EBM Quick Hits",
+          subtitle: "",
+          sections: [],
+          referenceCard: {},
+        } as any;
       }
       return await apiRequest(`/site/about`);
     } catch {
-      return { title: "About EBM Quick Hits", sections: [], referenceCard: {} } as any;
+      return {
+        title: "About EBM Quick Hits",
+        sections: [],
+        referenceCard: {},
+      } as any;
     }
   },
-  async saveAbout(input: { title: string; subtitle?: string | null; sections: Array<{ heading: string; body: string }>; referenceCard?: { url?: string | null; filePath?: string | null } }): Promise<{ message: string }> {
-    return apiRequest(`/site/about`, { method: "PUT", body: JSON.stringify(input) });
+  async saveAbout(input: {
+    title: string;
+    subtitle?: string | null;
+    sections: Array<{ heading: string; body: string }>;
+    referenceCard?: { url?: string | null; filePath?: string | null };
+  }): Promise<{ message: string }> {
+    return apiRequest(`/site/about`, {
+      method: "PUT",
+      body: JSON.stringify(input),
+    });
   },
-  async uploadReference(file: File): Promise<{ message: string; path: string }> {
+  async uploadReference(
+    file: File,
+  ): Promise<{ message: string; path: string }> {
     const base64: string = await new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
@@ -630,7 +815,10 @@ export const siteAPI = {
       reader.onerror = () => reject(new Error("Failed to read file"));
       reader.readAsDataURL(file);
     });
-    return apiRequest(`/site/reference/upload`, { method: "POST", body: JSON.stringify({ filename: file.name, contentBase64: base64 }) });
+    return apiRequest(`/site/reference/upload`, {
+      method: "POST",
+      body: JSON.stringify({ filename: file.name, contentBase64: base64 }),
+    });
   },
   async getFeaturedPresentations(): Promise<{ presentations: Presentation[] }> {
     try {
@@ -646,19 +834,42 @@ export const siteAPI = {
     }
   },
   async saveFeatured(ids: string[]): Promise<{ message: string }> {
-    return apiRequest(`/site/featured`, { method: "PUT", body: JSON.stringify({ ids }) });
+    return apiRequest(`/site/featured`, {
+      method: "PUT",
+      body: JSON.stringify({ ids }),
+    });
   },
-  async getContact(): Promise<{ title: string; body: string; email?: string | null }> {
+  async getContact(): Promise<{
+    title: string;
+    body: string;
+    email?: string | null;
+  }> {
     try {
       const backendAvailable = await checkBackendAvailability();
-      if (!backendAvailable) return { title: "Contact Us", body: "Email us at example@example.com", email: null } as any;
+      if (!backendAvailable)
+        return {
+          title: "Contact Us",
+          body: "Email us at example@example.com",
+          email: null,
+        } as any;
       return await apiRequest(`/site/contact`);
     } catch {
-      return { title: "Contact Us", body: "Email us at example@example.com", email: null } as any;
+      return {
+        title: "Contact Us",
+        body: "Email us at example@example.com",
+        email: null,
+      } as any;
     }
   },
-  async saveContact(input: { title: string; body: string; email?: string | null }): Promise<{ message: string }> {
-    return apiRequest(`/site/contact`, { method: "PUT", body: JSON.stringify(input) });
+  async saveContact(input: {
+    title: string;
+    body: string;
+    email?: string | null;
+  }): Promise<{ message: string }> {
+    return apiRequest(`/site/contact`, {
+      method: "PUT",
+      body: JSON.stringify(input),
+    });
   },
 };
 
@@ -699,13 +910,25 @@ export const adminUsersAPI = {
       return { users: [] } as any;
     }
   },
-  async create(input: { username: string; password: string; role: "owner" | "admin" | "user"; is_active?: boolean }): Promise<{ message: string; user: any }> {
+  async create(input: {
+    username: string;
+    password: string;
+    role: "owner" | "admin" | "user";
+    is_active?: boolean;
+  }): Promise<{ message: string; user: any }> {
     return apiRequest("/admin/users", {
       method: "POST",
       body: JSON.stringify(input),
     });
   },
-  async update(id: string, input: { password?: string; role?: "owner" | "admin" | "user"; is_active?: boolean }): Promise<{ message: string; user: any }> {
+  async update(
+    id: string,
+    input: {
+      password?: string;
+      role?: "owner" | "admin" | "user";
+      is_active?: boolean;
+    },
+  ): Promise<{ message: string; user: any }> {
     return apiRequest(`/admin/users/${id}`, {
       method: "PATCH",
       body: JSON.stringify(input),
