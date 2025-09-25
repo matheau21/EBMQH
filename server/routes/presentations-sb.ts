@@ -96,8 +96,8 @@ router.get("/", async (req: Request, res: Response) => {
       pagination: {
         page: pageNum,
         limit: limitNum,
-        total: count || 0,
-        pages: Math.ceil((count || 0) / limitNum),
+        total: (data || []).length,
+        pages: 1,
       },
     });
   } catch (err) {
@@ -155,8 +155,8 @@ router.get(
         pagination: {
           page: pageNum,
           limit: limitNum,
-          total: count || 0,
-          pages: Math.ceil((count || 0) / limitNum),
+          total: (data || []).length,
+          pages: 1,
         },
       });
     } catch (err) {
