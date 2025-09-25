@@ -50,13 +50,13 @@ try {
 
 export const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: { persistSession: false },
-  global: { fetch: withTimeout(10000) as any },
+  global: { fetch: withTimeout(20000) as any },
 });
 
 // Generic timeout guard for any async operation (e.g., when a library ignores custom fetch)
 export async function runWithTimeout<T>(
   promise: Promise<T>,
-  ms = 10000,
+  ms = 20000,
 ): Promise<T> {
   let timer: any;
   try {
