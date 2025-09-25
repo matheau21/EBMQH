@@ -65,13 +65,12 @@ router.get("/", async (req: Request, res: Response) => {
       );
     if (search) query = query.ilike("title", `%${search}%`);
 
-    const { data, error, count } = await runWithTimeout(
+    const { data, error } = await runWithTimeout(
       query.order("created_at", { ascending: false }).range(from, to),
     );
     const duration = Date.now() - started;
     res.setHeader("X-Query-Duration", String(duration));
     console.log("[presentations] list: result", {
-      count,
       durationMs: duration,
       rows: (data || []).length,
     });
