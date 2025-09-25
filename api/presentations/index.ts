@@ -5,13 +5,16 @@ import { createServer } from "../../server/index.js";
 const app = createServer();
 const gateway = express();
 
-// Force exact mount
+// Preserve tail path so both root and nested endpoints work
 const MOUNT = "/api/presentations";
 
 gateway.use((req, _res, next) => {
   if (typeof req.url === "string") {
     const q = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
-    req.url = MOUNT + q;
+    const p = req.url.includes("?") ? req.url.slice(0, req.url.indexOf("?")) : req.url;
+    let tail = p.replace(/^\/api\/presentations/, "").replace(/^\/presentations/, "");
+    if (tail && !tail.startsWith("/")) tail = "/" + tail;
+    req.url = MOUNT + (tail || "") + q;
   }
   next();
 });
