@@ -22,8 +22,13 @@ export function createServer() {
   // Connect to database (legacy Prisma used for other models; Supabase used elsewhere)
   connectDatabase();
 
-  // Ensure initial admin user exists in Supabase for local/dev usage
-  ensureInitialOwner();
+  // Ensure initial admin user exists only in development (avoid serverless cold-start side effects)
+  if (
+    process.env.NODE_ENV !== "production" &&
+    process.env.DISABLE_SEED !== "1"
+  ) {
+    ensureInitialOwner();
+  }
 
   // API routes
   app.get("/api/ping", (_req, res) => {

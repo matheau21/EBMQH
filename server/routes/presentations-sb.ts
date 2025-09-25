@@ -1,7 +1,11 @@
 import express, { Request, Response } from "express";
 import { z } from "zod";
 import { supabaseAdmin } from "../lib/supabase.js";
-import { authenticateAdminToken, AdminAuthRequest, requireAdminOrOwner } from "../middleware/adminAuth.js";
+import {
+  authenticateAdminToken,
+  AdminAuthRequest,
+  requireAdminOrOwner,
+} from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
@@ -41,13 +45,18 @@ router.get("/", async (req: Request, res: Response) => {
 
     let query = supabaseAdmin
       .from("presentations")
-      .select("id, title, specialty, specialties, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at", { count: "exact" })
+.select(
+        "id, title, specialty, specialties, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at",
+        { count: "exact" },
+      )
       .eq("status", "approved");
 
     if (specialty) query = query.or(`specialty.eq.${specialty},specialties.cs.{${specialty}}`);
     if (search) query = query.ilike("title", `%${search}%`);
 
-    const { data, error, count } = await query.order("created_at", { ascending: false }).range(from, to);
+    const { data, error, count } = await query
+      .order("created_at", { ascending: false })
+      .range(from, to);
     if (error) return res.status(500).json({ error: error.message });
 
     return res.json({
@@ -75,51 +84,84 @@ router.get("/", async (req: Request, res: Response) => {
       },
     });
   } catch (err) {
+    const msg = (err as any)?.message || String(err);
+    if (msg === "fetch-timeout") {
+      return res
+        .status(504)
+        .json({ error: "Upstream timeout contacting Supabase" });
+    }
     console.error("List presentations error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
 
 // GET /api/presentations/admin - list all statuses (admin/owner)
-router.get("/admin", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    const { page = "1", limit = "10", specialty, search, status } = req.query as any;
-    const pageNum = parseInt(page);
-    const limitNum = parseInt(limit);
-    const from = (pageNum - 1) * limitNum;
-    const to = from + limitNum - 1;
+router.get(
+  "/admin",
+  authenticateAdminToken,
+  requireAdminOrOwner,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      const {
+        page = "1",
+        limit = "10",
+        specialty,
+        search,
+        status,
+      } = req.query as any;
+      const pageNum = parseInt(page);
+      const limitNum = parseInt(limit);
+      const from = (pageNum - 1) * limitNum;
+      const to = from + limitNum - 1;
 
-    let query = supabaseAdmin
-      .from("presentations")
-      .select("*", { count: "exact" });
+      let query = supabaseAdmin
+        .from("presentations")
+        .select("*", { count: "exact" });
 
-    if (specialty) query = query.or(`specialty.eq.${specialty},specialties.cs.{${specialty}}`);
+if (specialty) query = query.or(`specialty.eq.${specialty},specialties.cs.{${specialty}}`);
     if (search) query = query.ilike("title", `%${search}%`);
     if (status) query = query.eq("status", status);
 
-    const { data, error, count } = await query.order("created_at", { ascending: false }).range(from, to);
-    if (error) return res.status(500).json({ error: error.message });
+      const { data, error, count } = await query
+        .order("created_at", { ascending: false })
+        .range(from, to);
+      if (error) return res.status(500).json({ error: error.message });
 
-    return res.json({
-      presentations: data,
-      pagination: { page: pageNum, limit: limitNum, total: count || 0, pages: Math.ceil((count || 0) / limitNum) },
-    });
-  } catch (err) {
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+      return res.json({
+        presentations: data,
+        pagination: {
+          page: pageNum,
+          limit: limitNum,
+          total: count || 0,
+          pages: Math.ceil((count || 0) / limitNum),
+        },
+      });
+    } catch (err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
 
 // GET /api/presentations/admin/:id - get single (admin/owner)
-router.get("/admin/:id", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { data, error } = await supabaseAdmin.from("presentations").select("*").eq("id", id).single();
-    if (error || !data) return res.status(404).json({ error: "Not found" });
-    return res.json({ presentation: data });
-  } catch (err) {
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+router.get(
+  "/admin/:id",
+  authenticateAdminToken,
+  requireAdminOrOwner,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { data, error } = await supabaseAdmin
+        .from("presentations")
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (error || !data) return res.status(404).json({ error: "Not found" });
+      return res.json({ presentation: data });
+    } catch (err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
 
 // GET /api/presentations/proxy-pdf?src=...
 router.get("/proxy-pdf", async (req: Request, res: Response) => {
@@ -135,8 +177,11 @@ router.get("/proxy-pdf", async (req: Request, res: Response) => {
     if (!(u.protocol === "http:" || u.protocol === "https:")) {
       return res.status(400).json({ error: "Invalid protocol" });
     }
-    const r = await fetch(u.toString(), { headers: { "user-agent": "Mozilla/5.0" } });
-    if (!r.ok) return res.status(502).json({ error: `Upstream error ${r.status}` });
+    const r = await fetch(u.toString(), {
+      headers: { "user-agent": "Mozilla/5.0" },
+    });
+    if (!r.ok)
+      return res.status(502).json({ error: `Upstream error ${r.status}` });
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Cache-Control", "private, max-age=60");
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -156,8 +201,10 @@ router.get("/:id/files", async (req: Request, res: Response) => {
       .select("status, pdf_path, ppt_path, original_article_url")
       .eq("id", id)
       .single();
-    if (error || !data) return res.status(404).json({ error: "Presentation not found" });
-    if (data.status !== "approved") return res.status(403).json({ error: "Not available" });
+    if (error || !data)
+      return res.status(404).json({ error: "Presentation not found" });
+    if (data.status !== "approved")
+      return res.status(403).json({ error: "Not available" });
 
     let pdfUrl: string | undefined;
     let pptUrl: string | undefined;
@@ -195,9 +242,9 @@ router.get("/specialties", async (_req: Request, res: Response) => {
       .eq("status", "approved")
       .order("specialty", { ascending: true });
     if (error) return res.status(500).json({ error: error.message });
-    const list: string[] = [];
+const list: string[] = [];
     for (const d of data || []) {
-      if (d.specialty) list.push(d.specialty);
+      if ((d as any).specialty) list.push((d as any).specialty);
       if (Array.isArray((d as any).specialties)) list.push(...(d as any).specialties);
     }
     const specialties = Array.from(new Set(list));
@@ -218,8 +265,10 @@ router.get("/:id", async (req: Request, res: Response) => {
       .eq("id", id)
       .single();
 
-    if (error || !data) return res.status(404).json({ error: "Presentation not found" });
-    if (data.status !== "approved") return res.status(403).json({ error: "Not available" });
+    if (error || !data)
+      return res.status(404).json({ error: "Presentation not found" });
+    if (data.status !== "approved")
+      return res.status(403).json({ error: "Not available" });
 
     // Do not increment here; use explicit /view endpoint
 
@@ -255,7 +304,8 @@ router.post("/:id/view", async (req: Request, res: Response) => {
       .select("viewer_count")
       .eq("id", id)
       .single();
-    if (error || !data) return res.status(404).json({ error: "Presentation not found" });
+    if (error || !data)
+      return res.status(404).json({ error: "Presentation not found" });
 
     const current = data.viewer_count || 0;
     const { error: upErr } = await supabaseAdmin
@@ -301,181 +351,264 @@ router.post("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Resp
 });
 
 // PUT /api/presentations/:id - update (admin/owner or user on own pending)
-router.put("/:id", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    const { id } = req.params;
-    const updates = updateSchema.parse(req.body);
+router.put(
+  "/:id",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      const { id } = req.params;
+      const updates = updateSchema.parse(req.body);
 
-    const { data: target, error: te } = await supabaseAdmin
-      .from("presentations")
-      .select("id, created_by, status")
-      .eq("id", id)
-      .single();
-    if (te || !target) return res.status(404).json({ error: "Not found" });
+      const { data: target, error: te } = await supabaseAdmin
+        .from("presentations")
+        .select("id, created_by, status")
+        .eq("id", id)
+        .single();
+      if (te || !target) return res.status(404).json({ error: "Not found" });
 
-    const isAdmin = req.adminUser!.role === "admin" || req.adminUser!.role === "owner";
-    const isCreator = target.created_by === req.adminUser!.id;
-    if (!isAdmin) {
-      if (!isCreator) return res.status(403).json({ error: "Not allowed" });
-      if (target.status !== "pending") return res.status(403).json({ error: "Cannot edit after approval" });
+      const isAdmin =
+        req.adminUser!.role === "admin" || req.adminUser!.role === "owner";
+      const isCreator = target.created_by === req.adminUser!.id;
+      if (!isAdmin) {
+        if (!isCreator) return res.status(403).json({ error: "Not allowed" });
+        if (target.status !== "pending")
+          return res.status(403).json({ error: "Cannot edit after approval" });
+      }
+
+      const patch: any = {};
+      if (updates.title !== undefined) patch.title = updates.title;
+      if (updates.specialty !== undefined) patch.specialty = updates.specialty;
+      if (updates.specialties !== undefined) patch.specialties = updates.specialties;
+      if (updates.summary !== undefined) patch.summary = updates.summary;
+      if (updates.authors !== undefined) patch.authors = updates.authors;
+      if (updates.journal !== undefined) patch.journal = updates.journal;
+      if (updates.year !== undefined) patch.year = updates.year;
+      if (updates.originalArticleUrl !== undefined)
+        patch.original_article_url = updates.originalArticleUrl;
+      if (updates.thumbUrl !== undefined) patch.thumb_url = updates.thumbUrl;
+      if (isAdmin && updates.status) patch.status = updates.status;
+
+      const { data, error } = await supabaseAdmin
+        .from("presentations")
+        .update(patch)
+        .eq("id", id)
+        .select("*")
+        .single();
+
+      if (error) return res.status(500).json({ error: error.message });
+      return res.json({
+        message: "Presentation updated successfully",
+        presentation: data,
+      });
+    } catch (err) {
+      if (err instanceof z.ZodError)
+        return res.status(400).json({ error: "Invalid input" });
+      return res.status(500).json({ error: "Internal server error" });
     }
-
-    const patch: any = {};
-    if (updates.title !== undefined) patch.title = updates.title;
-    if (updates.specialty !== undefined) patch.specialty = updates.specialty;
-    if (updates.specialties !== undefined) patch.specialties = updates.specialties;
-    if (updates.summary !== undefined) patch.summary = updates.summary;
-    if (updates.authors !== undefined) patch.authors = updates.authors;
-    if (updates.journal !== undefined) patch.journal = updates.journal;
-    if (updates.year !== undefined) patch.year = updates.year;
-    if (updates.originalArticleUrl !== undefined) patch.original_article_url = updates.originalArticleUrl;
-    if (updates.thumbUrl !== undefined) patch.thumb_url = updates.thumbUrl;
-    if (isAdmin && updates.status) patch.status = updates.status;
-
-    const { data, error } = await supabaseAdmin
-      .from("presentations")
-      .update(patch)
-      .eq("id", id)
-      .select("*")
-      .single();
-
-    if (error) return res.status(500).json({ error: error.message });
-    return res.json({ message: "Presentation updated successfully", presentation: data });
-  } catch (err) {
-    if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+  },
+);
 
 // DELETE /api/presentations/:id - delete (admin/owner)
-router.delete("/:id", authenticateAdminToken, requireAdminOrOwner, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    if (!(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")) {
-      return res.status(403).json({ error: "Admin access required" });
+router.delete(
+  "/:id",
+  authenticateAdminToken,
+  requireAdminOrOwner,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      if (
+        !(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")
+      ) {
+        return res.status(403).json({ error: "Admin access required" });
+      }
+      const { id } = req.params;
+      const { error } = await supabaseAdmin
+        .from("presentations")
+        .delete()
+        .eq("id", id);
+      if (error) return res.status(500).json({ error: error.message });
+      return res.json({ message: "Presentation deleted successfully" });
+    } catch (err) {
+      return res.status(500).json({ error: "Internal server error" });
     }
-    const { id } = req.params;
-    const { error } = await supabaseAdmin.from("presentations").delete().eq("id", id);
-    if (error) return res.status(500).json({ error: error.message });
-    return res.json({ message: "Presentation deleted successfully" });
-  } catch (err) {
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
-
+  },
+);
 
 // PATCH /api/presentations/:id/status - approve/reject (admin/owner)
-router.patch("/:id/status", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    if (!(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")) {
-      return res.status(403).json({ error: "Admin access required" });
+router.patch(
+  "/:id/status",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      if (
+        !(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")
+      ) {
+        return res.status(403).json({ error: "Admin access required" });
+      }
+      const { id } = req.params;
+      const { status } = z
+        .object({
+          status: z.enum(["pending", "approved", "rejected", "archived"]),
+        })
+        .parse(req.body);
+      const { data, error } = await supabaseAdmin
+        .from("presentations")
+        .update({ status })
+        .eq("id", id)
+        .select("*")
+        .single();
+      if (error) return res.status(500).json({ error: error.message });
+      return res.json({ message: "Status updated", presentation: data });
+    } catch (err) {
+      if (err instanceof z.ZodError)
+        return res.status(400).json({ error: "Invalid input" });
+      return res.status(500).json({ error: "Internal server error" });
     }
-    const { id } = req.params;
-    const { status } = z.object({ status: z.enum(["pending","approved","rejected","archived"]) }).parse(req.body);
-    const { data, error } = await supabaseAdmin
-      .from("presentations")
-      .update({ status })
-      .eq("id", id)
-      .select("*")
-      .single();
-    if (error) return res.status(500).json({ error: error.message });
-    return res.json({ message: "Status updated", presentation: data });
-  } catch (err) {
-    if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+  },
+);
 
 // POST /api/presentations/:id/upload - upload pdf/ppt (auth; user only for own)
-router.post("/:id/upload", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { fileType, contentBase64, filename } = z
-      .object({ fileType: z.enum(["pdf","ppt","pptx"]), contentBase64: z.string().min(10), filename: z.string().min(1) })
-      .parse(req.body);
+router.post(
+  "/:id/upload",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { fileType, contentBase64, filename } = z
+        .object({
+          fileType: z.enum(["pdf", "ppt", "pptx"]),
+          contentBase64: z.string().min(10),
+          filename: z.string().min(1),
+        })
+        .parse(req.body);
 
-    const { data: pres, error: fe } = await supabaseAdmin
-      .from("presentations")
-      .select("id, created_by, status")
-      .eq("id", id)
-      .single();
-    if (fe || !pres) return res.status(404).json({ error: "Presentation not found" });
+      const { data: pres, error: fe } = await supabaseAdmin
+        .from("presentations")
+        .select("id, created_by, status")
+        .eq("id", id)
+        .single();
+      if (fe || !pres)
+        return res.status(404).json({ error: "Presentation not found" });
 
-    const isAdmin = req.adminUser!.role === "admin" || req.adminUser!.role === "owner";
-    if (!isAdmin) {
-      if (pres.created_by !== req.adminUser!.id) return res.status(403).json({ error: "Not allowed" });
-      if (pres.status !== "pending") return res.status(403).json({ error: "Cannot modify files after approval" });
+      const isAdmin =
+        req.adminUser!.role === "admin" || req.adminUser!.role === "owner";
+      if (!isAdmin) {
+        if (pres.created_by !== req.adminUser!.id)
+          return res.status(403).json({ error: "Not allowed" });
+        if (pres.status !== "pending")
+          return res
+            .status(403)
+            .json({ error: "Cannot modify files after approval" });
+      }
+
+      const buffer = Buffer.from(contentBase64, "base64");
+      const path = `${id}/${fileType}/${Date.now()}_${filename}`;
+      const contentType =
+        fileType === "pdf"
+          ? "application/pdf"
+          : fileType === "ppt"
+            ? "application/vnd.ms-powerpoint"
+            : "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+
+      const { error: upErr } = await supabaseAdmin.storage
+        .from("presentations")
+        .upload(path, buffer, { contentType, upsert: true });
+      if (upErr) return res.status(500).json({ error: upErr.message });
+
+      const patch: any = {};
+      if (fileType === "pdf") patch.pdf_path = path;
+      else patch.ppt_path = path;
+      const { error: upDb } = await supabaseAdmin
+        .from("presentations")
+        .update(patch)
+        .eq("id", id);
+      if (upDb) return res.status(500).json({ error: upDb.message });
+
+      return res.json({ message: "File uploaded", path });
+    } catch (err) {
+      if (err instanceof z.ZodError)
+        return res.status(400).json({ error: "Invalid input" });
+      return res.status(500).json({ error: "Internal server error" });
     }
-
-    const buffer = Buffer.from(contentBase64, "base64");
-    const path = `${id}/${fileType}/${Date.now()}_${filename}`;
-    const contentType = fileType === "pdf" ? "application/pdf" : (fileType === "ppt" ? "application/vnd.ms-powerpoint" : "application/vnd.openxmlformats-officedocument.presentationml.presentation");
-
-    const { error: upErr } = await supabaseAdmin.storage.from("presentations").upload(path, buffer, { contentType, upsert: true });
-    if (upErr) return res.status(500).json({ error: upErr.message });
-
-    const patch: any = {};
-    if (fileType === "pdf") patch.pdf_path = path; else patch.ppt_path = path;
-    const { error: upDb } = await supabaseAdmin.from("presentations").update(patch).eq("id", id);
-    if (upDb) return res.status(500).json({ error: upDb.message });
-
-    return res.json({ message: "File uploaded", path });
-  } catch (err) {
-    if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+  },
+);
 
 // DELETE /api/presentations/:id/file - remove pdf or ppt
-router.delete("/:id/file", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { type } = (req.query as any) as { type?: string };
-    if (!(type === "pdf" || type === "ppt")) {
-      return res.status(400).json({ error: "Invalid type" });
+router.delete(
+  "/:id/file",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { type } = req.query as any as { type?: string };
+      if (!(type === "pdf" || type === "ppt")) {
+        return res.status(400).json({ error: "Invalid type" });
+      }
+
+      const { data: pres, error: fe } = await supabaseAdmin
+        .from("presentations")
+        .select("id, created_by, status, pdf_path, ppt_path")
+        .eq("id", id)
+        .single();
+      if (fe || !pres)
+        return res.status(404).json({ error: "Presentation not found" });
+
+      const isAdmin =
+        req.adminUser!.role === "admin" || req.adminUser!.role === "owner";
+      if (!isAdmin) {
+        if (pres.created_by !== req.adminUser!.id)
+          return res.status(403).json({ error: "Not allowed" });
+        if (pres.status !== "pending")
+          return res
+            .status(403)
+            .json({ error: "Cannot modify files after approval" });
+      }
+
+      const path = type === "pdf" ? pres.pdf_path : pres.ppt_path;
+      if (path) {
+        await supabaseAdmin.storage.from("presentations").remove([path]);
+      }
+
+      const patch: any = {};
+      if (type === "pdf") patch.pdf_path = null;
+      else patch.ppt_path = null;
+      const { error: upDb } = await supabaseAdmin
+        .from("presentations")
+        .update(patch)
+        .eq("id", id);
+      if (upDb) return res.status(500).json({ error: upDb.message });
+
+      return res.json({ message: "File removed" });
+    } catch (err) {
+      return res.status(500).json({ error: "Internal server error" });
     }
-
-    const { data: pres, error: fe } = await supabaseAdmin
-      .from("presentations")
-      .select("id, created_by, status, pdf_path, ppt_path")
-      .eq("id", id)
-      .single();
-    if (fe || !pres) return res.status(404).json({ error: "Presentation not found" });
-
-    const isAdmin = req.adminUser!.role === "admin" || req.adminUser!.role === "owner";
-    if (!isAdmin) {
-      if (pres.created_by !== req.adminUser!.id) return res.status(403).json({ error: "Not allowed" });
-      if (pres.status !== "pending") return res.status(403).json({ error: "Cannot modify files after approval" });
-    }
-
-    const path = type === "pdf" ? pres.pdf_path : pres.ppt_path;
-    if (path) {
-      await supabaseAdmin.storage.from("presentations").remove([path]);
-    }
-
-    const patch: any = {};
-    if (type === "pdf") patch.pdf_path = null; else patch.ppt_path = null;
-    const { error: upDb } = await supabaseAdmin.from("presentations").update(patch).eq("id", id);
-    if (upDb) return res.status(500).json({ error: upDb.message });
-
-    return res.json({ message: "File removed" });
-  } catch (err) {
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+  },
+);
 
 // List own submissions
-router.get("/mine", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    const { data, error } = await supabaseAdmin
-      .from("presentations")
-      .select("*")
-      .eq("created_by", req.adminUser!.id)
-      .order("created_at", { ascending: false });
-    if (error) return res.status(500).json({ error: error.message });
-    return res.json({ presentations: data, pagination: { page: 1, limit: data?.length || 0, total: data?.length || 0, pages: 1 } });
-  } catch (err) {
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+router.get(
+  "/mine",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      const { data, error } = await supabaseAdmin
+        .from("presentations")
+        .select("*")
+        .eq("created_by", req.adminUser!.id)
+        .order("created_at", { ascending: false });
+      if (error) return res.status(500).json({ error: error.message });
+      return res.json({
+        presentations: data,
+        pagination: {
+          page: 1,
+          limit: data?.length || 0,
+          total: data?.length || 0,
+          pages: 1,
+        },
+      });
+    } catch (err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
 
 export default router;
