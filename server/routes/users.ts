@@ -2,12 +2,12 @@ import express, { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
-import { prisma } from "../lib/database.js";
+import { prisma } from "../lib/database";
 import {
   authenticateToken,
   requireAdmin,
   AuthRequest,
-} from "../middleware/auth.js";
+} from "../middleware/auth";
 
 const router = express.Router();
 
