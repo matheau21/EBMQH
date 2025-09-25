@@ -45,13 +45,16 @@ router.get("/", async (req: Request, res: Response) => {
 
     let query = supabaseAdmin
       .from("presentations")
-.select(
+      .select(
         "id, title, specialty, specialties, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at",
         { count: "exact" },
       )
       .eq("status", "approved");
 
-    if (specialty) query = query.or(`specialty.eq.${specialty},specialties.cs.{${specialty}}`);
+    if (specialty)
+      query = query.or(
+        `specialty.eq.${specialty},specialties.cs.{${specialty}}`,
+      );
     if (search) query = query.ilike("title", `%${search}%`);
 
     const { data, error, count } = await query
@@ -118,9 +121,12 @@ router.get(
         .from("presentations")
         .select("*", { count: "exact" });
 
-if (specialty) query = query.or(`specialty.eq.${specialty},specialties.cs.{${specialty}}`);
-    if (search) query = query.ilike("title", `%${search}%`);
-    if (status) query = query.eq("status", status);
+      if (specialty)
+        query = query.or(
+          `specialty.eq.${specialty},specialties.cs.{${specialty}}`,
+        );
+      if (search) query = query.ilike("title", `%${search}%`);
+      if (status) query = query.eq("status", status);
 
       const { data, error, count } = await query
         .order("created_at", { ascending: false })
@@ -242,10 +248,11 @@ router.get("/specialties", async (_req: Request, res: Response) => {
       .eq("status", "approved")
       .order("specialty", { ascending: true });
     if (error) return res.status(500).json({ error: error.message });
-const list: string[] = [];
+    const list: string[] = [];
     for (const d of data || []) {
       if ((d as any).specialty) list.push((d as any).specialty);
-      if (Array.isArray((d as any).specialties)) list.push(...(d as any).specialties);
+      if (Array.isArray((d as any).specialties))
+        list.push(...(d as any).specialties);
     }
     const specialties = Array.from(new Set(list));
     return res.json({ specialties });
@@ -321,34 +328,52 @@ router.post("/:id/view", async (req: Request, res: Response) => {
 });
 
 // POST /api/presentations - create (user=>pending, admin/owner=>approved)
-router.post("/", authenticateAdminToken, async (req: AdminAuthRequest, res: Response) => {
-  try {
-    const body = createSchema.parse(req.body);
-    const role = req.adminUser!.role;
-    const { data, error } = await supabaseAdmin
-      .from("presentations")
-      .insert({
-        title: body.title,
-        specialty: body.specialty || (Array.isArray(body.specialties) && body.specialties.length ? body.specialties[0] : null),
-        specialties: Array.isArray(body.specialties) ? body.specialties : (body.specialty ? [body.specialty] : []),
-        summary: body.summary,
-        authors: body.authors,
-        journal: body.journal,
-        year: body.year,
-        original_article_url: body.originalArticleUrl,
-        thumb_url: body.thumbUrl,
-        status: role === "user" ? "pending" : "approved",
-        created_by: req.adminUser!.id,
-      })
-      .select("*")
-      .single();
-    if (error) return res.status(500).json({ error: error.message });
-    return res.status(201).json({ message: "Presentation created successfully", presentation: data });
-  } catch (err) {
-    if (err instanceof z.ZodError) return res.status(400).json({ error: "Invalid input" });
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
+router.post(
+  "/",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      const body = createSchema.parse(req.body);
+      const role = req.adminUser!.role;
+      const { data, error } = await supabaseAdmin
+        .from("presentations")
+        .insert({
+          title: body.title,
+          specialty:
+            body.specialty ||
+            (Array.isArray(body.specialties) && body.specialties.length
+              ? body.specialties[0]
+              : null),
+          specialties: Array.isArray(body.specialties)
+            ? body.specialties
+            : body.specialty
+              ? [body.specialty]
+              : [],
+          summary: body.summary,
+          authors: body.authors,
+          journal: body.journal,
+          year: body.year,
+          original_article_url: body.originalArticleUrl,
+          thumb_url: body.thumbUrl,
+          status: role === "user" ? "pending" : "approved",
+          created_by: req.adminUser!.id,
+        })
+        .select("*")
+        .single();
+      if (error) return res.status(500).json({ error: error.message });
+      return res
+        .status(201)
+        .json({
+          message: "Presentation created successfully",
+          presentation: data,
+        });
+    } catch (err) {
+      if (err instanceof z.ZodError)
+        return res.status(400).json({ error: "Invalid input" });
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
 
 // PUT /api/presentations/:id - update (admin/owner or user on own pending)
 router.put(
@@ -378,7 +403,8 @@ router.put(
       const patch: any = {};
       if (updates.title !== undefined) patch.title = updates.title;
       if (updates.specialty !== undefined) patch.specialty = updates.specialty;
-      if (updates.specialties !== undefined) patch.specialties = updates.specialties;
+      if (updates.specialties !== undefined)
+        patch.specialties = updates.specialties;
       if (updates.summary !== undefined) patch.summary = updates.summary;
       if (updates.authors !== undefined) patch.authors = updates.authors;
       if (updates.journal !== undefined) patch.journal = updates.journal;
