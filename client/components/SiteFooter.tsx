@@ -45,9 +45,14 @@ export default function SiteFooter() {
               </li>
               <li>
                 {referenceHref ? (
-                  <a href={referenceHref} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                  <button
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); setShowReferenceModal(true); }}
+                    className="hover:text-white transition-colors underline underline-offset-2"
+                    aria-label="Open EBM Reference Card"
+                  >
                     EBM Reference Card
-                  </a>
+                  </button>
                 ) : (
                   <span className="opacity-70">EBM Reference Card</span>
                 )}
