@@ -54,14 +54,15 @@ export const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_KEY, {
 });
 
 // Generic timeout guard for any async operation (e.g., when a library ignores custom fetch)
-export async function runWithTimeout<T>(
-  promise: Promise<T>,
+export async function runWithTimeout<T = any>(
+  promiseLike: any,
   ms = 20000,
 ): Promise<T> {
   let timer: any;
   try {
+    const awaited = (async () => await promiseLike)();
     return await Promise.race([
-      promise,
+      awaited as Promise<T>,
       new Promise<T>((_, reject) => {
         timer = setTimeout(() => reject(new Error("supabase-timeout")), ms);
       }),
