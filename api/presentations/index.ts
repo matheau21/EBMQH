@@ -11,8 +11,12 @@ const MOUNT = "/api/presentations";
 gateway.use((req, _res, next) => {
   if (typeof req.url === "string") {
     const q = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
-    const p = req.url.includes("?") ? req.url.slice(0, req.url.indexOf("?")) : req.url;
-    let tail = p.replace(/^\/api\/presentations/, "").replace(/^\/presentations/, "");
+    const p = req.url.includes("?")
+      ? req.url.slice(0, req.url.indexOf("?"))
+      : req.url;
+    let tail = p
+      .replace(/^\/api\/presentations/, "")
+      .replace(/^\/presentations/, "");
     if (tail && !tail.startsWith("/")) tail = "/" + tail;
     req.url = MOUNT + (tail || "") + q;
   }

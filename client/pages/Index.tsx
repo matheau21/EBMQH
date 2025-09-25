@@ -198,7 +198,9 @@ export default function Index() {
         console.log("[home] backendAvailable:", backendAvailable);
 
         if (backendAvailable) {
-          const response = await presentationsAPI.getPresentations({ limit: 100 });
+          const response = await presentationsAPI.getPresentations({
+            limit: 100,
+          });
           const apiPresentations =
             response.presentations?.map((p) => ({
               id: p.id,
@@ -220,7 +222,10 @@ export default function Index() {
           setPresentations([]);
         }
       } catch (error) {
-        console.log("[home] API error -> fallback to mock:", (error as any)?.message || error);
+        console.log(
+          "[home] API error -> fallback to mock:",
+          (error as any)?.message || error,
+        );
         setPresentations(mockPresentations);
       }
     };
@@ -252,7 +257,6 @@ export default function Index() {
 
   // No local storage persistence; data is dynamic from Supabase
   useEffect(() => {}, [presentations]);
-
 
   const filteredPresentations = useMemo(() => {
     if (selectedSpecialties.length === 0) {
@@ -358,7 +362,8 @@ export default function Index() {
   useEffect(() => {
     const handler = () => setShowUploadModal(true);
     window.addEventListener("open-upload-modal", handler as any);
-    return () => window.removeEventListener("open-upload-modal", handler as any);
+    return () =>
+      window.removeEventListener("open-upload-modal", handler as any);
   }, []);
 
   const handlePresentationSubmit = async (data: PresentationData) => {
@@ -456,17 +461,15 @@ export default function Index() {
               {loggedIn && (
                 <div className="hidden sm:flex flex-col items-end text-sm text-gray-700 mr-2">
                   <div>
-                    Signed in as <span className="ml-1 font-medium">{user?.username}</span>
+                    Signed in as{" "}
+                    <span className="ml-1 font-medium">{user?.username}</span>
                   </div>
                   <div className="text-xs text-gray-500 -mt-0.5">
-                    {(user?.role ?? (isAdminMode ? "admin" : "user"))}
+                    {user?.role ?? (isAdminMode ? "admin" : "user")}
                   </div>
                 </div>
               )}
-              {false && isAdminMode && (
-                <>
-                </>
-              )}
+              {false && isAdminMode && <></>}
             </div>
           </div>
         </div>
