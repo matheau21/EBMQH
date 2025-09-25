@@ -57,9 +57,9 @@ router.get("/", async (req: Request, res: Response) => {
       );
     if (search) query = query.ilike("title", `%${search}%`);
 
-    const { data, error, count } = await query
-      .order("created_at", { ascending: false })
-      .range(from, to);
+    const { data, error, count } = await runWithTimeout(
+      query.order("created_at", { ascending: false }).range(from, to)
+    );
     if (error) return res.status(500).json({ error: error.message });
 
     return res.json({
