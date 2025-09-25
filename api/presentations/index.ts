@@ -1,6 +1,6 @@
 import serverless from "serverless-http";
 import express from "express";
-import { createServer } from "../../server/index";
+import { createServer } from "../../server/index.js";
 
 const app = createServer();
 const gateway = express();

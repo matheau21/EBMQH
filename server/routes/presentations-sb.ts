@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
 import { z } from "zod";
-import { supabaseAdmin } from "../lib/supabase";
+import { supabaseAdmin } from "../lib/supabase.js";
 import {
   authenticateAdminToken,
   AdminAuthRequest,
   requireAdminOrOwner,
-} from "../middleware/adminAuth";
+} from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
@@ -361,10 +361,12 @@ router.post(
         .select("*")
         .single();
       if (error) return res.status(500).json({ error: error.message });
-      return res.status(201).json({
-        message: "Presentation created successfully",
-        presentation: data,
-      });
+      return res
+        .status(201)
+        .json({
+          message: "Presentation created successfully",
+          presentation: data,
+        });
     } catch (err) {
       if (err instanceof z.ZodError)
         return res.status(400).json({ error: "Invalid input" });
