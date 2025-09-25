@@ -36,12 +36,15 @@ const updateSchema = z.object({
 
 // GET /api/presentations (public: approved only)
 router.get("/", async (req: Request, res: Response) => {
+  const started = Date.now();
   try {
     const { page = "1", limit = "10", specialty, search } = req.query as any;
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
     const from = (pageNum - 1) * limitNum;
     const to = from + limitNum - 1;
+
+    console.log("[presentations] list: params", { page: pageNum, limit: limitNum, specialty, search, range: [from, to] });
 
     let query = supabaseAdmin
       .from("presentations")
@@ -60,6 +63,9 @@ router.get("/", async (req: Request, res: Response) => {
     const { data, error, count } = await runWithTimeout(
       query.order("created_at", { ascending: false }).range(from, to),
     );
+    const duration = Date.now() - started;
+    res.setHeader("X-Query-Duration", String(duration));
+    console.log("[presentations] list: result", { count, durationMs: duration, rows: (data || []).length });
     if (error) return res.status(500).json({ error: error.message });
 
     return res.json({
@@ -89,11 +95,12 @@ router.get("/", async (req: Request, res: Response) => {
   } catch (err) {
     const msg = (err as any)?.message || String(err);
     if (msg === "fetch-timeout" || msg === "supabase-timeout") {
+      console.warn("[presentations] list: timeout", { durationMs: Date.now() - started });
       return res
         .status(504)
         .json({ error: "Upstream timeout contacting Supabase" });
     }
-    console.error("List presentations error:", err);
+    console.error("[presentations] list: error", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -240,6 +247,33 @@ router.get("/:id/files", async (req: Request, res: Response) => {
 });
 
 // GET /api/presentations/specialties
+// Lightweight diagnostics to help debug production
+router.get("/debug", async (_req: Request, res: Response) => {
+  try {
+    const t0 = Date.now();
+    const { count: total } = await runWithTimeout(
+      supabaseAdmin.from("presentations").select("id", { count: "exact", head: true })
+    );
+    const { count: approved } = await runWithTimeout(
+      supabaseAdmin.from("presentations").select("id", { count: "exact", head: true }).eq("status", "approved")
+    );
+    const { data: sample } = await runWithTimeout(
+      supabaseAdmin.from("presentations").select("id,title,status,created_at").eq("status","approved").order("created_at", { ascending: false }).limit(3)
+    );
+    const duration = Date.now() - t0;
+    return res.json({
+      env: process.env.NODE_ENV || "development",
+      supabaseKeyMode: process.env.SUPABASE_SERVICE_ROLE ? "service_role" : (process.env.SUPABASE_ANON_KEY ? "anon" : "none"),
+      totals: { total: total || 0, approved: approved || 0 },
+      sample: sample || [],
+      durationMs: duration,
+    });
+  } catch (err) {
+    console.error("[presentations] debug: error", err);
+    return res.status(500).json({ error: "debug-failed" });
+  }
+});
+
 router.get("/specialties", async (_req: Request, res: Response) => {
   try {
     const { data, error } = await supabaseAdmin
