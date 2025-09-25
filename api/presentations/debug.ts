@@ -8,7 +8,9 @@ app.get("/api/presentations/debug", async (_req, res) => {
   try {
     const t0 = Date.now();
     const totalRes = await runWithTimeout(
-      supabaseAdmin.from("presentations").select("id", { count: "exact", head: true }),
+      supabaseAdmin
+        .from("presentations")
+        .select("id", { count: "exact", head: true }),
     );
     const approvedRes = await runWithTimeout(
       supabaseAdmin
@@ -27,7 +29,11 @@ app.get("/api/presentations/debug", async (_req, res) => {
     const duration = Date.now() - t0;
     res.json({
       env: process.env.NODE_ENV || "development",
-      supabaseKeyMode: process.env.SUPABASE_SERVICE_ROLE ? "service_role" : (process.env.SUPABASE_ANON_KEY ? "anon" : "none"),
+      supabaseKeyMode: process.env.SUPABASE_SERVICE_ROLE
+        ? "service_role"
+        : process.env.SUPABASE_ANON_KEY
+          ? "anon"
+          : "none",
       totals: { total: totalRes.count || 0, approved: approvedRes.count || 0 },
       sample: sampleRes.data || [],
       durationMs: duration,
