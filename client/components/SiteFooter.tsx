@@ -10,6 +10,7 @@ import ReferencePdfModal from "@/components/ReferencePdfModal";
 export default function SiteFooter() {
   const [referenceHref, setReferenceHref] = useState<string | undefined>(undefined);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showReferenceModal, setShowReferenceModal] = useState(false);
   const { isAuthenticated } = useAdmin();
 
   useEffect(() => {
