@@ -1,15 +1,15 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { handleDemo } from "./routes/demo.js";
-import { connectDatabase } from "./lib/database.js";
-import userRoutes from "./routes/users.js";
-import adminAuthRoutes from "./routes/admin-auth.js";
-import presentationRoutes from "./routes/presentations-sb.js";
-import adminUsersRoutes from "./routes/admin-users.js";
-import questionsRoutes from "./routes/questions-sb.js";
-import siteRoutes from "./routes/site.js";
-import { ensureInitialOwner } from "./lib/seed.js";
+import { handleDemo } from "./routes/demo";
+import { connectDatabase } from "./lib/database";
+import userRoutes from "./routes/users";
+import adminAuthRoutes from "./routes/admin-auth";
+import presentationRoutes from "./routes/presentations-sb";
+import adminUsersRoutes from "./routes/admin-users";
+import questionsRoutes from "./routes/questions-sb";
+import siteRoutes from "./routes/site";
+import { ensureInitialOwner } from "./lib/seed";
 
 export function createServer() {
   const app = express();

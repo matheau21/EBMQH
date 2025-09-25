@@ -2,11 +2,11 @@ import express, { Request, Response } from "express";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { supabaseAdmin } from "../lib/supabase.js";
+import { supabaseAdmin } from "../lib/supabase";
 import {
   authenticateAdminToken,
   AdminAuthRequest,
-} from "../middleware/adminAuth.js";
+} from "../middleware/adminAuth";
 
 const router = express.Router();
 
