@@ -17,7 +17,12 @@ interface Props {
 // Render text with simple in-span phrase highlighting (does not cross PDF text item boundaries)
 function highlightText(
   text: string,
-  phrases: Array<{ phrase: string; color: string; occurrence?: number; tracker: { count: number } }>
+  phrases: Array<{
+    phrase: string;
+    color: string;
+    occurrence?: number;
+    tracker: { count: number };
+  }>,
 ) {
   if (!phrases.length || !text) return text;
   // Apply per phrase sequentially
@@ -50,9 +55,12 @@ function highlightText(
           const shouldWrap = !p.occurrence || p.tracker.count === p.occurrence;
           if (shouldWrap) {
             parts.push(
-              <mark key={`hl-${idx}-${p.tracker.count}-${Math.random()}`} style={{ backgroundColor: p.color, padding: 0 }}>
+              <mark
+                key={`hl-${idx}-${p.tracker.count}-${Math.random()}`}
+                style={{ backgroundColor: p.color, padding: 0 }}
+              >
                 {match}
-              </mark>
+              </mark>,
             );
           } else {
             parts.push(match);
@@ -85,7 +93,11 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
     return () => ro.disconnect();
   }, []);
 
-  useEffect(() => { setUseProxy(false); setLoadError(null); setNumPages(0); }, [url]);
+  useEffect(() => {
+    setUseProxy(false);
+    setLoadError(null);
+    setNumPages(0);
+  }, [url]);
 
   const pagesWithHighlights = useMemo(() => {
     const map = new Map<number, QuestionHighlight[]>();
@@ -115,21 +127,25 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
   const applyHighlights = useCallback(() => {
     const root = containerRef.current;
     if (!root) return;
-    const pageEls = root.querySelectorAll('.react-pdf__Page');
+    const pageEls = root.querySelectorAll(".react-pdf__Page");
     pageEls.forEach((pageEl) => {
-      const pageAttr = (pageEl as HTMLElement).getAttribute('data-page-number');
+      const pageAttr = (pageEl as HTMLElement).getAttribute("data-page-number");
       const pageNumber = pageAttr ? parseInt(pageAttr) : NaN;
       if (!pageNumber || !pagesWithHighlights.has(pageNumber)) return;
       const hs = pagesWithHighlights.get(pageNumber)!;
-      const tl = pageEl.querySelector('.react-pdf__Page__textContent');
+      const tl = pageEl.querySelector(".react-pdf__Page__textContent");
       if (!tl) return;
-      const spans = Array.from(tl.querySelectorAll('span')) as HTMLSpanElement[];
+      const spans = Array.from(
+        tl.querySelectorAll("span"),
+      ) as HTMLSpanElement[];
       // Reset any prior markup
-      spans.forEach((s) => { s.textContent = s.textContent || ''; });
+      spans.forEach((s) => {
+        s.textContent = s.textContent || "";
+      });
       for (const h of hs) {
         let seen = 0;
         for (const s of spans) {
-          const text = s.textContent || '';
+          const text = s.textContent || "";
           const idx = text.toLowerCase().indexOf(h.phrase.toLowerCase());
           if (idx < 0) continue;
           seen += 1;
@@ -137,11 +153,11 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
           const before = text.slice(0, idx);
           const match = text.slice(idx, idx + h.phrase.length);
           const after = text.slice(idx + h.phrase.length);
-          s.innerHTML = '';
+          s.innerHTML = "";
           if (before) s.append(document.createTextNode(before));
-          const mark = document.createElement('span');
-          mark.style.backgroundColor = h.color || '#fff59d';
-          mark.setAttribute('data-ebm-hl', '1');
+          const mark = document.createElement("span");
+          mark.style.backgroundColor = h.color || "#fff59d";
+          mark.setAttribute("data-ebm-hl", "1");
           mark.textContent = match;
           s.append(mark);
           if (after) s.append(document.createTextNode(after));
@@ -162,7 +178,10 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
       <Document
         key={finalUrl}
         file={finalUrl}
-        onLoadSuccess={({ numPages }) => { setNumPages(numPages); setLoadError(null); }}
+        onLoadSuccess={({ numPages }) => {
+          setNumPages(numPages);
+          setLoadError(null);
+        }}
         onLoadError={(e: any) => {
           const msg = String(e?.message || "").toLowerCase();
           const isAbort = e?.name === "AbortError" || msg.includes("abort");
@@ -171,12 +190,19 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
           else setLoadError(e?.message || "Failed to load PDF file.");
         }}
         loading={<div className="p-4 text-sm text-gray-600">Loading PDF…</div>}
-        error={<div className="p-4 text-sm text-red-600">{loadError || "Failed to load PDF file."}</div>}
+        error={
+          <div className="p-4 text-sm text-red-600">
+            {loadError || "Failed to load PDF file."}
+          </div>
+        }
       >
         {Array.from(new Array(numPages), (_el, index) => {
           const pageNumber = index + 1;
           return (
-            <div key={`p-${pageNumber}`} className="flex justify-center py-3 border-b last:border-b-0">
+            <div
+              key={`p-${pageNumber}`}
+              className="flex justify-center py-3 border-b last:border-b-0"
+            >
               <Page
                 pageNumber={pageNumber}
                 width={width ? Math.min(width - 16, 1200) : undefined}
