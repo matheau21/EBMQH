@@ -15,6 +15,11 @@ export const authenticateToken = async (
   res: Response,
   next: NextFunction,
 ) => {
+  // If Prisma isn't configured (production serverless), short-circuit with 503 for user endpoints
+  if (!prisma || typeof (prisma as any).$queryRaw === "undefined") {
+    return res.status(503).json({ error: "Database not configured for this deployment" });
+  }
+
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
 
