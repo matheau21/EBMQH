@@ -44,7 +44,13 @@ router.get("/", async (req: Request, res: Response) => {
     const from = (pageNum - 1) * limitNum;
     const to = from + limitNum - 1;
 
-    console.log("[presentations] list: params", { page: pageNum, limit: limitNum, specialty, search, range: [from, to] });
+    console.log("[presentations] list: params", {
+      page: pageNum,
+      limit: limitNum,
+      specialty,
+      search,
+      range: [from, to],
+    });
 
     let query = supabaseAdmin
       .from("presentations")
@@ -65,7 +71,11 @@ router.get("/", async (req: Request, res: Response) => {
     );
     const duration = Date.now() - started;
     res.setHeader("X-Query-Duration", String(duration));
-    console.log("[presentations] list: result", { count, durationMs: duration, rows: (data || []).length });
+    console.log("[presentations] list: result", {
+      count,
+      durationMs: duration,
+      rows: (data || []).length,
+    });
     if (error) return res.status(500).json({ error: error.message });
 
     return res.json({
@@ -95,7 +105,9 @@ router.get("/", async (req: Request, res: Response) => {
   } catch (err) {
     const msg = (err as any)?.message || String(err);
     if (msg === "fetch-timeout" || msg === "supabase-timeout") {
-      console.warn("[presentations] list: timeout", { durationMs: Date.now() - started });
+      console.warn("[presentations] list: timeout", {
+        durationMs: Date.now() - started,
+      });
       return res
         .status(504)
         .json({ error: "Upstream timeout contacting Supabase" });
@@ -252,18 +264,32 @@ router.get("/debug", async (_req: Request, res: Response) => {
   try {
     const t0 = Date.now();
     const { count: total } = await runWithTimeout(
-      supabaseAdmin.from("presentations").select("id", { count: "exact", head: true })
+      supabaseAdmin
+        .from("presentations")
+        .select("id", { count: "exact", head: true }),
     );
     const { count: approved } = await runWithTimeout(
-      supabaseAdmin.from("presentations").select("id", { count: "exact", head: true }).eq("status", "approved")
+      supabaseAdmin
+        .from("presentations")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "approved"),
     );
     const { data: sample } = await runWithTimeout(
-      supabaseAdmin.from("presentations").select("id,title,status,created_at").eq("status","approved").order("created_at", { ascending: false }).limit(3)
+      supabaseAdmin
+        .from("presentations")
+        .select("id,title,status,created_at")
+        .eq("status", "approved")
+        .order("created_at", { ascending: false })
+        .limit(3),
     );
     const duration = Date.now() - t0;
     return res.json({
       env: process.env.NODE_ENV || "development",
-      supabaseKeyMode: process.env.SUPABASE_SERVICE_ROLE ? "service_role" : (process.env.SUPABASE_ANON_KEY ? "anon" : "none"),
+      supabaseKeyMode: process.env.SUPABASE_SERVICE_ROLE
+        ? "service_role"
+        : process.env.SUPABASE_ANON_KEY
+          ? "anon"
+          : "none",
       totals: { total: total || 0, approved: approved || 0 },
       sample: sample || [],
       durationMs: duration,
