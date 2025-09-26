@@ -544,7 +544,7 @@ export default function Index() {
                 <Award className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Evidence-Based Practice</h3>
                 <p className="text-sm text-blue-200">
-                  Research-backed clinical decision making
+                  Increase research-backed clinical decision making
                 </p>
               </div>
             </div>
