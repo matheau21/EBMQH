@@ -175,7 +175,9 @@ export function SpecialtyFilters({
                 </div>
               )}
               <span className="text-sm font-semibold leading-tight text-center">
-                {specialty.name.replace(/\//g, " ")}
+                {specialty.name === "Pulmonary/Critical Care"
+                  ? "Pulmonology & Critical Care"
+                  : specialty.name.replace(/\//g, " ")}
               </span>
             </div>
           );
