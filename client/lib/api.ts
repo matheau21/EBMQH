@@ -233,16 +233,21 @@ const apiRequest = async <T>(
     }
 
     return response.json();
-  } catch (error) {
+  } catch (error: any) {
+    const msg = String(error?.message || "");
+    const name = String((error as any)?.name || "");
     const isNetworkError =
-      error instanceof TypeError &&
-      String(error.message).includes("Failed to fetch");
-    if (isNetworkError) {
+      error instanceof TypeError && msg.includes("Failed to fetch");
+    const isAbortError = /abort/i.test(msg) || name === "AbortError";
+
+    if (isNetworkError || isAbortError) {
       isBackendAvailable = false;
       if (method === "GET") {
-        // Resolve with a sensible fallback to avoid bubbling rejections/logging noise
+        // Graceful fallback for GETs when network or abort/timeouts happen
         return fallbackFor(endpoint) as T;
       }
+      // For writes, surface a friendly error
+      throw new Error(isAbortError ? "Request timed out. Please try again." : msg);
     }
     throw error;
   }
