@@ -157,6 +157,12 @@ export function SpecialtyFilters({
                   alt="Cardiology"
                   className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
                 />
+              ) : specialty.name === "Gastroenterology/Hepatology" ? (
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2Fe34b80bdfe4d4ef5a10fd8577ada1e7e?format=webp&width=800"
+                  alt="Gastroenterology Hepatology"
+                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                />
               ) : (
                 <div className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0">
                   <Icon />
