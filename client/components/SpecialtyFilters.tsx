@@ -155,7 +155,7 @@ export function SpecialtyFilters({
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F680daab9a7e94e32bf8d9d95470129ce?format=webp&width=800"
                   alt="Cardiology"
-                  className="w-10 h-10 sm:w-12 sm:h-12 object-contain mx-auto"
+                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
                 />
               ) : (
                 <div className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0">
