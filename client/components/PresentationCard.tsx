@@ -256,6 +256,16 @@ export function PresentationCard({
                 className="h-16 w-16 object-contain"
               />
             </div>
+          ) : specialty === "Endocrinology" ? (
+            <div
+              className={`w-full h-32 ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4 border`}
+            >
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F139d3ec7c28c440e829b94eda60f5da9?format=webp&width=800"
+                alt="Endocrinology"
+                className="h-16 w-16 object-contain"
+              />
+            </div>
           ) : thumbnail ? (
             <div className="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
               <img
