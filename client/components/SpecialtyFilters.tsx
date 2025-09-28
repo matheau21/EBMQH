@@ -187,6 +187,12 @@ export function SpecialtyFilters({
                   alt="Endocrinology"
                   className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
                 />
+              ) : specialty.name === "Infectious Disease" ? (
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F612876197a094a3d9ee2a30ba99b644f?format=webp&width=800"
+                  alt="Infectious Disease"
+                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                />
               ) : (
                 <div className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0">
                   <Icon />
