@@ -187,6 +187,12 @@ export function SpecialtyFilters({
                   alt="Endocrinology"
                   className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
                 />
+              ) : specialty.name === "Heme/Onc" ? (
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F0d93170d9d6c4c5c8fb0b485bf37d8f1?format=webp&width=800"
+                  alt="Heme Onc"
+                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                />
               ) : specialty.name === "Infectious Disease" ? (
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F612876197a094a3d9ee2a30ba99b644f?format=webp&width=800"
