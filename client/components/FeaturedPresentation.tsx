@@ -107,6 +107,11 @@ export function FeaturedPresentation() {
           )}
         </div>
 
+        <div className="mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Featured Presentations</h2>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Recently presented in noon conference at UCLA-Olive View</p>
+        </div>
+
         <Carousel setApi={setApi} className="max-w-3xl mx-auto" opts={{ loop: false }}>
           <CarouselContent>
             {items.length === 0 ? (
