@@ -92,7 +92,7 @@ export function FeaturedPresentation() {
           <img
             src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F69dfbf6e3bcd45c2b9a5842026a70860?format=webp&width=800"
             alt="Featured Presentation"
-            className="h-10 w-10 object-contain"
+            className="h-14 w-14 object-contain"
           />
         </div>
 
