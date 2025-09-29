@@ -89,7 +89,11 @@ export function FeaturedPresentation() {
     <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-6 sm:p-8 shadow-lg">
       <div className="text-center relative">
         <div className="w-16 h-16 bg-ucla-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
-          <PresIcon className="h-8 w-8 text-ucla-blue" />
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F69dfbf6e3bcd45c2b9a5842026a70860?format=webp&width=800"
+            alt="Featured Presentation"
+            className="h-10 w-10 object-contain"
+          />
         </div>
 
         <div className="absolute right-0 top-0 flex items-center gap-2">
