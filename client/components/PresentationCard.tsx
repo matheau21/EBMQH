@@ -266,6 +266,16 @@ export function PresentationCard({
                 className="h-16 w-16 object-contain"
               />
             </div>
+          ) : specialty === "Heme/Onc" ? (
+            <div
+              className={`w-full h-32 ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4 border`}
+            >
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F0d93170d9d6c4c5c8fb0b485bf37d8f1?format=webp&width=800"
+                alt="Heme Onc"
+                className="h-16 w-16 object-contain"
+              />
+            </div>
           ) : specialty === "Infectious Disease" ? (
             <div
               className={`w-full h-32 ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4 border`}
