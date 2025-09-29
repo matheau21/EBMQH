@@ -15,7 +15,7 @@ export function TestYourself() {
         <img
           src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F9bdda882ae1149629c4506f8adb8a8e1?format=webp&width=800"
           alt="Test Yourself"
-          className="h-6 w-6 object-contain"
+          className="h-9 w-9 object-contain"
         />
       </div>
       <h3 className="text-xl font-bold text-gray-900 mb-2">Test Yourself</h3>
