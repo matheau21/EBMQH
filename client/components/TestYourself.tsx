@@ -12,7 +12,11 @@ export function TestYourself() {
   return (
     <div className="bg-gradient-to-br from-ucla-blue/5 to-ucla-gold/10 border-2 border-ucla-blue/20 rounded-2xl p-6 text-center">
       <div className="w-12 h-12 bg-ucla-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
-        <Brain className="h-6 w-6 text-ucla-blue" />
+        <img
+          src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F9bdda882ae1149629c4506f8adb8a8e1?format=webp&width=800"
+          alt="Test Yourself"
+          className="h-6 w-6 object-contain"
+        />
       </div>
       <h3 className="text-xl font-bold text-gray-900 mb-2">Test Yourself</h3>
       <p className="text-gray-600 mb-6 text-sm">
