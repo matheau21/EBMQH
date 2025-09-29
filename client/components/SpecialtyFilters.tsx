@@ -193,6 +193,12 @@ export function SpecialtyFilters({
                   alt="Infectious Disease"
                   className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
                 />
+              ) : specialty.name === "General Internal Medicine" ? (
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2Fcceb314abc3a43aea424fa02fb1735f0?format=webp&width=800"
+                  alt="General Internal Medicine"
+                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                />
               ) : (
                 <div className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0">
                   <Icon />
