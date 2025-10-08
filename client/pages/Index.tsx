@@ -563,7 +563,7 @@ export default function Index() {
               <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-3 sm:mb-4">
                 {animatedCount.toLocaleString()}
               </div>
-              <div className="text-accent-foreground font-semibold text-lg sm:text-xl">
+              <div className="text-foreground font-semibold text-lg sm:text-xl">
                 Posted Trial Summaries
               </div>
             </div>
