@@ -24,8 +24,8 @@ export function EBMLogo({ className = "", size = "md" }: EBMLogoProps) {
         height="90"
         rx="12"
         ry="12"
-        fill="#2774AE"
-        stroke="#1e5f8c"
+        fill="var(--brand-blue)"
+        stroke="var(--brand-blue-stroke)"
         strokeWidth="2"
       />
 
