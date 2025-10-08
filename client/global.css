@@ -56,6 +56,12 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Brand tokens for logo and accents */
+    --brand-blue: #2774AE;
+    --brand-blue-stroke: #1e5f8c;
+    --brand-gold: #E6BC00;
+    --brand-gold-stroke: #B8940A;
   }
 
   .dark {
