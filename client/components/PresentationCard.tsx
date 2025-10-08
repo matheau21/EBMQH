@@ -156,7 +156,7 @@ export function PresentationCard({
   };
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white border-gray-200">
+    <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-start justify-between mb-4">
           <Badge
@@ -165,14 +165,14 @@ export function PresentationCard({
           >
             {specialty}
           </Badge>
-          <div className="flex items-center gap-2 text-gray-400">
+          <div className="flex items-center gap-2 text-muted-foreground">
             {isAdminMode && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-6 w-6 hover:bg-gray-100"
+                    className="h-6 w-6 hover:bg-accent"
                   >
                     <MoreHorizontal className="h-4 w-4" />
                   </Button>
@@ -307,7 +307,7 @@ export function PresentationCard({
               />
             </div>
           ) : thumbnail ? (
-            <div className="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+            <div className="w-full h-32 bg-muted rounded-lg flex items-center justify-center mb-4">
               <img
                 src={thumbnail}
                 alt={title}
@@ -332,27 +332,27 @@ export function PresentationCard({
           )}
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-2 group-hover:text-ucla-blue transition-colors">
+        <h3 className="text-lg font-semibold text-foreground mb-1 line-clamp-2 group-hover:text-primary transition-colors">
           {title}
         </h3>
 
         {(journal || year) && (
-          <div className="text-sm text-gray-600 mb-3">
+          <div className="text-sm text-muted-foreground mb-3">
             {journal ? journal : ""}{year ? `${journal ? " / " : ""}${year}` : ""}
           </div>
         )}
 
-        <p className="text-sm text-gray-700 mb-4 line-clamp-3">{summary}</p>
+        <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{summary}</p>
 
         {authors && (
-          <div className="text-xs text-gray-500 mb-4">
+          <div className="text-xs text-muted-foreground mb-4">
             <p className="font-medium">{authors}</p>
           </div>
         )}
 
         {/* Viewer Count */}
         <div className="flex items-center justify-end mb-3">
-          <div className="flex items-center gap-1 text-gray-500">
+          <div className="flex items-center gap-1 text-muted-foreground">
             <Eye className="h-4 w-4" />
             <span className="text-sm font-medium">
               {views.toLocaleString()}
@@ -364,7 +364,7 @@ export function PresentationCard({
           {/* Quick Hits Button */}
           <Button
             onClick={() => setShowFilesViewer(true)}
-            className="w-full bg-ucla-blue hover:bg-blue-700 text-white group-hover:bg-blue-700 transition-all duration-300"
+            className="w-full"
           >
             <Presentation className="h-4 w-4 mr-2" />
             View Files
@@ -374,7 +374,7 @@ export function PresentationCard({
           <Button
             onClick={() => setShowFilesViewer(true)}
             variant="outline"
-            className="w-full border-ucla-blue text-ucla-blue hover:bg-blue-50 transition-all duration-300"
+            className="w-full"
           >
             <BookOpen className="h-4 w-4 mr-2" />
             Original Article
