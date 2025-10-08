@@ -55,8 +55,8 @@ export function EBMLogo({ className = "", size = "md" }: EBMLogoProps) {
         fontSize="28"
         fontWeight="900"
         fontFamily="Inter, sans-serif"
-        fill="#E6BC00"
-        stroke="#B8940A"
+        fill="var(--brand-gold)"
+        stroke="var(--brand-gold-stroke)"
         strokeWidth="0.5"
       >
         EBM
