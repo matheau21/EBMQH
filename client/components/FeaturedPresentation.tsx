@@ -86,9 +86,9 @@ export function FeaturedPresentation() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-6 sm:p-8 shadow-lg">
+    <div className="bg-gradient-to-br from-card to-accent/5 border-2 border-accent/20 rounded-2xl p-6 sm:p-8 shadow-lg">
       <div className="text-center relative">
-        <div className="w-16 h-16 bg-ucla-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6">
           <img
             src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F69dfbf6e3bcd45c2b9a5842026a70860?format=webp&width=800"
             alt="Featured Presentation"
@@ -101,15 +101,15 @@ export function FeaturedPresentation() {
             {paused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
           </Button>
           {isAdminMode && (
-            <Button onClick={handleUploadFeatured} variant="outline" className="border-ucla-blue text-ucla-blue">
+            <Button onClick={handleUploadFeatured} variant="outline">
               <Upload className="h-4 w-4 mr-2" /> Upload
             </Button>
           )}
         </div>
 
         <div className="mb-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Featured Presentations</h2>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">Recently presented in noon conference at UCLA-Olive View</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Featured Presentations</h2>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">Recently presented in noon conference at UCLA-Olive View</p>
         </div>
 
         <Carousel setApi={setApi} className="max-w-3xl mx-auto" opts={{ loop: false }}>
@@ -117,25 +117,25 @@ export function FeaturedPresentation() {
             {items.length === 0 ? (
               <CarouselItem>
                 <div className="text-center py-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Featured Presentation</h3>
-                  <p className="text-gray-600">Access the latest landmark trial presentation from our noon conference</p>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Featured Presentation</h3>
+                  <p className="text-muted-foreground">Access the latest landmark trial presentation from our noon conference</p>
                 </div>
               </CarouselItem>
             ) : (
               items.map((p: any) => (
                 <CarouselItem key={p.id}>
                   <div className="px-4">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{p.title}</h3>
-                    <div className="flex items-center justify-center mb-3 text-ucla-blue">
+                    <h3 className="text-2xl font-bold text-foreground mb-2">{p.title}</h3>
+                    <div className="flex items-center justify-center mb-3 text-primary">
                       <Calendar className="h-4 w-4 mr-2" />
                       <p className="text-sm font-medium">{p.journal ? `${p.journal}${p.year ? ` • ${p.year}` : ""}` : p.year || ""}</p>
                     </div>
-                    <p className="text-gray-600 mb-5 max-w-xl mx-auto">{p.summary}</p>
+                    <p className="text-muted-foreground mb-5 max-w-xl mx-auto">{p.summary}</p>
                     <div className="flex justify-center gap-3">
-                      <Button className="bg-ucla-blue" onClick={() => openViewer(p)}>
+                      <Button onClick={() => openViewer(p)}>
                         <PresIcon className="h-4 w-4 mr-2" /> View Files
                       </Button>
-                      <Button variant="outline" onClick={() => openViewer(p)} className="border-ucla-blue text-ucla-blue">
+                      <Button variant="outline" onClick={() => openViewer(p)}>
                         <BookOpen className="h-4 w-4 mr-2" /> Original Article
                       </Button>
                     </div>
