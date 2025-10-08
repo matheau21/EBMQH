@@ -30,7 +30,7 @@ export default function SiteFooter() {
   }, []);
 
   return (
-    <footer className="bg-card text-foreground py-12 mt-16 relative border-t border-border">
+    <footer className="py-12 mt-16 relative bg-ucla-blue text-white dark:bg-card dark:text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -38,17 +38,17 @@ export default function SiteFooter() {
               <EBMLogo size="sm" />
               <span className="text-xl font-bold">EBM Quick Hits</span>
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-blue-200 dark:text-muted-foreground">
               Landmark medical trial summaries for education and practice
             </p>
           </div>
           <div>
             <h3 className="font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-muted-foreground">
+            <ul className="space-y-2 text-blue-200 dark:text-muted-foreground">
               <li>
                 <Link
                   to="/presentations"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-white dark:hover:text-foreground transition-colors"
                 >
                   All Presentations
                 </Link>
@@ -61,7 +61,7 @@ export default function SiteFooter() {
                       e.preventDefault();
                       setShowReferenceModal(true);
                     }}
-                    className="hover:text-foreground transition-colors underline underline-offset-2"
+                    className="hover:text-white dark:hover:text-foreground transition-colors underline underline-offset-2"
                     aria-label="Open EBM Reference Card"
                   >
                     EBM Reference Card
@@ -74,11 +74,11 @@ export default function SiteFooter() {
           </div>
           <div>
             <h3 className="font-semibold mb-4">Support</h3>
-            <ul className="space-y-2 text-muted-foreground">
+            <ul className="space-y-2 text-blue-200 dark:text-muted-foreground">
               <li>
                 <Link
                   to="/about"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-white dark:hover:text-foreground transition-colors"
                 >
                   About Us
                 </Link>
@@ -86,7 +86,7 @@ export default function SiteFooter() {
               <li>
                 <Link
                   to="/contact"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-white dark:hover:text-foreground transition-colors"
                 >
                   Contact Us
                 </Link>
@@ -96,7 +96,7 @@ export default function SiteFooter() {
                   <button
                     type="button"
                     onClick={() => setShowLoginModal(true)}
-                    className="hover:text-foreground transition-colors underline underline-offset-2"
+                    className="hover:text-white dark:hover:text-foreground transition-colors underline underline-offset-2"
                     aria-label="Admin Login"
                   >
                     Admin
@@ -106,7 +106,7 @@ export default function SiteFooter() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
+        <div className="border-t border-blue-600 dark:border-border mt-8 pt-8 text-center text-blue-200 dark:text-muted-foreground">
           <p>&copy; 2025 EBM Quick Hits. All rights reserved.</p>
         </div>
       </div>
