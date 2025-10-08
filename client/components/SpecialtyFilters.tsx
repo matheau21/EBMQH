@@ -37,7 +37,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20 hover:bg-specialty-cardiology/20",
     activeColor:
-      "bg-specialty-cardiology text-white border-specialty-cardiology",
+      "bg-specialty-cardiology/20 text-foreground border-specialty-cardiology/40 ring-1 ring-specialty-cardiology/30",
   },
   {
     name: "Heme/Onc",
