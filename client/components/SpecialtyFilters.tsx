@@ -116,17 +116,17 @@ export function SpecialtyFilters({
   onSpecialtyToggle,
 }: SpecialtyFiltersProps) {
   return (
-    <div className="bg-gradient-to-br from-white to-ucla-gold/5 border-2 border-ucla-gold/20 rounded-2xl p-4 sm:p-6 shadow-lg">
+    <div className="bg-gradient-to-br from-card to-accent/5 border-2 border-accent/20 rounded-2xl p-4 sm:p-6 shadow-lg">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+        <h3 className="text-xl sm:text-2xl font-bold text-foreground">
           Explore Trial by Subspecialty
         </h3>
         {selectedSpecialties.length > 0 && (
-          <div className="text-xs sm:text-sm text-gray-600 flex items-center gap-3">
+          <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-3">
             <span>{selectedSpecialties.length} selected</span>
             <button
               onClick={() => selectedSpecialties.forEach(onSpecialtyToggle)}
-              className="text-olive-600 hover:text-olive-700 font-medium underline underline-offset-2"
+              className="text-primary hover:opacity-90 font-medium underline underline-offset-2"
             >
               Clear All
             </button>
