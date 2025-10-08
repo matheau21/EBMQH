@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { BookOpen, Plus, Users, Award } from "lucide-react";
 import { EBMLogo } from "@/components/EBMLogo";
 import SiteFooter from "@/components/SiteFooter";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 import { BackendStatusBanner } from "@/components/BackendStatusBanner";
 import { addPresentationFilesToMediaLibrary } from "@/lib/mediaLibraryUtils";
