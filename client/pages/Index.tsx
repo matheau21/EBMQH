@@ -441,30 +441,32 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background transition-colors">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+      <header className="bg-card border-b border-border sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
               <EBMLogo size="md" className="shadow-lg flex-shrink-0" />
               <div className="min-w-0">
-                <h1 className="text-lg sm:text-xl font-bold text-ucla-blue truncate">
+                <h1 className="text-lg sm:text-xl font-bold text-foreground truncate">
                   EBM Quick Hits
                 </h1>
-                <p className="text-xs text-blue-600 hidden sm:block">
+                <p className="text-xs text-muted-foreground hidden sm:block">
                   Evidence-Based Medicine Made Simple
                 </p>
               </div>
             </div>
             <div className="flex gap-2 sm:gap-3 flex-shrink-0 items-center">
+              {/* Theme toggle */}
+              <ThemeToggle />
               {loggedIn && (
-                <div className="hidden sm:flex flex-col items-end text-sm text-gray-700 mr-2">
+                <div className="hidden sm:flex flex-col items-end text-sm text-foreground mr-2">
                   <div>
                     Signed in as{" "}
                     <span className="ml-1 font-medium">{user?.username}</span>
                   </div>
-                  <div className="text-xs text-gray-500 -mt-0.5">
+                  <div className="text-xs text-muted-foreground -mt-0.5">
                     {user?.role ?? (isAdminMode ? "admin" : "user")}
                   </div>
                 </div>
@@ -479,7 +481,7 @@ export default function Index() {
       <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden">
         {/* Background Pattern with Dynamic Effects */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-ucla-blue"></div>
+          <div className="absolute inset-0 bg-ucla-blue dark:bg-[hsl(var(--background))]"></div>
           <div
             className="absolute inset-0 animate-pulse"
             style={{
@@ -491,15 +493,15 @@ export default function Index() {
         {/* Floating Elements with Animation */}
         <div className="absolute top-10 left-10 w-20 h-20 bg-ucla-gold/10 rounded-full blur-xl animate-float"></div>
         <div className="absolute top-20 right-20 w-32 h-32 bg-ucla-gold/5 rounded-full blur-2xl animate-float-delayed"></div>
-        <div className="absolute bottom-10 left-1/4 w-16 h-16 bg-white/5 rounded-full blur-lg animate-bounce-slow"></div>
-        <div className="absolute top-1/2 right-1/3 w-24 h-24 bg-white/3 rounded-full blur-xl animate-pulse-slow"></div>
+        <div className="absolute bottom-10 left-1/4 w-16 h-16 bg-white/5 dark:bg-white/10 rounded-full blur-lg animate-bounce-slow"></div>
+        <div className="absolute top-1/2 right-1/3 w-24 h-24 bg-white/30 dark:bg-white/10 rounded-full blur-xl animate-pulse-slow"></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-white">
+          <div className="text-center text-white dark:text-foreground">
             {/* Main Title */}
             <div className="mb-6">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 tracking-tight">
-                <span className="block text-white animate-slide-down">
+                <span className="block text-white dark:text-foreground animate-slide-down">
                   Landmark Medical Trial
                 </span>
                 <span className="block bg-gradient-to-r from-ucla-gold to-yellow-300 bg-clip-text text-transparent animate-slide-up">
@@ -510,7 +512,7 @@ export default function Index() {
             </div>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed font-light animate-fade-in px-4">
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 dark:text-muted-foreground mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed font-light animate-fade-in px-4">
               High-yield, digestible summaries of landmark trials — curated for
               Medicine Residents to enhance learning and clinical practice.
             </p>
@@ -518,32 +520,32 @@ export default function Index() {
             {/* Feature Badges */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-4xl mx-auto px-4">
               <div
-                className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-4 sm:p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                className="bg-white/10 dark:bg-muted/60 backdrop-blur-lg border border-white/20 dark:border-border rounded-2xl p-4 sm:p-5 hover:bg-white/15 dark:hover:bg-muted transition-all duration-300 hover:scale-105 animate-fade-in-up"
                 style={{ animationDelay: "0.1s" }}
               >
                 <BookOpen className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Landmark Research</h3>
-                <p className="text-sm text-blue-200">
+                <p className="text-sm text-blue-200 dark:text-muted-foreground">
                   Breakthrough clinical trials that changed medicine
                 </p>
               </div>
               <div
-                className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                className="bg-white/10 dark:bg-muted/60 backdrop-blur-lg border border-white/20 dark:border-border rounded-2xl p-5 hover:bg-white/15 dark:hover:bg-muted transition-all duration-300 hover:scale-105 animate-fade-in-up"
                 style={{ animationDelay: "0.2s" }}
               >
                 <Users className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Guideline Origins</h3>
-                <p className="text-sm text-blue-200">
+                <p className="text-sm text-blue-200 dark:text-muted-foreground">
                   Studies that shaped current medical guidelines
                 </p>
               </div>
               <div
-                className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                className="bg-white/10 dark:bg-muted/60 backdrop-blur-lg border border-white/20 dark:border-border rounded-2xl p-5 hover:bg-white/15 dark:hover:bg-muted transition-all duration-300 hover:scale-105 animate-fade-in-up"
                 style={{ animationDelay: "0.3s" }}
               >
                 <Award className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Evidence-Based Practice</h3>
-                <p className="text-sm text-blue-200">
+                <p className="text-sm text-blue-200 dark:text-muted-foreground">
                   Increase research-backed clinical decision making
                 </p>
               </div>
@@ -553,14 +555,14 @@ export default function Index() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-8 sm:py-12 bg-gradient-to-r from-gray-50 to-ucla-gold/5 border-b border-gray-200">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-background to-accent/5 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center">
-            <div className="bg-white border-2 border-ucla-gold/20 p-6 sm:p-8 lg:p-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:border-ucla-gold/40 w-full max-w-2xl text-center">
-              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-ucla-blue mb-3 sm:mb-4">
+            <div className="bg-card border-2 border-accent/20 p-6 sm:p-8 lg:p-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:border-accent/40 w-full max-w-2xl text-center">
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-3 sm:mb-4">
                 {animatedCount.toLocaleString()}
               </div>
-              <div className="text-ucla-gold font-semibold text-lg sm:text-xl">
+              <div className="text-accent-foreground font-semibold text-lg sm:text-xl">
                 Posted Trial Summaries
               </div>
             </div>
@@ -590,10 +592,10 @@ export default function Index() {
         {selectedSpecialties.length > 0 && (
           <div className="mb-16">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
                 Presentations
               </h2>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Showing {filteredPresentations.length} presentations for
                 selected specialties
               </p>
@@ -624,19 +626,18 @@ export default function Index() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 bg-gray-50 rounded-lg">
-                <BookOpen className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <div className="text-center py-12 bg-muted rounded-lg">
+                <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">
                   No presentations found
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-muted-foreground mb-4">
                   No presentations available for the selected specialty. Check
                   back later for updates.
                 </p>
                 <Button
                   variant="outline"
                   onClick={() => setSelectedSpecialties([])}
-                  className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
                 >
                   Clear Selection
                 </Button>
@@ -646,7 +647,7 @@ export default function Index() {
         )}
 
         {/* Test Yourself Section - Moved to Bottom */}
-        <div className="mt-16 pt-12 border-t border-gray-200">
+        <div className="mt-16 pt-12 border-t border-border">
           <TestYourself />
         </div>
       </main>
