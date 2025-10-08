@@ -44,7 +44,7 @@ const specialtyConfig = [
     icon: ModernHemeOncIcon,
     color:
       "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20 hover:bg-specialty-hemeonc/20",
-    activeColor: "bg-specialty-hemeonc text-white border-specialty-hemeonc",
+    activeColor: "bg-specialty-hemeonc/20 text-foreground border-specialty-hemeonc/40 ring-1 ring-specialty-hemeonc/30",
   },
   {
     name: "Endocrinology",
@@ -52,7 +52,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-endocrinology/10 text-specialty-endocrinology border-specialty-endocrinology/20 hover:bg-specialty-endocrinology/20",
     activeColor:
-      "bg-specialty-endocrinology text-white border-specialty-endocrinology",
+      "bg-specialty-endocrinology/20 text-foreground border-specialty-endocrinology/40 ring-1 ring-specialty-endocrinology/30",
   },
   {
     name: "General Internal Medicine",
@@ -60,7 +60,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-generalinternal/10 text-specialty-generalinternal border-specialty-generalinternal/20 hover:bg-specialty-generalinternal/20",
     activeColor:
-      "bg-specialty-generalinternal text-white border-specialty-generalinternal",
+      "bg-specialty-generalinternal/20 text-foreground border-specialty-generalinternal/40 ring-1 ring-specialty-generalinternal/30",
   },
   {
     name: "Pulmonary/Critical Care",
@@ -68,7 +68,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20 hover:bg-specialty-pulmonarycritical/20",
     activeColor:
-      "bg-specialty-pulmonarycritical text-white border-specialty-pulmonarycritical",
+      "bg-specialty-pulmonarycritical/20 text-foreground border-specialty-pulmonarycritical/40 ring-1 ring-specialty-pulmonarycritical/30",
   },
   {
     name: "Infectious Disease",
@@ -76,7 +76,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-infectious/10 text-specialty-infectious border-specialty-infectious/20 hover:bg-specialty-infectious/20",
     activeColor:
-      "bg-specialty-infectious text-white border-specialty-infectious",
+      "bg-specialty-infectious/20 text-foreground border-specialty-infectious/40 ring-1 ring-specialty-infectious/30",
   },
   {
     name: "Rheumatology",
@@ -84,7 +84,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-rheumatology/10 text-specialty-rheumatology border-specialty-rheumatology/20 hover:bg-specialty-rheumatology/20",
     activeColor:
-      "bg-specialty-rheumatology text-white border-specialty-rheumatology",
+      "bg-specialty-rheumatology/20 text-foreground border-specialty-rheumatology/40 ring-1 ring-specialty-rheumatology/30",
   },
   {
     name: "Nephrology",
@@ -92,7 +92,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-nephrology/10 text-specialty-nephrology border-specialty-nephrology/20 hover:bg-specialty-nephrology/20",
     activeColor:
-      "bg-specialty-nephrology text-white border-specialty-nephrology",
+      "bg-specialty-nephrology/20 text-foreground border-specialty-nephrology/40 ring-1 ring-specialty-nephrology/30",
   },
   {
     name: "Gastroenterology/Hepatology",
@@ -100,14 +100,14 @@ const specialtyConfig = [
     color:
       "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20 hover:bg-specialty-gastroenterology/20",
     activeColor:
-      "bg-specialty-gastroenterology text-white border-specialty-gastroenterology",
+      "bg-specialty-gastroenterology/20 text-foreground border-specialty-gastroenterology/40 ring-1 ring-specialty-gastroenterology/30",
   },
   {
     name: "Neurology",
     icon: ModernNeurologyIcon,
     color:
       "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20 hover:bg-specialty-neurology/20",
-    activeColor: "bg-specialty-neurology text-white border-specialty-neurology",
+    activeColor: "bg-specialty-neurology/20 text-foreground border-specialty-neurology/40 ring-1 ring-specialty-neurology/30",
   },
 ];
 
