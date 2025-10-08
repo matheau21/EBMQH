@@ -484,16 +484,22 @@ export default function Index() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-ucla-blue dark:bg-[hsl(var(--background))]"></div>
           <div
-            className="absolute inset-0 animate-pulse"
+            className="absolute inset-0 animate-pulse dark:hidden"
             style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD100' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          ></div>
+          <div
+            className="absolute inset-0 animate-pulse hidden dark:block"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232774AE' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
             }}
           ></div>
         </div>
 
         {/* Floating Elements with Animation */}
-        <div className="absolute top-10 left-10 w-20 h-20 bg-ucla-gold/10 rounded-full blur-xl animate-float"></div>
-        <div className="absolute top-20 right-20 w-32 h-32 bg-ucla-gold/5 rounded-full blur-2xl animate-float-delayed"></div>
+        <div className="absolute top-10 left-10 w-20 h-20 bg-ucla-gold/10 dark:bg-primary/20 rounded-full blur-xl animate-float"></div>
+        <div className="absolute top-20 right-20 w-32 h-32 bg-ucla-gold/5 dark:bg-primary/10 rounded-full blur-2xl animate-float-delayed"></div>
         <div className="absolute bottom-10 left-1/4 w-16 h-16 bg-white/5 dark:bg-white/10 rounded-full blur-lg animate-bounce-slow"></div>
         <div className="absolute top-1/2 right-1/3 w-24 h-24 bg-white/30 dark:bg-white/10 rounded-full blur-xl animate-pulse-slow"></div>
 
@@ -505,11 +511,11 @@ export default function Index() {
                 <span className="block text-white dark:text-foreground animate-slide-down">
                   Landmark Medical Trial
                 </span>
-                <span className="block bg-gradient-to-r from-ucla-gold to-yellow-300 bg-clip-text text-transparent animate-slide-up">
+                <span className="block bg-gradient-to-r from-ucla-gold to-yellow-300 dark:from-primary dark:to-primary/70 bg-clip-text text-transparent animate-slide-up">
                   Quick Hits
                 </span>
               </h1>
-              <div className="w-16 sm:w-24 h-1 bg-ucla-gold mx-auto rounded-full animate-expand"></div>
+              <div className="w-16 sm:w-24 h-1 bg-ucla-gold dark:bg-primary mx-auto rounded-full animate-expand"></div>
             </div>
 
             {/* Subtitle */}
@@ -524,7 +530,7 @@ export default function Index() {
                 className="bg-white/10 dark:bg-muted/60 backdrop-blur-lg border border-white/20 dark:border-border rounded-2xl p-4 sm:p-5 hover:bg-white/15 dark:hover:bg-muted transition-all duration-300 hover:scale-105 animate-fade-in-up"
                 style={{ animationDelay: "0.1s" }}
               >
-                <BookOpen className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
+                <BookOpen className="h-7 w-7 text-ucla-gold dark:text-primary mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Landmark Research</h3>
                 <p className="text-sm text-blue-200 dark:text-muted-foreground">
                   Breakthrough clinical trials that changed medicine
@@ -534,7 +540,7 @@ export default function Index() {
                 className="bg-white/10 dark:bg-muted/60 backdrop-blur-lg border border-white/20 dark:border-border rounded-2xl p-5 hover:bg-white/15 dark:hover:bg-muted transition-all duration-300 hover:scale-105 animate-fade-in-up"
                 style={{ animationDelay: "0.2s" }}
               >
-                <Users className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
+                <Users className="h-7 w-7 text-ucla-gold dark:text-primary mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Guideline Origins</h3>
                 <p className="text-sm text-blue-200 dark:text-muted-foreground">
                   Studies that shaped current medical guidelines
@@ -544,7 +550,7 @@ export default function Index() {
                 className="bg-white/10 dark:bg-muted/60 backdrop-blur-lg border border-white/20 dark:border-border rounded-2xl p-5 hover:bg-white/15 dark:hover:bg-muted transition-all duration-300 hover:scale-105 animate-fade-in-up"
                 style={{ animationDelay: "0.3s" }}
               >
-                <Award className="h-7 w-7 text-ucla-gold mx-auto mb-3" />
+                <Award className="h-7 w-7 text-ucla-gold dark:text-primary mx-auto mb-3" />
                 <h3 className="font-semibold mb-2">Evidence-Based Practice</h3>
                 <p className="text-sm text-blue-200 dark:text-muted-foreground">
                   Increase research-backed clinical decision making
