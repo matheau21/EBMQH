@@ -31,12 +31,13 @@ export default function SiteHeader({ showQuickLinks = true }: { showQuickLinks?:
                   </Link>
                 </nav>
               )}
+              <ThemeToggle />
               {isAuthenticated && (
-                <div className="hidden sm:flex flex-col items-end text-sm text-gray-700 ml-2">
+                <div className="hidden sm:flex flex-col items-end text-sm text-foreground ml-2">
                   <div>
                     Signed in as <span className="ml-1 font-medium">{user?.username}</span>
                   </div>
-                  <div className="text-xs text-gray-500 -mt-0.5">{user?.role || "user"}</div>
+                  <div className="text-xs text-muted-foreground -mt-0.5">{user?.role || "user"}</div>
                 </div>
               )}
             </div>
