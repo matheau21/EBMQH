@@ -174,7 +174,7 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
   }, [applyHighlights, numPages, finalUrl, highlights]);
 
   return (
-    <div ref={containerRef} className="w-full h-full overflow-auto bg-white">
+    <div ref={containerRef} className="w-full h-full overflow-auto bg-background">
       <Document
         key={finalUrl}
         file={finalUrl}
@@ -189,9 +189,9 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
           if (!useProxy) setUseProxy(true);
           else setLoadError(e?.message || "Failed to load PDF file.");
         }}
-        loading={<div className="p-4 text-sm text-gray-600">Loading PDF…</div>}
+        loading={<div className="p-4 text-sm text-muted-foreground">Loading PDF…</div>}
         error={
-          <div className="p-4 text-sm text-red-600">
+          <div className="p-4 text-sm text-destructive">
             {loadError || "Failed to load PDF file."}
           </div>
         }
@@ -201,7 +201,7 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
           return (
             <div
               key={`p-${pageNumber}`}
-              className="flex justify-center py-3 border-b last:border-b-0"
+              className="flex justify-center py-3 border-b last:border-b-0 border-border"
             >
               <Page
                 pageNumber={pageNumber}
