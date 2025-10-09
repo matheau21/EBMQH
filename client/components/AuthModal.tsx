@@ -48,14 +48,14 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Lock className="h-5 w-5 text-ucla-blue" />
+            <Lock className="h-5 w-5 text-primary" />
             Secure Access Required
           </DialogTitle>
           <DialogDescription>
             Please authenticate to access the upload panel. Only authorized users can add new presentations.
           </DialogDescription>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="username">Username</Label>
@@ -66,10 +66,9 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
               required
-              className="focus:border-ucla-blue focus:ring-ucla-blue"
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <div className="relative">
@@ -80,7 +79,7 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
-                className="focus:border-ucla-blue focus:ring-ucla-blue pr-10"
+                className="pr-10"
               />
               <Button
                 type="button"
@@ -99,7 +98,7 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
           </div>
 
           {error && (
-            <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
+            <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
               {error}
             </div>
           )}
@@ -115,7 +114,6 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
             </Button>
             <Button
               type="submit"
-              className="bg-ucla-blue hover:bg-blue-700"
               disabled={isLoading}
             >
               {isLoading ? "Authenticating..." : "Sign In"}
@@ -123,7 +121,7 @@ export function AuthModal({ isOpen, onClose, onAuthenticated }: AuthModalProps) 
           </div>
         </form>
 
-        <div className="text-xs text-gray-500 mt-4 p-3 bg-gray-50 rounded-md">
+        <div className="text-xs text-muted-foreground mt-4 p-3 bg-muted rounded-md">
           <strong>Demo credentials:</strong><br />
           Username: admin<br />
           Password: ebm2024
