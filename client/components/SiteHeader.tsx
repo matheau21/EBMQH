@@ -21,7 +21,7 @@ export default function SiteHeader({ showQuickLinks = true }: { showQuickLinks?:
               {showQuickLinks && (
                 <nav className="hidden sm:flex items-center gap-2">
                   <Link to="/">
-                    <Button variant="ghost" className="text-gray-700">Home</Button>
+                    <Button variant="ghost">Home</Button>
                   </Link>
                   <Link to="/questions">
                     <Button variant="ghost" className="text-gray-700">Questions</Button>
