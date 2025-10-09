@@ -345,13 +345,13 @@ export default function AllPresentations() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <SiteHeader showQuickLinks />
-      <div className="bg-blue-50 border-b border-blue-100">
+      <div className="bg-muted border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-sm">
-          <Link to="/" className="text-ucla-blue hover:underline">Home</Link>
-          <span className="mx-2 text-blue-600">/</span>
-          <span className="text-blue-800">All Presentations</span>
+          <Link to="/" className="text-primary hover:underline">Home</Link>
+          <span className="mx-2 text-muted-foreground">/</span>
+          <span className="text-foreground">All Presentations</span>
         </div>
       </div>
 
@@ -378,12 +378,12 @@ export default function AllPresentations() {
 
         {/* Results Summary */}
         <div className="mb-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Showing {filteredPresentations.length} of {presentations.length} presentations
           </p>
           <div className="flex flex-wrap gap-3 items-center">
             <div className="w-48">
-              <label className="text-xs text-gray-500">Sort by</label>
+              <label className="text-xs text-muted-foreground">Sort by</label>
               <Select value={sortBy} onValueChange={(v)=>setSortBy(v as any)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -395,7 +395,7 @@ export default function AllPresentations() {
               </Select>
             </div>
             <div className="w-32">
-              <label className="text-xs text-gray-500">Order</label>
+              <label className="text-xs text-muted-foreground">Order</label>
               <Select value={sortOrder} onValueChange={(v)=>setSortOrder(v as any)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -405,7 +405,7 @@ export default function AllPresentations() {
               </Select>
             </div>
             <div>
-              <label className="text-xs text-gray-500 mr-2">Group by specialty</label>
+              <label className="text-xs text-muted-foreground mr-2">Group by specialty</label>
               <input type="checkbox" checked={groupBySpecialty} onChange={(e)=>setGroupBySpecialty(e.target.checked)} />
             </div>
             {(searchQuery || selectedSpecialties.length > 0) && (
@@ -415,7 +415,7 @@ export default function AllPresentations() {
                   setSearchQuery("");
                   setSelectedSpecialties([]);
                 }}
-                className="text-sm border-ucla-blue text-ucla-blue hover:bg-blue-50"
+                className="text-sm"
               >
                 Clear Filters
               </Button>
@@ -490,11 +490,11 @@ export default function AllPresentations() {
           )
         ) : (
           <div className="text-center py-12">
-            <div className="h-16 w-16 text-gray-300 mx-auto mb-4">📚</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <div className="h-16 w-16 text-muted-foreground mx-auto mb-4">📚</div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
               No presentations found
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-muted-foreground mb-4">
               Try adjusting your search criteria or browse all presentations
             </p>
             <Button
