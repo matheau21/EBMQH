@@ -41,9 +41,9 @@ export default function ReferencePdfModal({
         className={`${isFullscreen ? "w-screen h-screen max-w-screen max-h-screen rounded-none p-0" : "sm:max-w-5xl w-[96vw] h-[85vh] p-0"} overflow-hidden flex flex-col gap-0`}
       >
         <DialogHeader
-          className={`bg-ucla-blue text-white ${isFullscreen ? "px-2 py-2" : "px-3 py-2"} flex flex-row items-center justify-between space-y-0 ${isFullscreen ? "rounded-none" : "rounded-t-lg"}`}
+          className={`bg-ucla-blue text-white dark:bg-card dark:text-foreground ${isFullscreen ? "px-2 py-2" : "px-3 py-2"} flex flex-row items-center justify-between space-y-0 ${isFullscreen ? "rounded-none" : "rounded-t-lg"}`}
         >
-          <DialogTitle className="flex items-center gap-2 text-white">
+          <DialogTitle className="flex items-center gap-2 text-white dark:text-foreground">
             <FileText className="h-5 w-5" />
             {title}
           </DialogTitle>
@@ -52,7 +52,7 @@ export default function ReferencePdfModal({
               variant="ghost"
               size="icon"
               onClick={() => setIsFullscreen((v) => !v)}
-              className="text-white hover:bg-white/20 h-8 w-8"
+              className="h-8 w-8 text-white hover:bg-white/20 dark:text-foreground dark:hover:bg-accent"
               aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
             >
               {isFullscreen ? (
@@ -65,7 +65,7 @@ export default function ReferencePdfModal({
               variant="ghost"
               size="icon"
               onClick={onClose}
-              className="text-white hover:bg-white/20 h-8 w-8"
+              className="h-8 w-8 text-white hover:bg-white/20 dark:text-foreground dark:hover:bg-accent"
               aria-label="Close"
             >
               <X className="h-4 w-4" />
@@ -73,7 +73,7 @@ export default function ReferencePdfModal({
           </div>
         </DialogHeader>
 
-        <div className="flex-1 min-h-0 bg-white">
+        <div className="flex-1 min-h-0 bg-background">
           <iframe
             src={`${iframeSrc}#toolbar=1&navpanes=0&scrollbar=1`}
             title={title}
@@ -81,7 +81,7 @@ export default function ReferencePdfModal({
           />
         </div>
 
-        <div className="bg-gray-50 px-3 py-2 border-t flex items-center justify-end gap-2">
+        <div className="bg-muted px-3 py-2 border-t border-border flex items-center justify-end gap-2">
           <Button
             variant="outline"
             size="sm"
