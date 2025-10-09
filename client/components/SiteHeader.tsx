@@ -13,8 +13,8 @@ export default function SiteHeader({ showQuickLinks = true }: { showQuickLinks?:
             <Link to="/" className="flex items-center space-x-2 sm:space-x-3 min-w-0">
               <EBMLogo size="md" className="shadow-lg flex-shrink-0" />
               <div className="min-w-0">
-                <div className="text-lg sm:text-xl font-bold text-ucla-blue truncate">EBM Quick Hits</div>
-                <p className="text-xs text-blue-600 hidden sm:block">Evidence-Based Medicine Made Simple</p>
+                <div className="text-lg sm:text-xl font-bold text-foreground truncate">EBM Quick Hits</div>
+                <p className="text-xs text-muted-foreground hidden sm:block">Evidence-Based Medicine Made Simple</p>
               </div>
             </Link>
             <div className="flex items-center gap-3">
