@@ -60,7 +60,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-ucla-blue">
+          <DialogTitle className="flex items-center gap-2 text-primary">
             <LogIn className="h-5 w-5" />
             Admin Login
           </DialogTitle>
@@ -134,7 +134,6 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
               disabled={
                 isLoading || !formData.username || !formData.password
               }
-              className="bg-ucla-blue hover:bg-blue-700"
             >
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
