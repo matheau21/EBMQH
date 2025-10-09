@@ -25,16 +25,16 @@ export function SearchAndFilter({
   availableSpecialties,
 }: SearchAndFilterProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+    <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
               placeholder="Search presentations by title, author, or keywords..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 h-12 border-gray-300 focus:border-ucla-blue focus:ring-ucla-blue"
+              className="pl-10 h-12"
             />
           </div>
         </div>
@@ -43,14 +43,14 @@ export function SearchAndFilter({
           <DropdownMenuTrigger asChild>
             <Button 
               variant="outline" 
-              className="h-12 px-6 border-gray-300 hover:border-ucla-blue hover:text-ucla-blue"
+              className="h-12 px-6"
             >
               <Filter className="h-4 w-4 mr-2" />
               Filter by Specialty
               {selectedSpecialties.length > 0 && (
-                <Badge 
-                  variant="secondary" 
-                  className="ml-2 bg-ucla-blue text-white"
+                <Badge
+                  variant="secondary"
+                  className="ml-2"
                 >
                   {selectedSpecialties.length}
                 </Badge>
@@ -78,7 +78,7 @@ export function SearchAndFilter({
             <Badge
               key={specialty}
               variant="secondary"
-              className="bg-ucla-blue/10 text-ucla-blue border-ucla-blue/20 cursor-pointer hover:bg-ucla-blue/20"
+              className="bg-primary/10 text-primary border-primary/20 cursor-pointer hover:bg-primary/20"
               onClick={() => onSpecialtyToggle(specialty)}
             >
               {specialty}
