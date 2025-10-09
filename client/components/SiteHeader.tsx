@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { EBMLogo } from "@/components/EBMLogo";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Link } from "react-router-dom";
 
 export default function SiteHeader({ showQuickLinks = true }: { showQuickLinks?: boolean }) {
   const { isAuthenticated, user } = useAdmin();
