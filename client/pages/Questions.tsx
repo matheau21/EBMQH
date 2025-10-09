@@ -159,20 +159,20 @@ function QuizPageInner() {
   const percent = answered > 0 ? Math.round((correct / answered) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <SiteHeader />
-      <div className="bg-blue-50 border-b border-blue-100">
+      <div className="bg-secondary border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-sm">
-          <Link to="/" className="text-ucla-blue hover:underline">Home</Link>
-          <span className="mx-2 text-blue-600">/</span>
-          <span className="text-blue-800">Questions</span>
+          <Link to="/" className="text-primary hover:underline">Home</Link>
+          <span className="mx-2 text-muted-foreground">/</span>
+          <span className="text-foreground">Questions</span>
         </div>
       </div>
       {/* Hero */}
-      <section className="bg-ucla-blue text-white py-12">
+      <section className="bg-ucla-blue text-white py-12 dark:bg-card dark:text-foreground">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold">Test Yourself</h1>
-          <p className="text-blue-100 mt-1">Multiple choice questions based on landmark trials.</p>
+          <p className="text-blue-100 dark:text-muted-foreground mt-1">Multiple choice questions based on landmark trials.</p>
         </div>
       </section>
 
@@ -267,8 +267,8 @@ function QuizPageInner() {
                 {/* Left: Question/answers */}
                 <div className="space-y-4">
                   <div>
-                    <div className="text-gray-900 font-medium mb-2">{current.prompt}</div>
-                    <div className="text-xs text-gray-500 flex gap-2">
+                    <div className="text-foreground font-medium mb-2">{current.prompt}</div>
+                    <div className="text-xs text-muted-foreground flex gap-2">
                       {current.specialty && <Badge variant="secondary">{current.specialty}</Badge>}
                     </div>
                   </div>
@@ -283,7 +283,7 @@ function QuizPageInner() {
                           key={c.id}
                           onClick={() => !confirmed && setSelectedChoiceId(c.id)}
                           className={`w-full text-left border rounded px-3 py-2 transition-colors ${
-                            isCorrectChoice ? "border-green-600 bg-green-50" : isWrongSelected ? "border-red-600 bg-red-50" : isSelected ? "border-ucla-blue" : "hover:bg-gray-50"
+                            isCorrectChoice ? "border-green-600 bg-green-500/10" : isWrongSelected ? "border-red-600 bg-red-500/10" : isSelected ? "border-primary ring-1 ring-primary/20" : "hover:bg-muted"
                           }`}
                         >
                           <div className="flex items-center justify-between">
@@ -299,21 +299,21 @@ function QuizPageInner() {
                   {!confirmed ? (
                     <div className="flex justify-between">
                       <Button variant="outline" onClick={onSkip}>Skip</Button>
-                      <Button disabled={!selectedChoiceId} onClick={onConfirm} className="bg-ucla-blue">
+                      <Button disabled={!selectedChoiceId} onClick={onConfirm}>
                         Confirm
                       </Button>
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      <div className={`text-sm font-medium ${isCorrect ? "text-green-700" : "text-red-700"}`}>
+                      <div className={`text-sm font-medium ${isCorrect ? "text-green-600" : "text-red-600"}`}>
                         {isCorrect ? "Correct!" : "Incorrect."}
                       </div>
                       {(current.explanation || current.referenceUrl) && (
-                        <div className="text-sm text-gray-700 space-y-1">
+                        <div className="text-sm text-muted-foreground space-y-1">
                           {current.explanation && <div>{current.explanation}</div>}
                           {current.referenceUrl && (
                             <div>
-                              <a className="text-ucla-blue underline" href={current.referenceUrl} target="_blank" rel="noreferrer">
+                              <a className="text-primary underline" href={current.referenceUrl} target="_blank" rel="noreferrer">
                                 View referenced study
                               </a>
                             </div>
@@ -321,7 +321,7 @@ function QuizPageInner() {
                         </div>
                       )}
                       <div className="flex justify-end">
-                        <Button onClick={onNext} className="bg-ucla-blue">
+                        <Button onClick={onNext}>
                           Next question <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
                       </div>
@@ -331,15 +331,15 @@ function QuizPageInner() {
 
                 {/* Right: Collapsible PDF panel */}
                 {showPdfPanel && (
-                  <div className="min-h-[50vh] md:min-h-[70vh] border rounded overflow-hidden">
-                    <div className="px-3 py-2 bg-gray-50 border-b text-xs font-medium text-gray-700">Trial Paper</div>
-                    <div className="h-[50vh] md:h-[70vh] bg-white">
+                  <div className="min-h-[50vh] md:minh-[70vh] border rounded overflow-hidden border-border">
+                    <div className="px-3 py-2 bg-background border-b border-border text-xs font-medium text-foreground">Trial Paper</div>
+                    <div className="h-[50vh] md:h-[70vh] bg-background">
                       {pdfLoading ? (
-                        <div className="h-full flex items-center justify-center text-gray-600 text-sm">Loading trial paper…</div>
+                        <div className="h-full flex items-center justify-center text-muted-foreground text-sm">Loading trial paper…</div>
                       ) : pdfUrl ? (
                         <PdfHighlightViewer url={pdfUrl} highlights={confirmed ? (current.highlights || []) : []} />
                       ) : (
-                        <div className="h-full flex items-center justify-center text-gray-500 text-sm">
+                        <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
                           {pdfError ? pdfError : "No trial paper available for this question."}
                         </div>
                       )}
