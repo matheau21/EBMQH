@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import "@/lib/suppressAbortErrors";
 import { EBMLogo } from "@/components/EBMLogo";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
