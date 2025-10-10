@@ -195,7 +195,7 @@ export function SpecialtyFilters({
                 />
               ) : specialty.name === "Infectious Disease" ? (
                 <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F11d10d6ab4834a98aeee7b6c2d271429?format=webp&width=800"
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F6407e1d574714761841dd4016f9d67ff?format=webp&width=800"
                   alt="Infectious Disease"
                   className="w-[72px] h-[72px] sm:w-[86px] sm:h-[86px] object-contain mx-auto"
                 />
