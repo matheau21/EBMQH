@@ -456,7 +456,11 @@ export function UploadModal({
                               file: mockFile,
                             }));
                           })
-                          .catch(console.error);
+                          .catch((err) => {
+                            const msg = String(err?.message || "").toLowerCase();
+                            if (err?.name === "AbortError" || msg.includes("abort")) return;
+                            console.error(err);
+                          });
                       }}
                       className="border-ucla-blue text-ucla-blue hover:bg-blue-50"
                     />
