@@ -61,7 +61,7 @@ export default function SiteFooter() {
                       e.preventDefault();
                       setShowReferenceModal(true);
                     }}
-                    className="hover:text-white dark:hover:text-foreground transition-colors underline underline-offset-2"
+                    className="hover:text-white dark:hover:text-foreground transition-colors"
                     aria-label="Open EBM Reference Card"
                   >
                     EBM Reference Card
@@ -88,7 +88,7 @@ export default function SiteFooter() {
                   to="/contact"
                   className="hover:text-white dark:hover:text-foreground transition-colors"
                 >
-                  Contact Us
+                  Contact
                 </Link>
               </li>
               {!isAuthenticated && (
@@ -96,7 +96,7 @@ export default function SiteFooter() {
                   <button
                     type="button"
                     onClick={() => setShowLoginModal(true)}
-                    className="hover:text-white dark:hover:text-foreground transition-colors underline underline-offset-2"
+                    className="hover:text-white dark:hover:text-foreground transition-colors"
                     aria-label="Admin Login"
                   >
                     Admin
