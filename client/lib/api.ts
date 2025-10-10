@@ -160,12 +160,17 @@ const apiRequest = async <T>(
   const token = getToken();
   const method = (options.method || "GET").toUpperCase();
 
+  const controller = new AbortController();
+  const timeoutMs = 8000;
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
   const config: RequestInit = {
     headers: {
       "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
     },
     cache: "no-store",
+    signal: controller.signal,
     ...options,
   };
 
@@ -242,14 +247,17 @@ const apiRequest = async <T>(
 
     if (isNetworkError || isAbortError) {
       isBackendAvailable = false;
+      lastBackendCheck = Date.now();
       if (method === "GET") {
         // Graceful fallback for GETs when network or abort/timeouts happen
         return fallbackFor(endpoint) as T;
       }
       // For writes, surface a friendly error
-      throw new Error(isAbortError ? "Request timed out. Please try again." : msg);
+      throw new Error(isAbortError ? "Request timed out. Please try again." : "Network error. Please try again.");
     }
     throw error;
+  } finally {
+    clearTimeout(timeoutId);
   }
 };
 
@@ -437,7 +445,7 @@ export const presentationsAPI = {
         `/presentations${query ? `?${query}` : ""}`,
       );
     } catch (error) {
-      console.log(
+      console.warn(
         "Error fetching presentations from API, returning empty result",
       );
       // Return empty response on any error
