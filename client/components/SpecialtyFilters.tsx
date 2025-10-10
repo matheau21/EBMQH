@@ -179,37 +179,37 @@ export function SpecialtyFilters({
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F3e0fecf0b7ad488eafa45081f29d19fc?format=webp&width=800"
                   alt="Neurology"
-                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                  className="w-[72px] h-[72px] sm:w-[86px] sm:h-[86px] object-contain mx-auto"
                 />
               ) : specialty.name === "Endocrinology" ? (
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F139d3ec7c28c440e829b94eda60f5da9?format=webp&width=800"
                   alt="Endocrinology"
-                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                  className="w-[72px] h-[72px] sm:w-[86px] sm:h-[86px] object-contain mx-auto"
                 />
               ) : specialty.name === "Heme/Onc" ? (
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F0d93170d9d6c4c5c8fb0b485bf37d8f1?format=webp&width=800"
                   alt="Heme Onc"
-                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                  className="w-[72px] h-[72px] sm:w-[86px] sm:h-[86px] object-contain mx-auto"
                 />
               ) : specialty.name === "Infectious Disease" ? (
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F11d10d6ab4834a98aeee7b6c2d271429?format=webp&width=800"
                   alt="Infectious Disease"
-                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                  className="w-[72px] h-[72px] sm:w-[86px] sm:h-[86px] object-contain mx-auto"
                 />
               ) : specialty.name === "Rheumatology" ? (
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2Fa6d6613fc86c450bade023bda5f4b6a6?format=webp&width=800"
                   alt="Rheumatology"
-                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                  className="w-[72px] h-[72px] sm:w-[86px] sm:h-[86px] object-contain mx-auto"
                 />
               ) : specialty.name === "General Internal Medicine" ? (
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2Fcceb314abc3a43aea424fa02fb1735f0?format=webp&width=800"
                   alt="General Internal Medicine"
-                  className="w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] object-contain mx-auto"
+                  className="w-[72px] h-[72px] sm:w-[86px] sm:h-[86px] object-contain mx-auto"
                 />
               ) : (
                 <div className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0">
