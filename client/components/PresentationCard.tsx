@@ -281,7 +281,7 @@ export function PresentationCard({
               className={`w-full h-32 ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4 border`}
             >
               <img
-                src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F11d10d6ab4834a98aeee7b6c2d271429?format=webp&width=800"
+                src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F6407e1d574714761841dd4016f9d67ff?format=webp&width=800"
                 alt="Infectious Disease"
                 className="h-16 w-16 object-contain"
               />
