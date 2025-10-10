@@ -511,7 +511,11 @@ export function UploadModal({
                         originalArticle: mockFile,
                       }));
                     })
-                    .catch(console.error);
+                    .catch((err) => {
+                      const msg = String(err?.message || "").toLowerCase();
+                      if (err?.name === "AbortError" || msg.includes("abort")) return;
+                      console.error(err);
+                    });
                 }}
                 className="border-ucla-gold text-ucla-gold hover:bg-yellow-50"
               />
