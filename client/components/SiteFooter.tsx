@@ -39,7 +39,9 @@ export default function SiteFooter() {
               <span className="text-xl font-bold">EBM Quick Hits</span>
             </div>
             <p className="text-blue-200 dark:text-muted-foreground">
-              Landmark medical trial summaries for education and practice
+              Landmark medical trial summaries
+              <br />
+              for education and practice
             </p>
           </div>
           <div>
