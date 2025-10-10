@@ -99,6 +99,20 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
     setNumPages(0);
   }, [url]);
 
+  // Suppress unhandled AbortError rejections triggered by pdf.js stream cancellations during unmounts/rerenders
+  useEffect(() => {
+    const handler = (e: PromiseRejectionEvent) => {
+      const r: any = e.reason;
+      const name = r?.name;
+      const msg = String(r?.message || r || "").toLowerCase();
+      if (name === "AbortError" || msg.includes("abort")) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("unhandledrejection", handler);
+    return () => window.removeEventListener("unhandledrejection", handler);
+  }, []);
+
   const pagesWithHighlights = useMemo(() => {
     const map = new Map<number, QuestionHighlight[]>();
     for (const h of highlights) {
@@ -186,6 +200,13 @@ export default function PdfHighlightViewer({ url, highlights = [] }: Props) {
           const msg = String(e?.message || "").toLowerCase();
           const isAbort = e?.name === "AbortError" || msg.includes("abort");
           if (isAbort) return; // benign during rerenders or URL switches
+          if (!useProxy) setUseProxy(true);
+          else setLoadError(e?.message || "Failed to load PDF file.");
+        }}
+        onSourceError={(e: any) => {
+          const msg = String(e?.message || "").toLowerCase();
+          const isAbort = e?.name === "AbortError" || msg.includes("abort");
+          if (isAbort) return;
           if (!useProxy) setUseProxy(true);
           else setLoadError(e?.message || "Failed to load PDF file.");
         }}
