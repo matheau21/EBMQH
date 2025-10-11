@@ -5,7 +5,9 @@ if (typeof window !== "undefined") {
     const reason: any = e.reason;
     const name = reason?.name || "";
     const msg = String(reason?.message || reason || "").toLowerCase();
-    if (name === "AbortError" || msg.includes("abort")) {
+    const isAbort = name === "AbortError" || msg.includes("abort");
+    const isFailedToFetch = reason instanceof TypeError && msg.includes("failed to fetch");
+    if (isAbort || isFailedToFetch) {
       e.preventDefault();
     }
   };
