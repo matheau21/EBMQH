@@ -37,14 +37,14 @@ const specialtyConfig = [
     color:
       "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20 hover:bg-specialty-cardiology/20",
     activeColor:
-      "bg-specialty-cardiology/20 text-specialty-cardiology border-specialty-cardiology/40 ring-1 ring-specialty-cardiology/30",
+      "bg-specialty-cardiology/30 text-foreground dark:bg-specialty-cardiology/20 dark:text-specialty-cardiology border-specialty-cardiology/50 ring-1 ring-specialty-cardiology/40",
   },
   {
     name: "Heme/Onc",
     icon: ModernHemeOncIcon,
     color:
       "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20 hover:bg-specialty-hemeonc/20",
-    activeColor: "bg-specialty-hemeonc/20 text-specialty-hemeonc border-specialty-hemeonc/40 ring-1 ring-specialty-hemeonc/30",
+    activeColor: "bg-specialty-hemeonc/30 text-foreground dark:bg-specialty-hemeonc/20 dark:text-specialty-hemeonc border-specialty-hemeonc/50 ring-1 ring-specialty-hemeonc/40",
   },
   {
     name: "Endocrinology",
@@ -52,7 +52,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-endocrinology/10 text-specialty-endocrinology border-specialty-endocrinology/20 hover:bg-specialty-endocrinology/20",
     activeColor:
-      "bg-specialty-endocrinology/20 text-specialty-endocrinology border-specialty-endocrinology/40 ring-1 ring-specialty-endocrinology/30",
+      "bg-specialty-endocrinology/30 text-foreground dark:bg-specialty-endocrinology/20 dark:text-specialty-endocrinology border-specialty-endocrinology/50 ring-1 ring-specialty-endocrinology/40",
   },
   {
     name: "General Internal Medicine",
@@ -60,7 +60,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-generalinternal/10 text-specialty-generalinternal border-specialty-generalinternal/20 hover:bg-specialty-generalinternal/20",
     activeColor:
-      "bg-specialty-generalinternal/20 text-specialty-generalinternal border-specialty-generalinternal/40 ring-1 ring-specialty-generalinternal/30",
+      "bg-specialty-generalinternal/30 text-foreground dark:bg-specialty-generalinternal/20 dark:text-specialty-generalinternal border-specialty-generalinternal/50 ring-1 ring-specialty-generalinternal/40",
   },
   {
     name: "Pulmonary/Critical Care",
@@ -68,7 +68,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20 hover:bg-specialty-pulmonarycritical/20",
     activeColor:
-      "bg-specialty-pulmonarycritical/20 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/40 ring-1 ring-specialty-pulmonarycritical/30",
+      "bg-specialty-pulmonarycritical/30 text-foreground dark:bg-specialty-pulmonarycritical/20 dark:text-specialty-pulmonarycritical border-specialty-pulmonarycritical/50 ring-1 ring-specialty-pulmonarycritical/40",
   },
   {
     name: "Infectious Disease",
@@ -76,7 +76,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-infectious/10 text-specialty-infectious border-specialty-infectious/20 hover:bg-specialty-infectious/20",
     activeColor:
-      "bg-specialty-infectious/20 text-specialty-infectious border-specialty-infectious/40 ring-1 ring-specialty-infectious/30",
+      "bg-specialty-infectious/30 text-foreground dark:bg-specialty-infectious/20 dark:text-specialty-infectious border-specialty-infectious/50 ring-1 ring-specialty-infectious/40",
   },
   {
     name: "Rheumatology",
@@ -84,7 +84,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-rheumatology/10 text-specialty-rheumatology border-specialty-rheumatology/20 hover:bg-specialty-rheumatology/20",
     activeColor:
-      "bg-specialty-rheumatology/20 text-specialty-rheumatology border-specialty-rheumatology/40 ring-1 ring-specialty-rheumatology/30",
+      "bg-specialty-rheumatology/30 text-foreground dark:bg-specialty-rheumatology/20 dark:text-specialty-rheumatology border-specialty-rheumatology/50 ring-1 ring-specialty-rheumatology/40",
   },
   {
     name: "Nephrology",
@@ -92,7 +92,7 @@ const specialtyConfig = [
     color:
       "bg-specialty-nephrology/10 text-specialty-nephrology border-specialty-nephrology/20 hover:bg-specialty-nephrology/20",
     activeColor:
-      "bg-specialty-nephrology/20 text-specialty-nephrology border-specialty-nephrology/40 ring-1 ring-specialty-nephrology/30",
+      "bg-specialty-nephrology/30 text-foreground dark:bg-specialty-nephrology/20 dark:text-specialty-nephrology border-specialty-nephrology/50 ring-1 ring-specialty-nephrology/40",
   },
   {
     name: "Gastroenterology/Hepatology",
@@ -100,14 +100,14 @@ const specialtyConfig = [
     color:
       "bg-specialty-gastroenterology/10 text-specialty-gastroenterology border-specialty-gastroenterology/20 hover:bg-specialty-gastroenterology/20",
     activeColor:
-      "bg-specialty-gastroenterology/20 text-specialty-gastroenterology border-specialty-gastroenterology/40 ring-1 ring-specialty-gastroenterology/30",
+      "bg-specialty-gastroenterology/30 text-foreground dark:bg-specialty-gastroenterology/20 dark:text-specialty-gastroenterology border-specialty-gastroenterology/50 ring-1 ring-specialty-gastroenterology/40",
   },
   {
     name: "Neurology",
     icon: ModernNeurologyIcon,
     color:
       "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20 hover:bg-specialty-neurology/20",
-    activeColor: "bg-specialty-neurology/20 text-specialty-neurology border-specialty-neurology/40 ring-1 ring-specialty-neurology/30",
+    activeColor: "bg-specialty-neurology/30 text-foreground dark:bg-specialty-neurology/20 dark:text-specialty-neurology border-specialty-neurology/50 ring-1 ring-specialty-neurology/40",
   },
 ];
 
