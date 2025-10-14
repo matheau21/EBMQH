@@ -20,6 +20,8 @@ export default function Contact() {
     return () => { ignore = true; };
   }, []);
 
+  const paragraphs = body.split(/\n\n+/);
+
   return (
     <div className="min-h-screen bg-white">
       <SiteHeader />
@@ -31,8 +33,13 @@ export default function Contact() {
           </div>
         )}
         <div className="prose max-w-none">
-          {body.split(/\n\n+/).map((p, i) => (
-            <p key={i} className="text-gray-700">{p}</p>
+          {paragraphs.map((p, i) => (
+            <div key={i}>
+              <p className="text-gray-700">{p}</p>
+              {i < paragraphs.length - 1 && (
+                <hr className="my-4 border-t border-border" />
+              )}
+            </div>
           ))}
         </div>
       </main>
