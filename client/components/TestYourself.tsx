@@ -19,7 +19,7 @@ export function TestYourself() {
         />
       </div>
       <h3 className="text-xl font-bold text-foreground mb-2">Test Yourself</h3>
-      <p className="text-muted-foreground mb-6 text-sm">
+      <p className="text-muted-foreground mb-6 text-sm sm:text-base">
         Challenge your knowledge of landmark trials with multiple choice questions.
       </p>
       <Button onClick={handleQuizClick} className="group">
