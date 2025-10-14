@@ -10,7 +10,7 @@ export function TestYourself() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-card to-accent/5 border-2 border-border rounded-2xl p-6 text-center">
+    <div className="bg-gradient-to-br from-card to-accent/5 border-2 border-accent/20 rounded-2xl p-6 text-center">
       <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
         <img
           src="https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F9bdda882ae1149629c4506f8adb8a8e1?format=webp&width=800"
