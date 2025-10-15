@@ -110,18 +110,30 @@ export default function AdminEditTrial() {
                 <input
                   type="checkbox"
                   checked={form.specialties.includes(s)}
+                  disabled={!form.specialties.includes(s) && (form.specialties?.length || 0) >= 2}
                   onChange={(e) => {
-                    setForm((prev) => ({
-                      ...prev,
-                      specialties: e.target.checked
-                        ? Array.from(new Set([...(prev.specialties || []), s]))
-                        : (prev.specialties || []).filter((x) => x !== s),
-                      specialty: e.target.checked
-                        ? (prev.specialty || s)
-                        : (prev.specialty === s ? ((prev.specialties || []).find((x) => x !== s) || "") : prev.specialty),
-                    }));
+                    setForm((prev) => {
+                      const isChecked = e.target.checked;
+                      const current = prev.specialties || [];
+                      let next = current;
+                      if (isChecked) {
+                        if (current.length >= 2 && !current.includes(s)) {
+                          return prev; // ignore beyond limit
+                        }
+                        next = Array.from(new Set([...current, s])).slice(0, 2);
+                      } else {
+                        next = current.filter((x) => x !== s);
+                      }
+                      return {
+                        ...prev,
+                        specialties: next,
+                        specialty: isChecked
+                          ? (prev.specialty || s)
+                          : (prev.specialty === s ? (next[0] || "") : prev.specialty),
+                      };
+                    });
                   }}
-                  className="rounded border-ucla-blue text-ucla-blue focus:ring-ucla-blue"
+                  className="rounded border-ucla-blue text-ucla-blue focus:ring-ucla-blue disabled:opacity-50"
                 />
                 <span>{s}</span>
               </label>
