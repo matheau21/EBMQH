@@ -366,6 +366,39 @@ function SiteEditor() {
         </div>
       </div>
 
+      <div className="space-y-3 pt-4">
+        <div className="font-medium">Privacy Policy</div>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div className="sm:col-span-2">
+            <label className="text-sm">Privacy Title</label>
+            <Input value={privacyTitle} onChange={(e)=>setPrivacyTitle(e.target.value)} />
+          </div>
+          <div className="sm:col-span-2">
+            <label className="text-sm">Privacy Subtitle</label>
+            <Input value={privacySubtitle} onChange={(e)=>setPrivacySubtitle(e.target.value)} />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="font-medium">Sections</div>
+            <Button variant="outline" onClick={()=>setPrivacySections((s)=>[...s, { heading: "New Section", body: "" }])}>Add Section</Button>
+          </div>
+          {privacySections.length === 0 && <div className="text-sm text-gray-600">No sections yet.</div>}
+          {privacySections.map((s, i) => (
+            <div key={i} className="border rounded p-3 space-y-2 bg-white">
+              <div className="flex items-center gap-2">
+                <Input value={s.heading} onChange={(e)=>setPrivacySections((arr)=>arr.map((it, idx)=> idx === i ? { ...it, heading: e.target.value } : it))} placeholder="Section heading" />
+                <Button variant="outline" onClick={()=>setPrivacySections((arr)=>arr.filter((_, idx)=> idx !== i))}>Remove</Button>
+              </div>
+              <textarea className="w-full border rounded p-2 text-sm min-h-[100px]" value={s.body} onChange={(e)=>setPrivacySections((arr)=>arr.map((it, idx)=> idx === i ? { ...it, body: e.target.value } : it))} placeholder="Section body (supports line breaks)" />
+            </div>
+          ))}
+        </div>
+        <div>
+          <Button className="bg-ucla-blue" disabled={savingPrivacy} onClick={async ()=>{ try { setSavingPrivacy(true); await siteAPI.savePrivacy({ title: privacyTitle, subtitle: privacySubtitle || undefined, sections: privacySections }); alert("Privacy saved"); } finally { setSavingPrivacy(false); } }}>{savingPrivacy ? "Saving…" : "Save Privacy"}</Button>
+        </div>
+      </div>
+
       {error && <div className="text-sm text-red-600">{error}</div>}
 
       <div className="pt-2">
