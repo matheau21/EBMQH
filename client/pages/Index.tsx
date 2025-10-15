@@ -389,7 +389,7 @@ export default function Index() {
       const newPresentationData = {
         title: data.trialName,
         specialty: data.subspecialty[0] || "General Internal Medicine",
-        specialties: data.subspecialty,
+        specialties: data.subspecialty.slice(0, 2),
         summary: data.briefDescription,
         journal: data.journalSource,
         year: new Date().getFullYear().toString(),
