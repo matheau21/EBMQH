@@ -218,6 +218,8 @@ export default function Index() {
               viewerCount: p.viewerCount,
               presentationFileUrl: p.presentationFileUrl,
               originalArticleUrl: p.originalArticleUrl,
+              createdAt: (p as any).createdAt,
+              updatedAt: (p as any).updatedAt,
             })) || [];
           console.log("[home] presentations fetched:", apiPresentations.length);
           setPresentations(apiPresentations);
