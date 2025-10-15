@@ -211,6 +211,20 @@ function SiteEditor() {
     let ignore = false;
     (async () => {
       try {
+        const pv = await siteAPI.getPrivacy();
+        if (ignore) return;
+        setPrivacyTitle(pv.title || "Privacy Policy");
+        setPrivacySubtitle(pv.subtitle || "");
+        setPrivacySections(Array.isArray(pv.sections) ? pv.sections : []);
+      } catch {}
+    })();
+    return () => { ignore = true; };
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
         const f = await siteAPI.getFeaturedPresentations();
         if (ignore) return;
         setFeaturedIds((f.presentations || []).map((p: any) => p.id));
