@@ -255,13 +255,16 @@ export function PresentationCard({
           {displaySpecialties.length >= 2 ? (
             <div className="w-full h-32 rounded-lg overflow-hidden border mb-4 grid grid-cols-2">
               {displaySpecialties.map((spec) => {
+                const img = getSpecialtyImageSrc(spec);
                 const Icon = getSpecialtyIcon(spec);
                 return (
                   <div
                     key={spec}
                     className={`flex items-center justify-center ${getSpecialtyThumbnailColors(spec)}`}
                   >
-                    {Icon ? (
+                    {img ? (
+                      <img src={img} alt={spec} className="h-16 w-16 object-contain" />
+                    ) : Icon ? (
                       <div className="h-16 w-16">
                         <Icon />
                       </div>
