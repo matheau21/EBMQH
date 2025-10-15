@@ -160,6 +160,33 @@ export function PresentationCard({
     }
   };
 
+  const getSpecialtyImageSrc = (spec: string): string | null => {
+    switch (spec) {
+      case "Cardiology":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F680daab9a7e94e32bf8d9d95470129ce?format=webp&width=800";
+      case "Gastroenterology/Hepatology":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2Fe34b80bdfe4d4ef5a10fd8577ada1e7e?format=webp&width=800";
+      case "Nephrology":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F395b535484c244d1b0f174eaf4b3411f?format=webp&width=800";
+      case "Pulmonary/Critical Care":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2Fbef7ffd2adf349aaa7d9089ec800e478?format=webp&width=800";
+      case "Neurology":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F3e0fecf0b7ad488eafa45081f29d19fc?format=webp&width=800";
+      case "Endocrinology":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F139d3ec7c28c440e829b94eda60f5da9?format=webp&width=800";
+      case "Heme/Onc":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2F0d93170d9d6c4c5c8fb0b485bf37d8f1?format=webp&width=800";
+      case "Infectious Disease":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2Fa608c033cc0a49a5bb36ff598347ab30?format=webp&width=800";
+      case "General Internal Medicine":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2Fcceb314abc3a43aea424fa02fb1735f0?format=webp&width=800";
+      case "Rheumatology":
+        return "https://cdn.builder.io/api/v1/image/assets%2Fd749e485a67e440192fb0ee64da59aaa%2Fa6d6613fc86c450bade023bda5f4b6a6?format=webp&width=800";
+      default:
+        return null;
+    }
+  };
+
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-4 sm:p-6">
