@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { questionsAPI, presentationsAPI } from "@/lib/api";
 import { useAdmin } from "@/contexts/AdminContext";
@@ -14,6 +14,11 @@ export default function AdminQuestions() {
   const qc = useQueryClient();
 
   // Specialty selection removed; questions now derive specialty from selected presentation
+  const { data: specialtyData } = useQuery({
+    queryKey: ["specialties"],
+    queryFn: () => presentationsAPI.getSpecialties(),
+    staleTime: 5 * 60 * 1000,
+  });
 
   const { data: presentations } = useQuery({
     queryKey: ["presentations", { limit: 100 }],
@@ -36,6 +41,8 @@ export default function AdminQuestions() {
   });
 
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [filterSpecialty, setFilterSpecialty] = useState<string>("all");
+  const [filterPresentation, setFilterPresentation] = useState<string>("all");
 
   const initialForm = {
     prompt: "",
@@ -79,6 +86,43 @@ export default function AdminQuestions() {
     };
     fetchPdf();
   }, [form.presentationId]);
+
+  // Derived maps and grouping for existing questions
+  const presMap = useMemo(() => {
+    const m: Record<string, any> = {};
+    for (const p of (presentations || [])) m[p.id] = p;
+    return m;
+  }, [presentations]);
+
+  const filteredQuestions = useMemo(() => {
+    const list = (data?.questions || []) as any[];
+    return list.filter((q) => {
+      if (filterPresentation !== "all" && q.presentationId !== filterPresentation) return false;
+      if (filterSpecialty !== "all") {
+        const p = q.presentationId ? presMap[q.presentationId] : null;
+        const presSpecs: string[] = Array.from(new Set([p?.specialty, ...((p?.specialties as string[]) || [])].filter(Boolean)));
+        const matchesPres = p ? presSpecs.includes(filterSpecialty) : false;
+        const matchesLegacy = (q.specialty || "") === filterSpecialty;
+        if (!(matchesPres || matchesLegacy)) return false;
+      }
+      return true;
+    });
+  }, [data?.questions, filterPresentation, filterSpecialty, presMap]);
+
+  const grouped = useMemo(() => {
+    const by: Record<string, any[]> = {};
+    for (const q of filteredQuestions) {
+      const key = q.presentationId || "__unlinked__";
+      (by[key] ||= []).push(q);
+    }
+    const order = Object.keys(by);
+    return order.map((key) => {
+      const p = key === "__unlinked__" ? null : presMap[key];
+      const title = p ? p.title : "Unlinked Questions";
+      const specs: string[] = p ? Array.from(new Set([p?.specialty, ...((p?.specialties as string[]) || [])].filter(Boolean))) : [];
+      return { key, title, specs, items: by[key] };
+    });
+  }, [filteredQuestions, presMap]);
 
   const resetForm = () => {
     setEditingId(null);
@@ -385,25 +429,73 @@ export default function AdminQuestions() {
       <div className="p-4 border rounded-lg">
         <h2 className="font-medium mb-3">Existing Questions</h2>
         {isLoading && <div>Loading...</div>}
-        <div className="space-y-2">
-          {(data?.questions || []).map((q) => (
-            <div key={q.id} className="border rounded p-3">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="font-medium">{q.prompt}</div>
-                  <div className="text-xs text-gray-600">{q.specialty || "General"} • {(q as any).status || "approved"} • {q.choices.length} choices</div>
+        <div className="flex flex-wrap gap-3 mb-3">
+          <div className="w-56">
+            <Label className="text-xs text-gray-600">Filter by Specialty</Label>
+            <Select value={filterSpecialty} onValueChange={(v)=>setFilterSpecialty(v)}>
+              <SelectTrigger>
+                <SelectValue placeholder="All specialties" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                {(specialtyData?.specialties || []).map((s: string) => (
+                  <SelectItem key={s} value={s}>{s}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="w-72">
+            <Label className="text-xs text-gray-600">Filter by Trial</Label>
+            <Select value={filterPresentation} onValueChange={(v)=>setFilterPresentation(v)}>
+              <SelectTrigger>
+                <SelectValue placeholder="All trials" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                {(presentations || []).map((p: any) => (
+                  <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <div className="space-y-4">
+          {grouped.map((g)=> (
+            <div key={g.key} className="border rounded">
+              <div className="px-3 py-2 bg-gray-50 border-b flex items-center justify-between">
+                <div className="font-medium truncate" title={g.title}>{g.title}</div>
+                <div className="flex flex-wrap gap-1 ml-2">
+                  {g.specs.map((s: string)=> (
+                    <span key={s} className="text-xs px-2 py-0.5 rounded border bg-yellow-50 border-yellow-200 text-gray-700">{s}</span>
+                  ))}
                 </div>
-                <div className="flex gap-2">
-                  {(user?.role !== "user" || (q as any).status === "pending") && (
-                    <Button variant="outline" onClick={() => handleEdit(q)}>Edit</Button>
-                  )}
-                  {user?.role !== "user" && (
-                    <Button variant="destructive" onClick={() => deleteMutation.mutate(q.id)}>Delete</Button>
-                  )}
-                </div>
+              </div>
+              <div className="p-3 space-y-2">
+                {g.items.map((q:any)=> (
+                  <div key={q.id} className="flex items-start justify-between gap-3 border rounded p-2">
+                    <div>
+                      <div className="font-medium">{q.prompt}</div>
+                      <div className="text-xs text-gray-600">{(q as any).status || "approved"} • {q.choices.length} choices</div>
+                    </div>
+                    <div className="flex gap-2">
+                      {(user?.role !== "user" || (q as any).status === "pending") && (
+                        <Button variant="outline" onClick={() => handleEdit(q)}>Edit</Button>
+                      )}
+                      {user?.role !== "user" && (
+                        <Button variant="destructive" onClick={() => deleteMutation.mutate(q.id)}>Delete</Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {g.items.length === 0 && (
+                  <div className="text-sm text-gray-600">No questions.</div>
+                )}
               </div>
             </div>
           ))}
+          {grouped.length === 0 && (
+            <div className="text-sm text-gray-600">No questions found.</div>
+          )}
         </div>
       </div>
     </div>
