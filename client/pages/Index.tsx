@@ -190,6 +190,7 @@ export default function Index() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [presentations, setPresentations] = useState<Presentation[]>([]);
+  const [sortBy, setSortBy] = useState<"date" | "year">("date");
   const [animatedCount, setAnimatedCount] = useState(0);
 
   // Load presentations from API with fallback to mock data
