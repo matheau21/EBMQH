@@ -14,6 +14,7 @@ import AllPresentations from "./pages/AllPresentations";
 import Questions from "./pages/Questions";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import AdminUsers from "./pages/AdminUsers";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -36,6 +37,7 @@ const App = () => (
                 <Route path="/questions" element={<Questions />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/privacy" element={<Privacy />} />
                 <Route path="/coming-soon" element={<Questions />} />
                 <Route path="/admin/users" element={<AdminUsers />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />

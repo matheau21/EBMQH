@@ -32,6 +32,7 @@ const STORAGE_BUCKET = "presentations"; // reuse existing bucket
 const ABOUT_PATH = "site/about.json";
 const FEATURED_PATH = "site/featured.json";
 const CONTACT_PATH = "site/contact.json";
+const PRIVACY_PATH = "site/privacy.json";
 
 router.get("/about", async (_req: Request, res: Response) => {
   try {
@@ -308,6 +309,73 @@ router.put(
       const { error } = await supabaseAdmin.storage
         .from(STORAGE_BUCKET)
         .upload(CONTACT_PATH, Buffer.from(payload), {
+          contentType: "application/json",
+          upsert: true,
+        });
+      if (error) return res.status(500).json({ error: error.message });
+      return res.json({ message: "Saved" });
+    } catch (err) {
+      if (err instanceof z.ZodError)
+        return res.status(400).json({ error: "Invalid input" });
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
+
+// Privacy content (similar to About)
+const PrivacySchema = z.object({
+  title: z.string().min(1).max(200),
+  subtitle: z.string().max(500).optional().nullable(),
+  sections: z
+    .array(
+      z.object({
+        heading: z.string().min(1).max(200),
+        body: z.string().min(1).max(5000),
+      }),
+    )
+    .max(20)
+    .default([]),
+});
+
+router.get("/privacy", async (_req: Request, res: Response) => {
+  try {
+    const { data } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKET)
+      .download(PRIVACY_PATH);
+    if (!data) {
+      return res.json({
+        title: "Privacy Policy",
+        subtitle: "Your privacy matters to us.",
+        sections: [
+          { heading: "We respect your privacy", body: "We do not sell your information. We collect only what is necessary to provide and improve the service." },
+          { heading: "Contact", body: "If you have questions about this policy, please contact us." },
+        ],
+      });
+    }
+    const text = await data.text();
+    try {
+      return res.json(JSON.parse(text));
+    } catch {
+      return res.json({ title: "Privacy Policy", sections: [] });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.put(
+  "/privacy",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      if (!(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")) {
+        return res.status(403).json({ error: "Admin access required" });
+      }
+      const body = PrivacySchema.parse(req.body);
+      const payload = JSON.stringify(body, null, 2);
+      const { error } = await supabaseAdmin.storage
+        .from(STORAGE_BUCKET)
+        .upload(PRIVACY_PATH, Buffer.from(payload), {
           contentType: "application/json",
           upsert: true,
         });
