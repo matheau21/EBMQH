@@ -19,6 +19,7 @@ export default function AdminEditTrial() {
   const [form, setForm] = useState({
     title: "",
     specialty: "",
+    specialties: [] as string[],
     summary: "",
     authors: "",
     journal: "",
@@ -42,6 +43,7 @@ export default function AdminEditTrial() {
         setForm({
           title: p.title || "",
           specialty: p.specialty || "",
+          specialties: (p.specialties || p.specialties_json || p.specialties_list || p.specialties) || (p.specialty ? [p.specialty] : []),
           summary: p.summary || "",
           authors: p.authors || "",
           journal: p.journal || "",
@@ -77,7 +79,8 @@ export default function AdminEditTrial() {
               if (!id) return;
               await presentationsAPI.updatePresentation(id, {
                 title: form.title,
-                specialty: form.specialty,
+                specialty: form.specialty || (form.specialties[0] || ""),
+                specialties: form.specialties,
                 summary: form.summary,
                 authors: form.authors || undefined,
                 journal: form.journal || undefined,
@@ -100,15 +103,31 @@ export default function AdminEditTrial() {
           <Input value={form.title} onChange={(e)=>setForm({...form, title: e.target.value})} />
         </div>
         <div>
-          <label className="text-sm">Specialty</label>
-          <Select value={form.specialty} onValueChange={(v)=>setForm({...form, specialty: v})}>
-            <SelectTrigger><SelectValue placeholder="Select specialty" /></SelectTrigger>
-            <SelectContent>
-              {SPECIALTY_NAMES.map((s)=> (
-                <SelectItem key={s} value={s}>{s}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <label className="text-sm">Specialties</label>
+          <div className="grid grid-cols-2 gap-2 p-3 border rounded-md">
+            {SPECIALTY_NAMES.map((s) => (
+              <label key={s} className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={form.specialties.includes(s)}
+                  onChange={(e) => {
+                    setForm((prev) => ({
+                      ...prev,
+                      specialties: e.target.checked
+                        ? Array.from(new Set([...(prev.specialties || []), s]))
+                        : (prev.specialties || []).filter((x) => x !== s),
+                      specialty: e.target.checked
+                        ? (prev.specialty || s)
+                        : (prev.specialty === s ? ((prev.specialties || []).find((x) => x !== s) || "") : prev.specialty),
+                    }));
+                  }}
+                  className="rounded border-ucla-blue text-ucla-blue focus:ring-ucla-blue"
+                />
+                <span>{s}</span>
+              </label>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">Primary specialty will default to the first selected.</p>
         </div>
         <div>
           <label className="text-sm">Summary</label>
