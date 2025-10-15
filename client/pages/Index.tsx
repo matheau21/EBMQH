@@ -287,6 +287,24 @@ export default function Index() {
     });
   }, [searchQuery, selectedSpecialties, presentations]);
 
+  const sortedPresentations = useMemo(() => {
+    const list = [...filteredPresentations];
+    if (sortBy === "date") {
+      list.sort((a, b) => {
+        const ta = a.createdAt ? Date.parse(a.createdAt) : 0;
+        const tb = b.createdAt ? Date.parse(b.createdAt) : 0;
+        return tb - ta;
+      });
+    } else {
+      list.sort((a, b) => {
+        const ya = parseInt(a.year || "0", 10) || 0;
+        const yb = parseInt(b.year || "0", 10) || 0;
+        return yb - ya;
+      });
+    }
+    return list;
+  }, [filteredPresentations, sortBy]);
+
   const handleSpecialtyToggle = (specialty: string) => {
     setSelectedSpecialties((prev) =>
       prev.includes(specialty)
