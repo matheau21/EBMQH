@@ -28,6 +28,7 @@ interface Presentation {
   id: string;
   title: string;
   specialty: string;
+  specialties?: string[];
   summary: string;
   authors?: string;
   journal?: string;
@@ -207,6 +208,7 @@ export default function Index() {
               id: p.id,
               title: p.title,
               specialty: p.specialty,
+              specialties: (p as any).specialties || [],
               summary: p.summary,
               authors: p.authors,
               journal: p.journal,
@@ -261,20 +263,21 @@ export default function Index() {
 
   const filteredPresentations = useMemo(() => {
     if (selectedSpecialties.length === 0) {
-      return []; // Show no presentations when no specialty is selected on main page
+      return [];
     }
 
-    return presentations.filter((presentation) => {
+    return presentations.filter((p) => {
       const matchesSearch =
         searchQuery === "" ||
-        presentation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        presentation.summary
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        presentation.authors?.toLowerCase().includes(searchQuery.toLowerCase());
+        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.authors?.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesSpecialty = selectedSpecialties.includes(
-        presentation.specialty,
+      const presSpecialties = Array.from(
+        new Set([p.specialty, ...(p as any).specialties || []].filter(Boolean)),
+      );
+      const matchesSpecialty = presSpecialties.some((s) =>
+        selectedSpecialties.includes(s),
       );
 
       return matchesSearch && matchesSpecialty;
@@ -383,6 +386,7 @@ export default function Index() {
       const newPresentationData = {
         title: data.trialName,
         specialty: data.subspecialty[0] || "General Internal Medicine",
+        specialties: data.subspecialty,
         summary: data.briefDescription,
         journal: data.journalSource,
         year: new Date().getFullYear().toString(),
@@ -401,6 +405,7 @@ export default function Index() {
           id: apiPresentation.id,
           title: apiPresentation.title,
           specialty: apiPresentation.specialty,
+          specialties: (apiPresentation as any).specialties || [],
           summary: apiPresentation.summary,
           authors: apiPresentation.authors,
           journal: apiPresentation.journal,
@@ -610,27 +615,30 @@ export default function Index() {
 
             {filteredPresentations.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {filteredPresentations.map((presentation) => (
-                  <PresentationCard
-                    key={presentation.id}
-                    id={presentation.id}
-                    title={presentation.title}
-                    specialty={presentation.specialty}
-                    summary={presentation.summary}
-                    authors={presentation.authors}
-                    journal={presentation.journal}
-                    year={presentation.year}
-                    viewerCount={presentation.viewerCount}
-                    thumbnail={presentation.thumbnail}
-                    presentationFileUrl={presentation.presentationFileUrl}
-                    originalArticleUrl={presentation.originalArticleUrl}
-                    onViewSummary={() => handleViewSummary(presentation.id)}
-                    onEdit={handleEditPresentation}
-                    onDelete={handleDeletePresentation}
-                    onDuplicate={handleDuplicatePresentation}
-                    onToggleFeatured={handleToggleFeatured}
-                  />
-                ))}
+                {filteredPresentations.map((presentation) => {
+                  const primarySpecialty = (presentation.specialties && presentation.specialties[0]) || presentation.specialty;
+                  return (
+                    <PresentationCard
+                      key={presentation.id}
+                      id={presentation.id}
+                      title={presentation.title}
+                      specialty={primarySpecialty}
+                      summary={presentation.summary}
+                      authors={presentation.authors}
+                      journal={presentation.journal}
+                      year={presentation.year}
+                      viewerCount={presentation.viewerCount}
+                      thumbnail={presentation.thumbnail}
+                      presentationFileUrl={presentation.presentationFileUrl}
+                      originalArticleUrl={presentation.originalArticleUrl}
+                      onViewSummary={() => handleViewSummary(presentation.id)}
+                      onEdit={handleEditPresentation}
+                      onDelete={handleDeletePresentation}
+                      onDuplicate={handleDuplicatePresentation}
+                      onToggleFeatured={handleToggleFeatured}
+                    />
+                  );
+                })}
               </div>
             ) : (
               <div className="text-center py-12 bg-muted rounded-lg">
