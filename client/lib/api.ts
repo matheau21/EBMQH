@@ -884,6 +884,42 @@ export const siteAPI = {
       body: JSON.stringify(input),
     });
   },
+  async getPrivacy(): Promise<{
+    title: string;
+    subtitle?: string | null;
+    sections: Array<{ heading: string; body: string }>;
+  }> {
+    try {
+      const backendAvailable = await checkBackendAvailability();
+      if (!backendAvailable)
+        return {
+          title: "Privacy Policy",
+          subtitle: "",
+          sections: [
+            { heading: "Your Privacy", body: "We value your privacy and do not sell your information." },
+            { heading: "Data Usage", body: "We collect only what's necessary to operate the site and improve user experience." },
+          ],
+        } as any;
+      return await apiRequest(`/site/privacy`);
+    } catch {
+      return {
+        title: "Privacy Policy",
+        sections: [
+          { heading: "Your Privacy", body: "We value your privacy and do not sell your information." },
+        ],
+      } as any;
+    }
+  },
+  async savePrivacy(input: {
+    title: string;
+    subtitle?: string | null;
+    sections: Array<{ heading: string; body: string }>;
+  }): Promise<{ message: string }> {
+    return apiRequest(`/site/privacy`, {
+      method: "PUT",
+      body: JSON.stringify(input),
+    });
+  },
 };
 
 // Health check
