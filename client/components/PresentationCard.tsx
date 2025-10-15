@@ -40,6 +40,7 @@ interface PresentationCardProps {
   id: string;
   title: string;
   specialty: string;
+  specialties?: string[];
   thumbnail?: string;
   summary: string;
   authors?: string;
@@ -86,6 +87,7 @@ export function PresentationCard({
   id,
   title,
   specialty,
+  specialties = [],
   thumbnail,
   summary,
   authors,
@@ -105,6 +107,9 @@ export function PresentationCard({
   const [showArticleViewer, setShowArticleViewer] = useState(false);
   const [showFilesViewer, setShowFilesViewer] = useState(false);
   const [views, setViews] = useState<number>(viewerCount || 0);
+  const displaySpecialties = Array.from(
+    new Set([specialty, ...(Array.isArray(specialties) ? specialties : [])].filter(Boolean) as string[])
+  ).slice(0, 2);
   const specialtyColors: Record<string, string> = {
     Cardiology:
       "bg-specialty-cardiology/10 text-specialty-cardiology border-specialty-cardiology/20",
@@ -159,12 +164,26 @@ export function PresentationCard({
     <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-start justify-between mb-4">
-          <Badge
-            variant="outline"
-            className={`${specialtyColors[specialty] || specialtyColors["General Internal Medicine"]} font-medium`}
-          >
-            {specialty}
-          </Badge>
+          <div className="flex gap-2 flex-wrap">
+            {displaySpecialties.length > 1 ? (
+              displaySpecialties.map((spec) => (
+                <Badge
+                  key={spec}
+                  variant="outline"
+                  className={`${specialtyColors[spec] || specialtyColors["General Internal Medicine"]} font-medium`}
+                >
+                  {spec}
+                </Badge>
+              ))
+            ) : (
+              <Badge
+                variant="outline"
+                className={`${specialtyColors[specialty] || specialtyColors["General Internal Medicine"]} font-medium`}
+              >
+                {specialty}
+              </Badge>
+            )}
+          </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             {isAdminMode && (
               <DropdownMenu>
@@ -206,7 +225,27 @@ export function PresentationCard({
         </div>
 
         <div className="mb-4">
-          {specialty === "Cardiology" ? (
+          {displaySpecialties.length >= 2 ? (
+            <div className="w-full h-32 rounded-lg overflow-hidden border mb-4 grid grid-cols-2">
+              {displaySpecialties.map((spec) => {
+                const Icon = getSpecialtyIcon(spec);
+                return (
+                  <div
+                    key={spec}
+                    className={`flex items-center justify-center ${getSpecialtyThumbnailColors(spec)}`}
+                  >
+                    {Icon ? (
+                      <div className="h-16 w-16">
+                        <Icon />
+                      </div>
+                    ) : (
+                      <FileText className="h-12 w-12 opacity-60" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ) : specialty === "Cardiology" ? (
             <div
               className={`w-full h-32 ${getSpecialtyThumbnailColors(specialty)} rounded-lg flex items-center justify-center mb-4 border`}
             >
