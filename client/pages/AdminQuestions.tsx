@@ -13,11 +13,7 @@ export default function AdminQuestions() {
   const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
 
-  const { data: specialties } = useQuery({
-    queryKey: ["specialties"],
-    queryFn: () => presentationsAPI.getSpecialties(),
-    staleTime: 5 * 60 * 1000,
-  });
+  // Specialty selection removed; questions now derive specialty from selected presentation
 
   const { data: presentations } = useQuery({
     queryKey: ["presentations", { limit: 100 }],
@@ -43,7 +39,6 @@ export default function AdminQuestions() {
 
   const initialForm = {
     prompt: "",
-    specialty: "",
     presentationId: "",
     explanation: "",
     referenceUrl: "",
@@ -93,7 +88,6 @@ export default function AdminQuestions() {
   const createMutation = useMutation({
     mutationFn: () => questionsAPI.create({
       prompt: form.prompt,
-      specialty: form.specialty || undefined,
       presentationId: form.presentationId || undefined,
       explanation: form.explanation || undefined,
       referenceUrl: form.referenceUrl || undefined,
@@ -118,7 +112,6 @@ export default function AdminQuestions() {
       if (!editingId) return Promise.resolve({} as any);
       return questionsAPI.update(editingId, {
         prompt: form.prompt,
-        specialty: form.specialty || null,
         presentationId: form.presentationId || null,
         explanation: form.explanation || null,
         referenceUrl: form.referenceUrl || null,
@@ -171,7 +164,6 @@ export default function AdminQuestions() {
     setEditingId(q.id);
     setForm({
       prompt: q.prompt,
-      specialty: pres?.specialty || q.specialty || "",
       presentationId: q.presentationId || "",
       explanation: q.explanation || "",
       referenceUrl: q.referenceUrl || "",
@@ -193,28 +185,13 @@ export default function AdminQuestions() {
             <Textarea value={form.prompt} onChange={(e) => setForm({ ...form, prompt: e.target.value })} placeholder="Enter question" />
           </div>
           <div>
-            <Label>Specialty</Label>
-            <Select value={form.specialty ? form.specialty : "__none__"} onValueChange={(v) => setForm({ ...form, specialty: v === "__none__" ? "" : v })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Optional" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__none__">None</SelectItem>
-                {(specialties?.specialties || []).map((s) => (
-                  <SelectItem key={s} value={s}>{s}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label>Presentation (optional)</Label>
+            <Label>Presentation</Label>
             <Select value={form.presentationId ? form.presentationId : "__none__"} onValueChange={(v) => {
               const id = v === "__none__" ? "" : v;
-              const pres = (presentations || []).find((p: any) => p.id === id);
-              setForm({ ...form, presentationId: id, specialty: pres?.specialty || form.specialty });
+              setForm({ ...form, presentationId: id });
             }}>
               <SelectTrigger>
-                <SelectValue placeholder="Link to a presentation" />
+                <SelectValue placeholder="Select a presentation (required)" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="__none__">None</SelectItem>
@@ -223,6 +200,17 @@ export default function AdminQuestions() {
                 ))}
               </SelectContent>
             </Select>
+            {form.presentationId && (() => {
+              const p = (presentations || []).find((x: any) => x.id === form.presentationId);
+              const specs = Array.from(new Set([p?.specialty, ...((p?.specialties as string[]) || [])].filter(Boolean)));
+              return specs.length ? (
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {specs.map((s: string) => (
+                    <span key={s} className="text-xs px-2 py-0.5 rounded border bg-yellow-50 border-yellow-200 text-gray-700">{s}</span>
+                  ))}
+                </div>
+              ) : null;
+            })()}
           </div>
           <div>
             <Label>Reference URL</Label>
@@ -384,7 +372,7 @@ export default function AdminQuestions() {
           <Button
             className="bg-ucla-blue"
             onClick={() => (editingId ? updateMutation.mutate() : createMutation.mutate())}
-            disabled={(editingId ? updateMutation.isPending : createMutation.isPending) || !form.prompt.trim() || form.choices.filter((c) => c.content.trim()).length < 2 || !form.choices.some((c) => c.isCorrect)}
+            disabled={(editingId ? updateMutation.isPending : createMutation.isPending) || !form.presentationId || !form.prompt.trim() || form.choices.filter((c) => c.content.trim()).length < 2 || !form.choices.some((c) => c.isCorrect)}
           >
             {editingId ? (updateMutation.isPending ? "Updating..." : "Update") : (createMutation.isPending ? "Creating..." : "Create")}
           </Button>
