@@ -139,7 +139,7 @@ export default function AdminEditTrial() {
               </label>
             ))}
           </div>
-          <p className="text-xs text-muted-foreground mt-1">Primary specialty will default to the first selected.</p>
+          <p className="text-xs text-muted-foreground mt-1">Select up to 2 specialties. Primary specialty will default to the first selected.</p>
         </div>
         <div>
           <label className="text-sm">Summary</label>
