@@ -649,7 +649,7 @@ export default function Index() {
 
             {filteredPresentations.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {filteredPresentations.map((presentation) => {
+                {sortedPresentations.map((presentation) => {
                   const primarySpecialty = (presentation.specialties && presentation.specialties[0]) || presentation.specialty;
                   return (
                     <PresentationCard
