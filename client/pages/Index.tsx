@@ -37,6 +37,8 @@ interface Presentation {
   viewerCount?: number;
   presentationFileUrl?: string;
   originalArticleUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface PresentationData {
