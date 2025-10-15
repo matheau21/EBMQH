@@ -459,8 +459,12 @@ router.put(
       const patch: any = {};
       if (updates.title !== undefined) patch.title = updates.title;
       if (updates.specialty !== undefined) patch.specialty = updates.specialty;
-      if (updates.specialties !== undefined)
+      if (updates.specialties !== undefined) {
         patch.specialties = updates.specialties;
+        if (updates.specialty === undefined) {
+          patch.specialty = updates.specialties[0] || null;
+        }
+      }
       if (updates.summary !== undefined) patch.summary = updates.summary;
       if (updates.authors !== undefined) patch.authors = updates.authors;
       if (updates.journal !== undefined) patch.journal = updates.journal;
