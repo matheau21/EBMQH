@@ -624,14 +624,27 @@ export default function Index() {
         {/* Filtered Presentations Section */}
         {selectedSpecialties.length > 0 && (
           <div className="mb-16">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-foreground mb-2">
-                Presentations
-              </h2>
-              <p className="text-muted-foreground">
-                Showing {filteredPresentations.length} presentations for
-                selected specialties
-              </p>
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground mb-2">
+                  Presentations
+                </h2>
+                <p className="text-muted-foreground">
+                  Showing {filteredPresentations.length} presentations for
+                  selected specialties
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-sm text-muted-foreground">Sort by</label>
+                <select
+                  className="text-sm bg-card border border-border rounded-md px-2 py-1"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                >
+                  <option value="date">Date posted</option>
+                  <option value="year">Publication year</option>
+                </select>
+              </div>
             </div>
 
             {filteredPresentations.length > 0 ? (
