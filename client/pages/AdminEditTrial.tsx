@@ -79,8 +79,8 @@ export default function AdminEditTrial() {
               if (!id) return;
               await presentationsAPI.updatePresentation(id, {
                 title: form.title,
-                specialty: form.specialty || (form.specialties[0] || ""),
-                specialties: form.specialties,
+                specialty: form.specialty || ((form.specialties.slice(0,2)[0]) || ""),
+                specialties: form.specialties.slice(0, 2),
                 summary: form.summary,
                 authors: form.authors || undefined,
                 journal: form.journal || undefined,
