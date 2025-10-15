@@ -623,6 +623,7 @@ export default function Index() {
                       id={presentation.id}
                       title={presentation.title}
                       specialty={primarySpecialty}
+                      specialties={presentation.specialties}
                       summary={presentation.summary}
                       authors={presentation.authors}
                       journal={presentation.journal}
