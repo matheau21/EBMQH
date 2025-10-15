@@ -35,7 +35,7 @@ export default function Contact() {
         <div className="prose max-w-none dark:prose-invert">
           {paragraphs.map((p, i) => (
             <div key={i}>
-              <p className="text-gray-700">{p}</p>
+              <p className="text-muted-foreground whitespace-pre-line">{p}</p>
               {i < paragraphs.length - 1 && (
                 <hr className="my-4 border-t border-border" />
               )}
