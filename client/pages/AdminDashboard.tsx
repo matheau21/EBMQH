@@ -167,6 +167,11 @@ function SiteEditor() {
   const [contactEmail, setContactEmail] = useState<string>("");
   const [savingContact, setSavingContact] = useState(false);
 
+  const [privacyTitle, setPrivacyTitle] = useState("Privacy Policy");
+  const [privacySubtitle, setPrivacySubtitle] = useState<string>("");
+  const [privacySections, setPrivacySections] = useState<Array<{ heading: string; body: string }>>([]);
+  const [savingPrivacy, setSavingPrivacy] = useState(false);
+
   useEffect(() => {
     let ignore = false;
     (async () => {
