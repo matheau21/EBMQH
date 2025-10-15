@@ -444,6 +444,7 @@ export default function AllPresentations() {
                         id={presentation.id}
                         title={presentation.title}
                         specialty={presentation.specialty}
+                        specialties={presentation.specialties}
                         summary={presentation.summary}
                         authors={presentation.authors}
                         journal={presentation.journal}
@@ -471,6 +472,7 @@ export default function AllPresentations() {
                   id={presentation.id}
                   title={presentation.title}
                   specialty={presentation.specialty}
+                  specialties={presentation.specialties}
                   summary={presentation.summary}
                   authors={presentation.authors}
                   journal={presentation.journal}
