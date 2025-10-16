@@ -215,7 +215,70 @@ router.get("/proxy-pdf", async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/presentations/files - get signed URLs for files (public for approved)
+// GET /api/presentations/debug - lightweight diagnostics
+router.get("/debug", async (_req: Request, res: Response) => {
+  try {
+    const t0 = Date.now();
+    const { count: total } = await runWithTimeout(
+      supabaseAdmin
+        .from("presentations")
+        .select("id", { count: "exact", head: true }),
+    );
+    const { count: approved } = await runWithTimeout(
+      supabaseAdmin
+        .from("presentations")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "approved"),
+    );
+    const { data: sample } = await runWithTimeout(
+      supabaseAdmin
+        .from("presentations")
+        .select("id,title,status,created_at")
+        .eq("status", "approved")
+        .order("created_at", { ascending: false })
+        .limit(3),
+    );
+    const duration = Date.now() - t0;
+    return res.json({
+      env: process.env.NODE_ENV || "development",
+      supabaseKeyMode: process.env.SUPABASE_SERVICE_ROLE
+        ? "service_role"
+        : process.env.SUPABASE_ANON_KEY
+          ? "anon"
+          : "none",
+      totals: { total: total || 0, approved: approved || 0 },
+      sample: sample || [],
+      durationMs: duration,
+    });
+  } catch (err) {
+    console.error("[presentations] debug: error", err);
+    return res.status(500).json({ error: "debug-failed" });
+  }
+});
+
+// GET /api/presentations/specialties
+router.get("/specialties", async (_req: Request, res: Response) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("presentations")
+      .select("specialty, specialties")
+      .eq("status", "approved")
+      .order("specialty", { ascending: true });
+    if (error) return res.status(500).json({ error: error.message });
+    const list: string[] = [];
+    for (const d of data || []) {
+      if ((d as any).specialty) list.push((d as any).specialty);
+      if (Array.isArray((d as any).specialties))
+        list.push(...(d as any).specialties);
+    }
+    const specialties = Array.from(new Set(list));
+    return res.json({ specialties });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET /api/presentations/:id/files - get signed URLs for files (public for approved)
 router.get("/:id/files", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
