@@ -760,6 +760,10 @@ export default function AdminDashboard() {
           <AdminQuestions />
         </TabsContent>
 
+        <TabsContent value="files" className="mt-4">
+          <AdminFileSyncPanel />
+        </TabsContent>
+
         <TabsContent value="site" className="mt-4">
           <SiteEditor />
         </TabsContent>
