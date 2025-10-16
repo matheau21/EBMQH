@@ -10,9 +10,7 @@ export default async function vercelHandler(req: any, res: any) {
     const p = req.url.includes("?")
       ? req.url.slice(0, req.url.indexOf("?"))
       : req.url;
-    let tail = p
-      .replace(/^\/api\/admin/, "")
-      .replace(/^\/admin/, "");
+    let tail = p.replace(/^\/api\/admin/, "").replace(/^\/admin/, "");
     if (tail && !tail.startsWith("/")) tail = "/" + tail;
     req.url = "/api/admin" + (tail || "") + q;
   }
