@@ -394,7 +394,7 @@ router.get("/:id", async (req: Request, res: Response) => {
         journal: data.journal || undefined,
         year: data.year || undefined,
         thumbnail: data.thumb_url || undefined,
-        presentationFileUrl: undefined,
+        presentationFileUrl: (data as any).presentation_file_url || undefined,
         originalArticleUrl: data.original_article_url || undefined,
         viewerCount: data.viewer_count || 0,
         createdAt: data.created_at,
