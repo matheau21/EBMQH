@@ -369,11 +369,7 @@ router.get("/:id/files", async (req: Request, res: Response) => {
         : data.original_article_url
           ? "original_article_url"
           : "none",
-      sourcePpt: data.ppt_path
-        ? "storage"
-        : data.presentation_file_url
-          ? "presentation_file_url"
-          : "none",
+      sourcePpt: data.ppt_path ? "storage" : "none",
     });
 
     return res.json({ pdfUrl, pptUrl });
