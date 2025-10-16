@@ -290,13 +290,15 @@ router.get("/:id/files", async (req: Request, res: Response) => {
     const { id } = req.params;
     const { data, error } = await supabaseAdmin
       .from("presentations")
-      .select("status, pdf_path, ppt_path, original_article_url")
+      .select("id, title, status, pdf_path, ppt_path, original_article_url, presentation_file_url")
       .eq("id", id)
       .single();
+
     if (error || !data) {
       console.log("[presentations] files: not found in DB", { id, error: error?.message });
       return res.status(404).json({ error: "Presentation not found" });
     }
+
     if (data.status !== "approved") {
       console.log("[presentations] files: not approved", { id, status: data.status });
       return res.status(403).json({ error: "Not available" });
@@ -305,6 +307,7 @@ router.get("/:id/files", async (req: Request, res: Response) => {
     let pdfUrl: string | undefined;
     let pptUrl: string | undefined;
 
+    // Try pdf_path first (stored in Supabase storage)
     if (data.pdf_path) {
       try {
         const { data: signed, error: se } = await supabaseAdmin.storage
@@ -320,10 +323,12 @@ router.get("/:id/files", async (req: Request, res: Response) => {
       }
     }
 
+    // Fallback to original_article_url if no pdf_path or signing failed
     if (!pdfUrl && data.original_article_url) {
       pdfUrl = data.original_article_url;
     }
 
+    // Try ppt_path first (stored in Supabase storage)
     if (data.ppt_path) {
       try {
         const { data: signed, error: se } = await supabaseAdmin.storage
@@ -339,7 +344,20 @@ router.get("/:id/files", async (req: Request, res: Response) => {
       }
     }
 
-    console.log("[presentations] files: returning URLs", { id, hasPdf: !!pdfUrl, hasPpt: !!pptUrl });
+    // Fallback to presentation_file_url if no ppt_path or signing failed
+    if (!pptUrl && data.presentation_file_url) {
+      pptUrl = data.presentation_file_url;
+    }
+
+    console.log("[presentations] files: returning URLs", {
+      id,
+      title: data.title,
+      hasPdf: !!pdfUrl,
+      hasPpt: !!pptUrl,
+      sourcePdf: data.pdf_path ? "storage" : (data.original_article_url ? "original_article_url" : "none"),
+      sourcePpt: data.ppt_path ? "storage" : (data.presentation_file_url ? "presentation_file_url" : "none"),
+    });
+
     return res.json({ pdfUrl, pptUrl });
   } catch (err) {
     console.error("[presentations] files: error", err);
