@@ -12,6 +12,7 @@ import ManageFilesDialog from "@/components/ManageFilesDialog";
 import FileDropzone from "@/components/FileDropzone";
 import { SPECIALTY_NAMES } from "@/components/SpecialtyFilters";
 import PresentationFilesViewer from "@/components/PresentationFilesViewer";
+import AdminFileSyncPanel from "@/components/AdminFileSyncPanel";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { useNavigate, useLocation } from "react-router-dom";
