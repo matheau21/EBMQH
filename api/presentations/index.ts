@@ -1,14 +1,10 @@
-import serverless from "serverless-http";
-import express from "express";
 import { createServer } from "../../server/index.js";
 
 const app = createServer();
-const gateway = express();
 
-// Preserve tail path so both root and nested endpoints work
-const MOUNT = "/api/presentations";
-
-gateway.use((req, _res, next) => {
+export default async function vercelHandler(req: any, res: any) {
+  // Normalize path for Express routing
+  const originalUrl = req.url;
   if (typeof req.url === "string") {
     const q = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
     const p = req.url.includes("?")
@@ -18,14 +14,12 @@ gateway.use((req, _res, next) => {
       .replace(/^\/api\/presentations/, "")
       .replace(/^\/presentations/, "");
     if (tail && !tail.startsWith("/")) tail = "/" + tail;
-    req.url = MOUNT + (tail || "") + q;
+    req.url = "/api/presentations" + (tail || "") + q;
   }
-  next();
-});
 
-gateway.use(app);
-
-const handler = serverless(gateway);
-export default async function vercelHandler(req: any, res: any) {
-  return handler(req, res);
+  return new Promise<void>((resolve) => {
+    res.on("finish", () => resolve());
+    res.on("close", () => resolve());
+    app(req, res);
+  });
 }
