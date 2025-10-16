@@ -624,6 +624,7 @@ export default function AdminDashboard() {
           <TabsTrigger value="trials">Trials</TabsTrigger>
           {user?.role !== "user" && <TabsTrigger value="approvals">Approvals{pending?.pagination?.total ? ` (${pending.pagination.total})` : pending?.presentations?.length ? ` (${pending.presentations.length})` : ""}</TabsTrigger>}
           <TabsTrigger value="questions">Questions</TabsTrigger>
+          {user?.role !== "user" && <TabsTrigger value="files">File Sync</TabsTrigger>}
           {user?.role !== "user" && <TabsTrigger value="site">Site</TabsTrigger>}
           <TabsTrigger value="account">Account</TabsTrigger>
         </TabsList>
