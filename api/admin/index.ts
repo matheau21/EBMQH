@@ -5,7 +5,12 @@ const app = createServer();
 export default async function vercelHandler(req: any, res: any) {
   if (typeof req.url === "string") {
     const q = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
-    req.url = "/api/admin" + q;
+    const p = req.url.includes("?")
+      ? req.url.slice(0, req.url.indexOf("?"))
+      : req.url;
+    let tail = p.replace(/^\/api\/admin/, "").replace(/^\/admin/, "");
+    if (tail && !tail.startsWith("/")) tail = "/" + tail;
+    req.url = "/api/admin" + (tail || "") + q;
   }
 
   return new Promise<void>((resolve) => {
