@@ -293,19 +293,31 @@ router.get("/:id/files", async (req: Request, res: Response) => {
       .select("status, pdf_path, ppt_path, original_article_url")
       .eq("id", id)
       .single();
-    if (error || !data)
+    if (error || !data) {
+      console.log("[presentations] files: not found in DB", { id, error: error?.message });
       return res.status(404).json({ error: "Presentation not found" });
-    if (data.status !== "approved")
+    }
+    if (data.status !== "approved") {
+      console.log("[presentations] files: not approved", { id, status: data.status });
       return res.status(403).json({ error: "Not available" });
+    }
 
     let pdfUrl: string | undefined;
     let pptUrl: string | undefined;
 
     if (data.pdf_path) {
-      const { data: signed, error: se } = await supabaseAdmin.storage
-        .from("presentations")
-        .createSignedUrl(data.pdf_path, 60 * 60); // 1 hour
-      if (!se && signed?.signedUrl) pdfUrl = signed.signedUrl;
+      try {
+        const { data: signed, error: se } = await supabaseAdmin.storage
+          .from("presentations")
+          .createSignedUrl(data.pdf_path, 60 * 60); // 1 hour
+        if (!se && signed?.signedUrl) {
+          pdfUrl = signed.signedUrl;
+        } else {
+          console.log("[presentations] files: failed to sign PDF", { pdf_path: data.pdf_path, error: se?.message });
+        }
+      } catch (e) {
+        console.log("[presentations] files: exception signing PDF", e);
+      }
     }
 
     if (!pdfUrl && data.original_article_url) {
@@ -313,14 +325,24 @@ router.get("/:id/files", async (req: Request, res: Response) => {
     }
 
     if (data.ppt_path) {
-      const { data: signed, error: se } = await supabaseAdmin.storage
-        .from("presentations")
-        .createSignedUrl(data.ppt_path, 60 * 60); // 1 hour
-      if (!se && signed?.signedUrl) pptUrl = signed.signedUrl;
+      try {
+        const { data: signed, error: se } = await supabaseAdmin.storage
+          .from("presentations")
+          .createSignedUrl(data.ppt_path, 60 * 60); // 1 hour
+        if (!se && signed?.signedUrl) {
+          pptUrl = signed.signedUrl;
+        } else {
+          console.log("[presentations] files: failed to sign PPT", { ppt_path: data.ppt_path, error: se?.message });
+        }
+      } catch (e) {
+        console.log("[presentations] files: exception signing PPT", e);
+      }
     }
 
+    console.log("[presentations] files: returning URLs", { id, hasPdf: !!pdfUrl, hasPpt: !!pptUrl });
     return res.json({ pdfUrl, pptUrl });
   } catch (err) {
+    console.error("[presentations] files: error", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
