@@ -61,7 +61,7 @@ router.get("/", async (req: Request, res: Response) => {
     let query = supabaseAdmin
       .from("presentations")
       .select(
-        "id, title, specialty, specialties, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at",
+        "id, title, specialty, specialties, summary, authors, journal, year, original_article_url, thumb_url, viewer_count, created_at, updated_at, presentation_file_url",
       )
       .eq("status", "approved");
 
@@ -93,7 +93,7 @@ router.get("/", async (req: Request, res: Response) => {
         journal: p.journal || undefined,
         year: p.year || undefined,
         thumbnail: p.thumb_url || undefined,
-        presentationFileUrl: undefined,
+        presentationFileUrl: (p as any).presentation_file_url || undefined,
         originalArticleUrl: p.original_article_url || undefined,
         viewerCount: p.viewer_count || 0,
         createdAt: p.created_at,
