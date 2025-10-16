@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { supabaseAdmin } from "../lib/supabase.js";
-import { requireAdminAuth } from "../middleware/adminAuth.js";
+import { authenticateAdminToken, requireAdminOrOwner, AdminAuthRequest } from "../middleware/adminAuth.js";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ interface FileMatch {
 }
 
 // GET /api/admin/sync-files/preview - Preview what will be synced (read-only)
-router.get("/preview", requireAdminAuth, async (_req: Request, res: Response) => {
+router.get("/preview", authenticateAdminToken, requireAdminOrOwner, async (_req: AdminAuthRequest, res: Response) => {
   try {
     // Get all presentations
     const { data: presentations, error: presErr } = await supabaseAdmin
@@ -95,7 +95,7 @@ router.get("/preview", requireAdminAuth, async (_req: Request, res: Response) =>
 });
 
 // POST /api/admin/sync-files/execute - Actually perform the sync
-router.post("/execute", requireAdminAuth, async (_req: Request, res: Response) => {
+router.post("/execute", authenticateAdminToken, requireAdminOrOwner, async (_req: AdminAuthRequest, res: Response) => {
   try {
     // Get all presentations
     const { data: presentations, error: presErr } = await supabaseAdmin
