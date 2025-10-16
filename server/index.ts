@@ -7,6 +7,7 @@ import userRoutes from "./routes/users.js";
 import adminAuthRoutes from "./routes/admin-auth.js";
 import presentationRoutes from "./routes/presentations-sb.js";
 import adminUsersRoutes from "./routes/admin-users.js";
+import adminSyncFilesRoutes from "./routes/admin-sync-files.js";
 import questionsRoutes from "./routes/questions-sb.js";
 import siteRoutes from "./routes/site.js";
 import { ensureInitialOwner } from "./lib/seed.js";
@@ -48,6 +49,9 @@ export function createServer() {
 
   // Admin users management (Supabase)
   app.use("/api/admin/users", adminUsersRoutes);
+
+  // Admin file sync (Supabase)
+  app.use("/api/admin/sync-files", adminSyncFilesRoutes);
 
   // Presentation routes
   app.use("/api/presentations", presentationRoutes);
