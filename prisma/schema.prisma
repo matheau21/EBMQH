@@ -31,21 +31,26 @@ model Presentation {
   id                   String   @id @default(cuid())
   title                String
   specialty            String
+  specialties          String?  // JSON array stored as string
   summary              String
   authors              String?
   journal              String?
   year                 String?
   thumbnail            String?
+  thumbUrl             String?
   viewerCount          Int      @default(0)
   presentationFileUrl  String?
   originalArticleUrl   String?
+  pdfPath              String?
+  pptPath              String?
+  status               String   @default("pending") // pending, approved, rejected, archived
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
-  
+
   // Relations
   createdBy            String?
   user                 User?    @relation(fields: [createdBy], references: [id])
-  
+
   @@map("presentations")
 }
 
