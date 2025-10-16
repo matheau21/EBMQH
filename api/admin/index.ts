@@ -1,23 +1,16 @@
-import serverless from "serverless-http";
-import express from "express";
 import { createServer } from "../../server/index.js";
 
 const app = createServer();
-const gateway = express();
 
-const MOUNT = "/api/admin";
-
-gateway.use((req, _res, next) => {
+export default async function vercelHandler(req: any, res: any) {
   if (typeof req.url === "string") {
     const q = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
-    req.url = MOUNT + q;
+    req.url = "/api/admin" + q;
   }
-  next();
-});
 
-gateway.use(app);
-
-const handler = serverless(gateway);
-export default async function vercelHandler(req: any, res: any) {
-  return handler(req, res);
+  return new Promise<void>((resolve) => {
+    res.on("finish", () => resolve());
+    res.on("close", () => resolve());
+    app(req, res);
+  });
 }
