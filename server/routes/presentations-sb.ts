@@ -291,7 +291,7 @@ router.get("/:id/files", async (req: Request, res: Response) => {
     const { data, error } = await supabaseAdmin
       .from("presentations")
       .select(
-        "id, title, status, pdf_path, ppt_path, original_article_url, presentation_file_url",
+        "id, title, status, pdf_path, ppt_path, original_article_url",
       )
       .eq("id", id)
       .single();
@@ -358,10 +358,6 @@ router.get("/:id/files", async (req: Request, res: Response) => {
       }
     }
 
-    // Fallback to presentation_file_url if no ppt_path or signing failed
-    if (!pptUrl && data.presentation_file_url) {
-      pptUrl = data.presentation_file_url;
-    }
 
     console.log("[presentations] files: returning URLs", {
       id,
