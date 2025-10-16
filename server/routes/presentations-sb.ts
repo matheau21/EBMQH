@@ -290,9 +290,7 @@ router.get("/:id/files", async (req: Request, res: Response) => {
     const { id } = req.params;
     const { data, error } = await supabaseAdmin
       .from("presentations")
-      .select(
-        "id, title, status, pdf_path, ppt_path, original_article_url",
-      )
+      .select("id, title, status, pdf_path, ppt_path, original_article_url")
       .eq("id", id)
       .single();
 
@@ -357,7 +355,6 @@ router.get("/:id/files", async (req: Request, res: Response) => {
         console.log("[presentations] files: exception signing PPT", e);
       }
     }
-
 
     console.log("[presentations] files: returning URLs", {
       id,
