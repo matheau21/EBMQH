@@ -38,14 +38,16 @@ export default async function vercelHandler(req: any, res: any) {
 
     const duration = Date.now() - t0;
 
-    const filesSampleInfo = filesSample?.[0] ? {
-      id: filesSample[0].id,
-      title: filesSample[0].title,
-      status: filesSample[0].status,
-      pdf_path: filesSample[0].pdf_path,
-      ppt_path: filesSample[0].ppt_path,
-      original_article_url: filesSample[0].original_article_url,
-    } : null;
+    const filesSampleInfo = filesSample?.[0]
+      ? {
+          id: filesSample[0].id,
+          title: filesSample[0].title,
+          status: filesSample[0].status,
+          pdf_path: filesSample[0].pdf_path,
+          ppt_path: filesSample[0].ppt_path,
+          original_article_url: filesSample[0].original_article_url,
+        }
+      : null;
 
     return res.json({
       env: process.env.NODE_ENV || "development",

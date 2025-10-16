@@ -290,17 +290,25 @@ router.get("/:id/files", async (req: Request, res: Response) => {
     const { id } = req.params;
     const { data, error } = await supabaseAdmin
       .from("presentations")
-      .select("id, title, status, pdf_path, ppt_path, original_article_url, presentation_file_url")
+      .select(
+        "id, title, status, pdf_path, ppt_path, original_article_url, presentation_file_url",
+      )
       .eq("id", id)
       .single();
 
     if (error || !data) {
-      console.log("[presentations] files: not found in DB", { id, error: error?.message });
+      console.log("[presentations] files: not found in DB", {
+        id,
+        error: error?.message,
+      });
       return res.status(404).json({ error: "Presentation not found" });
     }
 
     if (data.status !== "approved") {
-      console.log("[presentations] files: not approved", { id, status: data.status });
+      console.log("[presentations] files: not approved", {
+        id,
+        status: data.status,
+      });
       return res.status(403).json({ error: "Not available" });
     }
 
@@ -316,7 +324,10 @@ router.get("/:id/files", async (req: Request, res: Response) => {
         if (!se && signed?.signedUrl) {
           pdfUrl = signed.signedUrl;
         } else {
-          console.log("[presentations] files: failed to sign PDF", { pdf_path: data.pdf_path, error: se?.message });
+          console.log("[presentations] files: failed to sign PDF", {
+            pdf_path: data.pdf_path,
+            error: se?.message,
+          });
         }
       } catch (e) {
         console.log("[presentations] files: exception signing PDF", e);
@@ -337,7 +348,10 @@ router.get("/:id/files", async (req: Request, res: Response) => {
         if (!se && signed?.signedUrl) {
           pptUrl = signed.signedUrl;
         } else {
-          console.log("[presentations] files: failed to sign PPT", { ppt_path: data.ppt_path, error: se?.message });
+          console.log("[presentations] files: failed to sign PPT", {
+            ppt_path: data.ppt_path,
+            error: se?.message,
+          });
         }
       } catch (e) {
         console.log("[presentations] files: exception signing PPT", e);
@@ -354,8 +368,16 @@ router.get("/:id/files", async (req: Request, res: Response) => {
       title: data.title,
       hasPdf: !!pdfUrl,
       hasPpt: !!pptUrl,
-      sourcePdf: data.pdf_path ? "storage" : (data.original_article_url ? "original_article_url" : "none"),
-      sourcePpt: data.ppt_path ? "storage" : (data.presentation_file_url ? "presentation_file_url" : "none"),
+      sourcePdf: data.pdf_path
+        ? "storage"
+        : data.original_article_url
+          ? "original_article_url"
+          : "none",
+      sourcePpt: data.ppt_path
+        ? "storage"
+        : data.presentation_file_url
+          ? "presentation_file_url"
+          : "none",
     });
 
     return res.json({ pdfUrl, pptUrl });
