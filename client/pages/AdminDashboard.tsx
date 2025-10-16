@@ -1,11 +1,24 @@
 import { useState, useEffect, useMemo } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminUsersAPI, presentationsAPI, checkBackendAvailability, getToken, adminAuthAPI, questionsAPI } from "@/lib/api";
+import {
+  adminUsersAPI,
+  presentationsAPI,
+  checkBackendAvailability,
+  getToken,
+  adminAuthAPI,
+  questionsAPI,
+} from "@/lib/api";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 import AdminUsers from "./AdminUsers";
 import AdminQuestions from "./AdminQuestions";
 import ManageFilesDialog from "@/components/ManageFilesDialog";
@@ -13,39 +26,62 @@ import FileDropzone from "@/components/FileDropzone";
 import { SPECIALTY_NAMES } from "@/components/SpecialtyFilters";
 import PresentationFilesViewer from "@/components/PresentationFilesViewer";
 import AdminFileSyncPanel from "@/components/AdminFileSyncPanel";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { siteAPI } from "@/lib/api";
-function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"rejected"|"pending") => void }) {
+function TrialRow({
+  p,
+  onApprove,
+}: {
+  p: any;
+  onApprove: (status: "approved" | "rejected" | "pending") => void;
+}) {
   const [open, setOpen] = useState(false);
   const [showViewer, setShowViewer] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const status: "approved"|"rejected"|"pending"|"archived" = (p.status || "approved");
+  const status: "approved" | "rejected" | "pending" | "archived" =
+    p.status || "approved";
   const { user } = useAdmin();
   const isAdmin = user?.role !== "user";
   const containerCls = `flex items-center justify-between border rounded px-3 py-2 ${
     status === "rejected"
       ? "bg-gray-50 border-gray-200"
       : status === "pending"
-      ? "bg-yellow-50 border-yellow-200"
-      : "bg-white"
+        ? "bg-yellow-50 border-yellow-200"
+        : "bg-white"
   }`;
   return (
     <div className={containerCls}>
-      <div className="min-w-0 cursor-pointer" onClick={() => setShowPreview(true)} title="Preview public view">
-        <div className={`font-medium ${status === "rejected" ? "text-gray-500" : "hover:underline"}`}>
+      <div
+        className="min-w-0 cursor-pointer"
+        onClick={() => setShowPreview(true)}
+        title="Preview public view"
+      >
+        <div
+          className={`font-medium ${status === "rejected" ? "text-gray-500" : "hover:underline"}`}
+        >
           {p.title}
         </div>
-        <div className={`text-xs ${status === "rejected" ? "text-gray-400" : "text-gray-500"}`}>
+        <div
+          className={`text-xs ${status === "rejected" ? "text-gray-400" : "text-gray-500"}`}
+        >
           {p.specialty} • {status}
           {(status === "approved" || status === "archived") && (
             <span className="ml-2 inline-flex items-center gap-1 align-middle">
               <button
                 type="button"
-                onClick={(e)=>{ e.stopPropagation(); if (p.pdf_path) setShowViewer(true); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (p.pdf_path) setShowViewer(true);
+                }}
                 className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.pdf_path ? "text-green-700 border-green-200 bg-green-50 hover:bg-green-100 cursor-pointer" : "text-gray-500 border-gray-200 bg-gray-50 cursor-not-allowed"}`}
                 title={p.pdf_path ? "Open PDF" : "No PDF"}
                 disabled={!p.pdf_path}
@@ -54,7 +90,10 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
               </button>
               <button
                 type="button"
-                onClick={(e)=>{ e.stopPropagation(); if (p.ppt_path) setShowViewer(true); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (p.ppt_path) setShowViewer(true);
+                }}
                 className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.ppt_path ? "text-green-700 border-green-200 bg-green-50 hover:bg-green-100 cursor-pointer" : "text-gray-500 border-gray-200 bg-gray-50 cursor-not-allowed"}`}
                 title={p.ppt_path ? "Open PPT" : "No PPT"}
                 disabled={!p.ppt_path}
@@ -67,50 +106,98 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
       </div>
       <div className="flex items-center gap-2">
         {status === "approved" && (
-          <span className="text-xs px-2 py-1 rounded bg-green-100 text-green-700 border border-green-200">Live</span>
+          <span className="text-xs px-2 py-1 rounded bg-green-100 text-green-700 border border-green-200">
+            Live
+          </span>
         )}
         {status === "rejected" && (
-          <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600 border border-gray-200">Rejected</span>
+          <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600 border border-gray-200">
+            Rejected
+          </span>
         )}
         {status === "pending" && (
-          <span className="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-800 border border-yellow-200">Pending</span>
+          <span className="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-800 border border-yellow-200">
+            Pending
+          </span>
         )}
         {status === "archived" && (
-          <span className="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700 border border-gray-300">Archived</span>
+          <span className="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700 border border-gray-300">
+            Archived
+          </span>
         )}
         {isAdmin || status === "pending" ? (
-          <Button variant="outline" onClick={() => setOpen(true)}>Manage Files</Button>
+          <Button variant="outline" onClick={() => setOpen(true)}>
+            Manage Files
+          </Button>
         ) : null}
         {(isAdmin || status === "pending") && (
-          <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate(`/admin/trials/${p.id}`)}
+          >
+            Edit
+          </Button>
         )}
         {isAdmin && status === "pending" && (
           <>
-            <Button variant="outline" onClick={() => onApprove("approved")}>Approve</Button>
-            <Button variant="outline" onClick={() => onApprove("rejected")}>Reject</Button>
+            <Button variant="outline" onClick={() => onApprove("approved")}>
+              Approve
+            </Button>
+            <Button variant="outline" onClick={() => onApprove("rejected")}>
+              Reject
+            </Button>
           </>
         )}
         {status === "rejected" && (
-          <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Re-review</Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate(`/admin/trials/${p.id}`)}
+          >
+            Re-review
+          </Button>
         )}
         {isAdmin && status === "approved" && (
-          <Button variant="outline" onClick={async ()=>{
-            if (!window.confirm("Archive this submission? It will no longer be displayed.")) return;
-            await presentationsAPI.updateStatus(p.id, "archived");
-            qc.invalidateQueries({ queryKey: ["admin-trials"] });
-            qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
-          }}>Archive</Button>
+          <Button
+            variant="outline"
+            onClick={async () => {
+              if (
+                !window.confirm(
+                  "Archive this submission? It will no longer be displayed.",
+                )
+              )
+                return;
+              await presentationsAPI.updateStatus(p.id, "archived");
+              qc.invalidateQueries({ queryKey: ["admin-trials"] });
+              qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
+            }}
+          >
+            Archive
+          </Button>
         )}
         {isAdmin && (
-          <Button variant="destructive" onClick={async ()=>{
-            if (!window.confirm("Delete this submission permanently? This cannot be undone.")) return;
-            await presentationsAPI.deletePresentation(p.id);
-            qc.invalidateQueries({ queryKey: ["admin-trials"] });
-            qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
-          }}>Delete</Button>
+          <Button
+            variant="destructive"
+            onClick={async () => {
+              if (
+                !window.confirm(
+                  "Delete this submission permanently? This cannot be undone.",
+                )
+              )
+                return;
+              await presentationsAPI.deletePresentation(p.id);
+              qc.invalidateQueries({ queryKey: ["admin-trials"] });
+              qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
+            }}
+          >
+            Delete
+          </Button>
         )}
       </div>
-      <ManageFilesDialog presentationId={p.id} open={open} onOpenChange={setOpen} />
+      <ManageFilesDialog
+        presentationId={p.id}
+        open={open}
+        onOpenChange={setOpen}
+      />
 
       <PresentationFilesViewer
         isOpen={showViewer}
@@ -126,8 +213,13 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
           </DialogHeader>
           <div className="space-y-2">
             <div className="text-lg font-semibold">{p.title}</div>
-            <div className="text-sm text-gray-600">{p.specialty}{p.year ? ` • ${p.year}` : ""}</div>
-            {p.summary && <div className="text-sm text-gray-700">{p.summary}</div>}
+            <div className="text-sm text-gray-600">
+              {p.specialty}
+              {p.year ? ` • ${p.year}` : ""}
+            </div>
+            {p.summary && (
+              <div className="text-sm text-gray-700">{p.summary}</div>
+            )}
             {(p.authors || p.journal) && (
               <div className="text-xs text-gray-500">
                 {p.authors && <div className="font-medium">{p.authors}</div>}
@@ -135,9 +227,21 @@ function TrialRow({ p, onApprove }: { p: any; onApprove: (status: "approved"|"re
               </div>
             )}
             <div className="pt-2 flex items-center gap-2">
-              <Button className="bg-ucla-blue text-white" onClick={() => { setShowViewer(true); }}>View Files</Button>
+              <Button
+                className="bg-ucla-blue text-white"
+                onClick={() => {
+                  setShowViewer(true);
+                }}
+              >
+                View Files
+              </Button>
               {(isAdmin || status === "pending") && (
-                <Button variant="outline" onClick={() => navigate(`/admin/trials/${p.id}`)}>Edit</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate(`/admin/trials/${p.id}`)}
+                >
+                  Edit
+                </Button>
               )}
             </div>
           </div>
@@ -154,7 +258,9 @@ function SiteEditor() {
   const [saving, setSaving] = useState(false);
   const [title, setTitle] = useState("About EBM Quick Hits");
   const [subtitle, setSubtitle] = useState<string | "">("");
-  const [sections, setSections] = useState<Array<{ heading: string; body: string }>>([]);
+  const [sections, setSections] = useState<
+    Array<{ heading: string; body: string }>
+  >([]);
   const [refUrl, setRefUrl] = useState<string>("");
   const [refPath, setRefPath] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -170,7 +276,9 @@ function SiteEditor() {
 
   const [privacyTitle, setPrivacyTitle] = useState("Privacy Policy");
   const [privacySubtitle, setPrivacySubtitle] = useState<string>("");
-  const [privacySections, setPrivacySections] = useState<Array<{ heading: string; body: string }>>([]);
+  const [privacySections, setPrivacySections] = useState<
+    Array<{ heading: string; body: string }>
+  >([]);
   const [savingPrivacy, setSavingPrivacy] = useState(false);
 
   useEffect(() => {
@@ -191,7 +299,9 @@ function SiteEditor() {
         setLoading(false);
       }
     })();
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -205,7 +315,9 @@ function SiteEditor() {
         setContactEmail(c.email || "");
       } catch {}
     })();
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -219,7 +331,9 @@ function SiteEditor() {
         setPrivacySections(Array.isArray(pv.sections) ? pv.sections : []);
       } catch {}
     })();
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -231,19 +345,26 @@ function SiteEditor() {
         setFeaturedIds((f.presentations || []).map((p: any) => p.id));
       } catch {}
     })();
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   useEffect(() => {
     let ignore = false;
     (async () => {
       try {
-        const res = await presentationsAPI.adminList({ status: "approved", limit: 200 } as any);
+        const res = await presentationsAPI.adminList({
+          status: "approved",
+          limit: 200,
+        } as any);
         if (ignore) return;
         setAllApproved(res.presentations || []);
       } catch {}
     })();
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const toggleFeatured = (id: string) => {
@@ -255,9 +376,14 @@ function SiteEditor() {
     });
   };
 
-  const addSection = () => setSections((s) => [...s, { heading: "New Section", body: "" }]);
-  const removeSection = (idx: number) => setSections((s) => s.filter((_, i) => i !== idx));
-  const updateSection = (idx: number, key: "heading"|"body", val: string) => setSections((s) => s.map((it, i) => i === idx ? { ...it, [key]: val } : it));
+  const addSection = () =>
+    setSections((s) => [...s, { heading: "New Section", body: "" }]);
+  const removeSection = (idx: number) =>
+    setSections((s) => s.filter((_, i) => i !== idx));
+  const updateSection = (idx: number, key: "heading" | "body", val: string) =>
+    setSections((s) =>
+      s.map((it, i) => (i === idx ? { ...it, [key]: val } : it)),
+    );
 
   const onUploadRef = async (file: File) => {
     try {
@@ -273,7 +399,12 @@ function SiteEditor() {
     try {
       setSaving(true);
       setError(null);
-      await siteAPI.saveAbout({ title, subtitle, sections, referenceCard: { url: refUrl || null, filePath: refPath || null } });
+      await siteAPI.saveAbout({
+        title,
+        subtitle,
+        sections,
+        referenceCard: { url: refUrl || null, filePath: refPath || null },
+      });
       alert("Saved");
     } catch (e: any) {
       setError(e?.message || "Save failed");
@@ -302,68 +433,146 @@ function SiteEditor() {
       <div className="grid sm:grid-cols-2 gap-3">
         <div className="sm:col-span-2">
           <label className="text-sm">About Title</label>
-          <Input value={title} onChange={(e)=>setTitle(e.target.value)} />
+          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
         <div className="sm:col-span-2">
           <label className="text-sm">About Subtitle</label>
-          <Input value={subtitle} onChange={(e)=>setSubtitle(e.target.value)} />
+          <Input
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+          />
         </div>
       </div>
 
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div className="font-medium">Sections</div>
-          <Button variant="outline" onClick={addSection}>Add Section</Button>
+          <Button variant="outline" onClick={addSection}>
+            Add Section
+          </Button>
         </div>
-        {sections.length === 0 && <div className="text-sm text-gray-600">No sections yet.</div>}
+        {sections.length === 0 && (
+          <div className="text-sm text-gray-600">No sections yet.</div>
+        )}
         {sections.map((s, i) => (
           <div key={i} className="border rounded p-3 space-y-2 bg-white">
             <div className="flex items-center gap-2">
-              <Input value={s.heading} onChange={(e)=>updateSection(i, "heading", e.target.value)} placeholder="Section heading" />
-              <Button variant="outline" onClick={()=>removeSection(i)}>Remove</Button>
+              <Input
+                value={s.heading}
+                onChange={(e) => updateSection(i, "heading", e.target.value)}
+                placeholder="Section heading"
+              />
+              <Button variant="outline" onClick={() => removeSection(i)}>
+                Remove
+              </Button>
             </div>
-            <textarea className="w-full border rounded p-2 text-sm min-h-[100px]" value={s.body} onChange={(e)=>updateSection(i, "body", e.target.value)} placeholder="Section body (supports line breaks)" />
+            <textarea
+              className="w-full border rounded p-2 text-sm min-h-[100px]"
+              value={s.body}
+              onChange={(e) => updateSection(i, "body", e.target.value)}
+              placeholder="Section body (supports line breaks)"
+            />
           </div>
         ))}
       </div>
 
       <div className="space-y-2">
         <div className="font-medium">EBM Reference Card Link</div>
-        <Input placeholder="https://..." value={refUrl} onChange={(e)=>{ setRefUrl(e.target.value); if (e.target.value) setRefPath(""); }} />
-        <div className="text-xs text-gray-600">Or upload a file to link to:</div>
-        <input type="file" onChange={(e)=>{ const f=e.target.files?.[0]; if (f) onUploadRef(f); }} />
-        {refPath && <div className="text-xs text-gray-700">Uploaded path: <span className="font-mono">{refPath}</span></div>}
+        <Input
+          placeholder="https://..."
+          value={refUrl}
+          onChange={(e) => {
+            setRefUrl(e.target.value);
+            if (e.target.value) setRefPath("");
+          }}
+        />
+        <div className="text-xs text-gray-600">
+          Or upload a file to link to:
+        </div>
+        <input
+          type="file"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) onUploadRef(f);
+          }}
+        />
+        {refPath && (
+          <div className="text-xs text-gray-700">
+            Uploaded path: <span className="font-mono">{refPath}</span>
+          </div>
+        )}
       </div>
 
       <div className="space-y-2">
         <div className="font-medium">Featured Trials (max 3)</div>
         <div className="grid sm:grid-cols-2 gap-2">
           {allApproved.map((p) => (
-            <label key={p.id} className={`flex items-center gap-2 border rounded px-3 py-2 ${featuredIds.includes(p.id) ? "bg-ucla-gold/10 border-ucla-gold" : "bg-white"}`}>
+            <label
+              key={p.id}
+              className={`flex items-center gap-2 border rounded px-3 py-2 ${featuredIds.includes(p.id) ? "bg-ucla-gold/10 border-ucla-gold" : "bg-white"}`}
+            >
               <input
                 type="checkbox"
                 checked={featuredIds.includes(p.id)}
                 onChange={() => toggleFeatured(p.id)}
               />
               <span className="truncate">{p.title}</span>
-              <span className="ml-auto text-xs text-gray-600">{p.specialty}</span>
+              <span className="ml-auto text-xs text-gray-600">
+                {p.specialty}
+              </span>
             </label>
           ))}
         </div>
-        <div className="text-xs text-gray-600">Selected: {featuredIds.length}/3</div>
-        <Button className="bg-ucla-blue" disabled={savingFeatured} onClick={onSaveFeatured}>{savingFeatured ? "Saving…" : "Save Featured"}</Button>
+        <div className="text-xs text-gray-600">
+          Selected: {featuredIds.length}/3
+        </div>
+        <Button
+          className="bg-ucla-blue"
+          disabled={savingFeatured}
+          onClick={onSaveFeatured}
+        >
+          {savingFeatured ? "Saving…" : "Save Featured"}
+        </Button>
       </div>
 
       <div className="space-y-2">
         <div className="font-medium">Contact Us</div>
         <label className="text-sm">Title</label>
-        <Input value={contactTitle} onChange={(e)=>setContactTitle(e.target.value)} />
+        <Input
+          value={contactTitle}
+          onChange={(e) => setContactTitle(e.target.value)}
+        />
         <label className="text-sm">Email (optional)</label>
-        <Input value={contactEmail} onChange={(e)=>setContactEmail(e.target.value)} />
+        <Input
+          value={contactEmail}
+          onChange={(e) => setContactEmail(e.target.value)}
+        />
         <label className="text-sm">Body</label>
-        <textarea className="w-full border rounded p-2 text-sm min-h-[120px]" value={contactBody} onChange={(e)=>setContactBody(e.target.value)} />
+        <textarea
+          className="w-full border rounded p-2 text-sm min-h-[120px]"
+          value={contactBody}
+          onChange={(e) => setContactBody(e.target.value)}
+        />
         <div>
-          <Button className="bg-ucla-blue" disabled={savingContact} onClick={async ()=>{ try { setSavingContact(true); await siteAPI.saveContact({ title: contactTitle, body: contactBody, email: contactEmail || null }); alert("Contact saved"); } finally { setSavingContact(false); } }}>{savingContact ? "Saving…" : "Save Contact"}</Button>
+          <Button
+            className="bg-ucla-blue"
+            disabled={savingContact}
+            onClick={async () => {
+              try {
+                setSavingContact(true);
+                await siteAPI.saveContact({
+                  title: contactTitle,
+                  body: contactBody,
+                  email: contactEmail || null,
+                });
+                alert("Contact saved");
+              } finally {
+                setSavingContact(false);
+              }
+            }}
+          >
+            {savingContact ? "Saving…" : "Save Contact"}
+          </Button>
         </div>
       </div>
 
@@ -372,38 +581,106 @@ function SiteEditor() {
         <div className="grid sm:grid-cols-2 gap-3">
           <div className="sm:col-span-2">
             <label className="text-sm">Privacy Title</label>
-            <Input value={privacyTitle} onChange={(e)=>setPrivacyTitle(e.target.value)} />
+            <Input
+              value={privacyTitle}
+              onChange={(e) => setPrivacyTitle(e.target.value)}
+            />
           </div>
           <div className="sm:col-span-2">
             <label className="text-sm">Privacy Subtitle</label>
-            <Input value={privacySubtitle} onChange={(e)=>setPrivacySubtitle(e.target.value)} />
+            <Input
+              value={privacySubtitle}
+              onChange={(e) => setPrivacySubtitle(e.target.value)}
+            />
           </div>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <div className="font-medium">Sections</div>
-            <Button variant="outline" onClick={()=>setPrivacySections((s)=>[...s, { heading: "New Section", body: "" }])}>Add Section</Button>
+            <Button
+              variant="outline"
+              onClick={() =>
+                setPrivacySections((s) => [
+                  ...s,
+                  { heading: "New Section", body: "" },
+                ])
+              }
+            >
+              Add Section
+            </Button>
           </div>
-          {privacySections.length === 0 && <div className="text-sm text-gray-600">No sections yet.</div>}
+          {privacySections.length === 0 && (
+            <div className="text-sm text-gray-600">No sections yet.</div>
+          )}
           {privacySections.map((s, i) => (
             <div key={i} className="border rounded p-3 space-y-2 bg-white">
               <div className="flex items-center gap-2">
-                <Input value={s.heading} onChange={(e)=>setPrivacySections((arr)=>arr.map((it, idx)=> idx === i ? { ...it, heading: e.target.value } : it))} placeholder="Section heading" />
-                <Button variant="outline" onClick={()=>setPrivacySections((arr)=>arr.filter((_, idx)=> idx !== i))}>Remove</Button>
+                <Input
+                  value={s.heading}
+                  onChange={(e) =>
+                    setPrivacySections((arr) =>
+                      arr.map((it, idx) =>
+                        idx === i ? { ...it, heading: e.target.value } : it,
+                      ),
+                    )
+                  }
+                  placeholder="Section heading"
+                />
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    setPrivacySections((arr) =>
+                      arr.filter((_, idx) => idx !== i),
+                    )
+                  }
+                >
+                  Remove
+                </Button>
               </div>
-              <textarea className="w-full border rounded p-2 text-sm min-h-[100px]" value={s.body} onChange={(e)=>setPrivacySections((arr)=>arr.map((it, idx)=> idx === i ? { ...it, body: e.target.value } : it))} placeholder="Section body (supports line breaks)" />
+              <textarea
+                className="w-full border rounded p-2 text-sm min-h-[100px]"
+                value={s.body}
+                onChange={(e) =>
+                  setPrivacySections((arr) =>
+                    arr.map((it, idx) =>
+                      idx === i ? { ...it, body: e.target.value } : it,
+                    ),
+                  )
+                }
+                placeholder="Section body (supports line breaks)"
+              />
             </div>
           ))}
         </div>
         <div>
-          <Button className="bg-ucla-blue" disabled={savingPrivacy} onClick={async ()=>{ try { setSavingPrivacy(true); await siteAPI.savePrivacy({ title: privacyTitle, subtitle: privacySubtitle || undefined, sections: privacySections }); alert("Privacy saved"); } finally { setSavingPrivacy(false); } }}>{savingPrivacy ? "Saving…" : "Save Privacy"}</Button>
+          <Button
+            className="bg-ucla-blue"
+            disabled={savingPrivacy}
+            onClick={async () => {
+              try {
+                setSavingPrivacy(true);
+                await siteAPI.savePrivacy({
+                  title: privacyTitle,
+                  subtitle: privacySubtitle || undefined,
+                  sections: privacySections,
+                });
+                alert("Privacy saved");
+              } finally {
+                setSavingPrivacy(false);
+              }
+            }}
+          >
+            {savingPrivacy ? "Saving…" : "Save Privacy"}
+          </Button>
         </div>
       </div>
 
       {error && <div className="text-sm text-red-600">{error}</div>}
 
       <div className="pt-2">
-        <Button className="bg-ucla-blue" disabled={saving} onClick={onSave}>{saving ? "Saving…" : "Save"}</Button>
+        <Button className="bg-ucla-blue" disabled={saving} onClick={onSave}>
+          {saving ? "Saving…" : "Save"}
+        </Button>
       </div>
     </div>
   );
@@ -420,22 +697,51 @@ function AdminApprovalsQuestions() {
     },
   });
   const approveQ = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: "approved"|"rejected" }) => questionsAPI.updateStatus(id, status),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["approvals-questions"] }); },
+    mutationFn: ({
+      id,
+      status,
+    }: {
+      id: string;
+      status: "approved" | "rejected";
+    }) => questionsAPI.updateStatus(id, status),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["approvals-questions"] });
+    },
   });
   return (
     <div>
       <h3 className="font-medium mb-2">Questions Pending</h3>
       <div className="space-y-2">
         {(data?.questions || []).map((q: any) => (
-          <div key={q.id} className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200">
+          <div
+            key={q.id}
+            className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200"
+          >
             <div className="min-w-0">
-              <div className="font-medium truncate" title={q.prompt}>{q.prompt}</div>
-              <div className="text-xs text-gray-600">{q.specialty || "General"} • pending</div>
+              <div className="font-medium truncate" title={q.prompt}>
+                {q.prompt}
+              </div>
+              <div className="text-xs text-gray-600">
+                {q.specialty || "General"} • pending
+              </div>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => approveQ.mutate({ id: q.id, status: "approved" })}>Approve</Button>
-              <Button variant="outline" onClick={() => approveQ.mutate({ id: q.id, status: "rejected" })}>Reject</Button>
+              <Button
+                variant="outline"
+                onClick={() =>
+                  approveQ.mutate({ id: q.id, status: "approved" })
+                }
+              >
+                Approve
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() =>
+                  approveQ.mutate({ id: q.id, status: "rejected" })
+                }
+              >
+                Reject
+              </Button>
             </div>
           </div>
         ))}
@@ -450,7 +756,10 @@ function AccountSettings() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const passwordsMatch = newPassword.length >= 6 && confirmPassword.length >= 6 && newPassword === confirmPassword;
+  const passwordsMatch =
+    newPassword.length >= 6 &&
+    confirmPassword.length >= 6 &&
+    newPassword === confirmPassword;
   const onSave = async () => {
     try {
       setSaving(true);
@@ -471,21 +780,41 @@ function AccountSettings() {
       <h2 className="font-medium">Account</h2>
       <div>
         <label className="text-sm">Current password</label>
-        <Input type="password" value={currentPassword} onChange={(e)=>setCurrentPassword(e.target.value)} />
+        <Input
+          type="password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+        />
       </div>
       <div>
         <label className="text-sm">New password</label>
-        <Input type="password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} />
+        <Input
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
       </div>
       <div>
         <label className="text-sm">Confirm new password</label>
-        <Input type="password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} />
+        <Input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
         {newPassword && confirmPassword && newPassword !== confirmPassword && (
-          <div className="text-xs text-red-600 mt-1">Passwords do not match</div>
+          <div className="text-xs text-red-600 mt-1">
+            Passwords do not match
+          </div>
         )}
       </div>
       <div className="flex items-center gap-2">
-        <Button className="bg-ucla-blue" onClick={onSave} disabled={saving || !passwordsMatch || currentPassword.length < 6}>{saving ? "Saving…" : "Save"}</Button>
+        <Button
+          className="bg-ucla-blue"
+          onClick={onSave}
+          disabled={saving || !passwordsMatch || currentPassword.length < 6}
+        >
+          {saving ? "Saving…" : "Save"}
+        </Button>
         {message && <div className="text-sm text-gray-600">{message}</div>}
       </div>
     </div>
@@ -496,9 +825,19 @@ export default function AdminDashboard() {
   const { isAuthenticated, user } = useAdmin();
   const qc = useQueryClient();
   const location = useLocation();
-  const initialTab = new URLSearchParams(location.search).get("tab") || (user?.role === "user" ? "trials" : "users");
+  const initialTab =
+    new URLSearchParams(location.search).get("tab") ||
+    (user?.role === "user" ? "trials" : "users");
   const [tab, setTab] = useState(initialTab);
-  const [newTrial, setNewTrial] = useState({ title: "", specialty: "", specialties: [] as string[], summary: "", authors: "", journal: "", year: "" });
+  const [newTrial, setNewTrial] = useState({
+    title: "",
+    specialty: "",
+    specialties: [] as string[],
+    summary: "",
+    authors: "",
+    journal: "",
+    year: "",
+  });
   const [newPdf, setNewPdf] = useState<File | null>(null);
   const [newPpt, setNewPpt] = useState<File | null>(null);
 
@@ -513,26 +852,43 @@ export default function AdminDashboard() {
     queryFn: () => presentationsAPI.getSpecialties(),
     enabled: !!backendAvailable,
   });
-  const baseSpecialties = useMemo(() => Array.from(new Set([...(SPECIALTY_NAMES || []), ...((specialtiesData?.specialties as string[]) || [])])), [specialtiesData?.specialties]);
+  const baseSpecialties = useMemo(
+    () =>
+      Array.from(
+        new Set([
+          ...(SPECIALTY_NAMES || []),
+          ...((specialtiesData?.specialties as string[]) || []),
+        ]),
+      ),
+    [specialtiesData?.specialties],
+  );
   const [addedSpecialties, setAddedSpecialties] = useState<string[]>([]);
   const [newSpecialtyInput, setNewSpecialtyInput] = useState("");
-  const allSpecialties = useMemo(() => Array.from(new Set([...
-    baseSpecialties,
-    ...addedSpecialties,
-  ])), [baseSpecialties, addedSpecialties]);
+  const allSpecialties = useMemo(
+    () => Array.from(new Set([...baseSpecialties, ...addedSpecialties])),
+    [baseSpecialties, addedSpecialties],
+  );
   const addSpecialty = () => {
     const s = newSpecialtyInput.trim();
     if (!s) return;
-    if (!allSpecialties.includes(s)) setAddedSpecialties(prev => [...prev, s]);
-    setNewTrial(v => ({ ...v, specialties: v.specialties.includes(s) ? v.specialties : [...v.specialties, s] }));
+    if (!allSpecialties.includes(s))
+      setAddedSpecialties((prev) => [...prev, s]);
+    setNewTrial((v) => ({
+      ...v,
+      specialties: v.specialties.includes(s)
+        ? v.specialties
+        : [...v.specialties, s],
+    }));
     setNewSpecialtyInput("");
   };
 
-  const [filterStatus, setFilterStatus] = useState<"all"|"approved"|"pending"|"rejected"|"archived">("all");
+  const [filterStatus, setFilterStatus] = useState<
+    "all" | "approved" | "pending" | "rejected" | "archived"
+  >("all");
   const [filterSpecialty, setFilterSpecialty] = useState<string>("all");
 
   // keep tab in sync with URL changes
-  useEffect(()=>{
+  useEffect(() => {
     const t = new URLSearchParams(location.search).get("tab") || "users";
     setTab(t);
   }, [location.search]);
@@ -544,7 +900,10 @@ export default function AdminDashboard() {
         if (user?.role === "user") return await presentationsAPI.myList();
         return await presentationsAPI.adminList({ limit: 50 });
       } catch (e) {
-        return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
+        return {
+          presentations: [],
+          pagination: { page: 1, limit: 50, total: 0, pages: 0 },
+        } as any;
       }
     },
     enabled: isAuthenticated && !!getToken(),
@@ -555,10 +914,20 @@ export default function AdminDashboard() {
     queryKey: ["admin-trials-pending", user?.role],
     queryFn: async () => {
       try {
-        if (user?.role === "user") return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
-        return await presentationsAPI.adminList({ status: "pending", limit: 50 });
+        if (user?.role === "user")
+          return {
+            presentations: [],
+            pagination: { page: 1, limit: 50, total: 0, pages: 0 },
+          } as any;
+        return await presentationsAPI.adminList({
+          status: "pending",
+          limit: 50,
+        });
       } catch (e) {
-        return { presentations: [], pagination: { page: 1, limit: 50, total: 0, pages: 0 } } as any;
+        return {
+          presentations: [],
+          pagination: { page: 1, limit: 50, total: 0, pages: 0 },
+        } as any;
       }
     },
     enabled: isAuthenticated && !!getToken(),
@@ -568,7 +937,8 @@ export default function AdminDashboard() {
   const filteredTrials = (trials?.presentations || []).filter((p: any) => {
     const status = p.status || "approved";
     const statusOk = filterStatus === "all" ? true : status === filterStatus;
-    const specOk = filterSpecialty === "all" ? true : p.specialty === filterSpecialty;
+    const specOk =
+      filterSpecialty === "all" ? true : p.specialty === filterSpecialty;
     return statusOk && specOk;
   });
 
@@ -577,7 +947,9 @@ export default function AdminDashboard() {
       const resp = await presentationsAPI.createPresentation({
         title: newTrial.title,
         specialty: newTrial.specialties[0] || undefined,
-        specialties: newTrial.specialties.length ? newTrial.specialties : undefined,
+        specialties: newTrial.specialties.length
+          ? newTrial.specialties
+          : undefined,
         summary: newTrial.summary,
         authors: newTrial.authors || undefined,
         journal: newTrial.journal || undefined,
@@ -595,7 +967,15 @@ export default function AdminDashboard() {
       return created;
     },
     onSuccess: () => {
-      setNewTrial({ title: "", specialty: "", specialties: [], summary: "", authors: "", journal: "", year: "" });
+      setNewTrial({
+        title: "",
+        specialty: "",
+        specialties: [],
+        summary: "",
+        authors: "",
+        journal: "",
+        year: "",
+      });
       setNewPdf(null);
       setNewPpt(null);
       qc.invalidateQueries({ queryKey: ["admin-trials"] });
@@ -604,7 +984,13 @@ export default function AdminDashboard() {
   });
 
   const approveMutation = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: "approved" | "rejected" | "pending" }) => presentationsAPI.updateStatus(id, status as any),
+    mutationFn: ({
+      id,
+      status,
+    }: {
+      id: string;
+      status: "approved" | "rejected" | "pending";
+    }) => presentationsAPI.updateStatus(id, status as any),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-trials"] });
       qc.invalidateQueries({ queryKey: ["admin-trials-pending"] });
@@ -617,161 +1003,302 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gray-50">
       <SiteHeader showQuickLinks />
       <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-2xl font-semibold text-ucla-blue mb-4">Admin Dashboard</h1>
-      <Tabs value={tab} onValueChange={setTab}>
-        <TabsList>
-          {user?.role !== "user" && <TabsTrigger value="users">Users</TabsTrigger>}
-          <TabsTrigger value="trials">Trials</TabsTrigger>
-          {user?.role !== "user" && <TabsTrigger value="approvals">Approvals{pending?.pagination?.total ? ` (${pending.pagination.total})` : pending?.presentations?.length ? ` (${pending.presentations.length})` : ""}</TabsTrigger>}
-          <TabsTrigger value="questions">Questions</TabsTrigger>
-          {user?.role !== "user" && <TabsTrigger value="files">File Sync</TabsTrigger>}
-          {user?.role !== "user" && <TabsTrigger value="site">Site</TabsTrigger>}
-          <TabsTrigger value="account">Account</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="users" className="mt-4">
-          <AdminUsers showHeader={false} />
-        </TabsContent>
-
-        <TabsContent value="trials" className="mt-4 space-y-6">
-          <div className="border rounded p-4 space-y-3">
-            <h2 className="font-medium">Create Trial/Presentation</h2>
-            <div className="grid sm:grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm">Title</label>
-                <Input value={newTrial.title} onChange={(e) => setNewTrial({ ...newTrial, title: e.target.value })} />
-              </div>
-              <div className="sm:col-span-2">
-                <label className="text-sm">Specialty</label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-1">
-                  {allSpecialties.map((s: string) => (
-                    <label key={s} className={`text-sm px-2 py-1 border rounded inline-flex items-center gap-2 ${newTrial.specialties.includes(s) ? "bg-ucla-gold/10 border-ucla-gold" : "bg-white"}`}>
-                      <input type="checkbox" checked={newTrial.specialties.includes(s)} onChange={(e)=> setNewTrial(v=> ({ ...v, specialties: e.target.checked ? [...v.specialties, s] : v.specialties.filter(x=>x!==s) }))} />
-                      <span className="truncate">{s}</span>
-                    </label>
-                  ))}
-                </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <Input placeholder="Add a specialty" value={newSpecialtyInput} onChange={(e)=>setNewSpecialtyInput(e.target.value)} onKeyDown={(e)=>{ if (e.key === "Enter") { e.preventDefault(); addSpecialty(); } }} />
-                  <Button type="button" variant="outline" onClick={addSpecialty}>Add</Button>
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label className="text-sm">Summary</label>
-                <Input value={newTrial.summary} onChange={(e) => setNewTrial({ ...newTrial, summary: e.target.value })} />
-              </div>
-              <div>
-                <label className="text-sm">Authors</label>
-                <Input value={newTrial.authors} onChange={(e) => setNewTrial({ ...newTrial, authors: e.target.value })} />
-              </div>
-              <div>
-                <label className="text-sm">Journal</label>
-                <Input value={newTrial.journal} onChange={(e) => setNewTrial({ ...newTrial, journal: e.target.value })} />
-              </div>
-              <div>
-                <label className="text-sm">Year</label>
-                <Input value={newTrial.year} onChange={(e) => setNewTrial({ ...newTrial, year: e.target.value })} />
-              </div>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-3 mt-2">
-              <div>
-                <label className="text-sm">Attach PDF (optional)</label>
-                <FileDropzone accept={["pdf"]} onFile={(f)=>setNewPdf(f)} />
-                {newPdf && <div className="text-xs text-gray-600 mt-1">Selected: {newPdf.name}</div>}
-              </div>
-              <div>
-                <label className="text-sm">Attach PPT/PPTX (optional)</label>
-                <FileDropzone accept={["ppt","pptx"]} onFile={(f)=>setNewPpt(f)} />
-                {newPpt && <div className="text-xs text-gray-600 mt-1">Selected: {newPpt.name}</div>}
-              </div>
-            </div>
-            <Button className="bg-ucla-blue mt-3" onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !newTrial.title || (newTrial.specialties.length === 0) || !newTrial.summary}>
-              {createMutation.isPending ? "Creating..." : "Create"}
-            </Button>
-            {createMutation.error && (
-              <div className="text-sm text-red-600 mt-2">{(createMutation.error as any).message || "Failed to create"}</div>
+        <h1 className="text-2xl font-semibold text-ucla-blue mb-4">
+          Admin Dashboard
+        </h1>
+        <Tabs value={tab} onValueChange={setTab}>
+          <TabsList>
+            {user?.role !== "user" && (
+              <TabsTrigger value="users">Users</TabsTrigger>
             )}
-          </div>
+            <TabsTrigger value="trials">Trials</TabsTrigger>
+            {user?.role !== "user" && (
+              <TabsTrigger value="approvals">
+                Approvals
+                {pending?.pagination?.total
+                  ? ` (${pending.pagination.total})`
+                  : pending?.presentations?.length
+                    ? ` (${pending.presentations.length})`
+                    : ""}
+              </TabsTrigger>
+            )}
+            <TabsTrigger value="questions">Questions</TabsTrigger>
+            {user?.role !== "user" && (
+              <TabsTrigger value="files">File Sync</TabsTrigger>
+            )}
+            {user?.role !== "user" && (
+              <TabsTrigger value="site">Site</TabsTrigger>
+            )}
+            <TabsTrigger value="account">Account</TabsTrigger>
+          </TabsList>
 
-          <div className="border rounded p-4">
-            <h2 className="font-medium mb-3">All Trials</h2>
-            <div className="flex flex-wrap gap-3 mb-3">
-              <div className="w-44">
-                <label className="text-xs text-gray-500">Status</label>
-                <Select value={(filterStatus as any)} onValueChange={(v)=>setFilterStatus(v as any)}>
-                  <SelectTrigger><SelectValue placeholder="All statuses" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="approved">Approved</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="rejected">Rejected</SelectItem>
-                    <SelectItem value="archived">Archived</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="w-56">
-                <label className="text-xs text-gray-500">Specialty</label>
-                <Select value={filterSpecialty} onValueChange={(v)=>setFilterSpecialty(v)}>
-                  <SelectTrigger><SelectValue placeholder="All specialties" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
+          <TabsContent value="users" className="mt-4">
+            <AdminUsers showHeader={false} />
+          </TabsContent>
+
+          <TabsContent value="trials" className="mt-4 space-y-6">
+            <div className="border rounded p-4 space-y-3">
+              <h2 className="font-medium">Create Trial/Presentation</h2>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-sm">Title</label>
+                  <Input
+                    value={newTrial.title}
+                    onChange={(e) =>
+                      setNewTrial({ ...newTrial, title: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-sm">Specialty</label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-1">
                     {allSpecialties.map((s: string) => (
-                      <SelectItem key={s} value={s}>{s}</SelectItem>
+                      <label
+                        key={s}
+                        className={`text-sm px-2 py-1 border rounded inline-flex items-center gap-2 ${newTrial.specialties.includes(s) ? "bg-ucla-gold/10 border-ucla-gold" : "bg-white"}`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={newTrial.specialties.includes(s)}
+                          onChange={(e) =>
+                            setNewTrial((v) => ({
+                              ...v,
+                              specialties: e.target.checked
+                                ? [...v.specialties, s]
+                                : v.specialties.filter((x) => x !== s),
+                            }))
+                          }
+                        />
+                        <span className="truncate">{s}</span>
+                      </label>
                     ))}
-                  </SelectContent>
-                </Select>
+                  </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <Input
+                      placeholder="Add a specialty"
+                      value={newSpecialtyInput}
+                      onChange={(e) => setNewSpecialtyInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          addSpecialty();
+                        }
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={addSpecialty}
+                    >
+                      Add
+                    </Button>
+                  </div>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-sm">Summary</label>
+                  <Input
+                    value={newTrial.summary}
+                    onChange={(e) =>
+                      setNewTrial({ ...newTrial, summary: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="text-sm">Authors</label>
+                  <Input
+                    value={newTrial.authors}
+                    onChange={(e) =>
+                      setNewTrial({ ...newTrial, authors: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="text-sm">Journal</label>
+                  <Input
+                    value={newTrial.journal}
+                    onChange={(e) =>
+                      setNewTrial({ ...newTrial, journal: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="text-sm">Year</label>
+                  <Input
+                    value={newTrial.year}
+                    onChange={(e) =>
+                      setNewTrial({ ...newTrial, year: e.target.value })
+                    }
+                  />
+                </div>
               </div>
-            </div>
-            <div className="space-y-2">
-              {filteredTrials?.map((p: any) => (
-                <TrialRow key={p.id} p={p} onApprove={(status) => approveMutation.mutate({ id: p.id, status })} />
-              ))}
-              {filteredTrials?.length === 0 && (
-                <div className="text-sm text-gray-600">No submissions yet.</div>
+              <div className="grid sm:grid-cols-2 gap-3 mt-2">
+                <div>
+                  <label className="text-sm">Attach PDF (optional)</label>
+                  <FileDropzone accept={["pdf"]} onFile={(f) => setNewPdf(f)} />
+                  {newPdf && (
+                    <div className="text-xs text-gray-600 mt-1">
+                      Selected: {newPdf.name}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm">Attach PPT/PPTX (optional)</label>
+                  <FileDropzone
+                    accept={["ppt", "pptx"]}
+                    onFile={(f) => setNewPpt(f)}
+                  />
+                  {newPpt && (
+                    <div className="text-xs text-gray-600 mt-1">
+                      Selected: {newPpt.name}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <Button
+                className="bg-ucla-blue mt-3"
+                onClick={() => createMutation.mutate()}
+                disabled={
+                  createMutation.isPending ||
+                  !newTrial.title ||
+                  newTrial.specialties.length === 0 ||
+                  !newTrial.summary
+                }
+              >
+                {createMutation.isPending ? "Creating..." : "Create"}
+              </Button>
+              {createMutation.error && (
+                <div className="text-sm text-red-600 mt-2">
+                  {(createMutation.error as any).message || "Failed to create"}
+                </div>
               )}
             </div>
-          </div>
-        </TabsContent>
 
-        <TabsContent value="approvals" className="mt-4">
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-medium mb-2">Trials/Presentations Pending</h3>
+            <div className="border rounded p-4">
+              <h2 className="font-medium mb-3">All Trials</h2>
+              <div className="flex flex-wrap gap-3 mb-3">
+                <div className="w-44">
+                  <label className="text-xs text-gray-500">Status</label>
+                  <Select
+                    value={filterStatus as any}
+                    onValueChange={(v) => setFilterStatus(v as any)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="All statuses" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All</SelectItem>
+                      <SelectItem value="approved">Approved</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="rejected">Rejected</SelectItem>
+                      <SelectItem value="archived">Archived</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="w-56">
+                  <label className="text-xs text-gray-500">Specialty</label>
+                  <Select
+                    value={filterSpecialty}
+                    onValueChange={(v) => setFilterSpecialty(v)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="All specialties" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All</SelectItem>
+                      {allSpecialties.map((s: string) => (
+                        <SelectItem key={s} value={s}>
+                          {s}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
               <div className="space-y-2">
-                {pending?.presentations?.map((p: any) => (
-                  <div key={p.id} className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200">
-                    <div>
-                      <div className="font-medium">{p.title}</div>
-                      <div className="text-xs text-gray-600">{p.specialty} • pending</div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" onClick={() => approveMutation.mutate({ id: p.id, status: "approved" })}>Approve</Button>
-                      <Button variant="outline" onClick={() => approveMutation.mutate({ id: p.id, status: "rejected" })}>Reject</Button>
-                    </div>
-                  </div>
+                {filteredTrials?.map((p: any) => (
+                  <TrialRow
+                    key={p.id}
+                    p={p}
+                    onApprove={(status) =>
+                      approveMutation.mutate({ id: p.id, status })
+                    }
+                  />
                 ))}
+                {filteredTrials?.length === 0 && (
+                  <div className="text-sm text-gray-600">
+                    No submissions yet.
+                  </div>
+                )}
               </div>
             </div>
-            <AdminApprovalsQuestions />
-          </div>
-        </TabsContent>
+          </TabsContent>
 
-        <TabsContent value="questions" className="mt-4">
-          <AdminQuestions />
-        </TabsContent>
+          <TabsContent value="approvals" className="mt-4">
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-medium mb-2">
+                  Trials/Presentations Pending
+                </h3>
+                <div className="space-y-2">
+                  {pending?.presentations?.map((p: any) => (
+                    <div
+                      key={p.id}
+                      className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200"
+                    >
+                      <div>
+                        <div className="font-medium">{p.title}</div>
+                        <div className="text-xs text-gray-600">
+                          {p.specialty} • pending
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() =>
+                            approveMutation.mutate({
+                              id: p.id,
+                              status: "approved",
+                            })
+                          }
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() =>
+                            approveMutation.mutate({
+                              id: p.id,
+                              status: "rejected",
+                            })
+                          }
+                        >
+                          Reject
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <AdminApprovalsQuestions />
+            </div>
+          </TabsContent>
 
-        <TabsContent value="files" className="mt-4">
-          <AdminFileSyncPanel />
-        </TabsContent>
+          <TabsContent value="questions" className="mt-4">
+            <AdminQuestions />
+          </TabsContent>
 
-        <TabsContent value="site" className="mt-4">
-          <SiteEditor />
-        </TabsContent>
+          <TabsContent value="files" className="mt-4">
+            <AdminFileSyncPanel />
+          </TabsContent>
 
-        <TabsContent value="account" className="mt-4">
-          <AccountSettings />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="site" className="mt-4">
+            <SiteEditor />
+          </TabsContent>
+
+          <TabsContent value="account" className="mt-4">
+            <AccountSettings />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

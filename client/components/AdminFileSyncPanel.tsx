@@ -105,7 +105,8 @@ export default function AdminFileSyncPanel() {
         <div>
           <h2 className="text-lg font-semibold">Sync Files from Bucket</h2>
           <p className="text-sm text-gray-600 mt-1">
-            Automatically update presentation file paths based on files in your Supabase storage bucket.
+            Automatically update presentation file paths based on files in your
+            Supabase storage bucket.
           </p>
         </div>
 
@@ -127,7 +128,9 @@ export default function AdminFileSyncPanel() {
           </Button>
           <Button
             onClick={handleExecuteSync}
-            disabled={executing || loading || !preview || preview.matchesToUpdate === 0}
+            disabled={
+              executing || loading || !preview || preview.matchesToUpdate === 0
+            }
           >
             {executing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             Execute Sync
@@ -176,7 +179,9 @@ export default function AdminFileSyncPanel() {
                     key={update.presentationId}
                     className="bg-white rounded p-3 text-sm space-y-1"
                   >
-                    <div className="font-medium">{update.presentationTitle}</div>
+                    <div className="font-medium">
+                      {update.presentationTitle}
+                    </div>
                     {update.pdfFile && (
                       <div className="text-xs text-gray-600">
                         📄 PDF: {update.pdfFile}
