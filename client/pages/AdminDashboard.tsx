@@ -83,7 +83,7 @@ function TrialRow({
                   e.stopPropagation();
                   if (p.pdf_path) setShowViewer(true);
                 }}
-                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.pdf_path ? "text-green-700 border-green-200 bg-green-50 hover:bg-green-100 cursor-pointer" : "text-gray-500 border-gray-200 bg-gray-50 cursor-not-allowed"}`}
+                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.pdf_path ? "text-green-700 border-green-200 bg-green-50 hover:bg-green-100 cursor-pointer dark:text-green-300 dark:border-green-900 dark:bg-green-950 dark:hover:bg-green-900" : "text-gray-500 border-gray-200 bg-gray-50 cursor-not-allowed dark:text-slate-400 dark:border-slate-700 dark:bg-slate-900"}`}
                 title={p.pdf_path ? "Open PDF" : "No PDF"}
                 disabled={!p.pdf_path}
               >
@@ -95,7 +95,7 @@ function TrialRow({
                   e.stopPropagation();
                   if (p.ppt_path) setShowViewer(true);
                 }}
-                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.ppt_path ? "text-green-700 border-green-200 bg-green-50 hover:bg-green-100 cursor-pointer" : "text-gray-500 border-gray-200 bg-gray-50 cursor-not-allowed"}`}
+                className={`px-1.5 py-0.5 rounded border inline-flex items-center gap-1 ${p.ppt_path ? "text-green-700 border-green-200 bg-green-50 hover:bg-green-100 cursor-pointer dark:text-green-300 dark:border-green-900 dark:bg-green-950 dark:hover:bg-green-900" : "text-gray-500 border-gray-200 bg-gray-50 cursor-not-allowed dark:text-slate-400 dark:border-slate-700 dark:bg-slate-900"}`}
                 title={p.ppt_path ? "Open PPT" : "No PPT"}
                 disabled={!p.ppt_path}
               >
