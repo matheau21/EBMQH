@@ -1181,7 +1181,7 @@ export default function AdminDashboard() {
               <h2 className="font-medium mb-3 dark:text-slate-100">All Trials</h2>
               <div className="flex flex-wrap gap-3 mb-3">
                 <div className="w-44">
-                  <label className="text-xs text-gray-500">Status</label>
+                  <label className="text-xs text-gray-500 dark:text-slate-400">Status</label>
                   <Select
                     value={filterStatus as any}
                     onValueChange={(v) => setFilterStatus(v as any)}
@@ -1199,7 +1199,7 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
                 <div className="w-56">
-                  <label className="text-xs text-gray-500">Specialty</label>
+                  <label className="text-xs text-gray-500 dark:text-slate-400">Specialty</label>
                   <Select
                     value={filterSpecialty}
                     onValueChange={(v) => setFilterSpecialty(v)}
