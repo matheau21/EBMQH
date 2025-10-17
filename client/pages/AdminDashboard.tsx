@@ -1229,7 +1229,7 @@ export default function AdminDashboard() {
                   />
                 ))}
                 {filteredTrials?.length === 0 && (
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-gray-600 dark:text-slate-400">
                     No submissions yet.
                   </div>
                 )}
