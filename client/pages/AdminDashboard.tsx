@@ -676,7 +676,7 @@ function SiteEditor() {
         </div>
       </div>
 
-      {error && <div className="text-sm text-red-600">{error}</div>}
+      {error && <div className="text-sm text-red-600 dark:text-red-400">{error}</div>}
 
       <div className="pt-2">
         <Button className="bg-ucla-blue" disabled={saving} onClick={onSave}>
