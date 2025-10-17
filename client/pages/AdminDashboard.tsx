@@ -1177,8 +1177,8 @@ export default function AdminDashboard() {
               )}
             </div>
 
-            <div className="border rounded p-4">
-              <h2 className="font-medium mb-3">All Trials</h2>
+            <div className="border rounded p-4 dark:border-slate-700 dark:bg-slate-800">
+              <h2 className="font-medium mb-3 dark:text-slate-100">All Trials</h2>
               <div className="flex flex-wrap gap-3 mb-3">
                 <div className="w-44">
                   <label className="text-xs text-gray-500">Status</label>
