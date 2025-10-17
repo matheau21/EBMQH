@@ -1041,8 +1041,8 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="trials" className="mt-4 space-y-6">
-            <div className="border rounded p-4 space-y-3">
-              <h2 className="font-medium">Create Trial/Presentation</h2>
+            <div className="border rounded p-4 space-y-3 dark:border-slate-700 dark:bg-slate-800">
+              <h2 className="font-medium dark:text-slate-100">Create Trial/Presentation</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm">Title</label>
