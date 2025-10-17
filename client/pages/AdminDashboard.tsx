@@ -426,11 +426,11 @@ function SiteEditor() {
     }
   };
 
-  if (loading) return <div className="border rounded p-4">Loading…</div>;
+  if (loading) return <div className="border rounded p-4 dark:border-slate-700 dark:bg-slate-800">Loading…</div>;
 
   return (
-    <div className="border rounded p-4 space-y-4">
-      <h2 className="font-medium">Site Content</h2>
+    <div className="border rounded p-4 space-y-4 dark:border-slate-700 dark:bg-slate-800">
+      <h2 className="font-medium dark:text-slate-100">Site Content</h2>
       <div className="grid sm:grid-cols-2 gap-3">
         <div className="sm:col-span-2">
           <label className="text-sm">About Title</label>
