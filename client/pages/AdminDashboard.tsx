@@ -505,26 +505,26 @@ function SiteEditor() {
       </div>
 
       <div className="space-y-2">
-        <div className="font-medium">Featured Trials (max 3)</div>
+        <div className="font-medium dark:text-slate-100">Featured Trials (max 3)</div>
         <div className="grid sm:grid-cols-2 gap-2">
           {allApproved.map((p) => (
             <label
               key={p.id}
-              className={`flex items-center gap-2 border rounded px-3 py-2 ${featuredIds.includes(p.id) ? "bg-ucla-gold/10 border-ucla-gold" : "bg-white"}`}
+              className={`flex items-center gap-2 border rounded px-3 py-2 ${featuredIds.includes(p.id) ? "bg-ucla-gold/10 border-ucla-gold dark:bg-yellow-950 dark:border-yellow-900" : "bg-white dark:bg-slate-700 dark:border-slate-600"}`}
             >
               <input
                 type="checkbox"
                 checked={featuredIds.includes(p.id)}
                 onChange={() => toggleFeatured(p.id)}
               />
-              <span className="truncate">{p.title}</span>
-              <span className="ml-auto text-xs text-gray-600">
+              <span className="truncate dark:text-slate-100">{p.title}</span>
+              <span className="ml-auto text-xs text-gray-600 dark:text-slate-400">
                 {p.specialty}
               </span>
             </label>
           ))}
         </div>
-        <div className="text-xs text-gray-600">
+        <div className="text-xs text-gray-600 dark:text-slate-400">
           Selected: {featuredIds.length}/3
         </div>
         <Button
