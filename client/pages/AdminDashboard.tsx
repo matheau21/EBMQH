@@ -456,7 +456,7 @@ function SiteEditor() {
           <div className="text-sm text-gray-600">No sections yet.</div>
         )}
         {sections.map((s, i) => (
-          <div key={i} className="border rounded p-3 space-y-2 bg-white">
+          <div key={i} className="border rounded p-3 space-y-2 bg-white dark:bg-slate-700 dark:border-slate-600">
             <div className="flex items-center gap-2">
               <Input
                 value={s.heading}
@@ -468,7 +468,7 @@ function SiteEditor() {
               </Button>
             </div>
             <textarea
-              className="w-full border rounded p-2 text-sm min-h-[100px]"
+              className="w-full border rounded p-2 text-sm min-h-[100px] dark:bg-slate-600 dark:border-slate-500 dark:text-slate-50"
               value={s.body}
               onChange={(e) => updateSection(i, "body", e.target.value)}
               placeholder="Section body (supports line breaks)"
