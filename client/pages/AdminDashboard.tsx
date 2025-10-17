@@ -214,15 +214,15 @@ function TrialRow({
           </DialogHeader>
           <div className="space-y-2">
             <div className="text-lg font-semibold">{p.title}</div>
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 dark:text-slate-400">
               {p.specialty}
               {p.year ? ` • ${p.year}` : ""}
             </div>
             {p.summary && (
-              <div className="text-sm text-gray-700">{p.summary}</div>
+              <div className="text-sm text-gray-700 dark:text-slate-300">{p.summary}</div>
             )}
             {(p.authors || p.journal) && (
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-gray-500 dark:text-slate-400">
                 {p.authors && <div className="font-medium">{p.authors}</div>}
                 {p.journal && <div>{p.journal}</div>}
               </div>
