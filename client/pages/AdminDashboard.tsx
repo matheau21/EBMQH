@@ -1001,12 +1001,15 @@ export default function AdminDashboard() {
   if (!isAuthenticated) return <div className="p-6">Please login.</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground dark:bg-slate-950 dark:text-slate-50">
       <SiteHeader showQuickLinks />
       <div className="max-w-6xl mx-auto p-6">
-        <h1 className="text-2xl font-semibold text-ucla-blue mb-4">
-          Admin Dashboard
-        </h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-semibold text-ucla-blue">
+            Admin Dashboard
+          </h1>
+          <ThemeToggle />
+        </div>
         <Tabs value={tab} onValueChange={setTab}>
           <TabsList>
             {user?.role !== "user" && (
