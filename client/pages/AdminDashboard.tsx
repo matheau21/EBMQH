@@ -777,10 +777,10 @@ function AccountSettings() {
     }
   };
   return (
-    <div className="border rounded p-4 space-y-3 max-w-md">
-      <h2 className="font-medium">Account</h2>
+    <div className="border rounded p-4 space-y-3 max-w-md dark:border-slate-700 dark:bg-slate-800">
+      <h2 className="font-medium dark:text-slate-100">Account</h2>
       <div>
-        <label className="text-sm">Current password</label>
+        <label className="text-sm dark:text-slate-300">Current password</label>
         <Input
           type="password"
           value={currentPassword}
@@ -788,7 +788,7 @@ function AccountSettings() {
         />
       </div>
       <div>
-        <label className="text-sm">New password</label>
+        <label className="text-sm dark:text-slate-300">New password</label>
         <Input
           type="password"
           value={newPassword}
@@ -796,14 +796,14 @@ function AccountSettings() {
         />
       </div>
       <div>
-        <label className="text-sm">Confirm new password</label>
+        <label className="text-sm dark:text-slate-300">Confirm new password</label>
         <Input
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
         {newPassword && confirmPassword && newPassword !== confirmPassword && (
-          <div className="text-xs text-red-600 mt-1">
+          <div className="text-xs text-red-600 dark:text-red-400 mt-1">
             Passwords do not match
           </div>
         )}
@@ -816,7 +816,7 @@ function AccountSettings() {
         >
           {saving ? "Saving…" : "Save"}
         </Button>
-        {message && <div className="text-sm text-gray-600">{message}</div>}
+        {message && <div className="text-sm text-gray-600 dark:text-slate-400">{message}</div>}
       </div>
     </div>
   );
