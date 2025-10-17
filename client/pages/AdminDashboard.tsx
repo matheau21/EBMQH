@@ -1171,7 +1171,7 @@ export default function AdminDashboard() {
                 {createMutation.isPending ? "Creating..." : "Create"}
               </Button>
               {createMutation.error && (
-                <div className="text-sm text-red-600 mt-2">
+                <div className="text-sm text-red-600 dark:text-red-400 mt-2">
                   {(createMutation.error as any).message || "Failed to create"}
                 </div>
               )}
