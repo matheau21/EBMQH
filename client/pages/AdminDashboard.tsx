@@ -107,22 +107,22 @@ function TrialRow({
       </div>
       <div className="flex items-center gap-2">
         {status === "approved" && (
-          <span className="text-xs px-2 py-1 rounded bg-green-100 text-green-700 border border-green-200">
+          <span className="text-xs px-2 py-1 rounded bg-green-100 text-green-700 border border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-900">
             Live
           </span>
         )}
         {status === "rejected" && (
-          <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600 border border-gray-200">
+          <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600 border border-gray-200 dark:bg-slate-900 dark:text-slate-400 dark:border-slate-700">
             Rejected
           </span>
         )}
         {status === "pending" && (
-          <span className="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-800 border border-yellow-200">
+          <span className="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-800 border border-yellow-200 dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-900">
             Pending
           </span>
         )}
         {status === "archived" && (
-          <span className="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700 border border-gray-300">
+          <span className="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700 border border-gray-300 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600">
             Archived
           </span>
         )}
