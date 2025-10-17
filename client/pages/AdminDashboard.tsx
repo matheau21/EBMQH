@@ -1240,18 +1240,18 @@ export default function AdminDashboard() {
           <TabsContent value="approvals" className="mt-4">
             <div className="space-y-6">
               <div>
-                <h3 className="font-medium mb-2">
+                <h3 className="font-medium mb-2 dark:text-slate-100">
                   Trials/Presentations Pending
                 </h3>
                 <div className="space-y-2">
                   {pending?.presentations?.map((p: any) => (
                     <div
                       key={p.id}
-                      className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200"
+                      className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-900"
                     >
                       <div>
-                        <div className="font-medium">{p.title}</div>
-                        <div className="text-xs text-gray-600">
+                        <div className="font-medium dark:text-slate-100">{p.title}</div>
+                        <div className="text-xs text-gray-600 dark:text-slate-400">
                           {p.specialty} • pending
                         </div>
                       </div>
