@@ -1045,7 +1045,7 @@ export default function AdminDashboard() {
               <h2 className="font-medium dark:text-slate-100">Create Trial/Presentation</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm">Title</label>
+                  <label className="text-sm dark:text-slate-300">Title</label>
                   <Input
                     value={newTrial.title}
                     onChange={(e) =>
@@ -1054,7 +1054,7 @@ export default function AdminDashboard() {
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="text-sm">Specialty</label>
+                  <label className="text-sm dark:text-slate-300">Specialty</label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-1">
                     {allSpecialties.map((s: string) => (
                       <label
