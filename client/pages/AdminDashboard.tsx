@@ -54,10 +54,10 @@ function TrialRow({
   const isAdmin = user?.role !== "user";
   const containerCls = `flex items-center justify-between border rounded px-3 py-2 ${
     status === "rejected"
-      ? "bg-gray-50 border-gray-200"
+      ? "bg-gray-50 border-gray-200 dark:bg-slate-900 dark:border-slate-700"
       : status === "pending"
-        ? "bg-yellow-50 border-yellow-200"
-        : "bg-white"
+        ? "bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-900"
+        : "bg-white dark:bg-slate-800"
   }`;
   return (
     <div className={containerCls}>
