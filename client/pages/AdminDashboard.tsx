@@ -32,6 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { siteAPI } from "@/lib/api";
