@@ -67,12 +67,12 @@ function TrialRow({
         title="Preview public view"
       >
         <div
-          className={`font-medium ${status === "rejected" ? "text-gray-500" : "hover:underline"}`}
+          className={`font-medium ${status === "rejected" ? "text-gray-500 dark:text-slate-400" : "hover:underline"}`}
         >
           {p.title}
         </div>
         <div
-          className={`text-xs ${status === "rejected" ? "text-gray-400" : "text-gray-500"}`}
+          className={`text-xs ${status === "rejected" ? "text-gray-400 dark:text-slate-500" : "text-gray-500 dark:text-slate-400"}`}
         >
           {p.specialty} • {status}
           {(status === "approved" || status === "archived") && (
