@@ -1059,7 +1059,7 @@ export default function AdminDashboard() {
                     {allSpecialties.map((s: string) => (
                       <label
                         key={s}
-                        className={`text-sm px-2 py-1 border rounded inline-flex items-center gap-2 ${newTrial.specialties.includes(s) ? "bg-ucla-gold/10 border-ucla-gold" : "bg-white"}`}
+                        className={`text-sm px-2 py-1 border rounded inline-flex items-center gap-2 ${newTrial.specialties.includes(s) ? "bg-ucla-gold/10 border-ucla-gold dark:bg-yellow-950 dark:border-yellow-900" : "bg-white dark:bg-slate-700 dark:border-slate-600"}`}
                       >
                         <input
                           type="checkbox"
@@ -1073,7 +1073,7 @@ export default function AdminDashboard() {
                             }))
                           }
                         />
-                        <span className="truncate">{s}</span>
+                        <span className="truncate dark:text-slate-100">{s}</span>
                       </label>
                     ))}
                   </div>
