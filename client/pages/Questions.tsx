@@ -258,7 +258,7 @@ function QuizPageInner() {
               {current && (
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="sm" onClick={() => setShowPdfPanel((v) => !v)}>
-                    {showPdfPanel ? "Hide Trial Paper" : "Show Trial Paper"}
+                    {showPdfPanel ? "Hide Presentation" : "Show Presentation"}
                   </Button>
                 </div>
               )}
