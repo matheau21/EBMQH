@@ -28,11 +28,18 @@ function QuizPageInner() {
   const [answered, setAnswered] = useState(0);
   const [correct, setCorrect] = useState(0);
 
-  // Right-side PDF panel state
+  // Right-side presentation panel state
   const [showPdfPanel, setShowPdfPanel] = useState<boolean>(false);
   const [pdfUrl, setPdfUrl] = useState<string | undefined>(undefined);
+  const [pptUrl, setPptUrl] = useState<string | undefined>(undefined);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [pdfError, setPdfError] = useState<string | null>(null);
+
+  const pptEmbedUrl = useMemo(() => {
+    if (!pptUrl) return undefined;
+    if (pptUrl.startsWith('blob:')) return pptUrl;
+    return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(pptUrl)}`;
+  }, [pptUrl]);
 
   const { data: specialties } = useQuery({
     queryKey: ["specialties"],
