@@ -115,8 +115,10 @@ function QuizPageInner() {
       try {
         const res = await presentationsAPI.getFileUrls(current.presentationId);
         setPdfUrl(res.pdfUrl || undefined);
+        setPptUrl(res.pptUrl || undefined);
       } catch (_e: any) {
         setPdfUrl(undefined);
+        setPptUrl(undefined);
         setPdfError(null);
       } finally {
         setPdfLoading(false);
