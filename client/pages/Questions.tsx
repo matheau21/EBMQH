@@ -339,18 +339,37 @@ function QuizPageInner() {
                   )}
                 </div>
 
-                {/* Right: Collapsible PDF panel */}
+                {/* Right: Collapsible Presentation panel */}
                 {showPdfPanel && (
                   <div className="min-h-[50vh] md:minh-[70vh] border rounded overflow-hidden border-border">
-                    <div className="px-3 py-2 bg-background border-b border-border text-xs font-medium text-foreground">Trial Paper</div>
+                    <div className="px-3 py-2 bg-background border-b border-border text-xs font-medium text-foreground">Presentation</div>
                     <div className="h-[50vh] md:h-[70vh] bg-background">
                       {pdfLoading ? (
-                        <div className="h-full flex items-center justify-center text-muted-foreground text-sm">Loading trial paper…</div>
+                        <div className="h-full flex items-center justify-center text-muted-foreground text-sm">Loading presentation…</div>
+                      ) : pptUrl ? (
+                        pptUrl.startsWith('blob:') ? (
+                          <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
+                            <div className="text-center">
+                              PowerPoint file detected. Open in a new tab to view.
+                              <div className="mt-3">
+                                <Button onClick={() => window.open(pptUrl, '_blank')}>Open Presentation</Button>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <iframe
+                            src={pptEmbedUrl}
+                            className="w-full h-full bg-background"
+                            title={`${current?.presentationTitle || 'Presentation'} - PPT`}
+                            allow="fullscreen"
+                            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                          />
+                        )
                       ) : pdfUrl ? (
                         <PdfHighlightViewer url={pdfUrl} highlights={confirmed ? (current.highlights || []) : []} />
                       ) : (
                         <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
-                          {pdfError ? pdfError : "No trial paper available for this question."}
+                          {pdfError ? pdfError : "No presentation available for this question."}
                         </div>
                       )}
                     </div>
