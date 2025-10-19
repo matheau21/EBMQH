@@ -10,7 +10,6 @@ import SiteHeader from "@/components/SiteHeader";
 import PdfHighlightViewer from "@/components/PdfHighlightViewer";
 import SiteFooter from "@/components/SiteFooter";
 import { Link } from "react-router-dom";
-import { useMemo } from "react";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
