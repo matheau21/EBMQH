@@ -68,7 +68,8 @@ const specialtyConfig = [
     icon: ModernHemeOncIcon,
     color:
       "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20 hover:bg-specialty-hemeonc/20",
-    activeColor: "bg-specialty-hemeonc/30 text-specialty-hemeonc dark:bg-specialty-hemeonc/20 dark:text-specialty-hemeonc border-specialty-hemeonc/50 ring-1 ring-specialty-hemeonc/40",
+    activeColor:
+      "bg-specialty-hemeonc/30 text-specialty-hemeonc dark:bg-specialty-hemeonc/20 dark:text-specialty-hemeonc border-specialty-hemeonc/50 ring-1 ring-specialty-hemeonc/40",
   },
   {
     name: "Infectious Disease",
@@ -107,7 +108,8 @@ const specialtyConfig = [
     icon: ModernNeurologyIcon,
     color:
       "bg-specialty-neurology/10 text-specialty-neurology border-specialty-neurology/20 hover:bg-specialty-neurology/20",
-    activeColor: "bg-specialty-neurology/30 text-specialty-neurology dark:bg-specialty-neurology/20 dark:text-specialty-neurology border-specialty-neurology/50 ring-1 ring-specialty-neurology/40",
+    activeColor:
+      "bg-specialty-neurology/30 text-specialty-neurology dark:bg-specialty-neurology/20 dark:text-specialty-neurology border-specialty-neurology/50 ring-1 ring-specialty-neurology/40",
   },
 ];
 
