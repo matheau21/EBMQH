@@ -40,11 +40,12 @@ const specialtyConfig = [
       "bg-specialty-cardiology/30 text-specialty-cardiology dark:bg-specialty-cardiology/20 dark:text-specialty-cardiology border-specialty-cardiology/50 ring-1 ring-specialty-cardiology/40",
   },
   {
-    name: "Heme/Onc",
-    icon: ModernHemeOncIcon,
+    name: "Pulmonary/Critical Care",
+    icon: ModernPulmonaryCriticalIcon,
     color:
-      "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20 hover:bg-specialty-hemeonc/20",
-    activeColor: "bg-specialty-hemeonc/30 text-specialty-hemeonc dark:bg-specialty-hemeonc/20 dark:text-specialty-hemeonc border-specialty-hemeonc/50 ring-1 ring-specialty-hemeonc/40",
+      "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20 hover:bg-specialty-pulmonarycritical/20",
+    activeColor:
+      "bg-specialty-pulmonarycritical/30 text-specialty-pulmonarycritical dark:bg-specialty-pulmonarycritical/20 dark:text-specialty-pulmonarycritical border-specialty-pulmonarycritical/50 ring-1 ring-specialty-pulmonarycritical/40",
   },
   {
     name: "Endocrinology",
@@ -63,12 +64,11 @@ const specialtyConfig = [
       "bg-specialty-generalinternal/30 text-specialty-generalinternal dark:bg-specialty-generalinternal/20 dark:text-specialty-generalinternal border-specialty-generalinternal/50 ring-1 ring-specialty-generalinternal/40",
   },
   {
-    name: "Pulmonary/Critical Care",
-    icon: ModernPulmonaryCriticalIcon,
+    name: "Heme/Onc",
+    icon: ModernHemeOncIcon,
     color:
-      "bg-specialty-pulmonarycritical/10 text-specialty-pulmonarycritical border-specialty-pulmonarycritical/20 hover:bg-specialty-pulmonarycritical/20",
-    activeColor:
-      "bg-specialty-pulmonarycritical/30 text-specialty-pulmonarycritical dark:bg-specialty-pulmonarycritical/20 dark:text-specialty-pulmonarycritical border-specialty-pulmonarycritical/50 ring-1 ring-specialty-pulmonarycritical/40",
+      "bg-specialty-hemeonc/10 text-specialty-hemeonc border-specialty-hemeonc/20 hover:bg-specialty-hemeonc/20",
+    activeColor: "bg-specialty-hemeonc/30 text-specialty-hemeonc dark:bg-specialty-hemeonc/20 dark:text-specialty-hemeonc border-specialty-hemeonc/50 ring-1 ring-specialty-hemeonc/40",
   },
   {
     name: "Infectious Disease",
