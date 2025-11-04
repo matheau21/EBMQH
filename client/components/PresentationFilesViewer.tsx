@@ -14,12 +14,13 @@ interface Props {
   fallbackPptUrl?: string;
 }
 
-export default function PresentationFilesViewer({ isOpen, onClose, presentationId, title, fallbackPdfUrl, fallbackPptUrl, onCountedView }: Props) {
+export default function PresentationFilesViewer({ isOpen, onClose, presentationId, title, fallbackPdfUrl, fallbackPptUrl }: Props) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | undefined>(undefined);
   const [pptUrl, setPptUrl] = useState<string | undefined>(undefined);
+  const { incrementView } = useViewCounter(presentationId);
 
   useEffect(() => {
     let ignore = false;
@@ -47,20 +48,14 @@ export default function PresentationFilesViewer({ isOpen, onClose, presentationI
     return () => { ignore = true; };
   }, [isOpen, presentationId, fallbackPdfUrl, fallbackPptUrl]);
 
-  // After open, wait 10s then increment unique view (per browser per presentation)
+  // After modal opens, increment view counter after 5 seconds
   useEffect(() => {
     if (!isOpen) return;
-    const key = `viewed:${presentationId}`;
-    if (localStorage.getItem(key)) return; // already counted for this browser
-    const t = setTimeout(async () => {
-      try {
-        const res = await presentationsAPI.incrementViewCount(presentationId);
-        localStorage.setItem(key, "1");
-        onCountedView?.(res.viewerCount);
-      } catch {}
-    }, 10000);
-    return () => clearTimeout(t);
-  }, [isOpen, presentationId, onCountedView]);
+    const timer = setTimeout(() => {
+      incrementView();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [isOpen, presentationId, incrementView]);
 
   const pptEmbedUrl = useMemo(() => {
     if (!pptUrl) return undefined;
