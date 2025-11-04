@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FileText, Presentation, Maximize2, Minimize2, X } from "lucide-react";
 import { presentationsAPI } from "@/lib/api";
+import { useViewCounter } from "@/hooks/useViewCounter";
 
 interface Props {
   isOpen: boolean;
@@ -11,7 +12,6 @@ interface Props {
   title: string;
   fallbackPdfUrl?: string;
   fallbackPptUrl?: string;
-  onCountedView?: (newCount: number) => void;
 }
 
 export default function PresentationFilesViewer({ isOpen, onClose, presentationId, title, fallbackPdfUrl, fallbackPptUrl, onCountedView }: Props) {
