@@ -11,7 +11,6 @@ import {
   Star,
   MoreHorizontal,
   Presentation,
-  BookOpen,
 } from "lucide-react";
 import { PresentationViewer } from "./PresentationViewer";
 import PresentationFilesViewer from "./PresentationFilesViewer";
@@ -23,6 +22,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useAdmin } from "@/contexts/AdminContext";
+import { useViewCounter } from "@/hooks/useViewCounter";
 import {
   ModernCardiologyIcon,
   ModernHemeOncIcon,
