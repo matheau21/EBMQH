@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Presentation as PresIcon, Calendar, Upload, Pause, Play, BookOpen } from "lucide-react";
+import { Presentation as PresIcon, Calendar, Upload, Pause, Play } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useQuery } from "@tanstack/react-query";
 import { siteAPI, Presentation } from "@/lib/api";
@@ -13,6 +13,7 @@ import {
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import { FeaturedUpload } from "./FeaturedUpload";
 import PresentationFilesViewer from "./PresentationFilesViewer";
+import { useViewCounter } from "@/hooks/useViewCounter";
 
 interface FeaturedPresentationData {
   title: string;
