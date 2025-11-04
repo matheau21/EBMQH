@@ -427,28 +427,17 @@ export function PresentationCard({
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          {/* Quick Hits Button */}
+        <div className="flex gap-2">
           <Button
             onClick={() => setShowFilesViewer(true)}
-            className="w-full"
+            className="flex-1"
           >
             <Presentation className="h-4 w-4 mr-2" />
-            View Files
-          </Button>
-
-          {/* Original Article Button */}
-          <Button
-            onClick={() => setShowFilesViewer(true)}
-            variant="outline"
-            className="w-full"
-          >
-            <BookOpen className="h-4 w-4 mr-2" />
-            Original Article
+            View Trial
           </Button>
         </div>
 
-        {/* Combined Files Viewer */}
+        {/* Files Viewer */}
         <PresentationFilesViewer
           isOpen={showFilesViewer}
           onClose={() => setShowFilesViewer(false)}
@@ -456,7 +445,6 @@ export function PresentationCard({
           title={title}
           fallbackPdfUrl={originalArticleUrl}
           fallbackPptUrl={presentationFileUrl}
-          onCountedView={(newCount)=> setViews(newCount || (views + 1))}
         />
       </CardContent>
     </Card>
