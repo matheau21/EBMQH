@@ -123,26 +123,7 @@ export function FeaturedPresentation() {
                 </div>
               </CarouselItem>
             ) : (
-              items.map((p: any) => (
-                <CarouselItem key={p.id}>
-                  <div className="px-4">
-                    <h3 className="text-2xl font-bold text-foreground mb-2">{p.title}</h3>
-                    <div className="flex items-center justify-center mb-3 text-primary">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      <p className="text-sm font-medium">{p.journal ? `${p.journal}${p.year ? ` • ${p.year}` : ""}` : p.year || ""}</p>
-                    </div>
-                    <p className="text-muted-foreground mb-5 max-w-xl mx-auto">{p.summary}</p>
-                    <div className="flex justify-center gap-3">
-                      <Button onClick={() => openViewer(p)}>
-                        <PresIcon className="h-4 w-4 mr-2" /> View Files
-                      </Button>
-                      <Button variant="outline" onClick={() => openViewer(p)}>
-                        <BookOpen className="h-4 w-4 mr-2" /> Original Article
-                      </Button>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))
+              items.map((p: any) => <FeaturedCarouselItem key={p.id} presentation={p} onViewerOpen={openViewer} />)
             )}
           </CarouselContent>
           <CarouselPrevious
