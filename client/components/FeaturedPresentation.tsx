@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Presentation as PresIcon, Calendar, Upload, Pause, Play } from "lucide-react";
+import {
+  Presentation as PresIcon,
+  Calendar,
+  Upload,
+  Pause,
+  Play,
+} from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useQuery } from "@tanstack/react-query";
 import { siteAPI, Presentation } from "@/lib/api";
@@ -10,7 +16,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 import { FeaturedUpload } from "./FeaturedUpload";
 import PresentationFilesViewer from "./PresentationFilesViewer";
 import { useViewCounter } from "@/hooks/useViewCounter";
@@ -26,16 +39,30 @@ interface FeaturedPresentationData {
   originalArticleUrl?: string; // For original articles
 }
 
-function FeaturedCarouselItem({ presentation, onViewerOpen }: { presentation: Presentation; onViewerOpen: (p: Presentation) => void }) {
+function FeaturedCarouselItem({
+  presentation,
+  onViewerOpen,
+}: {
+  presentation: Presentation;
+  onViewerOpen: (p: Presentation) => void;
+}) {
   return (
     <CarouselItem>
       <div className="px-4">
-        <h3 className="text-2xl font-bold text-foreground mb-2">{presentation.title}</h3>
+        <h3 className="text-2xl font-bold text-foreground mb-2">
+          {presentation.title}
+        </h3>
         <div className="flex items-center justify-center mb-3 text-primary">
           <Calendar className="h-4 w-4 mr-2" />
-          <p className="text-sm font-medium">{presentation.journal ? `${presentation.journal}${presentation.year ? ` • ${presentation.year}` : ""}` : presentation.year || ""}</p>
+          <p className="text-sm font-medium">
+            {presentation.journal
+              ? `${presentation.journal}${presentation.year ? ` • ${presentation.year}` : ""}`
+              : presentation.year || ""}
+          </p>
         </div>
-        <p className="text-muted-foreground mb-5 max-w-xl mx-auto">{presentation.summary}</p>
+        <p className="text-muted-foreground mb-5 max-w-xl mx-auto">
+          {presentation.summary}
+        </p>
         <div className="flex justify-center gap-3">
           <Button onClick={() => onViewerOpen(presentation)}>
             <PresIcon className="h-4 w-4 mr-2" /> View Trial
@@ -59,9 +86,12 @@ export function FeaturedPresentation() {
     queryFn: () => siteAPI.getFeaturedPresentations(),
     staleTime: 30000,
   });
-  const items = (data?.presentations || []);
+  const items = data?.presentations || [];
 
-  async function speedScrollTo(target: number, direction: "forward" | "backward") {
+  async function speedScrollTo(
+    target: number,
+    direction: "forward" | "backward",
+  ) {
     if (!api || items.length === 0) return;
     setPaused(true);
     const maxSteps = items.length + 2;
@@ -102,7 +132,10 @@ export function FeaturedPresentation() {
       ...data,
       uploadedAt: new Date().toISOString(),
     };
-    localStorage.setItem("ebm-featured-presentation", JSON.stringify(presentationWithDate));
+    localStorage.setItem(
+      "ebm-featured-presentation",
+      JSON.stringify(presentationWithDate),
+    );
     setShowUploadModal(false);
   };
 
@@ -118,8 +151,17 @@ export function FeaturedPresentation() {
         </div>
 
         <div className="absolute right-0 top-0 flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={() => setPaused(!paused)} title={paused ? "Play" : "Pause"}>
-            {paused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setPaused(!paused)}
+            title={paused ? "Play" : "Pause"}
+          >
+            {paused ? (
+              <Play className="h-4 w-4" />
+            ) : (
+              <Pause className="h-4 w-4" />
+            )}
           </Button>
           {isAdminMode && (
             <Button onClick={handleUploadFeatured} variant="outline">
@@ -129,21 +171,40 @@ export function FeaturedPresentation() {
         </div>
 
         <div className="mb-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Featured Presentations</h2>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">Recently added to ebmhits.org</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+            Featured Presentations
+          </h2>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
+            Recently added to ebmhits.org
+          </p>
         </div>
 
-        <Carousel setApi={setApi} className="max-w-3xl mx-auto" opts={{ loop: false }}>
+        <Carousel
+          setApi={setApi}
+          className="max-w-3xl mx-auto"
+          opts={{ loop: false }}
+        >
           <CarouselContent>
             {items.length === 0 ? (
               <CarouselItem>
                 <div className="text-center py-6">
-                  <h3 className="text-2xl font-bold text-foreground mb-2">Featured Presentation</h3>
-                  <p className="text-muted-foreground">Access the latest landmark trial presentation from our noon conference</p>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">
+                    Featured Presentation
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Access the latest landmark trial presentation from our noon
+                    conference
+                  </p>
                 </div>
               </CarouselItem>
             ) : (
-              items.map((p: any) => <FeaturedCarouselItem key={p.id} presentation={p} onViewerOpen={openViewer} />)
+              items.map((p: any) => (
+                <FeaturedCarouselItem
+                  key={p.id}
+                  presentation={p}
+                  onViewerOpen={openViewer}
+                />
+              ))
             )}
           </CarouselContent>
           <CarouselPrevious

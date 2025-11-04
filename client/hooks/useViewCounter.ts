@@ -24,7 +24,7 @@ export function useViewCounter(presentationId: string, initialCount?: number) {
   const canIncrementView = useCallback(() => {
     const lastViewKey = getLastViewKey(presentationId);
     const lastView = localStorage.getItem(lastViewKey);
-    
+
     if (!lastView) {
       return true; // First view
     }
@@ -46,7 +46,7 @@ export function useViewCounter(presentationId: string, initialCount?: number) {
     const newCount = views + 1;
     localStorage.setItem(countKey, String(newCount));
     localStorage.setItem(lastViewKey, String(now));
-    
+
     setViews(newCount);
     return newCount;
   }, [presentationId, views, canIncrementView]);

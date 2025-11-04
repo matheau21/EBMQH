@@ -106,7 +106,11 @@ export function PresentationCard({
   const [showFilesViewer, setShowFilesViewer] = useState(false);
   const { views } = useViewCounter(id, viewerCount);
   const displaySpecialties = Array.from(
-    new Set([specialty, ...(Array.isArray(specialties) ? specialties : [])].filter(Boolean) as string[])
+    new Set(
+      [specialty, ...(Array.isArray(specialties) ? specialties : [])].filter(
+        Boolean,
+      ) as string[],
+    ),
   ).slice(0, 2);
   const specialtyColors: Record<string, string> = {
     Cardiology:
@@ -261,7 +265,11 @@ export function PresentationCard({
                     className={`flex items-center justify-center ${getSpecialtyThumbnailColors(spec)}`}
                   >
                     {img ? (
-                      <img src={img} alt={spec} className="h-16 w-16 object-contain" />
+                      <img
+                        src={img}
+                        alt={spec}
+                        className="h-16 w-16 object-contain"
+                      />
                     ) : Icon ? (
                       <div className="h-16 w-16">
                         <Icon />
@@ -405,11 +413,14 @@ export function PresentationCard({
 
         {(journal || year) && (
           <div className="text-sm text-muted-foreground mb-3">
-            {journal ? journal : ""}{year ? `${journal ? " / " : ""}${year}` : ""}
+            {journal ? journal : ""}
+            {year ? `${journal ? " / " : ""}${year}` : ""}
           </div>
         )}
 
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{summary}</p>
+        <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+          {summary}
+        </p>
 
         {authors && (
           <div className="text-xs text-muted-foreground mb-4">
@@ -428,10 +439,7 @@ export function PresentationCard({
         </div>
 
         <div className="flex gap-2">
-          <Button
-            onClick={() => setShowFilesViewer(true)}
-            className="flex-1"
-          >
+          <Button onClick={() => setShowFilesViewer(true)} className="flex-1">
             <Presentation className="h-4 w-4 mr-2" />
             View Trial
           </Button>
