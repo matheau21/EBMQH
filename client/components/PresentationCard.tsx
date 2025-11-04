@@ -104,7 +104,7 @@ export function PresentationCard({
 }: PresentationCardProps) {
   const { isAdminMode } = useAdmin();
   const [showFilesViewer, setShowFilesViewer] = useState(false);
-  const { views } = useViewCounter(id);
+  const { views } = useViewCounter(id, viewerCount);
   const displaySpecialties = Array.from(
     new Set([specialty, ...(Array.isArray(specialties) ? specialties : [])].filter(Boolean) as string[])
   ).slice(0, 2);
