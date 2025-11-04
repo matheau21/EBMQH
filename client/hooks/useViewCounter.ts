@@ -2,7 +2,7 @@ import { useCallback, useState, useEffect } from "react";
 
 const THIRTY_MINUTES_MS = 30 * 60 * 1000;
 
-export function useViewCounter(presentationId: string) {
+export function useViewCounter(presentationId: string, initialCount?: number) {
   const [views, setViews] = useState<number>(0);
 
   const getStorageKey = (id: string) => `view_counter:${id}`;
@@ -14,8 +14,12 @@ export function useViewCounter(presentationId: string) {
     const stored = localStorage.getItem(key);
     if (stored) {
       setViews(parseInt(stored, 10));
+    } else if (initialCount !== undefined && initialCount > 0) {
+      // Initialize with prop value if no localStorage entry exists
+      setViews(initialCount);
+      localStorage.setItem(key, String(initialCount));
     }
-  }, [presentationId]);
+  }, [presentationId, initialCount]);
 
   const canIncrementView = useCallback(() => {
     const lastViewKey = getLastViewKey(presentationId);
