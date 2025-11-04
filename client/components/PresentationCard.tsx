@@ -103,10 +103,8 @@ export function PresentationCard({
   onToggleFeatured,
 }: PresentationCardProps) {
   const { isAdminMode } = useAdmin();
-  const [showPresentationViewer, setShowPresentationViewer] = useState(false);
-  const [showArticleViewer, setShowArticleViewer] = useState(false);
   const [showFilesViewer, setShowFilesViewer] = useState(false);
-  const [views, setViews] = useState<number>(viewerCount || 0);
+  const { views } = useViewCounter(id);
   const displaySpecialties = Array.from(
     new Set([specialty, ...(Array.isArray(specialties) ? specialties : [])].filter(Boolean) as string[])
   ).slice(0, 2);
