@@ -26,6 +26,26 @@ interface FeaturedPresentationData {
   originalArticleUrl?: string; // For original articles
 }
 
+function FeaturedCarouselItem({ presentation, onViewerOpen }: { presentation: Presentation; onViewerOpen: (p: Presentation) => void }) {
+  return (
+    <CarouselItem>
+      <div className="px-4">
+        <h3 className="text-2xl font-bold text-foreground mb-2">{presentation.title}</h3>
+        <div className="flex items-center justify-center mb-3 text-primary">
+          <Calendar className="h-4 w-4 mr-2" />
+          <p className="text-sm font-medium">{presentation.journal ? `${presentation.journal}${presentation.year ? ` • ${presentation.year}` : ""}` : presentation.year || ""}</p>
+        </div>
+        <p className="text-muted-foreground mb-5 max-w-xl mx-auto">{presentation.summary}</p>
+        <div className="flex justify-center gap-3">
+          <Button onClick={() => onViewerOpen(presentation)}>
+            <PresIcon className="h-4 w-4 mr-2" /> View Trial
+          </Button>
+        </div>
+      </div>
+    </CarouselItem>
+  );
+}
+
 export function FeaturedPresentation() {
   const { isAdminMode } = useAdmin();
   const [showUploadModal, setShowUploadModal] = useState(false);
