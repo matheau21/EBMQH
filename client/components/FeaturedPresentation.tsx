@@ -6,6 +6,7 @@ import {
   Upload,
   Pause,
   Play,
+  Eye,
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useQuery } from "@tanstack/react-query";
@@ -46,6 +47,8 @@ function FeaturedCarouselItem({
   presentation: Presentation;
   onViewerOpen: (p: Presentation) => void;
 }) {
+  const { views } = useViewCounter(presentation.id, presentation.viewerCount || 0);
+
   return (
     <CarouselItem>
       <div className="px-4">
@@ -63,6 +66,12 @@ function FeaturedCarouselItem({
         <p className="text-muted-foreground mb-5 max-w-xl mx-auto">
           {presentation.summary}
         </p>
+        <div className="flex items-center justify-center gap-2 text-muted-foreground mb-5">
+          <Eye className="h-4 w-4" />
+          <span className="text-sm font-medium">
+            {views.toLocaleString()}
+          </span>
+        </div>
         <div className="flex justify-center gap-3">
           <Button onClick={() => onViewerOpen(presentation)}>
             <PresIcon className="h-4 w-4 mr-2" /> View Trial
