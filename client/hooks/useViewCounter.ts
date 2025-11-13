@@ -1,59 +1,57 @@
 import { useCallback, useState, useEffect } from "react";
 
-const THIRTY_MINUTES_MS = 30 * 60 * 1000;
+const TWENTY_MINUTES_MS = 20 * 60 * 1000;
+const GLOBAL_VIEW_COUNT_KEY = "ebm_global_view_count";
+const GLOBAL_LAST_VIEW_KEY = "ebm_global_last_view_timestamp";
 
 export function useViewCounter(presentationId: string, initialCount?: number) {
   const [views, setViews] = useState<number>(0);
 
-  const getStorageKey = (id: string) => `view_counter:${id}`;
-  const getLastViewKey = (id: string) => `last_view:${id}`;
-
   useEffect(() => {
-    // Load initial count from localStorage
-    const key = getStorageKey(presentationId);
-    const stored = localStorage.getItem(key);
-    if (stored) {
-      setViews(parseInt(stored, 10));
+    // Load global count from localStorage
+    const storedCount = localStorage.getItem(GLOBAL_VIEW_COUNT_KEY);
+    if (storedCount) {
+      setViews(parseInt(storedCount, 10));
     } else if (initialCount !== undefined && initialCount > 0) {
       // Initialize with prop value if no localStorage entry exists
       setViews(initialCount);
-      localStorage.setItem(key, String(initialCount));
+      localStorage.setItem(GLOBAL_VIEW_COUNT_KEY, String(initialCount));
+    } else {
+      // Start at 0 if neither stored nor prop provided
+      setViews(0);
+      localStorage.setItem(GLOBAL_VIEW_COUNT_KEY, "0");
     }
-  }, [presentationId, initialCount]);
+  }, [initialCount]);
 
-  const canIncrementView = useCallback(() => {
-    const lastViewKey = getLastViewKey(presentationId);
-    const lastView = localStorage.getItem(lastViewKey);
+  const canIncrementGlobalView = useCallback(() => {
+    const lastViewTimestamp = localStorage.getItem(GLOBAL_LAST_VIEW_KEY);
 
-    if (!lastView) {
-      return true; // First view
+    if (!lastViewTimestamp) {
+      return true; // First view ever
     }
 
-    const lastViewTime = parseInt(lastView, 10);
+    const lastViewTime = parseInt(lastViewTimestamp, 10);
     const now = Date.now();
-    return now - lastViewTime >= THIRTY_MINUTES_MS;
-  }, [presentationId]);
+    return now - lastViewTime >= TWENTY_MINUTES_MS;
+  }, []);
 
   const incrementView = useCallback(() => {
-    if (!canIncrementView()) {
+    if (!canIncrementGlobalView()) {
       return views;
     }
 
-    const countKey = getStorageKey(presentationId);
-    const lastViewKey = getLastViewKey(presentationId);
     const now = Date.now();
-
     const newCount = views + 1;
-    localStorage.setItem(countKey, String(newCount));
-    localStorage.setItem(lastViewKey, String(now));
+
+    localStorage.setItem(GLOBAL_VIEW_COUNT_KEY, String(newCount));
+    localStorage.setItem(GLOBAL_LAST_VIEW_KEY, String(now));
 
     setViews(newCount);
     return newCount;
-  }, [presentationId, views, canIncrementView]);
+  }, [views, canIncrementGlobalView]);
 
   return {
     views,
-    canIncrementView,
     incrementView,
   };
 }
