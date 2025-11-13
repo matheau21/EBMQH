@@ -47,7 +47,10 @@ function FeaturedCarouselItem({
   presentation: Presentation;
   onViewerOpen: (p: Presentation) => void;
 }) {
-  const { views } = useViewCounter(presentation.id, presentation.viewerCount || 0);
+  const { views } = useViewCounter(
+    presentation.id,
+    presentation.viewerCount || 0,
+  );
 
   return (
     <CarouselItem>
@@ -68,9 +71,7 @@ function FeaturedCarouselItem({
         </p>
         <div className="flex items-center justify-center gap-2 text-muted-foreground mb-5">
           <Eye className="h-4 w-4" />
-          <span className="text-sm font-medium">
-            {views.toLocaleString()}
-          </span>
+          <span className="text-sm font-medium">{views.toLocaleString()}</span>
         </div>
         <div className="flex justify-center gap-3">
           <Button onClick={() => onViewerOpen(presentation)}>
