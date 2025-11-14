@@ -36,20 +36,24 @@ export function useViewCounter(presentationId: string, initialCount?: number) {
 
   const incrementView = useCallback(() => {
     if (!canIncrementView()) {
-      return views;
+      return false;
     }
 
     const countKey = getStorageKey(presentationId);
     const lastViewKey = getLastViewKey(presentationId);
     const now = Date.now();
 
-    const newCount = views + 1;
+    // Read the current count directly from localStorage instead of relying on stale state
+    const currentCount = localStorage.getItem(countKey);
+    const newCount = (currentCount ? parseInt(currentCount, 10) : 0) + 1;
+
     localStorage.setItem(countKey, String(newCount));
     localStorage.setItem(lastViewKey, String(now));
 
+    // Update state after localStorage is updated
     setViews(newCount);
-    return newCount;
-  }, [presentationId, views, canIncrementView]);
+    return true;
+  }, [presentationId, canIncrementView]);
 
   return {
     views,
