@@ -35,7 +35,7 @@ export default function AdminQuestions() {
         const res = await questionsAPI.myList();
         return { questions: res.questions, pagination: { page: 1, limit: res.questions.length, total: res.questions.length, pages: 1 } } as any;
       }
-      return questionsAPI.adminList({ page: 1, limit: 50 });
+      return questionsAPI.adminList({ page: 1, limit: 200 });
     },
     enabled: isAuthenticated,
   });
