@@ -67,14 +67,6 @@ export default function SiteFooter() {
                   <span className="opacity-70">EBM Reference Card</span>
                 )}
               </li>
-              <li>
-                <Link
-                  to="/privacy"
-                  className="hover:text-white dark:hover:text-foreground transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
             </ul>
           </div>
           <div>
