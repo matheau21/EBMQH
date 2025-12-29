@@ -185,7 +185,7 @@ export function FeaturedPresentation() {
             Featured Presentations
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground mt-1">
-            Recently added to ebmhits.org
+            Current landmark trial selected for the EBM curriculum
           </p>
         </div>
 
