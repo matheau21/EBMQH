@@ -38,11 +38,6 @@ export default function SiteFooter() {
               <EBMLogo size="sm" />
               <span className="text-xl font-bold">EBM Quick Hits</span>
             </div>
-            <p className="text-blue-200 dark:text-muted-foreground">
-              Landmark medical trial summaries
-              <br />
-              for education and practice
-            </p>
           </div>
           <div>
             <h3 className="font-semibold mb-4">Quick Links</h3>
