@@ -264,6 +264,8 @@ function SiteEditor() {
   >([]);
   const [refUrl, setRefUrl] = useState<string>("");
   const [refPath, setRefPath] = useState<string>("");
+  const [currUrl, setCurrUrl] = useState<string>("");
+  const [currPath, setCurrPath] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   const [featuredIds, setFeaturedIds] = useState<string[]>([]);
