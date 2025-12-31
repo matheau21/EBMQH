@@ -419,6 +419,7 @@ function SiteEditor() {
         subtitle,
         sections,
         referenceCard: { url: refUrl || null, filePath: refPath || null },
+        suggestedCurriculum: { url: currUrl || null, filePath: currPath || null },
       });
       alert("Saved");
     } catch (e: any) {
