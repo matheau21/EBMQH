@@ -277,6 +277,41 @@ router.post(
   },
 );
 
+router.post(
+  "/curriculum/upload",
+  authenticateAdminToken,
+  async (req: AdminAuthRequest, res: Response) => {
+    try {
+      if (
+        !(req.adminUser!.role === "admin" || req.adminUser!.role === "owner")
+      ) {
+        return res.status(403).json({ error: "Admin access required" });
+      }
+      const { filename, contentBase64 } = z
+        .object({
+          filename: z.string().min(1),
+          contentBase64: z.string().min(10),
+        })
+        .parse(req.body);
+      const buffer = Buffer.from(contentBase64, "base64");
+      const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `site/curriculum/${Date.now()}_${safeName}`;
+      const { error: upErr } = await supabaseAdmin.storage
+        .from(STORAGE_BUCKET)
+        .upload(path, buffer, {
+          contentType: "application/octet-stream",
+          upsert: true,
+        });
+      if (upErr) return res.status(500).json({ error: upErr.message });
+      return res.json({ message: "Uploaded", path });
+    } catch (err) {
+      if (err instanceof z.ZodError)
+        return res.status(400).json({ error: "Invalid input" });
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
+
 // Contact content
 const ContactSchema = z.object({
   title: z.string().min(1).max(200).default("Contact Us"),
