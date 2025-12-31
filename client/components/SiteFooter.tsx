@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { EBMLogo } from "@/components/EBMLogo";
 import { AdminToggleButton } from "@/components/AdminToggleButton";
 import { siteAPI } from "@/lib/api";
-import { useAdmin } from "@/contexts/AdminContext";
 import { LoginModal } from "@/components/LoginModal";
 import ReferencePdfModal from "@/components/ReferencePdfModal";
 
