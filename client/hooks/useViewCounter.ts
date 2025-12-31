@@ -16,7 +16,8 @@ function getUserId(): string {
 export function useViewCounter(presentationId: string, initialCount?: number) {
   const [views, setViews] = useState<number>(initialCount || 0);
 
-  const getLastViewKey = (id: string, userId: string) => `last_view:${id}:${userId}`;
+  const getLastViewKey = (id: string, userId: string) =>
+    `last_view:${id}:${userId}`;
 
   useEffect(() => {
     if (initialCount !== undefined && initialCount > 0) {
@@ -49,7 +50,8 @@ export function useViewCounter(presentationId: string, initialCount?: number) {
       const now = Date.now();
 
       // Call backend to increment view count
-      const response = await presentationsAPI.incrementViewCount(presentationId);
+      const response =
+        await presentationsAPI.incrementViewCount(presentationId);
 
       // Update local state with the response from backend
       if (response.viewerCount !== undefined) {
