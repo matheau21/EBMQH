@@ -93,18 +93,6 @@ export default function SiteFooter() {
                   <span className="opacity-70">Suggested Curriculum</span>
                 )}
               </li>
-              {isAuthenticated && (
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => setShowCurriculumUpload(true)}
-                    className="text-xs hover:text-white dark:hover:text-foreground transition-colors opacity-80"
-                    aria-label="Upload Curriculum"
-                  >
-                    (Admin: Upload)
-                  </button>
-                </li>
-              )}
             </ul>
           </div>
           <div>
