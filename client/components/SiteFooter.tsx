@@ -162,42 +162,6 @@ export default function SiteFooter() {
           title="Suggested Curriculum"
         />
       )}
-      {showCurriculumUpload && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 max-w-md w-full">
-            <h2 className="text-lg font-semibold mb-4 text-foreground">
-              Upload Suggested Curriculum
-            </h2>
-            <div className="mb-4">
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={async (e) => {
-                  const file = e.currentTarget.files?.[0];
-                  if (file) {
-                    await handleCurriculumUpload(file);
-                  }
-                }}
-                disabled={uploadingCurriculum}
-                className="block w-full text-sm text-foreground cursor-pointer"
-              />
-            </div>
-            {uploadingCurriculum && (
-              <p className="text-sm text-muted-foreground mb-4">Uploading...</p>
-            )}
-            <div className="flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setShowCurriculumUpload(false)}
-                className="px-4 py-2 rounded border border-border hover:bg-accent transition-colors text-foreground"
-                disabled={uploadingCurriculum}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
       <AdminToggleButton />
     </footer>
   );
