@@ -26,6 +26,12 @@ const AboutSchema = z.object({
       filePath: z.string().optional().nullable(),
     })
     .default({}),
+  suggestedCurriculum: z
+    .object({
+      url: z.string().url().optional().nullable(),
+      filePath: z.string().optional().nullable(),
+    })
+    .default({}),
 });
 
 const STORAGE_BUCKET = "presentations"; // reuse existing bucket
