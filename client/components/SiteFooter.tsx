@@ -17,8 +17,6 @@ export default function SiteFooter() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showReferenceModal, setShowReferenceModal] = useState(false);
   const [showCurriculumModal, setShowCurriculumModal] = useState(false);
-  const [showCurriculumUpload, setShowCurriculumUpload] = useState(false);
-  const [uploadingCurriculum, setUploadingCurriculum] = useState(false);
   const { isAuthenticated } = useAdmin();
 
   useEffect(() => {
@@ -39,37 +37,6 @@ export default function SiteFooter() {
       ignore = true;
     };
   }, []);
-
-  const handleCurriculumUpload = async (file: File) => {
-    try {
-      setUploadingCurriculum(true);
-      const result = await siteAPI.uploadCurriculum(file);
-      // Update the about config with the new curriculum path
-      const cfg = await siteAPI.getAbout();
-      await siteAPI.saveAbout({
-        title: cfg.title,
-        subtitle: cfg.subtitle,
-        sections: cfg.sections,
-        referenceCard: cfg.referenceCard,
-        suggestedCurriculum: {
-          filePath: result.path,
-        },
-      });
-      // Refresh the curriculum href
-      const updatedCfg = await siteAPI.getAbout();
-      setCurriculumHref(
-        updatedCfg?.suggestedCurriculum?.url ||
-          updatedCfg?.suggestedCurriculum?.signedUrl ||
-          undefined,
-      );
-      setShowCurriculumUpload(false);
-    } catch (error) {
-      console.error("Error uploading curriculum:", error);
-      alert("Failed to upload curriculum");
-    } finally {
-      setUploadingCurriculum(false);
-    }
-  };
 
   return (
     <footer className="py-12 mt-16 relative bg-ucla-blue text-white dark:bg-card dark:text-foreground">
