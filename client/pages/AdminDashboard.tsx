@@ -520,6 +520,33 @@ function SiteEditor() {
       </div>
 
       <div className="space-y-2">
+        <div className="font-medium">Suggested Curriculum Link</div>
+        <Input
+          placeholder="https://..."
+          value={currUrl}
+          onChange={(e) => {
+            setCurrUrl(e.target.value);
+            if (e.target.value) setCurrPath("");
+          }}
+        />
+        <div className="text-xs text-gray-600">
+          Or upload a file to link to:
+        </div>
+        <input
+          type="file"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) onUploadCurr(f);
+          }}
+        />
+        {currPath && (
+          <div className="text-xs text-gray-700">
+            Uploaded path: <span className="font-mono">{currPath}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-2">
         <div className="font-medium dark:text-slate-100">Featured Trials (max 3)</div>
         <div className="grid sm:grid-cols-2 gap-2">
           {allApproved.map((p) => (
