@@ -62,13 +62,50 @@ export default function PresentationFilesViewer({
     };
   }, [isOpen, presentationId, fallbackPdfUrl, fallbackPptUrl]);
 
-  // After modal opens, increment view counter after 5 seconds
+  // After modal opens, increment view counter after 5 seconds if conditions are met
   useEffect(() => {
     if (!isOpen) return;
+
+    let isStillOpen = true;
+    let visibilityUnsubscribe: (() => void) | null = null;
+
+    const checkEligibility = () => {
+      // Check if modal is still open
+      if (!isStillOpen) return false;
+
+      // Check if page/tab is visible and in focus
+      if (document.hidden) return false;
+      if (!document.hasFocus()) return false;
+
+      return true;
+    };
+
+    const handleVisibilityChange = () => {
+      // If tab becomes hidden, mark it - will check again after visibility returns
+      if (document.hidden) {
+        isStillOpen = false;
+      }
+    };
+
+    // Listen for visibility changes
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    visibilityUnsubscribe = () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+
     const timer = setTimeout(() => {
-      incrementView();
+      if (checkEligibility()) {
+        incrementView();
+      }
     }, 5000);
-    return () => clearTimeout(timer);
+
+    return () => {
+      isStillOpen = false;
+      clearTimeout(timer);
+      if (visibilityUnsubscribe) {
+        visibilityUnsubscribe();
+      }
+    };
   }, [isOpen, presentationId, incrementView]);
 
   const pptEmbedUrl = useMemo(() => {
