@@ -1,4 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
+import { presentationsAPI } from "@/lib/api";
 
 const THIRTY_MINUTES_MS = 30 * 60 * 1000;
 const USER_ID_KEY = "ebm_user_id";
@@ -13,19 +14,13 @@ function getUserId(): string {
 }
 
 export function useViewCounter(presentationId: string, initialCount?: number) {
-  const [views, setViews] = useState<number>(0);
+  const [views, setViews] = useState<number>(initialCount || 0);
 
-  const getStorageKey = (id: string) => `view_counter:${id}`;
   const getLastViewKey = (id: string, userId: string) => `last_view:${id}:${userId}`;
 
   useEffect(() => {
-    const key = getStorageKey(presentationId);
-    const stored = localStorage.getItem(key);
-    if (stored) {
-      setViews(parseInt(stored, 10));
-    } else if (initialCount !== undefined && initialCount > 0) {
+    if (initialCount !== undefined && initialCount > 0) {
       setViews(initialCount);
-      localStorage.setItem(key, String(initialCount));
     }
   }, [presentationId, initialCount]);
 
@@ -43,24 +38,32 @@ export function useViewCounter(presentationId: string, initialCount?: number) {
     return now - lastViewTime >= THIRTY_MINUTES_MS;
   }, [presentationId]);
 
-  const incrementView = useCallback(() => {
+  const incrementView = useCallback(async () => {
     if (!canIncrementView()) {
       return false;
     }
 
-    const userId = getUserId();
-    const countKey = getStorageKey(presentationId);
-    const lastViewKey = getLastViewKey(presentationId, userId);
-    const now = Date.now();
+    try {
+      const userId = getUserId();
+      const lastViewKey = getLastViewKey(presentationId, userId);
+      const now = Date.now();
 
-    const currentCount = localStorage.getItem(countKey);
-    const newCount = (currentCount ? parseInt(currentCount, 10) : 0) + 1;
+      // Call backend to increment view count
+      const response = await presentationsAPI.incrementViewCount(presentationId);
 
-    localStorage.setItem(countKey, String(newCount));
-    localStorage.setItem(lastViewKey, String(now));
+      // Update local state with the response from backend
+      if (response.viewerCount !== undefined) {
+        setViews(response.viewerCount);
+      }
 
-    setViews(newCount);
-    return true;
+      // Record this user's view timestamp for the 30-minute lockout
+      localStorage.setItem(lastViewKey, String(now));
+
+      return true;
+    } catch (error) {
+      console.error("Error incrementing view count:", error);
+      return false;
+    }
   }, [presentationId, canIncrementView]);
 
   return {
