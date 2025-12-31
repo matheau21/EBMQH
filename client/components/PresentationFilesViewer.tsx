@@ -93,9 +93,9 @@ export default function PresentationFilesViewer({
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
 
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       if (checkEligibility()) {
-        incrementView();
+        await incrementView();
       }
     }, 5000);
 
