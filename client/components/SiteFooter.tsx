@@ -11,8 +11,14 @@ export default function SiteFooter() {
   const [referenceHref, setReferenceHref] = useState<string | undefined>(
     undefined,
   );
+  const [curriculumHref, setCurriculumHref] = useState<string | undefined>(
+    undefined,
+  );
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showReferenceModal, setShowReferenceModal] = useState(false);
+  const [showCurriculumModal, setShowCurriculumModal] = useState(false);
+  const [showCurriculumUpload, setShowCurriculumUpload] = useState(false);
+  const [uploadingCurriculum, setUploadingCurriculum] = useState(false);
   const { isAuthenticated } = useAdmin();
 
   useEffect(() => {
@@ -23,11 +29,35 @@ export default function SiteFooter() {
       setReferenceHref(
         cfg?.referenceCard?.url || cfg?.referenceCard?.signedUrl || undefined,
       );
+      setCurriculumHref(
+        cfg?.suggestedCurriculum?.url ||
+          cfg?.suggestedCurriculum?.signedUrl ||
+          undefined,
+      );
     })();
     return () => {
       ignore = true;
     };
   }, []);
+
+  const handleCurriculumUpload = async (file: File) => {
+    try {
+      setUploadingCurriculum(true);
+      const result = await siteAPI.uploadCurriculum(file);
+      const cfg = await siteAPI.getAbout();
+      setCurriculumHref(
+        cfg?.suggestedCurriculum?.url ||
+          cfg?.suggestedCurriculum?.signedUrl ||
+          undefined,
+      );
+      setShowCurriculumUpload(false);
+    } catch (error) {
+      console.error("Error uploading curriculum:", error);
+      alert("Failed to upload curriculum");
+    } finally {
+      setUploadingCurriculum(false);
+    }
+  };
 
   return (
     <footer className="py-12 mt-16 relative bg-ucla-blue text-white dark:bg-card dark:text-foreground">
