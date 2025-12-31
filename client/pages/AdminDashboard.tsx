@@ -400,6 +400,16 @@ function SiteEditor() {
     }
   };
 
+  const onUploadCurr = async (file: File) => {
+    try {
+      const { path } = await siteAPI.uploadCurriculum(file);
+      setCurrPath(path);
+      setCurrUrl("");
+    } catch (e: any) {
+      setError(e?.message || "Upload failed");
+    }
+  };
+
   const onSave = async () => {
     try {
       setSaving(true);
