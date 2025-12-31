@@ -75,12 +75,20 @@ router.get("/about", async (_req: Request, res: Response) => {
       });
     }
 
-    // If filePath exists, create a short-lived signed URL
+    // If filePath exists, create a short-lived signed URL for reference card
     if (parsed?.referenceCard?.filePath) {
       const { data: signed } = await supabaseAdmin.storage
         .from(STORAGE_BUCKET)
         .createSignedUrl(parsed.referenceCard.filePath, 60 * 60);
       parsed.referenceCard.signedUrl = signed?.signedUrl || null;
+    }
+
+    // If filePath exists, create a short-lived signed URL for suggested curriculum
+    if (parsed?.suggestedCurriculum?.filePath) {
+      const { data: signed } = await supabaseAdmin.storage
+        .from(STORAGE_BUCKET)
+        .createSignedUrl(parsed.suggestedCurriculum.filePath, 60 * 60);
+      parsed.suggestedCurriculum.signedUrl = signed?.signedUrl || null;
     }
 
     return res.json(parsed);
