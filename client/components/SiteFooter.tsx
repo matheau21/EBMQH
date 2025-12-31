@@ -44,10 +44,22 @@ export default function SiteFooter() {
     try {
       setUploadingCurriculum(true);
       const result = await siteAPI.uploadCurriculum(file);
+      // Update the about config with the new curriculum path
       const cfg = await siteAPI.getAbout();
+      await siteAPI.saveAbout({
+        title: cfg.title,
+        subtitle: cfg.subtitle,
+        sections: cfg.sections,
+        referenceCard: cfg.referenceCard,
+        suggestedCurriculum: {
+          filePath: result.path,
+        },
+      });
+      // Refresh the curriculum href
+      const updatedCfg = await siteAPI.getAbout();
       setCurriculumHref(
-        cfg?.suggestedCurriculum?.url ||
-          cfg?.suggestedCurriculum?.signedUrl ||
+        updatedCfg?.suggestedCurriculum?.url ||
+          updatedCfg?.suggestedCurriculum?.signedUrl ||
           undefined,
       );
       setShowCurriculumUpload(false);
