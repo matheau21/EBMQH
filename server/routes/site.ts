@@ -73,6 +73,7 @@ router.get("/about", async (_req: Request, res: Response) => {
         subtitle: "Concise, consistent, evidence-based summaries.",
         sections: [],
         referenceCard: {},
+        suggestedCurriculum: {},
       });
     }
 
