@@ -57,6 +57,7 @@ router.get("/about", async (_req: Request, res: Response) => {
           },
         ],
         referenceCard: {},
+        suggestedCurriculum: {},
       });
     }
     const text = await data.text();
