@@ -296,6 +296,8 @@ function SiteEditor() {
         setSections(Array.isArray(cfg.sections) ? cfg.sections : []);
         setRefUrl(cfg.referenceCard?.url || "");
         setRefPath(cfg.referenceCard?.filePath || "");
+        setCurrUrl(cfg.suggestedCurriculum?.url || "");
+        setCurrPath(cfg.suggestedCurriculum?.filePath || "");
       } catch (e: any) {
         setError(e?.message || "Failed to load");
       } finally {
