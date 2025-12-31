@@ -784,6 +784,11 @@ export const siteAPI = {
       filePath?: string | null;
       signedUrl?: string | null;
     };
+    suggestedCurriculum?: {
+      url?: string | null;
+      filePath?: string | null;
+      signedUrl?: string | null;
+    };
   }> {
     try {
       const backendAvailable = await checkBackendAvailability();
@@ -793,6 +798,7 @@ export const siteAPI = {
           subtitle: "",
           sections: [],
           referenceCard: {},
+          suggestedCurriculum: {},
         } as any;
       }
       return await apiRequest(`/site/about`);
@@ -801,6 +807,7 @@ export const siteAPI = {
         title: "About EBM Quick Hits",
         sections: [],
         referenceCard: {},
+        suggestedCurriculum: {},
       } as any;
     }
   },
@@ -809,6 +816,7 @@ export const siteAPI = {
     subtitle?: string | null;
     sections: Array<{ heading: string; body: string }>;
     referenceCard?: { url?: string | null; filePath?: string | null };
+    suggestedCurriculum?: { url?: string | null; filePath?: string | null };
   }): Promise<{ message: string }> {
     return apiRequest(`/site/about`, {
       method: "PUT",
@@ -829,6 +837,24 @@ export const siteAPI = {
       reader.readAsDataURL(file);
     });
     return apiRequest(`/site/reference/upload`, {
+      method: "POST",
+      body: JSON.stringify({ filename: file.name, contentBase64: base64 }),
+    });
+  },
+  async uploadCurriculum(
+    file: File,
+  ): Promise<{ message: string; path: string }> {
+    const base64: string = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        const idx = result.indexOf(",");
+        resolve(idx >= 0 ? result.slice(idx + 1) : result);
+      };
+      reader.onerror = () => reject(new Error("Failed to read file"));
+      reader.readAsDataURL(file);
+    });
+    return apiRequest(`/site/curriculum/upload`, {
       method: "POST",
       body: JSON.stringify({ filename: file.name, contentBase64: base64 }),
     });
