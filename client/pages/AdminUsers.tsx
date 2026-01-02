@@ -108,7 +108,7 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
           </div>
           <div className="flex items-end gap-2">
             <select
-              className="border rounded px-3 py-2"
+              className="border rounded px-3 py-2 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-slate-50"
               value={newUser.role}
               onChange={(e) => setNewUser({ ...newUser, role: e.target.value as any })}
             >
