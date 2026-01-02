@@ -90,7 +90,7 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
         <h2 className="font-medium dark:text-slate-100">Create User</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <Label>Username</Label>
+            <Label className="dark:text-slate-200">Username</Label>
             <Input
               value={newUser.username}
               onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
