@@ -621,17 +621,17 @@ function SiteEditor() {
       </div>
 
       <div className="space-y-3 pt-4">
-        <div className="font-medium">Privacy Policy</div>
+        <div className="font-medium dark:text-slate-100">Privacy Policy</div>
         <div className="grid sm:grid-cols-2 gap-3">
           <div className="sm:col-span-2">
-            <label className="text-sm">Privacy Title</label>
+            <label className="text-sm dark:text-slate-300">Privacy Title</label>
             <Input
               value={privacyTitle}
               onChange={(e) => setPrivacyTitle(e.target.value)}
             />
           </div>
           <div className="sm:col-span-2">
-            <label className="text-sm">Privacy Subtitle</label>
+            <label className="text-sm dark:text-slate-300">Privacy Subtitle</label>
             <Input
               value={privacySubtitle}
               onChange={(e) => setPrivacySubtitle(e.target.value)}
