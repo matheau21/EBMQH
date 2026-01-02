@@ -640,7 +640,7 @@ function SiteEditor() {
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <div className="font-medium">Sections</div>
+            <div className="font-medium dark:text-slate-100">Sections</div>
             <Button
               variant="outline"
               onClick={() =>
