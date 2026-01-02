@@ -520,7 +520,7 @@ function SiteEditor() {
       </div>
 
       <div className="space-y-2">
-        <div className="font-medium">Suggested Curriculum Link</div>
+        <div className="font-medium dark:text-slate-100">Suggested Curriculum Link</div>
         <Input
           placeholder="https://..."
           value={currUrl}
@@ -529,18 +529,19 @@ function SiteEditor() {
             if (e.target.value) setCurrPath("");
           }}
         />
-        <div className="text-xs text-gray-600">
+        <div className="text-xs text-gray-600 dark:text-slate-400">
           Or upload a file to link to:
         </div>
         <input
           type="file"
+          className="block w-full text-sm text-gray-700 dark:text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-gray-100 dark:file:bg-slate-700 dark:file:text-slate-200 file:cursor-pointer hover:file:bg-gray-200 dark:hover:file:bg-slate-600"
           onChange={(e) => {
             const f = e.target.files?.[0];
             if (f) onUploadCurr(f);
           }}
         />
         {currPath && (
-          <div className="text-xs text-gray-700">
+          <div className="text-xs text-gray-700 dark:text-slate-300">
             Uploaded path: <span className="font-mono">{currPath}</span>
           </div>
         )}
