@@ -461,7 +461,7 @@ function SiteEditor() {
 
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <div className="font-medium">Sections</div>
+          <div className="font-medium dark:text-slate-100">Sections</div>
           <Button variant="outline" onClick={addSection}>
             Add Section
           </Button>
