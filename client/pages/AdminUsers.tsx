@@ -98,7 +98,7 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
             />
           </div>
           <div>
-            <Label>Password</Label>
+            <Label className="dark:text-slate-200">Password</Label>
             <Input
               type="password"
               value={newUser.password}
