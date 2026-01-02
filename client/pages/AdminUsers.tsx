@@ -130,8 +130,8 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
         )}
       </div>
 
-      <div className="p-4 border rounded-lg">
-        <h2 className="font-medium mb-3">Existing Users</h2>
+      <div className="p-4 border rounded-lg bg-white dark:bg-slate-800 dark:border-slate-700">
+        <h2 className="font-medium mb-3 dark:text-slate-100">Existing Users</h2>
         {isLoading && <div>Loading...</div>}
         {error && <div className="text-red-600">Failed to load users</div>}
         <div className="space-y-2">
