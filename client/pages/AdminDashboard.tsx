@@ -580,20 +580,20 @@ function SiteEditor() {
       </div>
 
       <div className="space-y-2">
-        <div className="font-medium">Contact Us</div>
-        <label className="text-sm">Title</label>
+        <div className="font-medium dark:text-slate-100">Contact Us</div>
+        <label className="text-sm dark:text-slate-300">Title</label>
         <Input
           value={contactTitle}
           onChange={(e) => setContactTitle(e.target.value)}
         />
-        <label className="text-sm">Email (optional)</label>
+        <label className="text-sm dark:text-slate-300">Email (optional)</label>
         <Input
           value={contactEmail}
           onChange={(e) => setContactEmail(e.target.value)}
         />
-        <label className="text-sm">Body</label>
+        <label className="text-sm dark:text-slate-300">Body</label>
         <textarea
-          className="w-full border rounded p-2 text-sm min-h-[120px]"
+          className="w-full border rounded p-2 text-sm min-h-[120px] dark:bg-slate-700 dark:border-slate-600 dark:text-slate-50"
           value={contactBody}
           onChange={(e) => setContactBody(e.target.value)}
         />
