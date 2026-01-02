@@ -1069,9 +1069,6 @@ export default function AdminDashboard() {
             )}
             <TabsTrigger value="questions">Questions</TabsTrigger>
             {user?.role !== "user" && (
-              <TabsTrigger value="files">File Sync</TabsTrigger>
-            )}
-            {user?.role !== "user" && (
               <TabsTrigger value="site">Site</TabsTrigger>
             )}
             <TabsTrigger value="account">Account</TabsTrigger>
