@@ -467,7 +467,7 @@ function SiteEditor() {
           </Button>
         </div>
         {sections.length === 0 && (
-          <div className="text-sm text-gray-600">No sections yet.</div>
+          <div className="text-sm text-gray-600 dark:text-slate-400">No sections yet.</div>
         )}
         {sections.map((s, i) => (
           <div key={i} className="border rounded p-3 space-y-2 bg-white dark:bg-slate-700 dark:border-slate-600">
