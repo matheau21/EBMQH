@@ -218,7 +218,9 @@ function TrialRow({
               {p.year ? ` • ${p.year}` : ""}
             </div>
             {p.summary && (
-              <div className="text-sm text-gray-700 dark:text-slate-300">{p.summary}</div>
+              <div className="text-sm text-gray-700 dark:text-slate-300">
+                {p.summary}
+              </div>
             )}
             {(p.authors || p.journal) && (
               <div className="text-xs text-gray-500 dark:text-slate-400">
@@ -418,7 +420,10 @@ function SiteEditor() {
         subtitle,
         sections,
         referenceCard: { url: refUrl || null, filePath: refPath || null },
-        suggestedCurriculum: { url: currUrl || null, filePath: currPath || null },
+        suggestedCurriculum: {
+          url: currUrl || null,
+          filePath: currPath || null,
+        },
       });
       alert("Saved");
     } catch (e: any) {
@@ -440,7 +445,12 @@ function SiteEditor() {
     }
   };
 
-  if (loading) return <div className="border rounded p-4 dark:border-slate-700 dark:bg-slate-800">Loading…</div>;
+  if (loading)
+    return (
+      <div className="border rounded p-4 dark:border-slate-700 dark:bg-slate-800">
+        Loading…
+      </div>
+    );
 
   return (
     <div className="border rounded p-4 space-y-4 dark:border-slate-700 dark:bg-slate-800">
@@ -467,10 +477,15 @@ function SiteEditor() {
           </Button>
         </div>
         {sections.length === 0 && (
-          <div className="text-sm text-gray-600 dark:text-slate-400">No sections yet.</div>
+          <div className="text-sm text-gray-600 dark:text-slate-400">
+            No sections yet.
+          </div>
         )}
         {sections.map((s, i) => (
-          <div key={i} className="border rounded p-3 space-y-2 bg-white dark:bg-slate-700 dark:border-slate-600">
+          <div
+            key={i}
+            className="border rounded p-3 space-y-2 bg-white dark:bg-slate-700 dark:border-slate-600"
+          >
             <div className="flex items-center gap-2">
               <Input
                 value={s.heading}
@@ -492,7 +507,9 @@ function SiteEditor() {
       </div>
 
       <div className="space-y-2">
-        <div className="font-medium dark:text-slate-100">EBM Reference Card Link</div>
+        <div className="font-medium dark:text-slate-100">
+          EBM Reference Card Link
+        </div>
         <Input
           placeholder="https://..."
           value={refUrl}
@@ -520,7 +537,9 @@ function SiteEditor() {
       </div>
 
       <div className="space-y-2">
-        <div className="font-medium dark:text-slate-100">Suggested Curriculum Link</div>
+        <div className="font-medium dark:text-slate-100">
+          Suggested Curriculum Link
+        </div>
         <Input
           placeholder="https://..."
           value={currUrl}
@@ -548,7 +567,9 @@ function SiteEditor() {
       </div>
 
       <div className="space-y-2">
-        <div className="font-medium dark:text-slate-100">Featured Trials (max 3)</div>
+        <div className="font-medium dark:text-slate-100">
+          Featured Trials (max 3)
+        </div>
         <div className="grid sm:grid-cols-2 gap-2">
           {allApproved.map((p) => (
             <label
@@ -631,7 +652,9 @@ function SiteEditor() {
             />
           </div>
           <div className="sm:col-span-2">
-            <label className="text-sm dark:text-slate-300">Privacy Subtitle</label>
+            <label className="text-sm dark:text-slate-300">
+              Privacy Subtitle
+            </label>
             <Input
               value={privacySubtitle}
               onChange={(e) => setPrivacySubtitle(e.target.value)}
@@ -654,10 +677,15 @@ function SiteEditor() {
             </Button>
           </div>
           {privacySections.length === 0 && (
-            <div className="text-sm text-gray-600 dark:text-slate-400">No sections yet.</div>
+            <div className="text-sm text-gray-600 dark:text-slate-400">
+              No sections yet.
+            </div>
           )}
           {privacySections.map((s, i) => (
-            <div key={i} className="border rounded p-3 space-y-2 bg-white dark:bg-slate-700 dark:border-slate-600">
+            <div
+              key={i}
+              className="border rounded p-3 space-y-2 bg-white dark:bg-slate-700 dark:border-slate-600"
+            >
               <div className="flex items-center gap-2">
                 <Input
                   value={s.heading}
@@ -719,7 +747,9 @@ function SiteEditor() {
         </div>
       </div>
 
-      {error && <div className="text-sm text-red-600 dark:text-red-400">{error}</div>}
+      {error && (
+        <div className="text-sm text-red-600 dark:text-red-400">{error}</div>
+      )}
 
       <div className="pt-2">
         <Button className="bg-ucla-blue" disabled={saving} onClick={onSave}>
@@ -754,7 +784,9 @@ function AdminApprovalsQuestions() {
   });
   return (
     <div>
-      <h3 className="font-medium mb-2 dark:text-slate-100">Questions Pending</h3>
+      <h3 className="font-medium mb-2 dark:text-slate-100">
+        Questions Pending
+      </h3>
       <div className="space-y-2">
         {(data?.questions || []).map((q: any) => (
           <div
@@ -762,7 +794,10 @@ function AdminApprovalsQuestions() {
             className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-900"
           >
             <div className="min-w-0">
-              <div className="font-medium truncate dark:text-slate-100" title={q.prompt}>
+              <div
+                className="font-medium truncate dark:text-slate-100"
+                title={q.prompt}
+              >
                 {q.prompt}
               </div>
               <div className="text-xs text-gray-600 dark:text-slate-400">
@@ -839,7 +874,9 @@ function AccountSettings() {
         />
       </div>
       <div>
-        <label className="text-sm dark:text-slate-300">Confirm new password</label>
+        <label className="text-sm dark:text-slate-300">
+          Confirm new password
+        </label>
         <Input
           type="password"
           value={confirmPassword}
@@ -859,7 +896,11 @@ function AccountSettings() {
         >
           {saving ? "Saving…" : "Save"}
         </Button>
-        {message && <div className="text-sm text-gray-600 dark:text-slate-400">{message}</div>}
+        {message && (
+          <div className="text-sm text-gray-600 dark:text-slate-400">
+            {message}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1082,7 +1123,9 @@ export default function AdminDashboard() {
 
           <TabsContent value="trials" className="mt-4 space-y-6">
             <div className="border rounded p-4 space-y-3 dark:border-slate-700 dark:bg-slate-800">
-              <h2 className="font-medium dark:text-slate-100">Create Trial/Presentation</h2>
+              <h2 className="font-medium dark:text-slate-100">
+                Create Trial/Presentation
+              </h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm dark:text-slate-300">Title</label>
@@ -1094,7 +1137,9 @@ export default function AdminDashboard() {
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="text-sm dark:text-slate-300">Specialty</label>
+                  <label className="text-sm dark:text-slate-300">
+                    Specialty
+                  </label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-1">
                     {allSpecialties.map((s: string) => (
                       <label
@@ -1113,7 +1158,9 @@ export default function AdminDashboard() {
                             }))
                           }
                         />
-                        <span className="truncate dark:text-slate-100">{s}</span>
+                        <span className="truncate dark:text-slate-100">
+                          {s}
+                        </span>
                       </label>
                     ))}
                   </div>
@@ -1218,10 +1265,14 @@ export default function AdminDashboard() {
             </div>
 
             <div className="border rounded p-4 dark:border-slate-700 dark:bg-slate-800">
-              <h2 className="font-medium mb-3 dark:text-slate-100">All Trials</h2>
+              <h2 className="font-medium mb-3 dark:text-slate-100">
+                All Trials
+              </h2>
               <div className="flex flex-wrap gap-3 mb-3">
                 <div className="w-44">
-                  <label className="text-xs text-gray-500 dark:text-slate-400">Status</label>
+                  <label className="text-xs text-gray-500 dark:text-slate-400">
+                    Status
+                  </label>
                   <Select
                     value={filterStatus as any}
                     onValueChange={(v) => setFilterStatus(v as any)}
@@ -1239,7 +1290,9 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
                 <div className="w-56">
-                  <label className="text-xs text-gray-500 dark:text-slate-400">Specialty</label>
+                  <label className="text-xs text-gray-500 dark:text-slate-400">
+                    Specialty
+                  </label>
                   <Select
                     value={filterSpecialty}
                     onValueChange={(v) => setFilterSpecialty(v)}
@@ -1290,7 +1343,9 @@ export default function AdminDashboard() {
                       className="flex items-center justify-between border rounded px-3 py-2 bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-900"
                     >
                       <div>
-                        <div className="font-medium dark:text-slate-100">{p.title}</div>
+                        <div className="font-medium dark:text-slate-100">
+                          {p.title}
+                        </div>
                         <div className="text-xs text-gray-600 dark:text-slate-400">
                           {p.specialty} • pending
                         </div>
