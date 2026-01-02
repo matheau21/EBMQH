@@ -447,11 +447,11 @@ function SiteEditor() {
       <h2 className="font-medium dark:text-slate-100">Site Content</h2>
       <div className="grid sm:grid-cols-2 gap-3">
         <div className="sm:col-span-2">
-          <label className="text-sm">About Title</label>
+          <label className="text-sm dark:text-slate-300">About Title</label>
           <Input value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
         <div className="sm:col-span-2">
-          <label className="text-sm">About Subtitle</label>
+          <label className="text-sm dark:text-slate-300">About Subtitle</label>
           <Input
             value={subtitle}
             onChange={(e) => setSubtitle(e.target.value)}
