@@ -136,12 +136,12 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
         {error && <div className="text-red-600">Failed to load users</div>}
         <div className="space-y-2">
           {data?.users?.map((u) => (
-            <div key={u.id} className="border rounded px-3 py-2">
+            <div key={u.id} className="border rounded px-3 py-2 bg-white dark:bg-slate-700 dark:border-slate-600">
               <div className="flex items-center justify-between">
                 <div className="space-x-3">
-                  <span className="font-mono">{u.username}</span>
-                  <span className="text-xs border rounded px-2 py-0.5 bg-gray-50">{u.role}</span>
-                  <span className={`text-xs ml-2 ${u.is_active ? "text-green-600" : "text-gray-500"}`}>
+                  <span className="font-mono dark:text-slate-100">{u.username}</span>
+                  <span className="text-xs border rounded px-2 py-0.5 bg-gray-100 dark:bg-slate-600 dark:border-slate-500 dark:text-slate-100">{u.role}</span>
+                  <span className={`text-xs ml-2 ${u.is_active ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-slate-400"}`}>
                     {u.is_active ? "active" : "inactive"}
                   </span>
                 </div>
