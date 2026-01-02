@@ -81,13 +81,13 @@ export default function AdminUsersPage({ showHeader = true }: { showHeader?: boo
   if ((useAdmin().user?.role || "user") === "user") return <div className="p-6">Admin access required.</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background dark:bg-slate-950">
       {showHeader && <SiteHeader showQuickLinks />}
       <div className="max-w-4xl mx-auto p-6 space-y-6">
       <h1 className="text-2xl font-semibold text-ucla-blue">User Management</h1>
 
-      <div className="p-4 border rounded-lg space-y-3">
-        <h2 className="font-medium">Create User</h2>
+      <div className="p-4 border rounded-lg space-y-3 bg-white dark:bg-slate-800 dark:border-slate-700">
+        <h2 className="font-medium dark:text-slate-100">Create User</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <Label>Username</Label>
